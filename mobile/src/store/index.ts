@@ -18,6 +18,7 @@ import {
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { authApi } from './api/authApi';
 import { usersApi } from './api/usersApi';
+import { matchingApi } from './api/matchingApi';
 import authReducer from './slices/authSlice';
 import onboardingReducer from './slices/onboardingSlice';
 import userReducer from './slices/userSlice';
@@ -35,6 +36,7 @@ const rootReducer = combineReducers({
   user: userReducer,
   [authApi.reducerPath]: authApi.reducer,
   [usersApi.reducerPath]: usersApi.reducer,
+  [matchingApi.reducerPath]: matchingApi.reducer,
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
@@ -46,7 +48,7 @@ export const store = configureStore({
       serializableCheck: {
         ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
       },
-    }).concat(authApi.middleware, usersApi.middleware),
+    }).concat(authApi.middleware, usersApi.middleware, matchingApi.middleware),
 });
 
 export const persistor = persistStore(store);
