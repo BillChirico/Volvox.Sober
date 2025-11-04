@@ -19,7 +19,7 @@ subtasks:
   - 'T129'
 title: 'Messaging & Structured Check-Ins'
 phase: 'Phase 2 - Core Features'
-lane: "doing"
+lane: "for_review"
 assignee: ''
 agent: "claude"
 shell_pid: "15009"
@@ -245,3 +245,4 @@ history:
 
 - 2025-11-03 – system – lane=planned – Prompt created via /spec-kitty.tasks
 - 2025-11-04T20:17:31Z – claude – shell_pid=15009 – lane=doing – Started implementation of Messaging & Structured Check-ins
+- 2025-11-04T21:45:00Z – claude – shell_pid=15009 – lane=for_review – Completed all 16 subtasks (T114-T129)
