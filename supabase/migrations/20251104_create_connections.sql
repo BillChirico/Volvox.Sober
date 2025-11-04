@@ -6,9 +6,11 @@ CREATE TABLE IF NOT EXISTS connection_requests (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   sponsee_id UUID NOT NULL REFERENCES auth.users(id) ON DELETE CASCADE,
   sponsor_id UUID NOT NULL REFERENCES auth.users(id) ON DELETE CASCADE,
-  message TEXT CHECK (char_length(message) <= 200),
-  status TEXT NOT NULL CHECK (status IN ('pending', 'accepted', 'declined', 'cancelled')) DEFAULT 'pending',
-  declined_reason TEXT CHECK (char_length(declined_reason) <= 300),
+  introduction_message TEXT CHECK (char_length(introduction_message) <= 500),
+  status TEXT NOT NULL CHECK (status IN ('pending', 'accepted', 'declined', 'cancelled', 'expired')) DEFAULT 'pending',
+  decline_reason TEXT CHECK (char_length(decline_reason) <= 300),
+  responded_at TIMESTAMPTZ,
+  expires_at TIMESTAMPTZ DEFAULT (NOW() + INTERVAL '30 days'),
   created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
   updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
 
@@ -137,10 +139,44 @@ CREATE POLICY "Users can update own connections"
 GRANT SELECT, INSERT, UPDATE ON connection_requests TO authenticated;
 GRANT SELECT, INSERT, UPDATE ON connections TO authenticated;
 
+-- Function to auto-expire old pending requests (30 days)
+CREATE OR REPLACE FUNCTION expire_old_requests()
+RETURNS void AS $$
+BEGIN
+  UPDATE connection_requests
+  SET status = 'expired'
+  WHERE status = 'pending'
+  AND expires_at < NOW();
+END;
+$$ LANGUAGE plpgsql;
+
+-- Function to archive messages on disconnect (sets retention_until for 90-day cleanup)
+-- Note: This will be called from WP06 (messaging) implementation
+CREATE OR REPLACE FUNCTION archive_messages_on_disconnect()
+RETURNS TRIGGER AS $$
+BEGIN
+  IF NEW.status = 'disconnected' AND OLD.status = 'active' THEN
+    -- Mark messages as archived with 90-day retention
+    -- This assumes messages table has 'archived' boolean and 'retention_until' timestamp
+    -- WP06 will implement the actual message archiving logic
+    NULL; -- Placeholder for WP06 implementation
+  END IF;
+  RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+-- Trigger for message archiving on disconnect
+CREATE TRIGGER trigger_archive_messages_on_disconnect
+  AFTER UPDATE ON connections
+  FOR EACH ROW
+  EXECUTE FUNCTION archive_messages_on_disconnect();
+
 -- Comments for documentation
 COMMENT ON TABLE connection_requests IS 'Stores connection requests from sponsees to sponsors';
 COMMENT ON TABLE connections IS 'Stores active and historical connections between sponsees and sponsors';
-COMMENT ON COLUMN connection_requests.message IS 'Optional message from sponsee (max 200 chars)';
-COMMENT ON COLUMN connection_requests.status IS 'Request status: pending, accepted, declined, cancelled';
+COMMENT ON COLUMN connection_requests.introduction_message IS 'Optional message from sponsee (max 500 chars)';
+COMMENT ON COLUMN connection_requests.status IS 'Request status: pending, accepted, declined, cancelled, expired';
+COMMENT ON COLUMN connection_requests.responded_at IS 'Timestamp when sponsor accepted or declined';
+COMMENT ON COLUMN connection_requests.expires_at IS 'Auto-expiration after 30 days';
 COMMENT ON COLUMN connections.status IS 'Connection status: active, disconnected';
-COMMENT ON COLUMN connections.last_contact IS 'Timestamp of last message or interaction';
+COMMENT ON COLUMN connections.last_contact IS 'Timestamp of last message or interaction (updated by WP06)';

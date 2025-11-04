@@ -5,9 +5,11 @@ export interface ConnectionRequest {
   id: string;
   sponsee_id: string;
   sponsor_id: string;
-  message?: string;
-  status: 'pending' | 'accepted' | 'declined' | 'cancelled';
-  declined_reason?: string;
+  introduction_message?: string;
+  status: 'pending' | 'accepted' | 'declined' | 'cancelled' | 'expired';
+  decline_reason?: string;
+  responded_at?: string;
+  expires_at?: string;
   created_at: string;
   updated_at: string;
   // Joined data
@@ -37,7 +39,7 @@ export interface Connection {
 
 export interface SendRequestPayload {
   sponsor_id: string;
-  message?: string;
+  introduction_message?: string;
 }
 
 export interface AcceptRequestPayload {
@@ -60,7 +62,7 @@ export const connectionsApi = createApi({
   endpoints: (builder) => ({
     // Send connection request (T073)
     sendRequest: builder.mutation<ConnectionRequest, SendRequestPayload>({
-      queryFn: async ({ sponsor_id, message }) => {
+      queryFn: async ({ sponsor_id, introduction_message }) => {
         try {
           const { data: { user } } = await supabaseClient.auth.getUser();
 
@@ -73,7 +75,7 @@ export const connectionsApi = createApi({
             .insert({
               sponsee_id: user.id,
               sponsor_id,
-              message,
+              introduction_message,
               status: 'pending',
             })
             .select()
@@ -137,7 +139,10 @@ export const connectionsApi = createApi({
           // Start transaction: update request + create connection
           const { data: request, error: requestError } = await supabaseClient
             .from('connection_requests')
-            .update({ status: 'accepted' })
+            .update({
+              status: 'accepted',
+              responded_at: new Date().toISOString()
+            })
             .eq('id', request_id)
             .select()
             .single();
@@ -177,7 +182,8 @@ export const connectionsApi = createApi({
             .from('connection_requests')
             .update({
               status: 'declined',
-              declined_reason: reason,
+              decline_reason: reason,
+              responded_at: new Date().toISOString()
             })
             .eq('id', request_id);
 
