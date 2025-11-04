@@ -18,7 +18,7 @@ subtasks:
   - 'T113'
 title: '12-Step Program Worksheets'
 phase: 'Phase 2 - Core Features'
-lane: "doing"
+lane: "for_review"
 assignee: ''
 agent: "claude"
 shell_pid: "95759"
@@ -231,3 +231,4 @@ history:
 
 - 2025-11-03 – system – lane=planned – Prompt created via /spec-kitty.tasks
 - 2025-11-04T20:06:38Z – claude – shell_pid=95759 – lane=doing – Started implementation of 12-Step Program Worksheets
+- 2025-11-04T20:16:44Z – claude – shell_pid=95759 – lane=for_review – Completed 12/15 subtasks - UI and offline sync complete, notifications blocked by WP09
