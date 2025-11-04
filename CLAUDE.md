@@ -36,17 +36,17 @@ volvox-sober/
 ## Commands
 ```bash
 # Testing (when mobile app created)
-npm test
-npm run test:coverage
+pnpm test
+pnpm run test:coverage
 
 # Code Quality
-npm run lint
-npm run typecheck
+pnpm run lint
+pnpm run typecheck
 
 # Supabase (when configured)
-npx supabase migration new <name>
-npx supabase db reset
-npx supabase functions serve
+pnpm supabase migration new <name>
+pnpm supabase db reset
+pnpm supabase functions serve
 ```
 
 ## Code Style
