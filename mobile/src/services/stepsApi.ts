@@ -5,6 +5,11 @@
 
 import { createApi, fakeBaseQuery } from '@reduxjs/toolkit/query/react';
 import { supabase } from './supabase';
+import {
+  sendStepWorkCommentNotification,
+  sendStepWorkSubmittedNotification,
+  sendStepWorkReviewedNotification,
+} from '../utils/notificationHelpers';
 
 export interface Step {
   id: string;
@@ -197,7 +202,33 @@ export const stepsApi = createApi({
 
         if (error) return { error };
 
-        // TODO: Send push notification to sponsor (T109)
+        // T109: Send push notification to sponsor
+        const stepWorkData = data as StepWork;
+        if (stepWorkData.sponsor_id) {
+          // Get step info for notification
+          const { data: stepData } = await supabase
+            .from('steps')
+            .select('step_number')
+            .eq('id', stepId)
+            .single();
+
+          // Get sponsee name
+          const { data: userData } = await supabase
+            .from('users')
+            .select('full_name')
+            .eq('id', user.id)
+            .single();
+
+          if (stepData && userData) {
+            await sendStepWorkSubmittedNotification(
+              stepWorkData.sponsor_id,
+              userData.full_name || 'A sponsee',
+              stepData.step_number,
+              stepId,
+              stepWorkData.id
+            );
+          }
+        }
 
         return { data: data as StepWork };
       },
@@ -245,7 +276,23 @@ export const stepsApi = createApi({
 
         if (error) return { error };
 
-        // TODO: Send push notification to sponsee (T108)
+        // T108: Send push notification to sponsee
+        const stepWorkData = data as StepWork;
+
+        // Get step info for notification
+        const { data: stepData } = await supabase
+          .from('steps')
+          .select('step_number')
+          .eq('id', stepWorkData.step_id)
+          .single();
+
+        if (stepData) {
+          await sendStepWorkCommentNotification(
+            stepWorkData.sponsee_id,
+            stepData.step_number,
+            stepWorkData.step_id
+          );
+        }
 
         return { data: data as StepWork };
       },
@@ -275,7 +322,23 @@ export const stepsApi = createApi({
 
         if (error) return { error };
 
-        // TODO: Send push notification to sponsee (T110)
+        // T110: Send push notification to sponsee
+        const reviewedWork = data as StepWork;
+
+        // Get step info for notification
+        const { data: stepData } = await supabase
+          .from('steps')
+          .select('step_number')
+          .eq('id', reviewedWork.step_id)
+          .single();
+
+        if (stepData) {
+          await sendStepWorkReviewedNotification(
+            reviewedWork.sponsee_id,
+            stepData.step_number,
+            reviewedWork.step_id
+          );
+        }
 
         return { data: data as StepWork };
       },
