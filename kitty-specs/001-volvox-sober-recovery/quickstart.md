@@ -516,13 +516,28 @@ npm run test:integration
 
 ### E2E Tests (Detox)
 
-```bash
-# Build app for testing
-npm run build:e2e:ios  # or build:e2e:android
+**Prerequisites**:
+- **iOS**: Xcode 14+, applesimutils (`brew tap wix/brew && brew install applesimutils`)
+- **Android**: Android Studio, Android Emulator running with AVD `Pixel_7_API_34`
 
-# Run E2E tests
-npm run test:e2e:ios  # or test:e2e:android
+```bash
+# iOS E2E Testing
+npm run build:e2e:ios      # Build app for iOS simulator
+npm run test:e2e:ios        # Run E2E tests on iOS
+
+# Android E2E Testing (start emulator first)
+emulator -avd Pixel_7_API_34  # Start Android emulator
+npm run build:e2e:android   # Build app for Android emulator
+npm run test:e2e:android    # Run E2E tests on Android
+
+# Run specific test
+npx detox test e2e/firstTest.test.js --configuration ios.sim.debug
+
+# Verbose logging
+npm run test:e2e:ios -- --loglevel verbose
 ```
+
+**Troubleshooting**: See `mobile/e2e/README.md` for detailed setup instructions and troubleshooting guide.
 
 ---
 
