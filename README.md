@@ -80,36 +80,39 @@ volvox-sober/
 ## 🚀 Quick Start
 
 ### Prerequisites
-- Node.js 18+ and npm
+- Node.js 18+ and pnpm 8+
 - React Native development environment
 - Supabase CLI (for backend development)
 
 ### Installation (Coming Soon)
 ```bash
+# Install pnpm globally (if not already installed)
+npm install -g pnpm
+
 # Clone the repository
 git clone https://github.com/yourusername/volvox-sober.git
 cd volvox-sober
 
 # Install dependencies
-npm install
+pnpm install
 
 # Set up environment variables
 cp .env.example .env
 
 # Start development server
-npm run start
+pnpm run start
 ```
 
 ### Database Setup (Current)
 ```bash
 # Create new migration
-npx supabase migration new <name>
+pnpm supabase migration new <name>
 
 # Apply migrations
-npx supabase db reset
+pnpm supabase db reset
 
 # Run Edge Functions locally
-npx supabase functions serve
+pnpm supabase functions serve
 ```
 
 ---
