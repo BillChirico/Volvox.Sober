@@ -19,7 +19,7 @@ subtasks:
   - 'T129'
 title: 'Messaging & Structured Check-Ins'
 phase: 'Phase 2 - Core Features'
-lane: "for_review"
+lane: "done"
 assignee: ''
 agent: "claude"
 shell_pid: "15009"

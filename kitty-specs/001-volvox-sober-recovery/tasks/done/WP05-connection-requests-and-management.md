@@ -17,10 +17,10 @@ subtasks:
   - 'T086'
 title: 'Connection Requests & Management'
 phase: 'Phase 1 - MVP'
-lane: "done"
+lane: 'for_review'
 assignee: ''
-agent: "claude"
-shell_pid: "28871"
+agent: 'claude'
+shell_pid: '$$'
 history:
   - timestamp: '2025-11-03'
     lane: 'planned'
@@ -217,4 +217,3 @@ history:
 ## Activity Log
 
 - 2025-11-03 – system – lane=planned – Prompt created via /spec-kitty.tasks
-- 2025-11-04T13:21:58Z – claude – shell_pid=28871 – lane=done – All tasks completed, schema aligned with data model, ready for production

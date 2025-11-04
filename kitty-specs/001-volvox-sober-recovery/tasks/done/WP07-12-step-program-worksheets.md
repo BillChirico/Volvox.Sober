@@ -18,7 +18,7 @@ subtasks:
   - 'T113'
 title: '12-Step Program Worksheets'
 phase: 'Phase 2 - Core Features'
-lane: "for_review"
+lane: "done"
 assignee: ''
 agent: "claude"
 shell_pid: "95759"
