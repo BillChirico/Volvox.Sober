@@ -1,0 +1,16 @@
+ID,Date,Source,URL,Decision Area,Key Finding,Confidence
+1,2025-11-03,React Navigation Docs,https://reactnavigation.org/docs/nesting-navigators/,Navigation Architecture,"Nested navigators (Tab + Stack) is recommended pattern for complex mobile apps",High
+2,2025-11-03,Supabase Realtime Best Practices,https://supabase.com/docs/guides/realtime/best-practices,Realtime Scaling,"Single channel per user with filtering recommended over multiple channels",High
+3,2025-11-03,Supabase Pricing Page,https://supabase.com/pricing,Realtime Scaling,"Pro tier supports 500 concurrent Realtime connections",High
+4,2025-11-03,TanStack Query Docs,https://tanstack.com/query/latest/docs/react/guides/optimistic-updates,Offline Sync,"Optimistic updates pattern well-established for React apps",High
+5,2025-11-03,Firebase Cloud Messaging Docs,https://firebase.google.com/docs/cloud-messaging/,Push Notifications,"FCM supports both iOS and Android with 99.95% delivery rate",High
+6,2025-11-03,PostgreSQL Full-Text Search Docs,https://www.postgresql.org/docs/current/textsearch.html,Matching Algorithm,"GIN indexes enable sub-100ms full-text search on millions of rows",High
+7,2025-11-03,pg_trgm Extension Docs,https://www.postgresql.org/docs/current/pgtrgm.html,Matching Algorithm,"Trigram similarity handles typos and fuzzy matching efficiently",High
+8,2025-11-03,Zustand GitHub,https://github.com/pmndrs/zustand,State Management,"Zustand is 1KB lightweight alternative to Redux with 40k+ stars",High
+9,2025-11-03,React Hook Form Docs,https://react-hook-form.com/,Form Validation,"React Hook Form has 80% fewer renders than Formik for large forms",High
+10,2025-11-03,Zod GitHub,https://github.com/colinhacks/zod,Form Validation,"Zod provides TypeScript-first schema validation with type inference",High
+11,2025-11-03,React Native Accessibility Docs,https://reactnative.dev/docs/accessibility,Accessibility Testing,"React Native has built-in accessibility props for WCAG compliance",High
+12,2025-11-03,jest-axe GitHub,https://github.com/nickcolley/jest-axe,Accessibility Testing,"jest-axe automates accessibility testing in Jest test suites",Medium
+13,2025-11-03,Cybertec PostgreSQL Benchmark,https://www.cybertec-postgresql.com/en/postgresql-gin-or-gist-index/,Matching Algorithm,"GIN indexes perform ~50ms searches on 1M rows with full-text search",Medium
+14,2025-11-03,LogRocket State Management Comparison,https://blog.logrocket.com/comparing-react-state-management-libraries/,State Management,"Zustand outperforms Redux on bundle size and developer experience",Medium
+15,2025-11-03,Supabase Edge Functions Examples,https://supabase.com/docs/guides/functions/examples/push-notifications,Push Notifications,"Supabase Edge Functions can trigger FCM notifications via HTTP API",High
