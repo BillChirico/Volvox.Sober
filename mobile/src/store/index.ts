@@ -20,6 +20,7 @@ import { authApi } from './api/authApi';
 import { usersApi } from './api/usersApi';
 import { matchingApi } from './api/matchingApi';
 import { connectionsApi } from './api/connectionsApi';
+import { sobrietyApi } from './api/sobrietyApi';
 import authReducer from './slices/authSlice';
 import onboardingReducer from './slices/onboardingSlice';
 import userReducer from './slices/userSlice';
@@ -39,6 +40,7 @@ const rootReducer = combineReducers({
   [usersApi.reducerPath]: usersApi.reducer,
   [matchingApi.reducerPath]: matchingApi.reducer,
   [connectionsApi.reducerPath]: connectionsApi.reducer,
+  [sobrietyApi.reducerPath]: sobrietyApi.reducer,
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
@@ -50,7 +52,7 @@ export const store = configureStore({
       serializableCheck: {
         ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
       },
-    }).concat(authApi.middleware, usersApi.middleware, matchingApi.middleware, connectionsApi.middleware),
+    }).concat(authApi.middleware, usersApi.middleware, matchingApi.middleware, connectionsApi.middleware, sobrietyApi.middleware),
 });
 
 export const persistor = persistStore(store);
