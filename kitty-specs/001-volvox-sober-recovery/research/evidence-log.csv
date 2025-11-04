@@ -1,0 +1,19 @@
+decision_id,evidence_type,finding,source_id,confidence,date_captured
+D1_react_native,validation,React Native 0.73+ supports iOS 14.0+ and Android API 26+,react-native-docs,high,2025-11-03
+D1_react_native,validation,Supabase JS Client v2.x officially supports React Native with WebSocket,supabase-docs,high,2025-11-03
+D1_react_native,validation,React Native Firebase provides FCM integration for push notifications,rnfirebase-docs,high,2025-11-03
+D2_supabase,validation,Supabase Realtime uses PostgreSQL LISTEN/NOTIFY for efficient real-time subscriptions,supabase-realtime-docs,high,2025-11-03
+D2_supabase,validation,PostgreSQL RLS policies provide row-level access control for multi-tenant apps,postgres-rls-docs,high,2025-11-03
+D2_supabase,validation,Supabase Edge Functions use Deno runtime for TypeScript serverless functions,supabase-functions-docs,high,2025-11-03
+D3_matching,rationale,Weighted scoring algorithms common in matching systems (dating apps mentorship platforms),matching-systems-research,medium,2025-11-03
+D3_matching,validation,PostgreSQL full-text search and PostGIS extensions handle proximity and preference matching,postgres-matching,high,2025-11-03
+D4_realtime,benchmark,Supabase Realtime achieves <5 second message delivery on mobile networks,supabase-realtime-benchmarks,medium,2025-11-03
+D4_realtime,validation,PostgreSQL LISTEN/NOTIFY efficiently handles 1000s messages/sec,postgres-notify-docs,high,2025-11-03
+D5_offline,validation,AsyncStorage provides 6MB+ storage limit sufficient for local caching,react-native-async-storage,high,2025-11-03
+D5_offline,validation,Redux Persist handles state rehydration and selective persistence,redux-persist-docs,high,2025-11-03
+D6_notifications,validation,React Native Firebase provides unified FCM API for iOS and Android,rnfirebase-messaging,high,2025-11-03
+D6_notifications,pricing,FCM free tier supports unlimited notifications,fcm-pricing,high,2025-11-03
+D7_rls,validation,PostgreSQL RLS provides row-level security without application code changes,postgres-rls-security,high,2025-11-03
+D7_rls,integration,Supabase Auth integrates with RLS using JWT claims for user_id,supabase-auth-rls,high,2025-11-03
+D8_darkmode,validation,React Native Paper supports theming with built-in light/dark color schemes,rnpaper-theming,high,2025-11-03
+D8_darkmode,compliance,Material Design color system meets WCAG AA contrast standards (4.5:1 ratio),material-accessibility,high,2025-11-03

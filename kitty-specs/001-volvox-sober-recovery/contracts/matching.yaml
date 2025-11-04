@@ -1,0 +1,124 @@
+openapi: 3.0.3
+info:
+  title: Volvox.Sober Matching API
+  description: Sponsor-sponsee matching algorithm implemented as Supabase Edge Function
+  version: 1.0.0
+
+servers:
+  - url: https://{project-id}.supabase.co/functions/v1
+    description: Supabase Edge Functions endpoint
+    variables:
+      project-id:
+        default: your-project-id
+
+paths:
+  /matching-algorithm:
+    post:
+      summary: Generate sponsor matches for sponsee
+      description: |
+        Executes weighted scoring algorithm to find 3-5 compatible sponsors based on:
+        - Geographic proximity (25 pts)
+        - Sobriety time alignment (25 pts)
+        - Communication preference alignment (20 pts)
+        - Demographic preferences (15 pts)
+        - Sponsor availability (15 pts)
+      operationId: generateMatches
+      tags:
+        - Matching
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - sponsee_id
+              properties:
+                sponsee_id:
+                  type: string
+                  format: uuid
+                  description: Sponsee requesting matches
+                refresh:
+                  type: boolean
+                  default: false
+                  description: Force refresh (ignore cached matches)
+                limit:
+                  type: integer
+                  minimum: 1
+                  maximum: 10
+                  default: 5
+                  description: Number of matches to return
+      responses:
+        '200':
+          description: Matches generated successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  matches:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Match'
+                  generated_at:
+                    type: string
+                    format: date-time
+                  cached:
+                    type: boolean
+                    description: Whether results were cached
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden (user_id doesn't match token)
+        '404':
+          description: Sponsee profile not found
+        '500':
+          description: Matching algorithm error
+
+components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+  schemas:
+    Match:
+      type: object
+      properties:
+        sponsor_id:
+          type: string
+          format: uuid
+        compatibility_score:
+          type: integer
+          minimum: 0
+          maximum: 100
+          description: Overall compatibility score
+        compatibility_reasons:
+          type: array
+          items:
+            type: string
+          example:
+            - "Nearby location (15 miles)"
+            - "Similar recovery timeline (2-3 years sober)"
+            - "Shared communication style (weekly check-ins)"
+        sponsor_profile:
+          type: object
+          properties:
+            name:
+              type: string
+            sobriety_time_years:
+              type: integer
+            location_city:
+              type: string
+            bio:
+              type: string
+            current_capacity:
+              type: integer
+            max_capacity:
+              type: integer
+            communication_frequency:
+              type: string
+              enum: [daily, few_times_week, weekly]

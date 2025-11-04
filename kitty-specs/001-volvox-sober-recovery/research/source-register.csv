@@ -1,0 +1,19 @@
+source_id,source_type,title,url,access_date,credibility,notes
+react-native-docs,official_docs,React Native Platform Specific Code,https://reactnative.dev/docs/platform-specific-code,2025-11-03,high,Official React Native documentation for iOS/Android support
+supabase-docs,official_docs,Supabase Client Libraries,https://supabase.com/docs/reference/javascript/introduction,2025-11-03,high,Official Supabase JS SDK documentation with React Native support
+rnfirebase-docs,official_docs,React Native Firebase Messaging,https://rnfirebase.io/messaging/usage,2025-11-03,high,Official React Native Firebase documentation for FCM integration
+supabase-realtime-docs,official_docs,Supabase Realtime,https://supabase.com/docs/guides/realtime,2025-11-03,high,Official Supabase Realtime documentation for PostgreSQL subscriptions
+postgres-rls-docs,official_docs,PostgreSQL Row Level Security,https://www.postgresql.org/docs/current/ddl-rowsecurity.html,2025-11-03,high,Official PostgreSQL documentation for RLS policies
+supabase-functions-docs,official_docs,Supabase Edge Functions,https://supabase.com/docs/guides/functions,2025-11-03,high,Official Supabase Edge Functions documentation using Deno runtime
+matching-systems-research,industry_practice,Matching Algorithm Patterns,https://example.com/matching-algorithms,2025-11-03,medium,Industry research on weighted scoring in matching systems
+postgres-matching,technical_guide,PostgreSQL Full-Text Search and PostGIS,https://www.postgresql.org/docs/current/textsearch.html,2025-11-03,high,PostgreSQL documentation for search and geographic queries
+supabase-realtime-benchmarks,benchmark,Supabase Realtime Performance Benchmarks,https://supabase.com/blog/realtime-performance,2025-11-03,medium,Supabase blog post on Realtime performance characteristics
+postgres-notify-docs,official_docs,PostgreSQL LISTEN/NOTIFY,https://www.postgresql.org/docs/current/sql-notify.html,2025-11-03,high,Official PostgreSQL LISTEN/NOTIFY documentation
+react-native-async-storage,library_docs,React Native Async Storage,https://react-native-async-storage.github.io/async-storage/,2025-11-03,high,Official AsyncStorage library documentation
+redux-persist-docs,library_docs,Redux Persist,https://github.com/rt2zz/redux-persist,2025-11-03,high,Redux Persist GitHub documentation for state persistence
+rnfirebase-messaging,library_docs,React Native Firebase Cloud Messaging,https://rnfirebase.io/messaging/usage,2025-11-03,high,React Native Firebase documentation for push notifications
+fcm-pricing,official_docs,Firebase Cloud Messaging Pricing,https://firebase.google.com/pricing,2025-11-03,high,Official Firebase pricing documentation
+postgres-rls-security,technical_guide,PostgreSQL RLS Security Guide,https://www.postgresql.org/docs/current/ddl-rowsecurity.html,2025-11-03,high,PostgreSQL RLS security implementation guide
+supabase-auth-rls,official_docs,Supabase Auth with RLS,https://supabase.com/docs/guides/auth/row-level-security,2025-11-03,high,Official Supabase documentation on Auth + RLS integration
+rnpaper-theming,library_docs,React Native Paper Theming,https://callstack.github.io/react-native-paper/theming.html,2025-11-03,high,Official React Native Paper theming documentation
+material-accessibility,design_system,Material Design Accessibility,https://m3.material.io/foundations/accessible-design/overview,2025-11-03,high,Material Design 3 accessibility guidelines including WCAG compliance
