@@ -33,7 +33,7 @@ description: 'Work package task list for Volvox.Sober Recovery Platform implemen
 ## Work Package WP01: Project Setup & Development Environment (Priority: P0)
 
 **Goal**: Establish React Native mobile app and Supabase backend scaffolding with development tooling.
-**Independent Test**: Project bootstraps locally with `npm run ios` and `npm run android`, Supabase runs locally, linting/formatting/typecheck passes.
+**Independent Test**: Project bootstraps locally with `pnpm run ios` and `pnpm run android`, Supabase runs locally, linting/formatting/typecheck passes.
 **Prompt**: `/tasks/planned/WP01-project-setup-and-environment.md`
 
 ### Included Subtasks

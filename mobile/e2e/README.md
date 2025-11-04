@@ -36,37 +36,37 @@ Create an Android Virtual Device (AVD):
 
 **iOS:**
 ```bash
-npm run build:e2e:ios
+pnpm run build:e2e:ios
 ```
 
 **Android:**
 ```bash
 # Start emulator first
-npm run build:e2e:android
+pnpm run build:e2e:android
 ```
 
 ### 2. Run E2E Tests
 
 **iOS:**
 ```bash
-npm run test:e2e:ios
+pnpm run test:e2e:ios
 ```
 
 **Android:**
 ```bash
 # Make sure emulator is running
-npm run test:e2e:android
+pnpm run test:e2e:android
 ```
 
 ## Available Commands
 
 | Command | Description |
 |---------|-------------|
-| `npm run test:e2e` | Run iOS E2E tests (default) |
-| `npm run test:e2e:ios` | Run iOS E2E tests |
-| `npm run test:e2e:android` | Run Android E2E tests |
-| `npm run build:e2e:ios` | Build app for iOS testing |
-| `npm run build:e2e:android` | Build app for Android testing |
+| `pnpm run test:e2e` | Run iOS E2E tests (default) |
+| `pnpm run test:e2e:ios` | Run iOS E2E tests |
+| `pnpm run test:e2e:android` | Run Android E2E tests |
+| `pnpm run build:e2e:ios` | Build app for iOS testing |
+| `pnpm run build:e2e:android` | Build app for Android testing |
 
 ## Test File Structure
 
@@ -135,7 +135,7 @@ describe('Feature Name', () => {
 **Error: Cannot find app**
 ```bash
 # Rebuild the app
-npm run build:e2e:ios
+pnpm run build:e2e:ios
 ```
 
 **Error: Simulator not found**
@@ -167,7 +167,7 @@ emulator -avd Pixel_7_API_34
 cd android
 ./gradlew clean
 cd ..
-npm run build:e2e:android
+pnpm run build:e2e:android
 ```
 
 **Error: SDK location not found**
@@ -203,7 +203,7 @@ adb kill-server && adb start-server
 
 ### Enable verbose logging
 ```bash
-npm run test:e2e:ios -- --loglevel verbose
+pnpm run test:e2e:ios -- --loglevel verbose
 ```
 
 ### Take screenshots on failure
@@ -232,8 +232,8 @@ npx detox test e2e/firstTest.test.js --configuration ios.sim.debug --grep "shoul
 ```yaml
 - name: Run E2E tests (iOS)
   run: |
-    npm run build:e2e:ios
-    npm run test:e2e:ios
+    pnpm run build:e2e:ios
+    pnpm run test:e2e:ios
 
 - name: Upload test artifacts
   if: failure()

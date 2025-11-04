@@ -75,7 +75,7 @@ history:
 
 **T132: Install FCM dependencies**
 
-- Install: `npm install @react-native-firebase/app @react-native-firebase/messaging`
+- Install: `pnpm add @react-native-firebase/app @react-native-firebase/messaging`
 - iOS: `cd ios && pod install`
 - Android: add google-services plugin to `android/app/build.gradle`
 

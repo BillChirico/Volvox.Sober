@@ -7,11 +7,11 @@
 ## Prerequisites
 
 - **Node.js**: 18.x or higher
-- **npm**: 9.x or higher (or yarn 1.22+)
-- **React Native CLI**: `npm install -g react-native-cli`
+- **pnpm**: 8.x or higher (`npm install -g pnpm`)
+- **React Native CLI**: `pnpm add -g react-native-cli` (optional with Expo)
 - **Xcode**: 14+ (for iOS development on macOS)
 - **Android Studio**: Latest stable (for Android development)
-- **Supabase CLI**: `npm install -g supabase`
+- **Supabase CLI**: `pnpm add -g supabase`
 - **Git**: For version control
 
 ## Architecture Overview
@@ -58,7 +58,7 @@
 
 ✅ **WP01 - Project Setup & Expo Migration**:
 
-- Root workspace with npm workspaces configured
+- Root workspace with pnpm workspaces configured
 - **Expo 54 mobile app** (migrated from React Native CLI for better DX)
 - Supabase project initialized (Docker-based local development)
 - ESLint configured with flat config system
@@ -119,15 +119,11 @@
 git clone <repository-url>
 cd volvox-sober
 
-# Install root dependencies
-npm install
+# Install all workspace dependencies (root + mobile + shared)
+pnpm install
 
-# Install mobile app dependencies
-cd mobile
-npm install
-
-# Install iOS pods (macOS only)
-cd ios
+# Install iOS pods (macOS only, if using native modules)
+cd mobile/ios
 pod install
 cd ../..
 ```
@@ -198,17 +194,15 @@ ls -la supabase/migrations
 **iOS (macOS only)**:
 
 ```bash
-cd mobile
-npm run ios
+pnpm run ios
 # OR with specific simulator
-npm run ios -- --simulator="iPhone 14 Pro"
+pnpm run ios -- --simulator="iPhone 14 Pro"
 ```
 
 **Android**:
 
 ```bash
-cd mobile
-npm run android
+pnpm run android
 # Make sure Android emulator is running or device is connected
 ```
 
@@ -216,7 +210,7 @@ npm run android
 
 ```bash
 # Or start manually
-npm start
+pnpm mobile
 ```
 
 ---
@@ -305,8 +299,7 @@ volvox-sober/
 2. **Write Tests First** (TDD approach)
 
    ```bash
-   cd mobile
-   npm test -- --watch
+   pnpm --filter mobile test -- --watch
    ```
 
 3. **Implement Feature**
@@ -318,15 +311,15 @@ volvox-sober/
 4. **Run Lint and Type Check**
 
    ```bash
-   npm run lint
-   npm run typecheck
+   pnpm lint
+   pnpm typecheck
    ```
 
 5. **Test on Both Platforms**
 
    ```bash
-   npm run ios
-   npm run android
+   pnpm run ios
+   pnpm run android
    ```
 
 6. **Create Pull Request**
@@ -497,21 +490,20 @@ export const subscribeToMessages = (
 ### Unit Tests
 
 ```bash
-cd mobile
-npm test
+pnpm --filter mobile test
 
 # With coverage
-npm test -- --coverage
+pnpm --filter mobile test -- --coverage
 
 # Watch mode
-npm test -- --watch
+pnpm --filter mobile test -- --watch
 ```
 
 ### Integration Tests
 
 ```bash
 # Test Supabase integration with local database
-npm run test:integration
+pnpm --filter mobile run test:integration
 ```
 
 ### E2E Tests (Detox)
@@ -522,19 +514,19 @@ npm run test:integration
 
 ```bash
 # iOS E2E Testing
-npm run build:e2e:ios      # Build app for iOS simulator
-npm run test:e2e:ios        # Run E2E tests on iOS
+pnpm run build:e2e:ios      # Build app for iOS simulator
+pnpm run test:e2e:ios        # Run E2E tests on iOS
 
 # Android E2E Testing (start emulator first)
 emulator -avd Pixel_7_API_34  # Start Android emulator
-npm run build:e2e:android   # Build app for Android emulator
-npm run test:e2e:android    # Run E2E tests on Android
+pnpm run build:e2e:android   # Build app for Android emulator
+pnpm run test:e2e:android    # Run E2E tests on Android
 
 # Run specific test
 npx detox test e2e/firstTest.test.js --configuration ios.sim.debug
 
 # Verbose logging
-npm run test:e2e:ios -- --loglevel verbose
+pnpm run test:e2e:ios -- --loglevel verbose
 ```
 
 **Troubleshooting**: See `mobile/e2e/README.md` for detailed setup instructions and troubleshooting guide.
@@ -636,7 +628,7 @@ pod install
 cd mobile/android
 ./gradlew clean
 cd ..
-npm run android
+pnpm run android
 ```
 
 **Supabase Connection Issues**:

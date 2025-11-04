@@ -83,12 +83,12 @@ history:
        "private": true,
        "workspaces": ["mobile", "shared/types"],
        "scripts": {
-         "mobile": "npm run start --workspace=mobile",
-         "ios": "npm run ios --workspace=mobile",
-         "android": "npm run android --workspace=mobile",
-         "test": "npm run test --workspaces",
-         "lint": "npm run lint --workspaces",
-         "typecheck": "npm run typecheck --workspaces"
+         "mobile": "pnpm run start --workspace=mobile",
+         "ios": "pnpm run ios --workspace=mobile",
+         "android": "pnpm run android --workspace=mobile",
+         "test": "pnpm run test --workspaces",
+         "lint": "pnpm run lint --workspaces",
+         "typecheck": "pnpm run typecheck --workspaces"
        },
        "engines": {
          "node": ">=18.0.0",
@@ -118,7 +118,7 @@ history:
        "typecheck": "tsc --noEmit"
      }
      ```
-  4. Test initial run: `cd mobile && npm run ios` (should show Metro bundler and blank app)
+  4. Test initial run: `cd mobile && pnpm run ios` (should show Metro bundler and blank app)
 - **Files**: `mobile/` directory structure
 - **Parallel?**: Yes (can run concurrently with T003 Supabase setup)
 
@@ -126,7 +126,7 @@ history:
 
 - **Purpose**: Setup Supabase local development environment with Docker.
 - **Steps**:
-  1. Install Supabase CLI: `npm install -g supabase`
+  1. Install Supabase CLI: `pnpm add -g supabase`
   2. Initialize project: `supabase init` (creates `supabase/` directory)
   3. Configure `supabase/config.toml`:
 
@@ -156,24 +156,24 @@ history:
   1. Navigate to `mobile/` directory
   2. Install navigation:
      ```bash
-     npm install @react-navigation/native @react-navigation/stack @react-navigation/bottom-tabs
-     npm install react-native-screens react-native-safe-area-context
+     pnpm add @react-navigation/native @react-navigation/stack @react-navigation/bottom-tabs
+     pnpm add react-native-screens react-native-safe-area-context
      ```
   3. Install UI library:
      ```bash
-     npm install react-native-paper react-native-vector-icons
+     pnpm add react-native-paper react-native-vector-icons
      ```
   4. Install state management:
      ```bash
-     npm install @reduxjs/toolkit react-redux
+     pnpm add @reduxjs/toolkit react-redux
      ```
   5. Install Supabase client:
      ```bash
-     npm install @supabase/supabase-js
+     pnpm add @supabase/supabase-js
      ```
   6. Install offline storage:
      ```bash
-     npm install @react-native-async-storage/async-storage redux-persist
+     pnpm add @react-native-async-storage/async-storage redux-persist
      ```
   7. For iOS, install pods: `cd ios && pod install && cd ..`
   8. Verify no peer dependency warnings (resolve if any)
@@ -187,8 +187,8 @@ history:
 - **Steps**:
   1. Install ESLint and Prettier:
      ```bash
-     npm install --save-dev eslint prettier eslint-config-prettier eslint-plugin-prettier
-     npm install --save-dev @typescript-eslint/parser @typescript-eslint/eslint-plugin
+     pnpm add --save-dev eslint prettier eslint-config-prettier eslint-plugin-prettier
+     pnpm add --save-dev @typescript-eslint/parser @typescript-eslint/eslint-plugin
      ```
   2. Create `.eslintrc.js` in root:
      ```javascript
@@ -222,7 +222,7 @@ history:
        "format": "prettier --write \"**/*.{js,jsx,ts,tsx,json,md}\""
      }
      ```
-  5. Run `npm run lint` and fix all errors
+  5. Run `pnpm run lint` and fix all errors
 - **Files**: `.eslintrc.js`, `.prettierrc.js`, root `package.json`
 - **Parallel?**: Yes (independent of other setup tasks)
 
@@ -267,7 +267,7 @@ history:
        "exclude": ["node_modules", "dist"]
      }
      ```
-  3. Run `npm run typecheck` in mobile workspace (should pass with 0 errors)
+  3. Run `pnpm run typecheck` in mobile workspace (should pass with 0 errors)
 - **Files**: `mobile/tsconfig.json`, `shared/types/tsconfig.json`
 - **Parallel?**: Yes (can proceed after T002 completes)
 
@@ -277,7 +277,7 @@ history:
 - **Steps**:
   1. Install testing dependencies:
      ```bash
-     npm install --save-dev jest @testing-library/react-native @testing-library/jest-native
+     pnpm add --save-dev jest @testing-library/react-native @testing-library/jest-native
      ```
   2. Create `mobile/jest.config.js`:
      ```javascript
@@ -314,7 +314,7 @@ history:
      });
      ```
 
-  4. Run tests: `npm test` (should pass)
+  4. Run tests: `pnpm test` (should pass)
 
 - **Files**: `mobile/jest.config.js`, `mobile/__tests__/App.test.tsx`
 - **Parallel?**: Yes (independent testing setup)
@@ -323,10 +323,10 @@ history:
 
 - **Purpose**: Setup end-to-end testing per constitution.md (E2E tests required for P1 stories).
 - **Steps**:
-  1. Install Detox CLI globally: `npm install -g detox-cli`
+  1. Install Detox CLI globally: `pnpm add -g detox-cli`
   2. Install Detox in mobile:
      ```bash
-     npm install --save-dev detox
+     pnpm add --save-dev detox
      ```
   3. Initialize Detox: `detox init`
   4. Configure `.detoxrc.js`:
@@ -475,7 +475,7 @@ history:
   5. Download `google-services.json`, place in `mobile/android/app/`
   6. Install React Native Firebase:
      ```bash
-     npm install @react-native-firebase/app @react-native-firebase/messaging
+     pnpm add @react-native-firebase/app @react-native-firebase/messaging
      ```
   7. For iOS, update `ios/Podfile`:
      ```ruby
@@ -605,9 +605,9 @@ history:
 
 **Manual Verification**:
 
-- Run `npm run ios` and `npm run android` - both should launch app successfully
-- Run `npm run lint` - should pass with zero errors/warnings
-- Run `npm run typecheck` - should pass with zero type errors
+- Run `pnpm run ios` and `pnpm run android` - both should launch app successfully
+- Run `pnpm run lint` - should pass with zero errors/warnings
+- Run `pnpm run typecheck` - should pass with zero type errors
 - Run `supabase status` - all services should be healthy
 - Verify quickstart.md setup completes in < 30 minutes
 
@@ -636,12 +636,12 @@ history:
 ## Definition of Done Checklist
 
 - [ ] All 13 subtasks (T001-T013) completed and verified
-- [ ] Mobile app runs on iOS simulator (npm run ios)
-- [ ] Mobile app runs on Android emulator (npm run android)
+- [ ] Mobile app runs on iOS simulator (pnpm run ios)
+- [ ] Mobile app runs on Android emulator (pnpm run android)
 - [ ] Supabase runs locally (supabase status shows all healthy)
-- [ ] Linting passes (npm run lint = 0 errors/warnings)
-- [ ] Type checking passes (npm run typecheck = 0 errors)
-- [ ] Unit tests pass (npm test)
+- [ ] Linting passes (pnpm run lint = 0 errors/warnings)
+- [ ] Type checking passes (pnpm run typecheck = 0 errors)
+- [ ] Unit tests pass (pnpm test)
 - [ ] E2E smoke test passes (detox test)
 - [ ] Quickstart.md verified and updated
 - [ ] .env.example created with all required variables
