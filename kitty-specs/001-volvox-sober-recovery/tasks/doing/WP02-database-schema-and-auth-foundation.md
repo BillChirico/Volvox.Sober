@@ -34,10 +34,10 @@ subtasks:
   - 'T044'
 title: 'Database Schema & Authentication Foundation'
 phase: 'Phase 0 - Foundation'
-lane: 'planned'
+lane: "doing"
 assignee: ''
-agent: ''
-shell_pid: ''
+agent: "claude"
+shell_pid: "63241"
 history:
   - timestamp: '2025-11-03'
     lane: 'planned'
@@ -229,3 +229,4 @@ expect(error.message).toContain('row-level security');
 ## Activity Log
 
 - 2025-11-03 – system – lane=planned – Prompt created via /spec-kitty.tasks
+- 2025-11-04T00:20:06Z – claude – shell_pid=63241 – lane=doing – Started WP02 implementation: Database schema and authentication foundation
