@@ -1,16 +1,6 @@
 import { configureStore } from '@reduxjs/toolkit';
 import { connectionsApi } from '../../../src/store/api/connectionsApi';
-import { supabaseClient } from '../../../src/lib/supabase';
-
-// Mock Supabase client
-jest.mock('../../../src/lib/supabase', () => ({
-  supabaseClient: {
-    auth: {
-      getUser: jest.fn(),
-    },
-    from: jest.fn(),
-  },
-}));
+import supabaseClient from '../../../src/services/supabase';
 
 const mockFrom = supabaseClient.from as jest.Mock;
 const mockGetUser = supabaseClient.auth.getUser as jest.Mock;

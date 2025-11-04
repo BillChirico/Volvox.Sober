@@ -4,17 +4,7 @@
  */
 
 import { sobrietyApi } from '../sobrietyApi';
-import { supabaseClient } from '../../../lib/supabase';
-
-// Mock Supabase client
-jest.mock('../../../lib/supabase', () => ({
-  supabaseClient: {
-    auth: {
-      getUser: jest.fn(),
-    },
-    from: jest.fn(),
-  },
-}));
+import supabaseClient from '../../../services/supabase';
 
 describe('sobrietyApi', () => {
   const mockUser = { id: 'user-123' };

@@ -1,5 +1,5 @@
 import { createApi, fakeBaseQuery } from '@reduxjs/toolkit/query/react';
-import { supabaseClient } from '../../lib/supabase';
+import supabaseClient from '../../services/supabase';
 
 export interface Match {
   sponsor_id: string;
