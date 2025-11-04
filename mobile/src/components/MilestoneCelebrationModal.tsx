@@ -46,11 +46,11 @@ export const MilestoneCelebrationModal: React.FC<MilestoneCelebrationModalProps>
   const getMilestoneMessage = (milestoneType: MilestoneType): string => {
     switch (milestoneType) {
       case '30_days':
-        return 'You've completed your first month! This is a significant achievement in your recovery journey.';
+        return "You've completed your first month! This is a significant achievement in your recovery journey.";
       case '60_days':
-        return 'Two months of strength and perseverance! You're building powerful momentum.';
+        return "Two months of strength and perseverance! You're building powerful momentum.";
       case '90_days':
-        return 'Three months is a major milestone! You've proven your commitment to recovery.';
+        return "Three months is a major milestone! You've proven your commitment to recovery.";
       case '180_days':
         return 'Half a year of sobriety! Your dedication and hard work are truly inspiring.';
       case '1_year':
