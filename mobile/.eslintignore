@@ -1,0 +1,9 @@
+node_modules/
+coverage/
+android/
+ios/
+.vscode/
+.gradle/
+build/
+dist/
+*.log

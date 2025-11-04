@@ -57,14 +57,12 @@ describe('MessageBubble', () => {
   });
 
   it('formats timestamp correctly', () => {
-    const { getByText } = render(
+    const { UNSAFE_getAllByType } = render(
       <MessageBubble message={mockMessage} isCurrentUser={false} />
     );
     // The timestamp should be formatted as time (e.g., "12:00 PM")
     const timestampRegex = /\d{1,2}:\d{2}\s?(AM|PM)/i;
-    const textElements = render(
-      <MessageBubble message={mockMessage} isCurrentUser={false} />
-    ).UNSAFE_getAllByType('Text' as any);
+    const textElements = UNSAFE_getAllByType('Text' as any);
     
     const hasTimestamp = textElements.some(
       element => timestampRegex.test(element.props.children as string)

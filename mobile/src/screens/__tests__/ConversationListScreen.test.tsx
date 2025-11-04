@@ -22,7 +22,7 @@ describe('ConversationListScreen', () => {
       new Promise(() => {}) // Never resolves to keep loading state
     );
 
-    const { getByTestId, UNSAFE_queryAllByType } = render(
+    const { UNSAFE_queryAllByType } = render(
       <ConversationListScreen onConversationPress={mockOnConversationPress} />
     );
 
