@@ -17,16 +17,21 @@ subtasks:
   - 'T086'
 title: 'Connection Requests & Management'
 phase: 'Phase 1 - MVP'
-lane: 'planned'
+lane: 'doing'
 assignee: ''
-agent: ''
-shell_pid: ''
+agent: 'claude'
+shell_pid: '3295'
 history:
   - timestamp: '2025-11-03'
     lane: 'planned'
     agent: 'system'
     shell_pid: ''
     action: 'Prompt generated via /spec-kitty.tasks'
+  - timestamp: '2025-11-04T02:25:00Z'
+    lane: 'doing'
+    agent: 'claude'
+    shell_pid: '3295'
+    action: 'Started WP05 implementation: Connection request flow and management'
 ---
 
 # Work Package Prompt: WP05 – Connection Requests & Management
