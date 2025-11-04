@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { View, StyleSheet, ScrollView } from 'react-native';
-import { Text, Surface, Avatar, Button, Divider, Dialog, Portal } from 'react-native-paper';
+import { Text, Surface, Avatar, Button, Divider, Dialog, Portal, useTheme } from 'react-native-paper';
 import { useRoute, useNavigation } from '@react-navigation/native';
 import { useDisconnectMutation, Connection } from '../../store/api/connectionsApi';
 import { useSelector } from 'react-redux';
@@ -8,6 +8,7 @@ import { RootState } from '../../store';
 import { formatDistanceToNow, format } from 'date-fns';
 
 const ConnectionDetailScreen: React.FC = () => {
+  const theme = useTheme();
   const route = useRoute();
   const navigation = useNavigation();
   const userId = useSelector((state: RootState) => state.user?.user?.id);
@@ -50,6 +51,8 @@ const ConnectionDetailScreen: React.FC = () => {
       otherPersonPhotoUrl,
     } as never);
   };
+
+  const styles = createStyles(theme);
 
   return (
     <ScrollView style={styles.container}>
@@ -168,8 +171,8 @@ const ConnectionDetailScreen: React.FC = () => {
           <Button
             mode="outlined"
             onPress={() => setDisconnectDialogVisible(true)}
-            style={styles.disconnectButton}
-            textColor="#d32f2f"
+            style={[styles.disconnectButton, { borderColor: theme.colors.error }]}
+            textColor={theme.colors.error}
             icon="link-off"
           >
             Disconnect
@@ -201,7 +204,7 @@ const ConnectionDetailScreen: React.FC = () => {
             <Button
               onPress={handleDisconnectConfirm}
               loading={isDisconnecting}
-              textColor="#d32f2f"
+              textColor={theme.colors.error}
             >
               Disconnect
             </Button>
@@ -212,10 +215,10 @@ const ConnectionDetailScreen: React.FC = () => {
   );
 };
 
-const styles = StyleSheet.create({
+const createStyles = (theme: any) => StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#f5f5f5',
+    backgroundColor: theme.colors.surfaceVariant,
   },
   surface: {
     margin: 16,
@@ -234,7 +237,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   role: {
-    color: '#1976d2',
+    color: theme.colors.primary,
     fontWeight: '600',
   },
   divider: {
@@ -258,22 +261,22 @@ const styles = StyleSheet.create({
     minWidth: 140,
   },
   progressCard: {
-    backgroundColor: '#e8f5e9',
+    backgroundColor: theme.colors.tertiaryContainer,
     padding: 20,
     borderRadius: 8,
     alignItems: 'center',
   },
   progressLabel: {
-    color: '#2e7d32',
+    color: theme.colors.onTertiaryContainer,
     marginBottom: 8,
   },
   progressValue: {
-    color: '#1b5e20',
+    color: theme.colors.tertiary,
     fontWeight: 'bold',
     marginBottom: 8,
   },
   progressHint: {
-    color: '#4caf50',
+    color: theme.colors.tertiary,
     fontStyle: 'italic',
   },
   actions: {
@@ -284,20 +287,19 @@ const styles = StyleSheet.create({
   },
   disconnectButton: {
     marginBottom: 16,
-    borderColor: '#d32f2f',
   },
   infoNote: {
-    backgroundColor: '#fff3e0',
+    backgroundColor: theme.colors.errorContainer,
     padding: 12,
     borderRadius: 8,
   },
   infoText: {
-    color: '#e65100',
+    color: theme.colors.onErrorContainer,
     textAlign: 'center',
   },
   warningText: {
     marginTop: 12,
-    color: '#d32f2f',
+    color: theme.colors.error,
     fontStyle: 'italic',
   },
 });
