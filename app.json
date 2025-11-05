@@ -3,6 +3,7 @@
     "name": "Volvox Sober",
     "slug": "volvox-sober",
     "version": "1.0.0",
+    "scheme": "volvox-sober",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
@@ -13,21 +14,28 @@
       "backgroundColor": "#ffffff"
     },
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.volvox.sober"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
+      "package": "com.volvox.sober",
       "edgeToEdgeEnabled": true,
       "predictiveBackGestureEnabled": false
     },
     "web": {
-      "favicon": "./assets/favicon.png"
+      "favicon": "./assets/favicon.png",
+      "bundler": "metro"
     },
     "plugins": [
-      "expo-secure-store"
-    ]
+      "expo-secure-store",
+      "expo-router"
+    ],
+    "experiments": {
+      "typedRoutes": true
+    }
   }
 }
