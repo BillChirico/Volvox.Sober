@@ -46,8 +46,7 @@ describe('SobrietyDashboardScreen', () => {
       reducer: {
         [sobrietyApi.reducerPath]: sobrietyApi.reducer,
       },
-      middleware: (getDefaultMiddleware) =>
-        getDefaultMiddleware().concat(sobrietyApi.middleware),
+      middleware: getDefaultMiddleware => getDefaultMiddleware().concat(sobrietyApi.middleware),
       preloadedState: {
         [sobrietyApi.reducerPath]: {
           queries: {
@@ -70,7 +69,7 @@ describe('SobrietyDashboardScreen', () => {
             <SobrietyDashboardScreen navigation={{ navigate: mockNavigate, goBack: mockGoBack }} />
           </NavigationContainer>
         </PaperProvider>
-      </Provider>
+      </Provider>,
     );
   };
 

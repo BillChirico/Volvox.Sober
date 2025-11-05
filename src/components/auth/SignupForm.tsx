@@ -35,7 +35,7 @@ const SignupForm: React.FC<SignupFormProps> = ({ onSuccess }) => {
   const theme = useTheme();
   const dispatch = useAppDispatch();
 
-  const { loading, error } = useAppSelector((state) => state.auth);
+  const { loading, error } = useAppSelector(state => state.auth);
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -62,22 +62,19 @@ const SignupForm: React.FC<SignupFormProps> = ({ onSuccess }) => {
         setShowSuccess(false);
         dispatch(clearError());
       };
-    }, [dispatch])
+    }, [dispatch]),
   );
 
   const validateForm = async (): Promise<boolean> => {
     try {
-      await signupSchema.validate(
-        { email, password, confirmPassword },
-        { abortEarly: false }
-      );
+      await signupSchema.validate({ email, password, confirmPassword }, { abortEarly: false });
       setValidationErrors({});
       return true;
     } catch (err) {
       const validationError = err as ValidationError;
       const errors: Record<string, string> = {};
 
-      validationError.inner.forEach((error) => {
+      validationError.inner.forEach(error => {
         if (error.path) {
           errors[error.path] = error.message;
         }
@@ -125,26 +122,22 @@ const SignupForm: React.FC<SignupFormProps> = ({ onSuccess }) => {
         style={[styles.container, { backgroundColor: theme.colors.background }]}
         testID="signup-success-message"
         accessibilityRole="alert"
-        accessibilityLabel="Account created successfully. Check your email for verification."
-      >
+        accessibilityLabel="Account created successfully. Check your email for verification.">
         <View style={styles.successContainer}>
           <Text
             variant="headlineSmall"
-            style={[styles.successTitle, { color: theme.colors.primary }]}
-          >
+            style={[styles.successTitle, { color: theme.colors.primary }]}>
             Check Your Email
           </Text>
           <Text
             variant="bodyLarge"
-            style={[styles.successMessage, { color: theme.colors.onBackground }]}
-          >
-            We've sent a verification link to {email}. Please check your email and click the link
-            to verify your account.
+            style={[styles.successMessage, { color: theme.colors.onBackground }]}>
+            We've sent a verification link to {email}. Please check your email and click the link to
+            verify your account.
           </Text>
           <Text
             variant="bodyMedium"
-            style={[styles.successHint, { color: theme.colors.onSurfaceVariant }]}
-          >
+            style={[styles.successHint, { color: theme.colors.onSurfaceVariant }]}>
             Don't forget to check your spam folder if you don't see it.
           </Text>
         </View>
@@ -156,16 +149,11 @@ const SignupForm: React.FC<SignupFormProps> = ({ onSuccess }) => {
     <ScrollView
       style={[styles.container, { backgroundColor: theme.colors.background }]}
       contentContainerStyle={styles.contentContainer}
-      keyboardShouldPersistTaps="handled"
-    >
+      keyboardShouldPersistTaps="handled">
       <View style={styles.formContainer}>
         {/* Display Redux error */}
         {error && (
-          <AuthErrorMessage
-            message={error}
-            dismissible
-            onDismiss={() => dispatch(clearError())}
-          />
+          <AuthErrorMessage message={error} dismissible onDismiss={() => dispatch(clearError())} />
         )}
 
         {/* Email Input */}
@@ -185,10 +173,7 @@ const SignupForm: React.FC<SignupFormProps> = ({ onSuccess }) => {
           style={styles.input}
         />
         {validationErrors.email && (
-          <Text
-            variant="bodySmall"
-            style={[styles.errorText, { color: theme.colors.error }]}
-          >
+          <Text variant="bodySmall" style={[styles.errorText, { color: theme.colors.error }]}>
             {validationErrors.email}
           </Text>
         )}
@@ -227,8 +212,7 @@ const SignupForm: React.FC<SignupFormProps> = ({ onSuccess }) => {
           loading={loading}
           style={styles.submitButton}
           accessibilityLabel="Sign up"
-          accessibilityHint="Creates your account and sends verification email"
-        >
+          accessibilityHint="Creates your account and sends verification email">
           {loading ? 'Creating Account...' : 'Sign Up'}
         </Button>
 
@@ -236,8 +220,7 @@ const SignupForm: React.FC<SignupFormProps> = ({ onSuccess }) => {
           <View testID="signup-loading" accessibilityLiveRegion="polite">
             <Text
               variant="bodySmall"
-              style={[styles.loadingText, { color: theme.colors.onSurfaceVariant }]}
-            >
+              style={[styles.loadingText, { color: theme.colors.onSurfaceVariant }]}>
               Creating your account...
             </Text>
           </View>

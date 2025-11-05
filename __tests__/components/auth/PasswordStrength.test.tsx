@@ -8,7 +8,7 @@ describe('PasswordStrength', () => {
     return render(
       <PaperProvider>
         <PasswordStrength password="" {...props} />
-      </PaperProvider>
+      </PaperProvider>,
     );
   };
 
@@ -53,7 +53,7 @@ describe('PasswordStrength', () => {
     rerender(
       <PaperProvider>
         <PasswordStrength password="Abcd1234!@#$" />
-      </PaperProvider>
+      </PaperProvider>,
     );
 
     expect(getByText('Strong')).toBeTruthy();
@@ -65,7 +65,7 @@ describe('PasswordStrength', () => {
     expect(
       getByText(/password should be at least 8 characters/i) ||
         getByText(/add uppercase letters/i) ||
-        getByText(/add numbers/i)
+        getByText(/add numbers/i),
     ).toBeTruthy();
   });
 

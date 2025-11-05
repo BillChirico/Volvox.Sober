@@ -1,6 +1,15 @@
 import React, { useState } from 'react';
 import { View, StyleSheet, ScrollView } from 'react-native';
-import { Text, Surface, Avatar, Button, Divider, Dialog, Portal, useTheme } from 'react-native-paper';
+import {
+  Text,
+  Surface,
+  Avatar,
+  Button,
+  Divider,
+  Dialog,
+  Portal,
+  useTheme,
+} from 'react-native-paper';
 import { useRoute, useNavigation } from '@react-navigation/native';
 import { useDisconnectMutation, Connection } from '../../store/api/connectionsApi';
 import { useSelector } from 'react-redux';
@@ -25,11 +34,15 @@ const ConnectionDetailScreen: React.FC = () => {
   // Determine if user is sponsor or sponsee
   const isSponsor = connection.sponsor_id === userId;
   const otherPersonName = isSponsor ? connection.sponsee_name : connection.sponsor_name;
-  const otherPersonPhotoUrl = isSponsor ? connection.sponsee_photo_url : connection.sponsor_photo_url;
+  const otherPersonPhotoUrl = isSponsor
+    ? connection.sponsee_photo_url
+    : connection.sponsor_photo_url;
   const roleLabel = isSponsor ? 'Your Sponsee' : 'Your Sponsor';
 
   const connectedDate = format(new Date(connection.connected_at), 'MMMM d, yyyy');
-  const connectedSince = formatDistanceToNow(new Date(connection.connected_at), { addSuffix: true });
+  const connectedSince = formatDistanceToNow(new Date(connection.connected_at), {
+    addSuffix: true,
+  });
 
   const handleDisconnectConfirm = async () => {
     try {
@@ -45,11 +58,14 @@ const ConnectionDetailScreen: React.FC = () => {
 
   const handleSendMessage = () => {
     // Navigate to messaging screen (WP06)
-    navigation.navigate('Chat' as never, {
-      connectionId: connection.id,
-      otherPersonName,
-      otherPersonPhotoUrl,
-    } as never);
+    navigation.navigate(
+      'Chat' as never,
+      {
+        connectionId: connection.id,
+        otherPersonName,
+        otherPersonPhotoUrl,
+      } as never,
+    );
   };
 
   const styles = createStyles(theme);
@@ -163,8 +179,7 @@ const ConnectionDetailScreen: React.FC = () => {
             mode="contained"
             onPress={handleSendMessage}
             style={styles.messageButton}
-            icon="message"
-          >
+            icon="message">
             Send Message
           </Button>
 
@@ -173,8 +188,7 @@ const ConnectionDetailScreen: React.FC = () => {
             onPress={() => setDisconnectDialogVisible(true)}
             style={[styles.disconnectButton, { borderColor: theme.colors.error }]}
             textColor={theme.colors.error}
-            icon="link-off"
-          >
+            icon="link-off">
             Disconnect
           </Button>
         </View>
@@ -182,21 +196,25 @@ const ConnectionDetailScreen: React.FC = () => {
         {/* Info Note */}
         <Surface style={styles.infoNote} elevation={0}>
           <Text variant="bodySmall" style={styles.infoText}>
-            ℹ️ Disconnecting will end this sponsorship relationship. Messages will be archived for 90 days.
+            ℹ️ Disconnecting will end this sponsorship relationship. Messages will be archived for
+            90 days.
           </Text>
         </Surface>
       </Surface>
 
       {/* Disconnect Dialog */}
       <Portal>
-        <Dialog visible={disconnectDialogVisible} onDismiss={() => setDisconnectDialogVisible(false)}>
+        <Dialog
+          visible={disconnectDialogVisible}
+          onDismiss={() => setDisconnectDialogVisible(false)}>
           <Dialog.Title>Disconnect Connection</Dialog.Title>
           <Dialog.Content>
             <Text variant="bodyMedium">
               Are you sure you want to disconnect from {otherPersonName}?
             </Text>
             <Text variant="bodySmall" style={styles.warningText}>
-              This action will end your sponsorship relationship. Your message history will be archived for 90 days, after which it will be permanently deleted.
+              This action will end your sponsorship relationship. Your message history will be
+              archived for 90 days, after which it will be permanently deleted.
             </Text>
           </Dialog.Content>
           <Dialog.Actions>
@@ -204,8 +222,7 @@ const ConnectionDetailScreen: React.FC = () => {
             <Button
               onPress={handleDisconnectConfirm}
               loading={isDisconnecting}
-              textColor={theme.colors.error}
-            >
+              textColor={theme.colors.error}>
               Disconnect
             </Button>
           </Dialog.Actions>
@@ -215,93 +232,94 @@ const ConnectionDetailScreen: React.FC = () => {
   );
 };
 
-const createStyles = (theme: any) => StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: theme.colors.surfaceVariant,
-  },
-  surface: {
-    margin: 16,
-    padding: 24,
-    borderRadius: 8,
-    elevation: 2,
-  },
-  header: {
-    alignItems: 'center',
-    marginBottom: 16,
-  },
-  name: {
-    marginTop: 16,
-    marginBottom: 8,
-    fontWeight: 'bold',
-    textAlign: 'center',
-  },
-  role: {
-    color: theme.colors.primary,
-    fontWeight: '600',
-  },
-  divider: {
-    marginVertical: 16,
-  },
-  section: {
-    marginBottom: 8,
-  },
-  sectionTitle: {
-    fontWeight: 'bold',
-    marginBottom: 12,
-  },
-  infoRow: {
-    flexDirection: 'row',
-    marginBottom: 8,
-    alignItems: 'center',
-  },
-  label: {
-    fontWeight: '600',
-    marginRight: 8,
-    minWidth: 140,
-  },
-  progressCard: {
-    backgroundColor: theme.colors.tertiaryContainer,
-    padding: 20,
-    borderRadius: 8,
-    alignItems: 'center',
-  },
-  progressLabel: {
-    color: theme.colors.onTertiaryContainer,
-    marginBottom: 8,
-  },
-  progressValue: {
-    color: theme.colors.tertiary,
-    fontWeight: 'bold',
-    marginBottom: 8,
-  },
-  progressHint: {
-    color: theme.colors.tertiary,
-    fontStyle: 'italic',
-  },
-  actions: {
-    gap: 12,
-  },
-  messageButton: {
-    marginBottom: 8,
-  },
-  disconnectButton: {
-    marginBottom: 16,
-  },
-  infoNote: {
-    backgroundColor: theme.colors.errorContainer,
-    padding: 12,
-    borderRadius: 8,
-  },
-  infoText: {
-    color: theme.colors.onErrorContainer,
-    textAlign: 'center',
-  },
-  warningText: {
-    marginTop: 12,
-    color: theme.colors.error,
-    fontStyle: 'italic',
-  },
-});
+const createStyles = (theme: any) =>
+  StyleSheet.create({
+    container: {
+      flex: 1,
+      backgroundColor: theme.colors.surfaceVariant,
+    },
+    surface: {
+      margin: 16,
+      padding: 24,
+      borderRadius: 8,
+      elevation: 2,
+    },
+    header: {
+      alignItems: 'center',
+      marginBottom: 16,
+    },
+    name: {
+      marginTop: 16,
+      marginBottom: 8,
+      fontWeight: 'bold',
+      textAlign: 'center',
+    },
+    role: {
+      color: theme.colors.primary,
+      fontWeight: '600',
+    },
+    divider: {
+      marginVertical: 16,
+    },
+    section: {
+      marginBottom: 8,
+    },
+    sectionTitle: {
+      fontWeight: 'bold',
+      marginBottom: 12,
+    },
+    infoRow: {
+      flexDirection: 'row',
+      marginBottom: 8,
+      alignItems: 'center',
+    },
+    label: {
+      fontWeight: '600',
+      marginRight: 8,
+      minWidth: 140,
+    },
+    progressCard: {
+      backgroundColor: theme.colors.tertiaryContainer,
+      padding: 20,
+      borderRadius: 8,
+      alignItems: 'center',
+    },
+    progressLabel: {
+      color: theme.colors.onTertiaryContainer,
+      marginBottom: 8,
+    },
+    progressValue: {
+      color: theme.colors.tertiary,
+      fontWeight: 'bold',
+      marginBottom: 8,
+    },
+    progressHint: {
+      color: theme.colors.tertiary,
+      fontStyle: 'italic',
+    },
+    actions: {
+      gap: 12,
+    },
+    messageButton: {
+      marginBottom: 8,
+    },
+    disconnectButton: {
+      marginBottom: 16,
+    },
+    infoNote: {
+      backgroundColor: theme.colors.errorContainer,
+      padding: 12,
+      borderRadius: 8,
+    },
+    infoText: {
+      color: theme.colors.onErrorContainer,
+      textAlign: 'center',
+    },
+    warningText: {
+      marginTop: 12,
+      color: theme.colors.error,
+      fontStyle: 'italic',
+    },
+  });
 
 export default ConnectionDetailScreen;

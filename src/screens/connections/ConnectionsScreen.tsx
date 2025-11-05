@@ -102,7 +102,8 @@ const ConnectionsScreen: React.FC = () => {
         No Active Connections
       </Text>
       <Text variant="bodyMedium" style={styles.emptyMessage}>
-        You don't have any active connections yet. Browse sponsors to find your match or check your pending requests.
+        You don't have any active connections yet. Browse sponsors to find your match or check your
+        pending requests.
       </Text>
     </View>
   );
@@ -122,111 +123,108 @@ const ConnectionsScreen: React.FC = () => {
     <View style={styles.container}>
       <FlatList
         data={connections || []}
-        keyExtractor={(item) => item.id}
+        keyExtractor={item => item.id}
         renderItem={renderConnection}
         ListEmptyComponent={renderEmpty}
-        refreshControl={
-          <RefreshControl refreshing={isFetching} onRefresh={refetch} />
-        }
-        contentContainerStyle={
-          (connections || []).length === 0 ? styles.emptyList : styles.list
-        }
+        refreshControl={<RefreshControl refreshing={isFetching} onRefresh={refetch} />}
+        contentContainerStyle={(connections || []).length === 0 ? styles.emptyList : styles.list}
       />
     </View>
   );
 };
 
-const createStyles = (theme: any) => StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#f5f5f5',
-  },
-  list: {
-    paddingVertical: 8,
-  },
-  emptyList: {
-    flex: 1,
-  },
-  loadingContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  loadingText: {
-    marginTop: 16,
-    color: theme.colors.onSurfaceVariant,
-  },
-  card: {
-    marginHorizontal: 16,
-    marginVertical: 8,
-  },
-  header: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: 16,
-  },
-  connectionInfo: {
-    marginLeft: 12,
-    flex: 1,
-  },
-  name: {
-    fontWeight: 'bold',
-    marginBottom: 6,
-  },
-  roleChip: {
-    alignSelf: 'flex-start',
-    backgroundColor: '#e3f2fd',
-  },
-  roleText: {
-    fontSize: 12,
-    color: '#1976d2',
-    fontWeight: '600',
-  },
-  stats: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginBottom: 12,
-  },
-  statItem: {
-    flex: 1,
-  },
-  statLabel: {
-    color: theme.colors.onSurfaceVariant,
-    marginBottom: 4,
-  },
-  statValue: {
-    fontWeight: '600',
-  },
-  progressSection: {
-    backgroundColor: '#f5f5f5',
-    padding: 12,
-    borderRadius: 8,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-  },
-  progressLabel: {
-    color: theme.colors.onSurfaceVariant,
-  },
-  progressValue: {
-    fontWeight: 'bold',
-    color: '#4CAF50',
-  },
-  emptyContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    padding: 32,
-  },
-  emptyTitle: {
-    marginBottom: 16,
-    textAlign: 'center',
-    fontWeight: 'bold',
-  },
-  emptyMessage: {
-    textAlign: 'center',
-    color: theme.colors.onSurfaceVariant,
-  },
-});
+const createStyles = (theme: any) =>
+  StyleSheet.create({
+    container: {
+      flex: 1,
+      backgroundColor: '#f5f5f5',
+    },
+    list: {
+      paddingVertical: 8,
+    },
+    emptyList: {
+      flex: 1,
+    },
+    loadingContainer: {
+      flex: 1,
+      justifyContent: 'center',
+      alignItems: 'center',
+    },
+    loadingText: {
+      marginTop: 16,
+      color: theme.colors.onSurfaceVariant,
+    },
+    card: {
+      marginHorizontal: 16,
+      marginVertical: 8,
+    },
+    header: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      marginBottom: 16,
+    },
+    connectionInfo: {
+      marginLeft: 12,
+      flex: 1,
+    },
+    name: {
+      fontWeight: 'bold',
+      marginBottom: 6,
+    },
+    roleChip: {
+      alignSelf: 'flex-start',
+      backgroundColor: '#e3f2fd',
+    },
+    roleText: {
+      fontSize: 12,
+      color: '#1976d2',
+      fontWeight: '600',
+    },
+    stats: {
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      marginBottom: 12,
+    },
+    statItem: {
+      flex: 1,
+    },
+    statLabel: {
+      color: theme.colors.onSurfaceVariant,
+      marginBottom: 4,
+    },
+    statValue: {
+      fontWeight: '600',
+    },
+    progressSection: {
+      backgroundColor: '#f5f5f5',
+      padding: 12,
+      borderRadius: 8,
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+    },
+    progressLabel: {
+      color: theme.colors.onSurfaceVariant,
+    },
+    progressValue: {
+      fontWeight: 'bold',
+      color: '#4CAF50',
+    },
+    emptyContainer: {
+      flex: 1,
+      justifyContent: 'center',
+      alignItems: 'center',
+      padding: 32,
+    },
+    emptyTitle: {
+      marginBottom: 16,
+      textAlign: 'center',
+      fontWeight: 'bold',
+    },
+    emptyMessage: {
+      textAlign: 'center',
+      color: theme.colors.onSurfaceVariant,
+    },
+  });
 
 export default ConnectionsScreen;

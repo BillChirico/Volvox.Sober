@@ -90,7 +90,11 @@ export const getUser = async () => {
 /**
  * Sign up with email and password
  */
-export const signUp = async (email: string, password: string, metadata?: Record<string, unknown>) => {
+export const signUp = async (
+  email: string,
+  password: string,
+  metadata?: Record<string, unknown>,
+) => {
   return await supabaseClient.auth.signUp({
     email,
     password,

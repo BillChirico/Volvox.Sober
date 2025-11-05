@@ -7,7 +7,9 @@ This directory contains Row Level Security (RLS) policy tests for the Volvox.Sob
 ## Test Files
 
 ### `rls-policies.test.sql`
+
 **Coverage**: Users, Sobriety Tracking, Relapses
+
 - Users can only view/update their own profiles
 - Connected users can view each other's profiles
 - Unauthorized profile access blocked
@@ -16,7 +18,9 @@ This directory contains Row Level Security (RLS) policy tests for the Volvox.Sob
 - Unconnected users cannot access sobriety data
 
 ### `rls-policies-advanced.test.sql`
+
 **Coverage**: Step Work, Messaging, Connections
+
 - Sponsees can view their own step work
 - Connected sponsors can view/comment on sponsee step work
 - Unconnected sponsors cannot access step work
@@ -61,6 +65,7 @@ ok 18 - Unrelated users should NOT be able to view connections
 ### Test Users
 
 Tests create 4 test users:
+
 - **Sponsor 1** (`11111111-1111-1111-1111-111111111111`) - Connected to Sponsee 1
 - **Sponsor 2** (`22222222-2222-2222-2222-222222222222`) - No connections
 - **Sponsee 1** (`33333333-3333-3333-3333-333333333333`) - Connected to Sponsor 1
@@ -122,14 +127,17 @@ If tests fail, check:
 ### Common Issues
 
 **Error: "row-level security policy violated"**
+
 - Expected for unauthorized access tests
 - Verify test user IDs match policy conditions
 
 **Error: "relation does not exist"**
+
 - Ensure all migrations are applied
 - Check table names match schema
 
 **Tests hang indefinitely**
+
 - Check for missing `ROLLBACK;` in test file
 - Verify transaction isolation
 

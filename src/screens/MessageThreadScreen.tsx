@@ -6,7 +6,14 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import { View, FlatList, StyleSheet, KeyboardAvoidingView, Platform } from 'react-native';
-import { TextInput, IconButton, Text, ActivityIndicator, useTheme, Snackbar } from 'react-native-paper';
+import {
+  TextInput,
+  IconButton,
+  Text,
+  ActivityIndicator,
+  useTheme,
+  Snackbar,
+} from 'react-native-paper';
 import {
   useGetMessagesQuery,
   useSendMessageMutation,
@@ -85,11 +92,11 @@ export const MessageThreadScreen: React.FC<MessageThreadScreenProps> = ({ route 
           recipient_id: recipientId,
           message_text: messageText,
         }).unwrap();
-      }
+      },
     );
 
     // Callback for sync completion
-    offlineMessageQueue.onSync((connId) => {
+    offlineMessageQueue.onSync(connId => {
       if (connId === connectionId) {
         setSnackbarMessage('Queued messages sent');
         setSnackbarVisible(true);
@@ -117,31 +124,28 @@ export const MessageThreadScreen: React.FC<MessageThreadScreenProps> = ({ route 
     messageChannelRef.current = createMessagesSubscription(
       connectionId,
       currentUserId,
-      (newMessage) => {
+      newMessage => {
         setMessages(prev => [...prev, newMessage]);
         // Auto-scroll to bottom
         setTimeout(() => {
           flatListRef.current?.scrollToEnd({ animated: true });
         }, 100);
-      }
+      },
     );
 
     // T119: Setup typing indicators
-    typingChannelRef.current = createTypingChannel(
-      connectionId,
-      (event) => {
-        if (event.user_id !== currentUserId && event.is_typing) {
-          setIsTyping(true);
+    typingChannelRef.current = createTypingChannel(connectionId, event => {
+      if (event.user_id !== currentUserId && event.is_typing) {
+        setIsTyping(true);
 
-          // Clear after 3 seconds
-          if (typingTimeout) clearTimeout(typingTimeout);
-          const timeout = setTimeout(() => setIsTyping(false), 3000);
-          setTypingTimeout(timeout);
-        } else if (event.user_id !== currentUserId) {
-          setIsTyping(false);
-        }
+        // Clear after 3 seconds
+        if (typingTimeout) clearTimeout(typingTimeout);
+        const timeout = setTimeout(() => setIsTyping(false), 3000);
+        setTypingTimeout(timeout);
+      } else if (event.user_id !== currentUserId) {
+        setIsTyping(false);
       }
-    );
+    });
 
     return () => {
       if (messageChannelRef.current) {
@@ -164,12 +168,7 @@ export const MessageThreadScreen: React.FC<MessageThreadScreenProps> = ({ route 
     setMessageText(text);
 
     if (typingChannelRef.current && currentUserId) {
-      sendTypingEvent(
-        typingChannelRef.current,
-        currentUserId,
-        connectionId,
-        text.length > 0
-      );
+      sendTypingEvent(typingChannelRef.current, currentUserId, connectionId, text.length > 0);
     }
   };
 
@@ -183,11 +182,7 @@ export const MessageThreadScreen: React.FC<MessageThreadScreenProps> = ({ route 
     // T129: Check if offline, queue message
     if (!isOnline) {
       try {
-        const queuedId = await offlineMessageQueue.enqueue(
-          connectionId,
-          otherUserId,
-          textToSend
-        );
+        const queuedId = await offlineMessageQueue.enqueue(connectionId, otherUserId, textToSend);
 
         // Show queued message in UI
         const queuedMessage: Message = {
@@ -271,11 +266,12 @@ export const MessageThreadScreen: React.FC<MessageThreadScreenProps> = ({ route 
     const isQueued = item.id.startsWith('queued-');
 
     return (
-      <View style={[
-        styles.messageBubble,
-        isOwnMessage ? styles.ownMessage : styles.otherMessage,
-        isQueued && styles.queuedMessage,
-      ]}>
+      <View
+        style={[
+          styles.messageBubble,
+          isOwnMessage ? styles.ownMessage : styles.otherMessage,
+          isQueued && styles.queuedMessage,
+        ]}>
         <Text style={styles.messageText}>{item.message_text}</Text>
         <View style={styles.messageFooter}>
           <Text style={styles.messageTime}>{time}</Text>
@@ -301,13 +297,12 @@ export const MessageThreadScreen: React.FC<MessageThreadScreenProps> = ({ route 
     <KeyboardAvoidingView
       style={styles.container}
       behavior={Platform.OS === 'ios' ? 'padding' : undefined}
-      keyboardVerticalOffset={Platform.OS === 'ios' ? 90 : 0}
-    >
+      keyboardVerticalOffset={Platform.OS === 'ios' ? 90 : 0}>
       <FlatList
         ref={flatListRef}
         data={messages}
         renderItem={renderMessage}
-        keyExtractor={(item) => item.id}
+        keyExtractor={item => item.id}
         contentContainerStyle={styles.messagesList}
         onContentSizeChange={() => flatListRef.current?.scrollToEnd({ animated: false })}
       />
@@ -344,88 +339,88 @@ export const MessageThreadScreen: React.FC<MessageThreadScreenProps> = ({ route 
         visible={snackbarVisible}
         onDismiss={() => setSnackbarVisible(false)}
         duration={3000}
-        style={styles.snackbar}
-      >
+        style={styles.snackbar}>
         {snackbarMessage}
       </Snackbar>
     </KeyboardAvoidingView>
   );
 };
 
-const createStyles = (theme: any) => StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: theme.colors.background,
-  },
-  centerContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  messagesList: {
-    padding: 12,
-  },
-  messageBubble: {
-    maxWidth: '75%',
-    padding: 12,
-    borderRadius: 16,
-    marginBottom: 8,
-  },
-  ownMessage: {
-    alignSelf: 'flex-end',
-    backgroundColor: '#2196F3',
-    borderBottomRightRadius: 4,
-  },
-  otherMessage: {
-    alignSelf: 'flex-start',
-    backgroundColor: theme.colors.outlineVariant,
-    borderBottomLeftRadius: 4,
-  },
-  messageText: {
-    fontSize: 16,
-    color: '#000',
-  },
-  messageFooter: {
-    flexDirection: 'row',
-    justifyContent: 'flex-end',
-    alignItems: 'center',
-    marginTop: 4,
-  },
-  messageTime: {
-    fontSize: 11,
-    color: theme.colors.onSurfaceVariant,
-    marginRight: 4,
-  },
-  messageStatus: {
-    fontSize: 11,
-    color: theme.colors.onSurfaceVariant,
-  },
-  typingContainer: {
-    padding: 8,
-    paddingLeft: 16,
-    backgroundColor: '#FFF',
-    borderTopWidth: 1,
-    borderTopColor: theme.colors.outlineVariant,
-  },
-  typingText: {
-    fontSize: 13,
-    color: theme.colors.onSurfaceVariant,
-    fontStyle: 'italic',
-  },
-  inputContainer: {
-    padding: 12,
-    backgroundColor: '#FFF',
-    borderTopWidth: 1,
-    borderTopColor: theme.colors.outlineVariant,
-  },
-  textInput: {
-    backgroundColor: '#FFF',
-    maxHeight: 100,
-  },
-  queuedMessage: {
-    opacity: 0.7,
-  },
-  snackbar: {
-    marginBottom: 80,
-  },
-});
+const createStyles = (theme: any) =>
+  StyleSheet.create({
+    container: {
+      flex: 1,
+      backgroundColor: theme.colors.background,
+    },
+    centerContainer: {
+      flex: 1,
+      justifyContent: 'center',
+      alignItems: 'center',
+    },
+    messagesList: {
+      padding: 12,
+    },
+    messageBubble: {
+      maxWidth: '75%',
+      padding: 12,
+      borderRadius: 16,
+      marginBottom: 8,
+    },
+    ownMessage: {
+      alignSelf: 'flex-end',
+      backgroundColor: '#2196F3',
+      borderBottomRightRadius: 4,
+    },
+    otherMessage: {
+      alignSelf: 'flex-start',
+      backgroundColor: theme.colors.outlineVariant,
+      borderBottomLeftRadius: 4,
+    },
+    messageText: {
+      fontSize: 16,
+      color: '#000',
+    },
+    messageFooter: {
+      flexDirection: 'row',
+      justifyContent: 'flex-end',
+      alignItems: 'center',
+      marginTop: 4,
+    },
+    messageTime: {
+      fontSize: 11,
+      color: theme.colors.onSurfaceVariant,
+      marginRight: 4,
+    },
+    messageStatus: {
+      fontSize: 11,
+      color: theme.colors.onSurfaceVariant,
+    },
+    typingContainer: {
+      padding: 8,
+      paddingLeft: 16,
+      backgroundColor: '#FFF',
+      borderTopWidth: 1,
+      borderTopColor: theme.colors.outlineVariant,
+    },
+    typingText: {
+      fontSize: 13,
+      color: theme.colors.onSurfaceVariant,
+      fontStyle: 'italic',
+    },
+    inputContainer: {
+      padding: 12,
+      backgroundColor: '#FFF',
+      borderTopWidth: 1,
+      borderTopColor: theme.colors.outlineVariant,
+    },
+    textInput: {
+      backgroundColor: '#FFF',
+      maxHeight: 100,
+    },
+    queuedMessage: {
+      opacity: 0.7,
+    },
+    snackbar: {
+      marginBottom: 80,
+    },
+  });

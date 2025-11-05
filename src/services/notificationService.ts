@@ -52,12 +52,12 @@ class NotificationService {
 
     // Setup foreground notification handler (T135)
     this.notificationListener = Notifications.addNotificationReceivedListener(
-      this.handleForegroundNotification
+      this.handleForegroundNotification,
     );
 
     // Setup notification response handler (T137 - Deep linking)
     this.responseListener = Notifications.addNotificationResponseReceivedListener(
-      this.handleNotificationResponse
+      this.handleNotificationResponse,
     );
   }
 
@@ -121,7 +121,9 @@ class NotificationService {
    */
   private async updateToken(token: string): Promise<void> {
     try {
-      const { data: { user } } = await supabase.auth.getUser();
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
 
       if (!user) {
         console.warn('No authenticated user for token update');
@@ -141,10 +143,7 @@ class NotificationService {
       if (!existingTokens.includes(token)) {
         const updatedTokens = [...existingTokens, token];
 
-        await supabase
-          .from('users')
-          .update({ device_tokens: updatedTokens })
-          .eq('id', user.id);
+        await supabase.from('users').update({ device_tokens: updatedTokens }).eq('id', user.id);
 
         console.log('Expo push token registered:', token);
       }
@@ -157,7 +156,7 @@ class NotificationService {
    * Handle foreground notifications (T135)
    */
   private handleForegroundNotification = async (
-    notification: Notifications.Notification
+    notification: Notifications.Notification,
   ): Promise<void> => {
     console.log('Foreground notification:', notification);
 
@@ -168,9 +167,7 @@ class NotificationService {
   /**
    * Handle notification tap/open (T137 - Deep linking)
    */
-  private handleNotificationResponse = (
-    response: Notifications.NotificationResponse
-  ): void => {
+  private handleNotificationResponse = (response: Notifications.NotificationResponse): void => {
     const data = response.notification.request.content.data as NotificationData;
 
     if (!this.navigationRef || !data.type) {
@@ -243,7 +240,7 @@ class NotificationService {
     title: string,
     body: string,
     data: NotificationData,
-    seconds: number = 1
+    seconds: number = 1,
   ): Promise<string> {
     return await Notifications.scheduleNotificationAsync({
       content: {

@@ -9,8 +9,11 @@ function getSupabase(): SupabaseClient {
     return supabaseInstance;
   }
 
-  const supabaseUrl = Constants.expoConfig?.extra?.EXPO_PUBLIC_SUPABASE_URL || process.env.EXPO_PUBLIC_SUPABASE_URL;
-  const supabaseAnonKey = Constants.expoConfig?.extra?.EXPO_PUBLIC_SUPABASE_ANON_KEY || process.env.EXPO_PUBLIC_SUPABASE_ANON_KEY;
+  const supabaseUrl =
+    Constants.expoConfig?.extra?.EXPO_PUBLIC_SUPABASE_URL || process.env.EXPO_PUBLIC_SUPABASE_URL;
+  const supabaseAnonKey =
+    Constants.expoConfig?.extra?.EXPO_PUBLIC_SUPABASE_ANON_KEY ||
+    process.env.EXPO_PUBLIC_SUPABASE_ANON_KEY;
 
   if (!supabaseUrl || !supabaseAnonKey) {
     throw new Error('Missing Supabase environment variables. Please check your .env file.');
@@ -122,7 +125,9 @@ class AuthService {
    * @param newPassword - New password for the user
    * @returns Promise with user and error information
    */
-  async updatePassword(newPassword: string): Promise<{ user: User | null; error: AuthError | null }> {
+  async updatePassword(
+    newPassword: string,
+  ): Promise<{ user: User | null; error: AuthError | null }> {
     const { data, error } = await getSupabase().auth.updateUser({
       password: newPassword,
     });
@@ -159,9 +164,9 @@ class AuthService {
    * @param callback - Function to call when auth state changes
    * @returns Unsubscribe function
    */
-  onAuthStateChange(
-    callback: (event: string, session: Session | null) => void
-  ): { unsubscribe: () => void } {
+  onAuthStateChange(callback: (event: string, session: Session | null) => void): {
+    unsubscribe: () => void;
+  } {
     const { data } = getSupabase().auth.onAuthStateChange((event, session) => {
       callback(event, session);
     });

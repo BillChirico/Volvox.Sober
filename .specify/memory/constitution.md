@@ -38,6 +38,7 @@ Follow-up TODOs:
 ### I. Type Safety & Code Quality
 
 **Requirements**:
+
 - TypeScript strict mode MUST be enabled at all times (`strict: true` in tsconfig.json)
 - NO `any` types permitted - use `unknown` or proper type definitions
 - ALL exported functions MUST have explicit return types
@@ -56,6 +57,7 @@ Follow-up TODOs:
 ### II. Test-Driven Development (NON-NEGOTIABLE)
 
 **Requirements**:
+
 - TDD cycle MUST be followed: Write test → Verify failure → Implement → Verify pass → Refactor
 - Tests MUST be written BEFORE implementation for all new features
 - Minimum 80% code coverage REQUIRED for business logic
@@ -74,6 +76,7 @@ Follow-up TODOs:
 ### III. Cross-Platform UX Consistency
 
 **Requirements**:
+
 - UI components MUST render consistently across iOS, Android, and Web platforms
 - Platform-specific overrides ONLY when native behavior is critical:
   - Use `Component.ios.tsx`, `Component.android.tsx`, `Component.web.tsx` for platform-specific implementations
@@ -93,6 +96,7 @@ Follow-up TODOs:
 ### IV. Performance Standards
 
 **Requirements**:
+
 - App startup MUST complete in < 3 seconds on mid-range devices
 - Screen transitions MUST maintain 60 FPS (16.67ms per frame)
 - Real-time messaging latency MUST be < 500ms (Supabase Realtime)
@@ -115,9 +119,11 @@ Follow-up TODOs:
 ### V. Component Architecture
 
 **Requirements**:
+
 - Functional components ONLY - NO class components
 - Hooks order MUST be consistent: `useState` → `useEffect` → custom hooks → event handlers
 - Component structure MUST follow pattern:
+
   ```typescript
   // 1. Props interface
   interface ComponentProps { ... }
@@ -132,6 +138,7 @@ Follow-up TODOs:
   // 3. Styles (if using StyleSheet)
   const styles = StyleSheet.create({ ... });
   ```
+
 - Named exports MUST be preferred over default exports
 - Single Responsibility Principle: Each component has ONE clear purpose
 - State management hierarchy:
@@ -146,6 +153,7 @@ Follow-up TODOs:
 ### VI. Security & Privacy
 
 **Requirements**:
+
 - Row Level Security (RLS) MUST be enabled for ALL Supabase tables
 - Authentication MUST use Supabase Auth (no custom auth logic)
 - Sensitive data (sobriety dates, worksheet content) MUST only be visible to authorized users:
@@ -163,12 +171,14 @@ Follow-up TODOs:
 ## Development Workflow
 
 **Branch Strategy**:
+
 - Main branch: `main` (protected, production-ready)
 - Feature branches: `###-feature-name` format (e.g., `001-volvox-sober-recovery`)
 - Feature branches MUST branch from `main`
 - NO direct commits to `main` - all changes via pull requests
 
 **Commit Standards**:
+
 - Conventional Commits format MUST be used:
   - `feat:` - New feature
   - `fix:` - Bug fix
@@ -179,6 +189,7 @@ Follow-up TODOs:
   - `chore:` - Build/tooling changes
 
 **Pre-Commit Checklist**:
+
 1. Run `pnpm test` - all tests pass
 2. Run `pnpm typecheck` - no TypeScript errors
 3. Run `pnpm lint` - no linting errors
@@ -191,12 +202,14 @@ Follow-up TODOs:
 ## Quality Gates
 
 **Before Implementation**:
+
 - [ ] Feature specification exists in `/specs/[###-feature]/spec.md`
 - [ ] User stories are prioritized and independently testable
 - [ ] Implementation plan exists in `/specs/[###-feature]/plan.md`
 - [ ] Constitution compliance verified (no violations or violations justified)
 
 **During Implementation**:
+
 - [ ] Tests written and failing before implementation
 - [ ] TypeScript strict mode compliance verified
 - [ ] Accessibility requirements met (labels, contrast, touch targets)
@@ -204,6 +217,7 @@ Follow-up TODOs:
 - [ ] Platform-specific overrides justified and documented
 
 **Before Merge**:
+
 - [ ] All tests passing (unit, integration, E2E)
 - [ ] Code coverage ≥ 80% for business logic
 - [ ] TypeScript compilation successful with no errors
@@ -217,6 +231,7 @@ Follow-up TODOs:
 ## Governance
 
 **Amendment Process**:
+
 1. Proposed changes MUST be documented with rationale
 2. Changes MUST be reviewed by project maintainer (Bill Chirico)
 3. Breaking changes require migration plan for existing code
@@ -226,11 +241,13 @@ Follow-up TODOs:
    - PATCH: Clarifications, wording improvements, non-semantic refinements
 
 **Compliance**:
+
 - ALL pull requests MUST verify constitution compliance
 - Violations MUST be justified in implementation plan (`Complexity Tracking` section)
 - Use `CLAUDE.md` for AI-specific development guidance that complements this constitution
 
 **Enforcement**:
+
 - Constitution supersedes all other practices and conventions
 - When conflicts arise, constitution principles take precedence
 - Unjustified violations block pull request approval

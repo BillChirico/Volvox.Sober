@@ -33,7 +33,7 @@ export const StepWorkScreen: React.FC = () => {
   const [saveStepWork, { isLoading: isSaving }] = useSaveStepWorkMutation();
   const [submitStepWork, { isLoading: isSubmitting }] = useSubmitStepWorkMutation();
 
-  const step = steps?.find((s) => s.id === stepId);
+  const step = steps?.find(s => s.id === stepId);
   const questions = step?.default_questions || [];
 
   // Local state for responses
@@ -47,7 +47,7 @@ export const StepWorkScreen: React.FC = () => {
       if (stepWork?.responses) {
         // Load from server
         const responseMap: Record<number, string> = {};
-        stepWork.responses.forEach((r) => {
+        stepWork.responses.forEach(r => {
           responseMap[r.question_id] = r.answer_text;
         });
         setResponses(responseMap);
@@ -71,13 +71,13 @@ export const StepWorkScreen: React.FC = () => {
 
         const responsesArray: StepWorkResponse[] = Object.entries(currentResponses).map(
           ([qid, answer]) => {
-            const question = questions.find((q) => q.id === parseInt(qid));
+            const question = questions.find(q => q.id === parseInt(qid));
             return {
               question_id: parseInt(qid),
               question_text: question?.text || '',
               answer_text: answer,
             };
-          }
+          },
         );
 
         await saveStepWork({
@@ -97,19 +97,19 @@ export const StepWorkScreen: React.FC = () => {
         await draftManager.saveDraft(stepId, currentResponses);
       }
     },
-    [stepId, questions, saveStepWork]
+    [stepId, questions, saveStepWork],
   );
 
   const debouncedSave = useRef(
     debounce((currentResponses: Record<number, string>) => {
       saveToServer(currentResponses);
-    }, 30000) // 30 seconds
+    }, 30000), // 30 seconds
   ).current;
 
   // Handle response changes
   const handleResponseChange = useCallback(
     (questionId: number, value: string) => {
-      setResponses((prev) => {
+      setResponses(prev => {
         const updated = { ...prev, [questionId]: value };
         hasUnsavedChanges.current = true;
         setSaveStatus('saving');
@@ -123,7 +123,7 @@ export const StepWorkScreen: React.FC = () => {
         return updated;
       });
     },
-    [stepId, debouncedSave]
+    [stepId, debouncedSave],
   );
 
   // Manual save
@@ -138,27 +138,25 @@ export const StepWorkScreen: React.FC = () => {
     debouncedSave.cancel();
 
     // Validate all questions answered
-    const unansweredQuestions = questions.filter((q) => !responses[q.id]?.trim());
+    const unansweredQuestions = questions.filter(q => !responses[q.id]?.trim());
     if (unansweredQuestions.length > 0) {
       Alert.alert(
         'Incomplete Step Work',
         'Please answer all questions before submitting for review.',
-        [{ text: 'OK' }]
+        [{ text: 'OK' }],
       );
       return;
     }
 
     try {
-      const responsesArray: StepWorkResponse[] = Object.entries(responses).map(
-        ([qid, answer]) => {
-          const question = questions.find((q) => q.id === parseInt(qid));
-          return {
-            question_id: parseInt(qid),
-            question_text: question?.text || '',
-            answer_text: answer,
-          };
-        }
-      );
+      const responsesArray: StepWorkResponse[] = Object.entries(responses).map(([qid, answer]) => {
+        const question = questions.find(q => q.id === parseInt(qid));
+        return {
+          question_id: parseInt(qid),
+          question_text: question?.text || '',
+          answer_text: answer,
+        };
+      });
 
       await submitStepWork({
         stepId,
@@ -176,7 +174,7 @@ export const StepWorkScreen: React.FC = () => {
             text: 'OK',
             onPress: () => navigation.goBack(),
           },
-        ]
+        ],
       );
     } catch (error) {
       Alert.alert('Submission Failed', 'Please try again later.', [{ text: 'OK' }]);
@@ -185,23 +183,19 @@ export const StepWorkScreen: React.FC = () => {
 
   // Discard draft
   const handleDiscardDraft = () => {
-    Alert.alert(
-      'Discard Draft',
-      'Are you sure you want to discard all unsaved changes?',
-      [
-        { text: 'Cancel', style: 'cancel' },
-        {
-          text: 'Discard',
-          style: 'destructive',
-          onPress: async () => {
-            await draftManager.clearDraft(stepId);
-            setResponses({});
-            hasUnsavedChanges.current = false;
-            navigation.goBack();
-          },
+    Alert.alert('Discard Draft', 'Are you sure you want to discard all unsaved changes?', [
+      { text: 'Cancel', style: 'cancel' },
+      {
+        text: 'Discard',
+        style: 'destructive',
+        onPress: async () => {
+          await draftManager.clearDraft(stepId);
+          setResponses({});
+          hasUnsavedChanges.current = false;
+          navigation.goBack();
         },
-      ]
-    );
+      },
+    ]);
   };
 
   if (workLoading || !step) {
@@ -234,8 +228,7 @@ export const StepWorkScreen: React.FC = () => {
               saveStatus === 'saved' && styles.statusSaved,
               saveStatus === 'saving' && styles.statusSaving,
               saveStatus === 'offline' && styles.statusOffline,
-            ]}
-          >
+            ]}>
             {saveStatus === 'saved' && '✓ Saved'}
             {saveStatus === 'saving' && '⋯ Saving...'}
             {saveStatus === 'offline' && '⚠ Offline - saved locally'}
@@ -245,12 +238,12 @@ export const StepWorkScreen: React.FC = () => {
 
       {/* Questions */}
       <ScrollView style={styles.scrollContent} contentContainerStyle={styles.scrollContainer}>
-        {questions.map((question) => (
+        {questions.map(question => (
           <QuestionRenderer
             key={question.id}
             question={question}
             value={responses[question.id] || ''}
-            onChange={(value) => handleResponseChange(question.id, value)}
+            onChange={value => handleResponseChange(question.id, value)}
           />
         ))}
       </ScrollView>
@@ -266,8 +259,7 @@ export const StepWorkScreen: React.FC = () => {
             onPress={handleSubmit}
             loading={isSubmitting}
             disabled={isSaving || isSubmitting}
-            style={styles.actionButton}
-          >
+            style={styles.actionButton}>
             Submit for Review
           </Button>
         </View>
@@ -285,70 +277,71 @@ export const StepWorkScreen: React.FC = () => {
   );
 };
 
-const createStyles = (theme: any) => StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: theme.colors.background,
-  },
-  centerContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  header: {
-    padding: 20,
-    backgroundColor: theme.colors.surface,
-    borderBottomWidth: 1,
-    borderBottomColor: theme.colors.outlineVariant,
-  },
-  title: {
-    fontWeight: 'bold',
-    marginBottom: 8,
-  },
-  description: {
-    color: theme.colors.onSurfaceVariant,
-    lineHeight: 20,
-  },
-  statusContainer: {
-    marginTop: 12,
-  },
-  statusText: {
-    fontSize: 12,
-    fontWeight: '600',
-  },
-  statusSaved: {
-    color: theme.colors.tertiary, // Green for success
-  },
-  statusSaving: {
-    color: theme.colors.secondary, // Teal for in-progress
-  },
-  statusOffline: {
-    color: theme.colors.error, // Red for offline/error
-  },
-  scrollContent: {
-    flex: 1,
-  },
-  scrollContainer: {
-    padding: 20,
-  },
-  actions: {
-    flexDirection: 'row',
-    padding: 16,
-    gap: 12,
-    backgroundColor: theme.colors.surface,
-    borderTopWidth: 1,
-    borderTopColor: theme.colors.outlineVariant,
-  },
-  actionButton: {
-    flex: 1,
-  },
-  readOnlyBanner: {
-    padding: 16,
-    backgroundColor: theme.colors.primaryContainer,
-    alignItems: 'center',
-  },
-  readOnlyText: {
-    color: theme.colors.onPrimaryContainer,
-    fontWeight: '600',
-  },
-});
+const createStyles = (theme: any) =>
+  StyleSheet.create({
+    container: {
+      flex: 1,
+      backgroundColor: theme.colors.background,
+    },
+    centerContainer: {
+      flex: 1,
+      justifyContent: 'center',
+      alignItems: 'center',
+    },
+    header: {
+      padding: 20,
+      backgroundColor: theme.colors.surface,
+      borderBottomWidth: 1,
+      borderBottomColor: theme.colors.outlineVariant,
+    },
+    title: {
+      fontWeight: 'bold',
+      marginBottom: 8,
+    },
+    description: {
+      color: theme.colors.onSurfaceVariant,
+      lineHeight: 20,
+    },
+    statusContainer: {
+      marginTop: 12,
+    },
+    statusText: {
+      fontSize: 12,
+      fontWeight: '600',
+    },
+    statusSaved: {
+      color: theme.colors.tertiary, // Green for success
+    },
+    statusSaving: {
+      color: theme.colors.secondary, // Teal for in-progress
+    },
+    statusOffline: {
+      color: theme.colors.error, // Red for offline/error
+    },
+    scrollContent: {
+      flex: 1,
+    },
+    scrollContainer: {
+      padding: 20,
+    },
+    actions: {
+      flexDirection: 'row',
+      padding: 16,
+      gap: 12,
+      backgroundColor: theme.colors.surface,
+      borderTopWidth: 1,
+      borderTopColor: theme.colors.outlineVariant,
+    },
+    actionButton: {
+      flex: 1,
+    },
+    readOnlyBanner: {
+      padding: 16,
+      backgroundColor: theme.colors.primaryContainer,
+      alignItems: 'center',
+    },
+    readOnlyText: {
+      color: theme.colors.onPrimaryContainer,
+      fontWeight: '600',
+    },
+  });

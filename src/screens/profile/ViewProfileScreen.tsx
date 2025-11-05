@@ -55,7 +55,7 @@ const ViewProfileScreen: React.FC = () => {
           *,
           sponsor_profiles (*),
           sponsee_profiles (*)
-        `
+        `,
         )
         .eq('id', session.user.id)
         .single();
@@ -109,8 +109,7 @@ const ViewProfileScreen: React.FC = () => {
           mode="contained"
           onPress={() => navigation.navigate('EditProfile' as never)}
           style={styles.editButton}
-          icon="pencil"
-        >
+          icon="pencil">
           Edit Profile
         </Button>
 
@@ -121,7 +120,9 @@ const ViewProfileScreen: React.FC = () => {
 
         <View style={styles.roleContainer}>
           <Chip mode="outlined" style={styles.roleChip}>
-            {profile.role === 'both' ? 'Sponsor & Sponsee' : profile.role.charAt(0).toUpperCase() + profile.role.slice(1)}
+            {profile.role === 'both'
+              ? 'Sponsor & Sponsee'
+              : profile.role.charAt(0).toUpperCase() + profile.role.slice(1)}
           </Chip>
         </View>
 
@@ -252,83 +253,84 @@ const ViewProfileScreen: React.FC = () => {
   );
 };
 
-const createStyles = (theme: any) => StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#f5f5f5',
-  },
-  surface: {
-    margin: 16,
-    padding: 24,
-    borderRadius: 8,
-    elevation: 2,
-  },
-  photoContainer: {
-    alignItems: 'center',
-    marginBottom: 16,
-  },
-  editButton: {
-    marginBottom: 24,
-  },
-  name: {
-    textAlign: 'center',
-    fontWeight: 'bold',
-    marginBottom: 12,
-  },
-  roleContainer: {
-    alignItems: 'center',
-    marginBottom: 12,
-  },
-  roleChip: {
-    marginBottom: 8,
-  },
-  location: {
-    textAlign: 'center',
-    marginBottom: 8,
-  },
-  program: {
-    textAlign: 'center',
-    color: theme.colors.onSurfaceVariant,
-    marginBottom: 16,
-  },
-  divider: {
-    marginVertical: 16,
-  },
-  statsContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    marginVertical: 8,
-  },
-  stat: {
-    alignItems: 'center',
-  },
-  statLabel: {
-    color: theme.colors.onSurfaceVariant,
-    marginTop: 4,
-  },
-  sectionTitle: {
-    fontWeight: 'bold',
-    marginBottom: 12,
-  },
-  infoRow: {
-    flexDirection: 'row',
-    marginBottom: 8,
-  },
-  label: {
-    fontWeight: '600',
-    marginRight: 8,
-    minWidth: 120,
-  },
-  approachContainer: {
-    marginTop: 8,
-  },
-  approach: {
-    marginTop: 4,
-    fontStyle: 'italic',
-  },
-  bio: {
-    lineHeight: 22,
-  },
-});
+const createStyles = (theme: any) =>
+  StyleSheet.create({
+    container: {
+      flex: 1,
+      backgroundColor: '#f5f5f5',
+    },
+    surface: {
+      margin: 16,
+      padding: 24,
+      borderRadius: 8,
+      elevation: 2,
+    },
+    photoContainer: {
+      alignItems: 'center',
+      marginBottom: 16,
+    },
+    editButton: {
+      marginBottom: 24,
+    },
+    name: {
+      textAlign: 'center',
+      fontWeight: 'bold',
+      marginBottom: 12,
+    },
+    roleContainer: {
+      alignItems: 'center',
+      marginBottom: 12,
+    },
+    roleChip: {
+      marginBottom: 8,
+    },
+    location: {
+      textAlign: 'center',
+      marginBottom: 8,
+    },
+    program: {
+      textAlign: 'center',
+      color: theme.colors.onSurfaceVariant,
+      marginBottom: 16,
+    },
+    divider: {
+      marginVertical: 16,
+    },
+    statsContainer: {
+      flexDirection: 'row',
+      justifyContent: 'space-around',
+      marginVertical: 8,
+    },
+    stat: {
+      alignItems: 'center',
+    },
+    statLabel: {
+      color: theme.colors.onSurfaceVariant,
+      marginTop: 4,
+    },
+    sectionTitle: {
+      fontWeight: 'bold',
+      marginBottom: 12,
+    },
+    infoRow: {
+      flexDirection: 'row',
+      marginBottom: 8,
+    },
+    label: {
+      fontWeight: '600',
+      marginRight: 8,
+      minWidth: 120,
+    },
+    approachContainer: {
+      marginTop: 8,
+    },
+    approach: {
+      marginTop: 4,
+      fontStyle: 'italic',
+    },
+    bio: {
+      lineHeight: 22,
+    },
+  });
 
 export default ViewProfileScreen;

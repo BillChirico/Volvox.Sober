@@ -42,7 +42,7 @@ describe('MatchCard', () => {
     const { getByText } = render(
       <Provider store={mockStore}>
         <MatchCard match={mockMatch} onPress={onPress} onConnect={onConnect} />
-      </Provider>
+      </Provider>,
     );
 
     expect(getByText('John Doe')).toBeTruthy();
@@ -58,7 +58,7 @@ describe('MatchCard', () => {
     const { getByText } = render(
       <Provider store={mockStore}>
         <MatchCard match={mockMatch} onPress={onPress} onConnect={onConnect} />
-      </Provider>
+      </Provider>,
     );
 
     const scoreText = getByText('85');
@@ -74,7 +74,7 @@ describe('MatchCard', () => {
     const { getByText } = render(
       <Provider store={mockStore}>
         <MatchCard match={goodMatch} onPress={onPress} onConnect={onConnect} />
-      </Provider>
+      </Provider>,
     );
 
     const scoreText = getByText('70');
@@ -90,7 +90,7 @@ describe('MatchCard', () => {
     const { getByText } = render(
       <Provider store={mockStore}>
         <MatchCard match={potentialMatch} onPress={onPress} onConnect={onConnect} />
-      </Provider>
+      </Provider>,
     );
 
     const scoreText = getByText('50');
@@ -105,7 +105,7 @@ describe('MatchCard', () => {
     const { getByText } = render(
       <Provider store={mockStore}>
         <MatchCard match={mockMatch} onPress={onPress} onConnect={onConnect} />
-      </Provider>
+      </Provider>,
     );
 
     expect(getByText('Location')).toBeTruthy();
@@ -127,7 +127,7 @@ describe('MatchCard', () => {
     const { getByA11yLabel } = render(
       <Provider store={mockStore}>
         <MatchCard match={mockMatch} onPress={onPress} onConnect={onConnect} />
-      </Provider>
+      </Provider>,
     );
 
     const card = getByA11yLabel('Match with John Doe');
@@ -143,7 +143,7 @@ describe('MatchCard', () => {
     const { getByText } = render(
       <Provider store={mockStore}>
         <MatchCard match={mockMatch} onPress={onPress} onConnect={onConnect} />
-      </Provider>
+      </Provider>,
     );
 
     const connectButton = getByText('Send Connection Request');
@@ -160,7 +160,7 @@ describe('MatchCard', () => {
     const { queryByTestId } = render(
       <Provider store={mockStore}>
         <MatchCard match={matchWithoutPhoto} onPress={onPress} onConnect={onConnect} />
-      </Provider>
+      </Provider>,
     );
 
     // Should render default avatar icon instead of image
@@ -174,7 +174,7 @@ describe('MatchCard', () => {
     const { getByText } = render(
       <Provider store={mockStore}>
         <MatchCard match={mockMatch} onPress={onPress} onConnect={onConnect} />
-      </Provider>
+      </Provider>,
     );
 
     expect(getByText('Excellent Match')).toBeTruthy();
@@ -188,7 +188,7 @@ describe('MatchCard', () => {
     const { getByText } = render(
       <Provider store={mockStore}>
         <MatchCard match={goodMatch} onPress={onPress} onConnect={onConnect} />
-      </Provider>
+      </Provider>,
     );
 
     expect(getByText('Good Match')).toBeTruthy();
@@ -202,7 +202,7 @@ describe('MatchCard', () => {
     const { getByText } = render(
       <Provider store={mockStore}>
         <MatchCard match={potentialMatch} onPress={onPress} onConnect={onConnect} />
-      </Provider>
+      </Provider>,
     );
 
     expect(getByText('Potential Match')).toBeTruthy();

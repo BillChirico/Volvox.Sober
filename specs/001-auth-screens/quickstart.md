@@ -61,6 +61,7 @@ cp .env.example .env
    - Copy "Project URL" and "anon public" key
 
 3. **Configure Environment**:
+
    ```bash
    # Create .env file
    cp .env.example .env
@@ -142,6 +143,7 @@ pnpm ios
 ```
 
 **Troubleshooting**:
+
 - If simulator doesn't open: Open Xcode → Preferences → Locations → Ensure Command Line Tools is selected
 - If build fails: `cd ios && pod install && cd ..` (if ios/ directory exists)
 
@@ -155,6 +157,7 @@ pnpm android
 ```
 
 **Troubleshooting**:
+
 - If emulator doesn't open: Open Android Studio → AVD Manager → Create/Start virtual device
 - If build fails: Check `ANDROID_HOME` environment variable is set
 
@@ -220,6 +223,7 @@ Enable Redux DevTools:
 ```
 
 Inspect Redux state:
+
 - `auth.session` should contain access_token, refresh_token
 - `auth.user` should contain user object
 - `auth.loading` should be false when operations complete
@@ -275,6 +279,7 @@ __tests__/               # Tests (co-located)
 Follow this cycle for ALL features:
 
 1. **Write Test First**:
+
    ```bash
    # Example: Create test file
    touch __tests__/components/auth/LoginForm.test.tsx
@@ -285,6 +290,7 @@ Follow this cycle for ALL features:
    ```
 
 2. **Implement Feature**:
+
    ```bash
    # Create component
    touch src/components/auth/LoginForm.tsx
@@ -293,6 +299,7 @@ Follow this cycle for ALL features:
    ```
 
 3. **Run Tests**:
+
    ```bash
    # Verify test passes
    pnpm test LoginForm
@@ -308,6 +315,7 @@ Follow this cycle for ALL features:
 ### Hot Reload
 
 Expo supports Fast Refresh:
+
 - Save file → Changes appear instantly in simulator/device
 - Redux state persists across reloads
 - Works for components, screens, and styles
@@ -404,6 +412,7 @@ Before submitting PR, manually test:
 ```
 
 **Debugging Tools**:
+
 - Console logs appear in terminal and debugger
 - Redux DevTools for state inspection
 - Network tab for API calls
@@ -412,26 +421,32 @@ Before submitting PR, manually test:
 ### Common Issues
 
 **Issue**: "Unable to connect to Supabase"
+
 - **Fix**: Check `.env` file exists and contains correct credentials
 - **Fix**: Restart Expo dev server after changing `.env`
 
 **Issue**: "Email not sent"
+
 - **Fix**: Check Supabase Auth → Logs for email send errors
 - **Fix**: Verify email service configured in Supabase dashboard
 
 **Issue**: "Deep link not working"
+
 - **Fix**: Ensure app is running when clicking email link
 - **Fix**: Test with `npx uri-scheme open volvoxsober://auth/verify --ios`
 
 **Issue**: "Session not persisting"
+
 - **Fix**: Check Redux Persist is configured correctly
 - **Fix**: Clear AsyncStorage: `expo r -c` (clear cache)
 
 **Issue**: "TypeScript errors"
+
 - **Fix**: Run `pnpm typecheck` to see all errors
 - **Fix**: Ensure `strict: true` in tsconfig.json
 
 **Issue**: "Tests failing"
+
 - **Fix**: Run tests in watch mode: `pnpm test --watch`
 - **Fix**: Check test mocks are set up correctly
 
@@ -439,13 +454,13 @@ Before submitting PR, manually test:
 
 ```typescript
 // Use console.log for development (remove before committing)
-console.log('Auth state:', authState)
+console.log('Auth state:', authState);
 
 // Use console.error for errors
-console.error('Auth error:', error)
+console.error('Auth error:', error);
 
 // Use console.warn for warnings
-console.warn('Session expiring soon')
+console.warn('Session expiring soon');
 ```
 
 **Note**: Remove all console logs before submitting PR (ESLint will catch them).
@@ -490,6 +505,7 @@ git push origin 001-auth-screens
 ```
 
 **Conventional Commit Prefixes**:
+
 - `feat:` - New feature
 - `fix:` - Bug fix
 - `docs:` - Documentation changes
@@ -501,6 +517,7 @@ git push origin 001-auth-screens
 ## Additional Resources
 
 ### Documentation
+
 - [Expo Docs](https://docs.expo.dev/)
 - [React Native Docs](https://reactnative.dev/docs/getting-started)
 - [Supabase Auth Docs](https://supabase.com/docs/guides/auth)
@@ -509,6 +526,7 @@ git push origin 001-auth-screens
 - [Yup Validation Docs](https://github.com/jquense/yup)
 
 ### Feature-Specific Docs
+
 - [specs/001-auth-screens/spec.md](./spec.md) - Feature specification
 - [specs/001-auth-screens/plan.md](./plan.md) - Implementation plan
 - [specs/001-auth-screens/research.md](./research.md) - Technical decisions

@@ -90,7 +90,11 @@ export function mapAuthError(error: AuthError | Error | null): string {
 export function isNetworkError(error: AuthError | Error | null): boolean {
   if (!error) return false;
   const errorMessage = error.message.toLowerCase();
-  return errorMessage.includes('network') || errorMessage.includes('fetch') || errorMessage.includes('timeout');
+  return (
+    errorMessage.includes('network') ||
+    errorMessage.includes('fetch') ||
+    errorMessage.includes('timeout')
+  );
 }
 
 /**

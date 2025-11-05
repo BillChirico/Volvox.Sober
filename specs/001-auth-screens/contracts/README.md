@@ -18,6 +18,7 @@ API contracts define the interface between the client (Expo app) and server (Sup
 ## Contract Format
 
 Each contract includes:
+
 - **Endpoint**: HTTP method and path
 - **Request**: Headers, body, query parameters
 - **Response**: Success (2xx) and error (4xx, 5xx) formats
@@ -59,6 +60,7 @@ pnpm test:integration -- auth.contract.test.ts
 ```
 
 Integration tests should validate:
+
 - Request formats match specification
 - Response formats match specification
 - Error codes and messages match specification
@@ -70,6 +72,7 @@ Official Supabase Auth API reference:
 https://supabase.com/docs/reference/javascript/auth-api
 
 **Note**: Our contracts are derived from Supabase Auth API but include:
+
 - Client-side error mapping for UX
 - User story references for traceability
 - Success criteria validation

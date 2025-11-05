@@ -13,8 +13,7 @@ describe('connectionsApi', () => {
       reducer: {
         [connectionsApi.reducerPath]: connectionsApi.reducer,
       },
-      middleware: (getDefaultMiddleware) =>
-        getDefaultMiddleware().concat(connectionsApi.middleware),
+      middleware: getDefaultMiddleware => getDefaultMiddleware().concat(connectionsApi.middleware),
     });
 
     jest.clearAllMocks();
@@ -51,7 +50,7 @@ describe('connectionsApi', () => {
         connectionsApi.endpoints.sendRequest.initiate({
           sponsor_id: 'sponsor-456',
           message: 'Hello',
-        })
+        }),
       );
 
       expect(mockFrom).toHaveBeenCalledWith('connection_requests');
@@ -79,7 +78,7 @@ describe('connectionsApi', () => {
       const result = await store.dispatch(
         connectionsApi.endpoints.sendRequest.initiate({
           sponsor_id: 'sponsor-456',
-        })
+        }),
       );
 
       expect(result.error).toEqual({
@@ -114,9 +113,7 @@ describe('connectionsApi', () => {
         select: mockSelect,
       });
 
-      const result = await store.dispatch(
-        connectionsApi.endpoints.getPendingRequests.initiate()
-      );
+      const result = await store.dispatch(connectionsApi.endpoints.getPendingRequests.initiate());
 
       expect(mockFrom).toHaveBeenCalledWith('connection_requests');
       expect(result.data).toEqual([
@@ -172,7 +169,7 @@ describe('connectionsApi', () => {
       const result = await store.dispatch(
         connectionsApi.endpoints.acceptRequest.initiate({
           request_id: 'request-1',
-        })
+        }),
       );
 
       expect(result.data).toEqual({
@@ -200,7 +197,7 @@ describe('connectionsApi', () => {
         connectionsApi.endpoints.declineRequest.initiate({
           request_id: 'request-1',
           reason: 'At capacity',
-        })
+        }),
       );
 
       expect(mockUpdate).toHaveBeenCalledWith({
@@ -239,9 +236,7 @@ describe('connectionsApi', () => {
         select: mockSelect,
       });
 
-      const result = await store.dispatch(
-        connectionsApi.endpoints.getConnections.initiate()
-      );
+      const result = await store.dispatch(connectionsApi.endpoints.getConnections.initiate());
 
       expect(result.data).toHaveLength(1);
       expect(result.data![0].sponsee_name).toBe('Me');
@@ -266,7 +261,7 @@ describe('connectionsApi', () => {
       const result = await store.dispatch(
         connectionsApi.endpoints.disconnect.initiate({
           connection_id: 'connection-1',
-        })
+        }),
       );
 
       expect(mockUpdate).toHaveBeenCalledWith({
@@ -292,7 +287,7 @@ describe('connectionsApi', () => {
       });
 
       const result = await store.dispatch(
-        connectionsApi.endpoints.cancelRequest.initiate('request-1')
+        connectionsApi.endpoints.cancelRequest.initiate('request-1'),
       );
 
       expect(mockUpdate).toHaveBeenCalledWith({ status: 'cancelled' });

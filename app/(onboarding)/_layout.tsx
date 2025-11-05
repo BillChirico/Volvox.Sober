@@ -17,8 +17,7 @@ export default function OnboardingLayout() {
         contentStyle: {
           backgroundColor: theme.colors.background,
         },
-      }}
-    >
+      }}>
       <Stack.Screen
         name="welcome"
         options={{

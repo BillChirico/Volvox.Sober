@@ -54,8 +54,7 @@ const MatchCard: React.FC<MatchCardProps> = ({ match, onPress, onConnect }) => {
                   styles.scoreBadge,
                   { backgroundColor: getCompatibilityColor(match.compatibility_score) },
                 ]}
-                accessibilityLabel={`Compatibility score: ${match.compatibility_score} out of 100`}
-              >
+                accessibilityLabel={`Compatibility score: ${match.compatibility_score} out of 100`}>
                 <Text variant="headlineSmall" style={styles.scoreText}>
                   {match.compatibility_score}
                 </Text>
@@ -66,8 +65,10 @@ const MatchCard: React.FC<MatchCardProps> = ({ match, onPress, onConnect }) => {
               <Chip
                 mode="flat"
                 textStyle={styles.chipText}
-                style={[styles.chip, { backgroundColor: getCompatibilityColor(match.compatibility_score) }]}
-              >
+                style={[
+                  styles.chip,
+                  { backgroundColor: getCompatibilityColor(match.compatibility_score) },
+                ]}>
                 {getCompatibilityLabel(match.compatibility_score)}
               </Chip>
             </View>
@@ -155,8 +156,7 @@ const MatchCard: React.FC<MatchCardProps> = ({ match, onPress, onConnect }) => {
             mode="contained"
             onPress={onConnect}
             style={styles.connectButton}
-            icon="hand-wave"
-          >
+            icon="hand-wave">
             Send Connection Request
           </Button>
         </Card.Content>

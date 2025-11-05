@@ -1,9 +1,5 @@
 import React from 'react';
-import {
-  TouchableOpacity,
-  TouchableOpacityProps,
-  AccessibilityRole,
-} from 'react-native';
+import { TouchableOpacity, TouchableOpacityProps, AccessibilityRole } from 'react-native';
 import { extractTextContent } from '../utils/extractTextContent';
 
 export interface AccessibleButtonProps extends TouchableOpacityProps {
@@ -88,7 +84,7 @@ export const AccessibleButton: React.FC<AccessibleButtonProps> = ({
   if (__DEV__ && !label) {
     console.warn(
       'AccessibleButton: No accessibility label found. ' +
-      'For icon-only buttons, please provide an explicit accessibilityLabel prop.'
+        'For icon-only buttons, please provide an explicit accessibilityLabel prop.',
     );
   }
 
@@ -98,8 +94,7 @@ export const AccessibleButton: React.FC<AccessibleButtonProps> = ({
       accessibilityLabel={label || undefined}
       accessibilityHint={accessibilityHint}
       accessibilityRole={accessibilityRole}
-      {...props}
-    >
+      {...props}>
       {children}
     </TouchableOpacity>
   );

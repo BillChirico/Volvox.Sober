@@ -5,14 +5,7 @@
 
 import React, { useState } from 'react';
 import { View, StyleSheet, Platform } from 'react-native';
-import {
-  Text,
-  TextInput,
-  Button,
-  Card,
-  useTheme,
-  HelperText,
-} from 'react-native-paper';
+import { Text, TextInput, Button, Card, useTheme, HelperText } from 'react-native-paper';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { useSetSobrietyDateMutation } from '../../store/api/sobrietyApi';
 
@@ -23,11 +16,9 @@ export const SetSobrietyDateScreen = ({ navigation, route }: any) => {
 
   const existingData = route.params?.sobrietyData;
   const [startDate, setStartDate] = useState<Date>(
-    existingData?.start_date ? new Date(existingData.start_date) : new Date()
+    existingData?.start_date ? new Date(existingData.start_date) : new Date(),
   );
-  const [substanceType, setSubstanceType] = useState(
-    existingData?.substance_type || ''
-  );
+  const [substanceType, setSubstanceType] = useState(existingData?.substance_type || '');
   const [showDatePicker, setShowDatePicker] = useState(false);
   const [error, setError] = useState('');
 
@@ -85,7 +76,7 @@ export const SetSobrietyDateScreen = ({ navigation, route }: any) => {
           <TextInput
             label="Substance Type *"
             value={substanceType}
-            onChangeText={(text) => {
+            onChangeText={text => {
               setSubstanceType(text);
               setError('');
             }}
@@ -103,8 +94,7 @@ export const SetSobrietyDateScreen = ({ navigation, route }: any) => {
             mode="outlined"
             onPress={() => setShowDatePicker(true)}
             style={styles.dateButton}
-            icon="calendar"
-          >
+            icon="calendar">
             {startDate.toLocaleDateString()}
           </Button>
 
@@ -155,16 +145,11 @@ export const SetSobrietyDateScreen = ({ navigation, route }: any) => {
               onPress={handleSubmit}
               loading={isLoading}
               disabled={isLoading || !substanceType.trim()}
-              style={styles.submitButton}
-            >
+              style={styles.submitButton}>
               {existingData ? 'Update Sobriety Date' : 'Set Sobriety Date'}
             </Button>
 
-            <Button
-              mode="text"
-              onPress={() => navigation.goBack()}
-              disabled={isLoading}
-            >
+            <Button mode="text" onPress={() => navigation.goBack()} disabled={isLoading}>
               Cancel
             </Button>
           </View>
@@ -174,51 +159,52 @@ export const SetSobrietyDateScreen = ({ navigation, route }: any) => {
   );
 };
 
-const createStyles = (theme: any) => StyleSheet.create({
-  container: {
-    flex: 1,
-    padding: 16,
-  },
-  card: {
-    marginTop: 16,
-  },
-  title: {
-    marginBottom: 8,
-  },
-  description: {
-    marginBottom: 24,
-  },
-  input: {
-    marginBottom: 16,
-  },
-  dateLabel: {
-    marginBottom: 8,
-  },
-  dateButton: {
-    marginBottom: 8,
-  },
-  helperText: {
-    marginBottom: 16,
-  },
-  confirmationCard: {
-    marginTop: 16,
-    marginBottom: 24,
-    backgroundColor: '#f0f8ff',
-  },
-  confirmationTitle: {
-    marginBottom: 8,
-  },
-  confirmationDate: {
-    fontWeight: 'bold',
-    color: '#1976d2',
-  },
-  confirmationSubstance: {
-    marginTop: 8,
-  },
-  actions: {
-    marginTop: 8,
-  },
-  submitButton: {
-    marginBottom: 12,
-  },
-});
+const createStyles = (theme: any) =>
+  StyleSheet.create({
+    container: {
+      flex: 1,
+      padding: 16,
+    },
+    card: {
+      marginTop: 16,
+    },
+    title: {
+      marginBottom: 8,
+    },
+    description: {
+      marginBottom: 24,
+    },
+    input: {
+      marginBottom: 16,
+    },
+    dateLabel: {
+      marginBottom: 8,
+    },
+    dateButton: {
+      marginBottom: 8,
+    },
+    helperText: {
+      marginBottom: 16,
+    },
+    confirmationCard: {
+      marginTop: 16,
+      marginBottom: 24,
+      backgroundColor: '#f0f8ff',
+    },
+    confirmationTitle: {
+      marginBottom: 8,
+    },
+    confirmationDate: {
+      fontWeight: 'bold',
+      color: '#1976d2',
+    },
+    confirmationSubstance: {
+      marginTop: 8,
+    },
+    actions: {
+      marginTop: 8,
+    },
+    submitButton: {
+      marginBottom: 12,
+    },
+  });

@@ -59,12 +59,14 @@ export const connectionsApi = createApi({
   reducerPath: 'connectionsApi',
   baseQuery: fakeBaseQuery(),
   tagTypes: ['ConnectionRequests', 'Connections'],
-  endpoints: (builder) => ({
+  endpoints: builder => ({
     // Send connection request (T073)
     sendRequest: builder.mutation<ConnectionRequest, SendRequestPayload>({
       queryFn: async ({ sponsor_id, introduction_message }) => {
         try {
-          const { data: { user } } = await supabaseClient.auth.getUser();
+          const {
+            data: { user },
+          } = await supabaseClient.auth.getUser();
 
           if (!user) {
             return { error: { status: 401, data: { message: 'Not authenticated' } } };
@@ -97,7 +99,9 @@ export const connectionsApi = createApi({
     getPendingRequests: builder.query<ConnectionRequest[], void>({
       queryFn: async () => {
         try {
-          const { data: { user } } = await supabaseClient.auth.getUser();
+          const {
+            data: { user },
+          } = await supabaseClient.auth.getUser();
 
           if (!user) {
             return { error: { status: 401, data: { message: 'Not authenticated' } } };
@@ -105,10 +109,12 @@ export const connectionsApi = createApi({
 
           const { data, error } = await supabaseClient
             .from('connection_requests')
-            .select(`
+            .select(
+              `
               *,
               sponsee:users!sponsee_id(id, name, profile_photo_url)
-            `)
+            `,
+            )
             .eq('sponsor_id', user.id)
             .eq('status', 'pending')
             .order('created_at', { ascending: false });
@@ -141,7 +147,7 @@ export const connectionsApi = createApi({
             .from('connection_requests')
             .update({
               status: 'accepted',
-              responded_at: new Date().toISOString()
+              responded_at: new Date().toISOString(),
             })
             .eq('id', request_id)
             .select()
@@ -183,7 +189,7 @@ export const connectionsApi = createApi({
             .update({
               status: 'declined',
               decline_reason: reason,
-              responded_at: new Date().toISOString()
+              responded_at: new Date().toISOString(),
             })
             .eq('id', request_id);
 
@@ -203,7 +209,9 @@ export const connectionsApi = createApi({
     getSentRequests: builder.query<ConnectionRequest[], void>({
       queryFn: async () => {
         try {
-          const { data: { user } } = await supabaseClient.auth.getUser();
+          const {
+            data: { user },
+          } = await supabaseClient.auth.getUser();
 
           if (!user) {
             return { error: { status: 401, data: { message: 'Not authenticated' } } };
@@ -211,10 +219,12 @@ export const connectionsApi = createApi({
 
           const { data, error } = await supabaseClient
             .from('connection_requests')
-            .select(`
+            .select(
+              `
               *,
               sponsor:users!sponsor_id(id, name, profile_photo_url)
-            `)
+            `,
+            )
             .eq('sponsee_id', user.id)
             .order('created_at', { ascending: false });
 
@@ -239,7 +249,7 @@ export const connectionsApi = createApi({
 
     // Cancel pending request (T078)
     cancelRequest: builder.mutation<void, string>({
-      queryFn: async (request_id) => {
+      queryFn: async request_id => {
         try {
           const { error } = await supabaseClient
             .from('connection_requests')
@@ -263,7 +273,9 @@ export const connectionsApi = createApi({
     getConnections: builder.query<Connection[], void>({
       queryFn: async () => {
         try {
-          const { data: { user } } = await supabaseClient.auth.getUser();
+          const {
+            data: { user },
+          } = await supabaseClient.auth.getUser();
 
           if (!user) {
             return { error: { status: 401, data: { message: 'Not authenticated' } } };
@@ -271,13 +283,15 @@ export const connectionsApi = createApi({
 
           const { data, error } = await supabaseClient
             .from('connections')
-            .select(`
+            .select(
+              `
               *,
               sponsee:users!sponsee_id(id, name, profile_photo_url),
               sponsor:users!sponsor_id(id, name, profile_photo_url),
               sponsee_profile:sponsee_profiles!sponsee_id(step_progress),
               sponsor_profile:sponsor_profiles!sponsor_id(years_sober)
-            `)
+            `,
+            )
             .or(`sponsee_id.eq.${user.id},sponsor_id.eq.${user.id}`)
             .eq('status', 'active')
             .order('connected_at', { ascending: false });

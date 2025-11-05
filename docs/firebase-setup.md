@@ -3,6 +3,7 @@
 ## Important Note: Expo Managed Workflow
 
 This project uses Expo managed workflow. For push notifications with Expo:
+
 - **Recommended**: Use Expo's push notification service (easier, no FCM setup needed)
 - **Alternative**: Eject to bare workflow to use @react-native-firebase/messaging
 
@@ -11,13 +12,16 @@ This project uses Expo managed workflow. For push notifications with Expo:
 ## Expo Push Notifications Setup (Recommended)
 
 ### 1. Install Expo Notifications
+
 ```bash
 cd mobile
 pnpm add expo-notifications
 ```
 
 ### 2. Configure app.json
+
 Add to `mobile/app.json`:
+
 ```json
 {
   "expo": {
@@ -41,6 +45,7 @@ Add to `mobile/app.json`:
 ```
 
 ### 3. Get Expo Push Token
+
 ```typescript
 import * as Notifications from 'expo-notifications';
 
@@ -49,6 +54,7 @@ const token = (await Notifications.getExpoPushTokenAsync()).data;
 ```
 
 ### 4. Send Notifications via Expo API
+
 ```typescript
 await fetch('https://exp.host/--/api/v2/push/send', {
   method: 'POST',
@@ -59,8 +65,8 @@ await fetch('https://exp.host/--/api/v2/push/send', {
     to: expoPushToken,
     title: 'Title',
     body: 'Message',
-    data: { type: 'new_message', entity_id: '123' }
-  })
+    data: { type: 'new_message', entity_id: '123' },
+  }),
 });
 ```
 
@@ -69,6 +75,7 @@ await fetch('https://exp.host/--/api/v2/push/send', {
 ## Alternative: Firebase FCM Setup (Requires Bare Workflow)
 
 If you need to use Firebase directly, you must eject from Expo:
+
 ```bash
 npx expo prebuild
 ```
@@ -76,12 +83,14 @@ npx expo prebuild
 ## T130: Firebase Project Configuration
 
 ### 1. Create Firebase Project
+
 1. Go to [Firebase Console](https://console.firebase.google.com)
 2. Click "Add Project"
 3. Enter project name: `Volvox Sober Recovery`
 4. Accept terms and click "Create Project"
 
 ### 2. Register iOS App
+
 1. In Firebase Console, click "Add app" → iOS
 2. Get bundle ID from: `mobile/ios/mobile/Info.plist`
    - Look for `CFBundleIdentifier` value
@@ -91,6 +100,7 @@ npx expo prebuild
 6. Select `GoogleService-Info.plist` and check "Copy items if needed"
 
 ### 3. Register Android App
+
 1. In Firebase Console, click "Add app" → Android
 2. Get package name from: `mobile/android/app/build.gradle`
    - Look for `applicationId` in `defaultConfig`
@@ -100,6 +110,7 @@ npx expo prebuild
 ## T131: iOS APNs Certificate Setup
 
 ### 1. Generate APNs Certificate
+
 1. Go to [Apple Developer Portal](https://developer.apple.com/account)
 2. Navigate to: Certificates, Identifiers & Profiles → Identifiers
 3. Select your app's bundle ID
@@ -109,6 +120,7 @@ npx expo prebuild
 7. Download the certificate (.p8 key file recommended)
 
 ### 2. Upload to Firebase
+
 1. In Firebase Console, go to: Project Settings → Cloud Messaging
 2. Under "Apple app configuration", upload:
    - **Option A** (Recommended): APNs Authentication Key (.p8)
@@ -119,6 +131,7 @@ npx expo prebuild
      - Upload with password
 
 ### 3. Xcode Configuration
+
 1. Open `mobile/ios/mobile.xcworkspace` in Xcode
 2. Select project in navigator → Target → Signing & Capabilities
 3. Click "+ Capability" → Add "Push Notifications"
@@ -130,6 +143,7 @@ npx expo prebuild
 Dependencies will be installed via npm/pnpm. After installation:
 
 ### iOS Post-Install
+
 ```bash
 cd mobile/ios
 pod install
@@ -137,13 +151,16 @@ cd ..
 ```
 
 ### Android Configuration
+
 1. Add Google Services plugin to `android/app/build.gradle`:
+
 ```gradle
 // At top of file
 apply plugin: 'com.google.gms.google-services'
 ```
 
 2. Add dependency to `android/build.gradle`:
+
 ```gradle
 buildscript {
     dependencies {
@@ -155,6 +172,7 @@ buildscript {
 ## Verification
 
 ### Test iOS Push Notifications
+
 ```bash
 # From Firebase Console → Cloud Messaging → Send test message
 # Or use FCM API:
@@ -171,17 +189,20 @@ curl -X POST https://fcm.googleapis.com/fcm/send \
 ```
 
 ### Test Android Push Notifications
+
 Same as iOS, use Firebase Console or FCM API.
 
 ## Environment Variables
 
 Add to `.env`:
+
 ```bash
 # FCM Server Key (from Firebase Console → Project Settings → Cloud Messaging)
 FCM_SERVER_KEY=your_fcm_server_key_here
 ```
 
 Add to Supabase Edge Function secrets:
+
 ```bash
 supabase secrets set FCM_SERVER_KEY=your_fcm_server_key_here
 ```
@@ -189,15 +210,18 @@ supabase secrets set FCM_SERVER_KEY=your_fcm_server_key_here
 ## Troubleshooting
 
 ### iOS: "No APNs certificate uploaded"
+
 - Verify certificate is uploaded in Firebase Console
 - Ensure certificate matches your app's bundle ID
 - Try regenerating certificate and re-uploading
 
 ### Android: "google-services.json not found"
+
 - Verify file is in `android/app/google-services.json`
 - Run `./gradlew clean` and rebuild
 
 ### Notifications not received
+
 - Check device token is registered in database
 - Verify user notification preferences allow the notification type
 - Check Firebase Console → Cloud Messaging logs for errors
@@ -207,9 +231,11 @@ supabase secrets set FCM_SERVER_KEY=your_fcm_server_key_here
 
 - **Never commit** `GoogleService-Info.plist` or `google-services.json` to git
 - Add to `.gitignore`:
+
 ```
 mobile/ios/mobile/GoogleService-Info.plist
 mobile/android/app/google-services.json
 ```
+
 - Store FCM Server Key in Supabase secrets, not in codebase
 - APNs certificates should be stored securely in Firebase Console only

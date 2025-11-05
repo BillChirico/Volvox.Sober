@@ -25,8 +25,7 @@ const createMockStore = (userId: string = 'user-123') => {
       user: userReducer,
       [connectionsApi.reducerPath]: connectionsApi.reducer,
     },
-    middleware: (getDefaultMiddleware) =>
-      getDefaultMiddleware().concat(connectionsApi.middleware),
+    middleware: getDefaultMiddleware => getDefaultMiddleware().concat(connectionsApi.middleware),
     preloadedState: {
       user: {
         user: { id: userId },
@@ -80,7 +79,7 @@ describe('ConnectionsScreen', () => {
         <NavigationContainer>
           <ConnectionsScreen />
         </NavigationContainer>
-      </Provider>
+      </Provider>,
     );
 
     expect(getByText('Loading connections...')).toBeTruthy();
@@ -101,7 +100,7 @@ describe('ConnectionsScreen', () => {
         <NavigationContainer>
           <ConnectionsScreen />
         </NavigationContainer>
-      </Provider>
+      </Provider>,
     );
 
     expect(getByText('John Sponsor')).toBeTruthy();
@@ -123,7 +122,7 @@ describe('ConnectionsScreen', () => {
         <NavigationContainer>
           <ConnectionsScreen />
         </NavigationContainer>
-      </Provider>
+      </Provider>,
     );
 
     expect(getByText('No Active Connections')).toBeTruthy();
@@ -145,7 +144,7 @@ describe('ConnectionsScreen', () => {
         <NavigationContainer>
           <ConnectionsScreen />
         </NavigationContainer>
-      </Provider>
+      </Provider>,
     );
 
     expect(getByText('Sponsor')).toBeTruthy();
@@ -167,7 +166,7 @@ describe('ConnectionsScreen', () => {
         <NavigationContainer>
           <ConnectionsScreen />
         </NavigationContainer>
-      </Provider>
+      </Provider>,
     );
 
     expect(getByText('Sponsee')).toBeTruthy();
@@ -189,7 +188,7 @@ describe('ConnectionsScreen', () => {
         <NavigationContainer>
           <ConnectionsScreen />
         </NavigationContainer>
-      </Provider>
+      </Provider>,
     );
 
     // Should show "X days ago" format
@@ -211,7 +210,7 @@ describe('ConnectionsScreen', () => {
         <NavigationContainer>
           <ConnectionsScreen />
         </NavigationContainer>
-      </Provider>
+      </Provider>,
     );
 
     expect(getByText(/Last contact:/)).toBeTruthy();
@@ -232,7 +231,7 @@ describe('ConnectionsScreen', () => {
         <NavigationContainer>
           <ConnectionsScreen />
         </NavigationContainer>
-      </Provider>
+      </Provider>,
     );
 
     expect(getByText('No recent contact')).toBeTruthy();
@@ -253,7 +252,7 @@ describe('ConnectionsScreen', () => {
         <NavigationContainer>
           <ConnectionsScreen />
         </NavigationContainer>
-      </Provider>
+      </Provider>,
     );
 
     expect(getByText('Step Progress:')).toBeTruthy();
@@ -275,7 +274,7 @@ describe('ConnectionsScreen', () => {
         <NavigationContainer>
           <ConnectionsScreen />
         </NavigationContainer>
-      </Provider>
+      </Provider>,
     );
 
     expect(getByText('Experience:')).toBeTruthy();
@@ -297,7 +296,7 @@ describe('ConnectionsScreen', () => {
         <NavigationContainer>
           <ConnectionsScreen />
         </NavigationContainer>
-      </Provider>
+      </Provider>,
     );
 
     const connectionCard = getByText('John Sponsor');
@@ -325,7 +324,7 @@ describe('ConnectionsScreen', () => {
         <NavigationContainer>
           <ConnectionsScreen />
         </NavigationContainer>
-      </Provider>
+      </Provider>,
     );
 
     // Simulate pull to refresh (this is a simplified test, actual implementation may vary)
@@ -350,7 +349,7 @@ describe('ConnectionsScreen', () => {
         <NavigationContainer>
           <ConnectionsScreen />
         </NavigationContainer>
-      </Provider>
+      </Provider>,
     );
 
     // Should render default avatar icon for null photo_url

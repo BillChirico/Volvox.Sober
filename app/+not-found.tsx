@@ -10,7 +10,9 @@ export default function NotFoundScreen() {
     <>
       <Stack.Screen options={{ title: 'Page Not Found' }} />
       <View style={[styles.container, { backgroundColor: theme.colors.background }]}>
-        <Text variant="headlineMedium" style={{ color: theme.colors.onBackground, marginBottom: 16 }}>
+        <Text
+          variant="headlineMedium"
+          style={{ color: theme.colors.onBackground, marginBottom: 16 }}>
           Page Not Found
         </Text>
         <Text variant="bodyLarge" style={{ color: theme.colors.onBackground, marginBottom: 24 }}>

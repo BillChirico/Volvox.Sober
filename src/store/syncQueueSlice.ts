@@ -41,7 +41,10 @@ const syncQueueSlice = createSlice({
   initialState,
   reducers: {
     // Add operation to queue
-    enqueueOperation: (state, action: PayloadAction<Omit<SyncOperation, 'id' | 'timestamp' | 'retryCount'>>) => {
+    enqueueOperation: (
+      state,
+      action: PayloadAction<Omit<SyncOperation, 'id' | 'timestamp' | 'retryCount'>>,
+    ) => {
       const operation: SyncOperation = {
         ...action.payload,
         id: `${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
@@ -53,15 +56,12 @@ const syncQueueSlice = createSlice({
 
     // Remove operation from queue
     dequeueOperation: (state, action: PayloadAction<string>) => {
-      state.operations = state.operations.filter((op) => op.id !== action.payload);
+      state.operations = state.operations.filter(op => op.id !== action.payload);
     },
 
     // Update operation retry count and error
-    updateOperationRetry: (
-      state,
-      action: PayloadAction<{ id: string; error: string }>
-    ) => {
-      const operation = state.operations.find((op) => op.id === action.payload.id);
+    updateOperationRetry: (state, action: PayloadAction<{ id: string; error: string }>) => {
+      const operation = state.operations.find(op => op.id === action.payload.id);
       if (operation) {
         operation.retryCount += 1;
         operation.lastError = action.payload.error;
@@ -84,7 +84,7 @@ const syncQueueSlice = createSlice({
     },
 
     // Clear all operations
-    clearQueue: (state) => {
+    clearQueue: state => {
       state.operations = [];
     },
 
@@ -121,7 +121,7 @@ export const selectHasPendingOperations = (state: RootState) =>
   state.syncQueue.operations.length > 0;
 
 export const selectOperationsByStep = (stepId: string) => (state: RootState) =>
-  state.syncQueue.operations.filter((op) => op.stepId === stepId);
+  state.syncQueue.operations.filter(op => op.stepId === stepId);
 
 // Thunks for async operations
 export const persistQueue = () => async (dispatch: any, getState: () => RootState) => {

@@ -49,8 +49,7 @@ export default function ForgotPasswordScreen() {
             mode="text"
             testID="back-to-login-link"
             accessibilityRole="link"
-            accessibilityLabel="Back to login"
-          >
+            accessibilityLabel="Back to login">
             Back to Login
           </Button>
         </Link>

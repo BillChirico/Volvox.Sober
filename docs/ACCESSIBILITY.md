@@ -9,6 +9,7 @@ Volvox.Sober implements comprehensive accessibility features and WCAG AA complia
 ### Theme Configuration
 
 The app supports three theme modes:
+
 - **Light**: Always use light theme
 - **Dark**: Always use dark theme
 - **System** (default): Automatically switches based on device settings
@@ -16,10 +17,12 @@ The app supports three theme modes:
 ### WCAG AA Compliance
 
 All color combinations meet WCAG AA contrast standards:
+
 - **Normal text**: Minimum 4.5:1 contrast ratio
 - **Large text** (18pt+): Minimum 3:1 contrast ratio
 
 #### Light Theme Colors
+
 - Primary: `#007AFF` (4.50:1 on white) - iOS Blue
 - Secondary: `#4A90A4` (4.51:1 on white) - Calm/Serenity teal
 - Tertiary: `#5D8C3D` (4.62:1 on white) - Growth green
@@ -27,6 +30,7 @@ All color combinations meet WCAG AA contrast standards:
 - Error: `#BA1A1A` (5.88:1 on white)
 
 #### Dark Theme Colors
+
 - Primary: `#66B3FF` (8.54:1 on dark background) - Lighter iOS Blue
 - Secondary: `#B7D9E8` (10.12:1 on dark background)
 - Tertiary: `#C6E89D` (11.23:1 on dark background)
@@ -60,6 +64,7 @@ const MyComponent = () => {
 ### Touch Target Sizes
 
 All interactive elements meet minimum touch target requirements:
+
 - **iOS**: 44x44pt minimum (Apple Human Interface Guidelines)
 - **Android**: 48x48dp minimum (Material Design Guidelines)
 
@@ -80,10 +85,12 @@ import { AccessibleButton } from './src/components/common/AccessibleButton';
 ### Screen Reader Support
 
 The app is fully compatible with:
+
 - **iOS VoiceOver**
 - **Android TalkBack**
 
 All interactive elements include:
+
 - **Accessibility labels**: Descriptive text announced by screen readers
 - **Accessibility hints**: Explains what happens when activated
 - **Accessibility roles**: Semantic roles (button, link, header, etc.)
@@ -111,6 +118,7 @@ Error messages are automatically announced to screen readers using `accessibilit
 ### Dynamic Type / Font Scaling
 
 The app respects system font size settings:
+
 - **iOS Dynamic Type**: Supports all text size categories
 - **Android Large Text**: Adapts to system font scale
 
@@ -141,6 +149,7 @@ import { FocusIndicator } from './src/components/common/FocusIndicator';
 ```
 
 Focus indicators include:
+
 - Visible border (2px primary color)
 - Shadow effect for depth
 - Accessible focus state for screen readers
@@ -160,6 +169,7 @@ const shouldAnimate = !(await isReduceMotionEnabled());
 ### Manual Testing Checklist
 
 #### VoiceOver (iOS)
+
 1. Enable: Settings → Accessibility → VoiceOver
 2. Navigate screens with swipe gestures
 3. Verify all interactive elements are announced
@@ -167,6 +177,7 @@ const shouldAnimate = !(await isReduceMotionEnabled());
 5. Confirm proper heading hierarchy
 
 #### TalkBack (Android)
+
 1. Enable: Settings → Accessibility → TalkBack
 2. Navigate screens with swipe gestures
 3. Verify all interactive elements are announced
@@ -174,18 +185,21 @@ const shouldAnimate = !(await isReduceMotionEnabled());
 5. Confirm proper semantic structure
 
 #### Contrast Ratios
+
 1. Run automated tool: axe DevTools or Accessibility Inspector
 2. Manually verify text/background combinations
 3. Test both light and dark themes
 4. Document any exceptions (decorative elements, disabled states)
 
 #### Touch Targets
+
 1. Visual inspection of button sizes
 2. Use device accessibility inspector
 3. Test with accessibility touch accommodations enabled
 4. Verify minimum 44x44pt (iOS) or 48x48dp (Android)
 
 #### Font Scaling
+
 1. **iOS**: Settings → Display & Brightness → Text Size → Drag to largest
 2. **Android**: Settings → Display → Font size → Largest
 3. Verify no text truncation
@@ -193,6 +207,7 @@ const shouldAnimate = !(await isReduceMotionEnabled());
 5. Verify all text remains readable
 
 #### Keyboard Navigation
+
 1. Connect external keyboard to device
 2. Tab through all interactive elements
 3. Verify focus indicators are visible
@@ -269,28 +284,28 @@ isReduceMotionEnabled(): Promise<boolean>
 
 ```typescript
 // Touch target sizes
-TOUCH_TARGET.IOS_MIN // 44pt
-TOUCH_TARGET.ANDROID_MIN // 48dp
-TOUCH_TARGET.COMFORTABLE // 48pt/dp
+TOUCH_TARGET.IOS_MIN; // 44pt
+TOUCH_TARGET.ANDROID_MIN; // 48dp
+TOUCH_TARGET.COMFORTABLE; // 48pt/dp
 
 // Font scale limits
-FONT_SCALE.MIN // 0.85 (85%)
-FONT_SCALE.MAX // 2.0 (200%)
-FONT_SCALE.DEFAULT // 1.0
+FONT_SCALE.MIN; // 0.85 (85%)
+FONT_SCALE.MAX; // 2.0 (200%)
+FONT_SCALE.DEFAULT; // 1.0
 
 // Accessibility labels
-A11Y_LABELS.CLOSE // 'Close'
-A11Y_LABELS.SAVE // 'Save'
+A11Y_LABELS.CLOSE; // 'Close'
+A11Y_LABELS.SAVE; // 'Save'
 // ... (see accessibility.ts for full list)
 
 // Accessibility hints
-A11Y_HINTS.BUTTON // 'Double tap to activate'
-A11Y_HINTS.SWITCH // 'Double tap to toggle'
+A11Y_HINTS.BUTTON; // 'Double tap to activate'
+A11Y_HINTS.SWITCH; // 'Double tap to toggle'
 // ... (see accessibility.ts for full list)
 
 // Accessibility roles
-A11Y_ROLES.BUTTON // 'button'
-A11Y_ROLES.HEADER // 'header'
+A11Y_ROLES.BUTTON; // 'button'
+A11Y_ROLES.HEADER; // 'header'
 // ... (see accessibility.ts for full list)
 ```
 
@@ -298,30 +313,31 @@ A11Y_ROLES.HEADER // 'header'
 
 ### WCAG 2.1 Level AA Compliance
 
-| Criterion | Status | Notes |
-|-----------|--------|-------|
-| 1.4.3 Contrast (Minimum) | ✅ Pass | All text meets 4.5:1 ratio |
-| 1.4.11 Non-text Contrast | ✅ Pass | UI components meet 3:1 ratio |
-| 2.4.7 Focus Visible | ✅ Pass | Focus indicators implemented |
-| 2.5.5 Target Size | ✅ Pass | 44x44pt (iOS), 48x48dp (Android) |
-| 1.4.4 Resize Text | ✅ Pass | Supports 200% font scaling |
-| 1.4.12 Text Spacing | ✅ Pass | Respects system settings |
-| 2.4.3 Focus Order | ✅ Pass | Logical tab order |
-| 4.1.2 Name, Role, Value | ✅ Pass | All elements properly labeled |
+| Criterion                | Status  | Notes                            |
+| ------------------------ | ------- | -------------------------------- |
+| 1.4.3 Contrast (Minimum) | ✅ Pass | All text meets 4.5:1 ratio       |
+| 1.4.11 Non-text Contrast | ✅ Pass | UI components meet 3:1 ratio     |
+| 2.4.7 Focus Visible      | ✅ Pass | Focus indicators implemented     |
+| 2.5.5 Target Size        | ✅ Pass | 44x44pt (iOS), 48x48dp (Android) |
+| 1.4.4 Resize Text        | ✅ Pass | Supports 200% font scaling       |
+| 1.4.12 Text Spacing      | ✅ Pass | Respects system settings         |
+| 2.4.3 Focus Order        | ✅ Pass | Logical tab order                |
+| 4.1.2 Name, Role, Value  | ✅ Pass | All elements properly labeled    |
 
 ### Screen Reader Compatibility
 
-| Feature | VoiceOver | TalkBack |
-|---------|-----------|----------|
-| Navigation | ✅ Full | ✅ Full |
-| Forms | ✅ Full | ✅ Full |
-| Alerts | ✅ Full | ✅ Full |
-| Live regions | ✅ Full | ✅ Full |
-| Custom components | ✅ Full | ✅ Full |
+| Feature           | VoiceOver | TalkBack |
+| ----------------- | --------- | -------- |
+| Navigation        | ✅ Full   | ✅ Full  |
+| Forms             | ✅ Full   | ✅ Full  |
+| Alerts            | ✅ Full   | ✅ Full  |
+| Live regions      | ✅ Full   | ✅ Full  |
+| Custom components | ✅ Full   | ✅ Full  |
 
 ## Best Practices
 
 ### Do's
+
 ✅ Always use theme colors from `useAppTheme()` hook
 ✅ Use accessible components (`AccessibleButton`, `AccessibleTextInput`)
 ✅ Provide descriptive accessibility labels
@@ -330,6 +346,7 @@ A11Y_ROLES.HEADER // 'header'
 ✅ Use semantic roles for all interactive elements
 
 ### Don'ts
+
 ❌ Never hard-code colors (use theme tokens)
 ❌ Never hard-code font sizes (use Paper typography or `scaleFontSize`)
 ❌ Never create touch targets smaller than minimums

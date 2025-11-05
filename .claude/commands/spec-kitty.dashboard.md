@@ -2,7 +2,6 @@
 description: Open the Spec Kitty dashboard in your browser.
 ---
 
-
 ## Dashboard Access
 
 This command helps you access the Spec Kitty dashboard that was started when you ran `spec-kitty init`.

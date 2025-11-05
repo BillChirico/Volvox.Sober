@@ -16,6 +16,7 @@ Implement the core authentication service layer, validation schemas, utilities, 
 ## Context
 
 From [spec.md](../../spec.md):
+
 - FR-001: System MUST allow new users to create accounts using email and password
 - FR-003: System MUST enforce password requirements (8+ chars, letter + number)
 - FR-006: System MUST allow existing users to login with email and password
@@ -26,6 +27,7 @@ From [spec.md](../../spec.md):
 - FR-016: System MUST use Supabase Auth for all authentication operations
 
 From [data-model.md](../../data-model.md):
+
 ```typescript
 export const authService = {
   async signUp(email: string, password: string),
@@ -39,14 +41,17 @@ export const authService = {
 ```
 
 Validation schemas (Yup):
+
 ```typescript
 const signupSchema = yup.object({
   email: yup.string().email('Invalid email format').required('Email is required'),
-  password: yup.string().min(8, 'Minimum 8 characters required')
+  password: yup
+    .string()
+    .min(8, 'Minimum 8 characters required')
     .matches(/[a-zA-Z]/, 'Must contain at least one letter')
     .matches(/[0-9]/, 'Must contain at least one number')
-    .required('Password is required')
-})
+    .required('Password is required'),
+});
 ```
 
 ---
@@ -58,6 +63,7 @@ const signupSchema = yup.object({
 **What**: Create authentication service wrapping Supabase Auth SDK methods.
 
 **Steps**:
+
 1. Install Supabase client: `pnpm add @supabase/supabase-js`
 2. Create `src/services/authService.ts`
 3. Initialize Supabase client with environment variables
@@ -66,58 +72,60 @@ const signupSchema = yup.object({
 6. Export authService object
 
 **Implementation**:
+
 ```typescript
-import { createClient } from '@supabase/supabase-js'
+import { createClient } from '@supabase/supabase-js';
 
-const supabaseUrl = process.env.EXPO_PUBLIC_SUPABASE_URL!
-const supabaseAnonKey = process.env.EXPO_PUBLIC_SUPABASE_ANON_KEY!
+const supabaseUrl = process.env.EXPO_PUBLIC_SUPABASE_URL!;
+const supabaseAnonKey = process.env.EXPO_PUBLIC_SUPABASE_ANON_KEY!;
 
-export const supabase = createClient(supabaseUrl, supabaseAnonKey)
+export const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
 export const authService = {
   async signUp(email: string, password: string) {
     const { data, error } = await supabase.auth.signUp({
       email,
       password,
-      options: { emailRedirectTo: 'volvoxsober://auth/verify' }
-    })
-    return { data, error }
+      options: { emailRedirectTo: 'volvoxsober://auth/verify' },
+    });
+    return { data, error };
   },
 
   async signIn(email: string, password: string) {
-    const { data, error } = await supabase.auth.signInWithPassword({ email, password })
-    return { data, error }
+    const { data, error } = await supabase.auth.signInWithPassword({ email, password });
+    return { data, error };
   },
 
   async resetPasswordRequest(email: string) {
     const { data, error } = await supabase.auth.resetPasswordForEmail(email, {
-      redirectTo: 'volvoxsober://auth/forgot-password'
-    })
-    return { data, error }
+      redirectTo: 'volvoxsober://auth/forgot-password',
+    });
+    return { data, error };
   },
 
   async updatePassword(newPassword: string) {
-    const { data, error } = await supabase.auth.updateUser({ password: newPassword })
-    return { data, error }
+    const { data, error } = await supabase.auth.updateUser({ password: newPassword });
+    return { data, error };
   },
 
   async signOut() {
-    const { error } = await supabase.auth.signOut()
-    return { error }
+    const { error } = await supabase.auth.signOut();
+    return { error };
   },
 
   async getSession() {
-    const { data, error } = await supabase.auth.getSession()
-    return { data, error }
+    const { data, error } = await supabase.auth.getSession();
+    return { data, error };
   },
 
   onAuthStateChange(callback: (event: string, session: any) => void) {
-    return supabase.auth.onAuthStateChange(callback)
-  }
-}
+    return supabase.auth.onAuthStateChange(callback);
+  },
+};
 ```
 
 **Acceptance Criteria**:
+
 - All methods implemented per specification
 - Proper TypeScript types for all parameters and return values
 - Supabase client initialized correctly
@@ -132,6 +140,7 @@ export const authService = {
 **Implementation**: Create `src/services/validationSchemas.ts` with all three schemas per data-model.md.
 
 **Acceptance Criteria**:
+
 - loginSchema validates email and password (required only)
 - signupSchema enforces FR-003 password requirements
 - passwordResetSchema validates email format
@@ -146,6 +155,7 @@ export const authService = {
 **Implementation**: Create `src/utils/passwordStrength.ts` per research.md Decision 6.
 
 **Acceptance Criteria**:
+
 - Returns correct strength levels based on scoring
 - TypeScript types defined (`PasswordStrength = 'weak' | 'medium' | 'strong'`)
 
@@ -158,6 +168,7 @@ export const authService = {
 **Implementation**: Create `src/utils/authErrors.ts` per contracts/auth.yaml error mapping.
 
 **Acceptance Criteria**:
+
 - Maps all common Supabase auth errors
 - Uses generic messages for security-sensitive errors (FR-011)
 - Returns default message for unknown errors
@@ -169,11 +180,13 @@ export const authService = {
 **What**: Comprehensive unit tests for all services and utilities.
 
 **Files to Create**:
+
 - `__tests__/services/authService.test.ts`
 - `__tests__/services/validationSchemas.test.ts`
 - `__tests__/utils/passwordStrength.test.ts`
 
 **Coverage Requirements**:
+
 - 100% coverage of all authService methods
 - All validation scenarios tested (valid/invalid inputs)
 - All password strength levels tested

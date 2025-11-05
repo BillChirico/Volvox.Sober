@@ -54,8 +54,7 @@ export const SobrietyDashboardScreen = ({ navigation }: any) => {
         <Button
           mode="contained"
           onPress={() => navigation.navigate('SetSobrietyDate')}
-          style={styles.startButton}
-        >
+          style={styles.startButton}>
           Set Sobriety Date
         </Button>
       </View>
@@ -64,13 +63,13 @@ export const SobrietyDashboardScreen = ({ navigation }: any) => {
 
   const progress =
     stats.days_until_next_milestone !== null && stats.next_milestone_days !== null
-      ? (stats.current_streak_days / stats.next_milestone_days)
+      ? stats.current_streak_days / stats.next_milestone_days
       : 1.0;
 
   const renderMilestones = () => {
     const milestones: MilestoneType[] = ['30_days', '60_days', '90_days', '180_days', '1_year'];
 
-    return milestones.map((milestone) => {
+    return milestones.map(milestone => {
       const achieved = stats.milestones_achieved.includes(milestone);
       const days = MILESTONE_THRESHOLDS[milestone];
       const displayText = MILESTONE_DISPLAY_TEXT[milestone];
@@ -82,31 +81,20 @@ export const SobrietyDashboardScreen = ({ navigation }: any) => {
             styles.milestoneItem,
             achieved && { backgroundColor: theme.colors.primaryContainer },
           ]}
-          elevation={1}
-        >
+          elevation={1}>
           <View style={styles.milestoneContent}>
             <Text
               variant="titleMedium"
-              style={[
-                styles.milestoneText,
-                achieved && { color: theme.colors.primary },
-              ]}
-            >
+              style={[styles.milestoneText, achieved && { color: theme.colors.primary }]}>
               {displayText}
             </Text>
             <Text
               variant="bodySmall"
-              style={[
-                styles.milestoneDays,
-                achieved && { color: theme.colors.primary },
-              ]}
-            >
+              style={[styles.milestoneDays, achieved && { color: theme.colors.primary }]}>
               {days} days
             </Text>
           </View>
-          {achieved && (
-            <Text style={styles.achievedBadge}>✓</Text>
-          )}
+          {achieved && <Text style={styles.achievedBadge}>✓</Text>}
         </Surface>
       );
     });
@@ -131,9 +119,7 @@ export const SobrietyDashboardScreen = ({ navigation }: any) => {
           <Text variant="bodyMedium" style={styles.startDateLabel}>
             Sobriety Start Date
           </Text>
-          <Text variant="titleMedium">
-            {new Date(stats.start_date).toLocaleDateString()}
-          </Text>
+          <Text variant="titleMedium">{new Date(stats.start_date).toLocaleDateString()}</Text>
 
           <Text variant="bodyMedium" style={styles.substanceLabel}>
             Substance Type
@@ -146,11 +132,14 @@ export const SobrietyDashboardScreen = ({ navigation }: any) => {
         <Card style={styles.progressCard}>
           <Card.Content>
             <Text variant="titleMedium" style={styles.nextMilestoneTitle}>
-              Next Milestone: {MILESTONE_DISPLAY_TEXT[
-                Object.entries(MILESTONE_THRESHOLDS).find(
-                  ([_, days]) => days === stats.next_milestone_days
-                )?.[0] as MilestoneType || '30_days'
-              ]}
+              Next Milestone:{' '}
+              {
+                MILESTONE_DISPLAY_TEXT[
+                  (Object.entries(MILESTONE_THRESHOLDS).find(
+                    ([_, days]) => days === stats.next_milestone_days,
+                  )?.[0] as MilestoneType) || '30_days'
+                ]
+              }
             </Text>
             <View style={styles.progressContainer}>
               <ProgressBar
@@ -171,9 +160,7 @@ export const SobrietyDashboardScreen = ({ navigation }: any) => {
           <Text variant="titleLarge" style={styles.milestonesTitle}>
             Milestones
           </Text>
-          <View style={styles.milestonesList}>
-            {renderMilestones()}
-          </View>
+          <View style={styles.milestonesList}>{renderMilestones()}</View>
         </Card.Content>
       </Card>
 
@@ -205,22 +192,19 @@ export const SobrietyDashboardScreen = ({ navigation }: any) => {
         <Button
           mode="contained"
           onPress={() => navigation.navigate('SetSobrietyDate')}
-          style={styles.actionButton}
-        >
+          style={styles.actionButton}>
           Update Sobriety Date
         </Button>
         <Button
           mode="outlined"
           onPress={() => navigation.navigate('LogRelapse')}
-          style={styles.actionButton}
-        >
+          style={styles.actionButton}>
           Log Relapse
         </Button>
         <Button
           mode="text"
           onPress={() => navigation.navigate('RelapseHistory')}
-          style={styles.actionButton}
-        >
+          style={styles.actionButton}>
           View Relapse History
         </Button>
       </View>
@@ -228,128 +212,129 @@ export const SobrietyDashboardScreen = ({ navigation }: any) => {
   );
 };
 
-const createStyles = (theme: any) => StyleSheet.create({
-  container: {
-    flex: 1,
-    padding: 16,
-  },
-  centerContent: {
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  loadingText: {
-    marginTop: 16,
-  },
-  errorText: {
-    color: theme.colors.error,
-    marginBottom: 16,
-  },
-  emptyTitle: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    marginBottom: 8,
-    textAlign: 'center',
-  },
-  emptySubtitle: {
-    fontSize: 16,
-    textAlign: 'center',
-    marginBottom: 24,
-    paddingHorizontal: 32,
-  },
-  startButton: {
-    marginTop: 16,
-  },
-  streakCard: {
-    marginBottom: 16,
-  },
-  streakLabel: {
-    textAlign: 'center',
-    marginBottom: 8,
-  },
-  streakNumber: {
-    textAlign: 'center',
-    fontWeight: 'bold',
-  },
-  streakDays: {
-    textAlign: 'center',
-    marginBottom: 16,
-  },
-  divider: {
-    marginVertical: 16,
-  },
-  startDateLabel: {
-    marginTop: 8,
-    marginBottom: 4,
-  },
-  substanceLabel: {
-    marginTop: 16,
-    marginBottom: 4,
-  },
-  progressCard: {
-    marginBottom: 16,
-  },
-  nextMilestoneTitle: {
-    marginBottom: 12,
-  },
-  progressContainer: {
-    marginTop: 8,
-  },
-  progressBar: {
-    height: 8,
-    borderRadius: 4,
-  },
-  progressText: {
-    marginTop: 8,
-    textAlign: 'center',
-  },
-  milestonesCard: {
-    marginBottom: 16,
-  },
-  milestonesTitle: {
-    marginBottom: 16,
-  },
-  milestonesList: {
-    gap: 12,
-  },
-  milestoneItem: {
-    padding: 16,
-    borderRadius: 8,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-  },
-  milestoneContent: {
-    flex: 1,
-  },
-  milestoneText: {
-    fontWeight: 'bold',
-  },
-  milestoneDays: {
-    marginTop: 4,
-  },
-  achievedBadge: {
-    fontSize: 24,
-    color: theme.colors.tertiary,
-  },
-  statsCard: {
-    marginBottom: 16,
-  },
-  statsTitle: {
-    marginBottom: 12,
-  },
-  statsRow: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginVertical: 8,
-  },
-  statsValue: {
-    fontWeight: 'bold',
-  },
-  actions: {
-    marginTop: 8,
-    marginBottom: 32,
-  },
-  actionButton: {
-    marginBottom: 12,
-  },
-});
+const createStyles = (theme: any) =>
+  StyleSheet.create({
+    container: {
+      flex: 1,
+      padding: 16,
+    },
+    centerContent: {
+      justifyContent: 'center',
+      alignItems: 'center',
+    },
+    loadingText: {
+      marginTop: 16,
+    },
+    errorText: {
+      color: theme.colors.error,
+      marginBottom: 16,
+    },
+    emptyTitle: {
+      fontSize: 24,
+      fontWeight: 'bold',
+      marginBottom: 8,
+      textAlign: 'center',
+    },
+    emptySubtitle: {
+      fontSize: 16,
+      textAlign: 'center',
+      marginBottom: 24,
+      paddingHorizontal: 32,
+    },
+    startButton: {
+      marginTop: 16,
+    },
+    streakCard: {
+      marginBottom: 16,
+    },
+    streakLabel: {
+      textAlign: 'center',
+      marginBottom: 8,
+    },
+    streakNumber: {
+      textAlign: 'center',
+      fontWeight: 'bold',
+    },
+    streakDays: {
+      textAlign: 'center',
+      marginBottom: 16,
+    },
+    divider: {
+      marginVertical: 16,
+    },
+    startDateLabel: {
+      marginTop: 8,
+      marginBottom: 4,
+    },
+    substanceLabel: {
+      marginTop: 16,
+      marginBottom: 4,
+    },
+    progressCard: {
+      marginBottom: 16,
+    },
+    nextMilestoneTitle: {
+      marginBottom: 12,
+    },
+    progressContainer: {
+      marginTop: 8,
+    },
+    progressBar: {
+      height: 8,
+      borderRadius: 4,
+    },
+    progressText: {
+      marginTop: 8,
+      textAlign: 'center',
+    },
+    milestonesCard: {
+      marginBottom: 16,
+    },
+    milestonesTitle: {
+      marginBottom: 16,
+    },
+    milestonesList: {
+      gap: 12,
+    },
+    milestoneItem: {
+      padding: 16,
+      borderRadius: 8,
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+    },
+    milestoneContent: {
+      flex: 1,
+    },
+    milestoneText: {
+      fontWeight: 'bold',
+    },
+    milestoneDays: {
+      marginTop: 4,
+    },
+    achievedBadge: {
+      fontSize: 24,
+      color: theme.colors.tertiary,
+    },
+    statsCard: {
+      marginBottom: 16,
+    },
+    statsTitle: {
+      marginBottom: 12,
+    },
+    statsRow: {
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      marginVertical: 8,
+    },
+    statsValue: {
+      fontWeight: 'bold',
+    },
+    actions: {
+      marginTop: 8,
+      marginBottom: 32,
+    },
+    actionButton: {
+      marginBottom: 12,
+    },
+  });

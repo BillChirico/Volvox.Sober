@@ -3,9 +3,11 @@
 **Status**: 📋 Planned | **Priority**: Foundational | **Dependencies**: WP03 | **Effort**: 3-4 hours
 
 ## Objective
+
 Create reusable authentication UI components with accessibility and theming support.
 
 ## Subtasks
+
 - **T018** [P]: Create PasswordInput.tsx (visibility toggle, theme support, accessible)
 - **T019** [P]: Create PasswordStrength.tsx (colored bar indicator, real-time feedback)
 - **T020** [P]: Create AuthErrorMessage.tsx (accessibilityLiveRegion for screen readers)
@@ -14,12 +16,14 @@ Create reusable authentication UI components with accessibility and theming supp
 - **T023** [P]: Write tests for AuthErrorMessage
 
 ## Requirements
+
 - React Native Paper for UI components
 - Light/dark mode support (FR-017)
 - WCAG 2.1 AA compliance (FR-018)
 - Password strength feedback (FR-020)
 
 ## Files Created
+
 - `src/components/auth/PasswordInput.tsx`
 - `src/components/auth/PasswordStrength.tsx`
 - `src/components/auth/AuthErrorMessage.tsx`

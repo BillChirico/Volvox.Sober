@@ -1,9 +1,4 @@
-export type CheckinMood =
-  | 'great'
-  | 'good'
-  | 'okay'
-  | 'struggling'
-  | 'difficult';
+export type CheckinMood = 'great' | 'good' | 'okay' | 'struggling' | 'difficult';
 
 export interface Checkin {
   id: string;

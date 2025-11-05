@@ -3,28 +3,28 @@
  * Domain models and UI types
  */
 
-import { Tables } from './database.types'
+import { Tables } from './database.types';
 
 // Re-export database types
-export * from './database.types'
+export * from './database.types';
 
 // ============================================================
 // Message Types
 // ============================================================
 
 export interface Message extends Tables<'messages'> {
-  sender?: User
-  recipient?: User
+  sender?: User;
+  recipient?: User;
 }
 
 export interface MessageWithConnection extends Message {
-  connection: Connection
+  connection: Connection;
 }
 
 export interface ConversationPreview {
-  connection: ConnectionWithUsers
-  lastMessage?: Message
-  unreadCount: number
+  connection: ConnectionWithUsers;
+  lastMessage?: Message;
+  unreadCount: number;
 }
 
 // ============================================================
@@ -34,8 +34,8 @@ export interface ConversationPreview {
 export interface Connection extends Tables<'connections'> {}
 
 export interface ConnectionWithUsers extends Connection {
-  sponsor: User
-  sponsee: User
+  sponsor: User;
+  sponsee: User;
 }
 
 // ============================================================
@@ -45,7 +45,7 @@ export interface ConnectionWithUsers extends Connection {
 export interface User extends Tables<'users'> {}
 
 export interface UserProfile extends User {
-  role?: 'sponsor' | 'sponsee'
+  role?: 'sponsor' | 'sponsee';
 }
 
 // ============================================================
@@ -55,13 +55,13 @@ export interface UserProfile extends User {
 export interface CheckIn extends Tables<'check_ins'> {}
 
 export interface CheckInWithConnection extends CheckIn {
-  connection: ConnectionWithUsers
+  connection: ConnectionWithUsers;
 }
 
 export interface CheckInResponse extends Tables<'check_in_responses'> {}
 
 export interface CheckInResponseWithCheckIn extends CheckInResponse {
-  check_in: CheckIn
+  check_in: CheckIn;
 }
 
 // ============================================================
@@ -69,16 +69,16 @@ export interface CheckInResponseWithCheckIn extends CheckInResponse {
 // ============================================================
 
 export interface PaginatedResult<T> {
-  data: T[]
-  count: number | null
-  hasMore: boolean
-  nextPage?: number
+  data: T[];
+  count: number | null;
+  hasMore: boolean;
+  nextPage?: number;
 }
 
 export interface PaginationParams {
-  page?: number
-  limit?: number
-  offset?: number
+  page?: number;
+  limit?: number;
+  offset?: number;
 }
 
 // ============================================================
@@ -86,14 +86,14 @@ export interface PaginationParams {
 // ============================================================
 
 export interface ApiResponse<T> {
-  data?: T
-  error?: ApiError
+  data?: T;
+  error?: ApiError;
 }
 
 export interface ApiError {
-  message: string
-  code?: string
-  details?: unknown
+  message: string;
+  code?: string;
+  details?: unknown;
 }
 
 // ============================================================
@@ -101,17 +101,17 @@ export interface ApiError {
 // ============================================================
 
 export interface LoadingState {
-  isLoading: boolean
-  error?: string
+  isLoading: boolean;
+  error?: string;
 }
 
 export interface MessageInputState {
-  text: string
-  isSending: boolean
+  text: string;
+  isSending: boolean;
 }
 
 export interface ConversationState extends LoadingState {
-  messages: Message[]
-  hasMore: boolean
-  isLoadingMore: boolean
+  messages: Message[];
+  hasMore: boolean;
+  isLoadingMore: boolean;
 }

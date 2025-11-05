@@ -29,21 +29,24 @@
 
 ## Constitution Check
 
-*GATE: Must pass before Phase 0 research. Re-check after Phase 1 design.*
+_GATE: Must pass before Phase 0 research. Re-check after Phase 1 design._
 
 **I. Type Safety & Code Quality**
+
 - [ ] TypeScript strict mode enabled (`strict: true` in tsconfig.json)
 - [ ] No `any` types - use `unknown` or proper types
 - [ ] All exported functions have explicit return types
 - [ ] File naming conventions followed (PascalCase components, camelCase services/hooks)
 
 **II. Test-Driven Development**
+
 - [ ] TDD workflow planned: Write tests → Verify failure → Implement → Verify pass → Refactor
 - [ ] 80% code coverage target for business logic
 - [ ] Testing pyramid: Unit tests → Integration tests → E2E tests
 - [ ] Tests co-located in `__tests__/` directories
 
 **III. Cross-Platform UX Consistency**
+
 - [ ] UI components render consistently on iOS, Android, Web
 - [ ] Platform-specific overrides justified and documented
 - [ ] React Native Paper theme system used
@@ -51,6 +54,7 @@
 - [ ] Dark mode supported via theme provider
 
 **IV. Performance Standards**
+
 - [ ] App startup < 3 seconds on mid-range devices
 - [ ] Screen transitions maintain 60 FPS
 - [ ] Real-time messaging latency < 500ms
@@ -59,6 +63,7 @@
 - [ ] Database queries optimized (indexes, pagination, caching)
 
 **V. Component Architecture**
+
 - [ ] Functional components only (no class components)
 - [ ] Consistent hooks order: useState → useEffect → custom hooks → handlers
 - [ ] Named exports preferred over default exports
@@ -66,6 +71,7 @@
 - [ ] State management hierarchy followed (local → Redux → Supabase)
 
 **VI. Security & Privacy**
+
 - [ ] Row Level Security (RLS) enabled for all Supabase tables
 - [ ] Supabase Auth used (no custom auth logic)
 - [ ] Sensitive data access properly restricted
@@ -87,6 +93,7 @@ specs/[###-feature]/
 ```
 
 ### Source Code (repository root)
+
 <!--
   ACTION REQUIRED: Replace the placeholder tree below with the concrete layout
   for this feature. Delete unused options and expand the chosen structure with
@@ -137,7 +144,7 @@ directories captured above]
 
 > **Fill ONLY if Constitution Check has violations that must be justified**
 
-| Violation | Why Needed | Simpler Alternative Rejected Because |
-|-----------|------------|-------------------------------------|
-| [e.g., 4th project] | [current need] | [why 3 projects insufficient] |
-| [e.g., Repository pattern] | [specific problem] | [why direct DB access insufficient] |
+| Violation                  | Why Needed         | Simpler Alternative Rejected Because |
+| -------------------------- | ------------------ | ------------------------------------ |
+| [e.g., 4th project]        | [current need]     | [why 3 projects insufficient]        |
+| [e.g., Repository pattern] | [specific problem] | [why direct DB access insufficient]  |

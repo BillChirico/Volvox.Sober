@@ -42,8 +42,7 @@ const createMockStore = (userId: string = 'user-123') => {
       user: userReducer,
       [connectionsApi.reducerPath]: connectionsApi.reducer,
     },
-    middleware: (getDefaultMiddleware) =>
-      getDefaultMiddleware().concat(connectionsApi.middleware),
+    middleware: getDefaultMiddleware => getDefaultMiddleware().concat(connectionsApi.middleware),
     preloadedState: {
       user: {
         user: { id: userId },
@@ -65,7 +64,7 @@ describe('ConnectionDetailScreen', () => {
         <NavigationContainer>
           <ConnectionDetailScreen />
         </NavigationContainer>
-      </Provider>
+      </Provider>,
     );
 
     expect(getByText('John Sponsor')).toBeTruthy();
@@ -81,7 +80,7 @@ describe('ConnectionDetailScreen', () => {
         <NavigationContainer>
           <ConnectionDetailScreen />
         </NavigationContainer>
-      </Provider>
+      </Provider>,
     );
 
     expect(getByText('Your Sponsor')).toBeTruthy();
@@ -95,7 +94,7 @@ describe('ConnectionDetailScreen', () => {
         <NavigationContainer>
           <ConnectionDetailScreen />
         </NavigationContainer>
-      </Provider>
+      </Provider>,
     );
 
     expect(getByText('Your Sponsee')).toBeTruthy();
@@ -109,7 +108,7 @@ describe('ConnectionDetailScreen', () => {
         <NavigationContainer>
           <ConnectionDetailScreen />
         </NavigationContainer>
-      </Provider>
+      </Provider>,
     );
 
     // Should show formatted date
@@ -124,7 +123,7 @@ describe('ConnectionDetailScreen', () => {
         <NavigationContainer>
           <ConnectionDetailScreen />
         </NavigationContainer>
-      </Provider>
+      </Provider>,
     );
 
     // Should show "X days ago" format
@@ -139,7 +138,7 @@ describe('ConnectionDetailScreen', () => {
         <NavigationContainer>
           <ConnectionDetailScreen />
         </NavigationContainer>
-      </Provider>
+      </Provider>,
     );
 
     expect(getByText(/💬 Last Contact:/)).toBeTruthy();
@@ -153,7 +152,7 @@ describe('ConnectionDetailScreen', () => {
         <NavigationContainer>
           <ConnectionDetailScreen />
         </NavigationContainer>
-      </Provider>
+      </Provider>,
     );
 
     expect(getByText('Sponsor Experience')).toBeTruthy();
@@ -169,7 +168,7 @@ describe('ConnectionDetailScreen', () => {
         <NavigationContainer>
           <ConnectionDetailScreen />
         </NavigationContainer>
-      </Provider>
+      </Provider>,
     );
 
     const messageButton = getByText('Send Message');
@@ -190,7 +189,7 @@ describe('ConnectionDetailScreen', () => {
         <NavigationContainer>
           <ConnectionDetailScreen />
         </NavigationContainer>
-      </Provider>
+      </Provider>,
     );
 
     const disconnectButton = getByText('Disconnect');
@@ -208,7 +207,7 @@ describe('ConnectionDetailScreen', () => {
         <NavigationContainer>
           <ConnectionDetailScreen />
         </NavigationContainer>
-      </Provider>
+      </Provider>,
     );
 
     const disconnectButton = getByText('Disconnect');
@@ -225,7 +224,7 @@ describe('ConnectionDetailScreen', () => {
         <NavigationContainer>
           <ConnectionDetailScreen />
         </NavigationContainer>
-      </Provider>
+      </Provider>,
     );
 
     // Open dialog
@@ -246,10 +245,9 @@ describe('ConnectionDetailScreen', () => {
   it('confirms disconnect and navigates back', async () => {
     const mockDisconnect = jest.fn().mockResolvedValue({ data: null });
 
-    jest.spyOn(connectionsApi.endpoints.disconnect, 'useMutation').mockReturnValue([
-      mockDisconnect,
-      { isLoading: false },
-    ] as any);
+    jest
+      .spyOn(connectionsApi.endpoints.disconnect, 'useMutation')
+      .mockReturnValue([mockDisconnect, { isLoading: false }] as any);
 
     const store = createMockStore();
 
@@ -258,7 +256,7 @@ describe('ConnectionDetailScreen', () => {
         <NavigationContainer>
           <ConnectionDetailScreen />
         </NavigationContainer>
-      </Provider>
+      </Provider>,
     );
 
     // Open dialog
@@ -285,7 +283,7 @@ describe('ConnectionDetailScreen', () => {
         <NavigationContainer>
           <ConnectionDetailScreen />
         </NavigationContainer>
-      </Provider>
+      </Provider>,
     );
 
     expect(getByText(/Disconnecting will end this sponsorship relationship/)).toBeTruthy();
@@ -326,7 +324,7 @@ describe('ConnectionDetailScreen', () => {
         <NavigationContainer>
           <ConnectionDetailScreen />
         </NavigationContainer>
-      </Provider>
+      </Provider>,
     );
 
     // Should render with default avatar icon
@@ -367,7 +365,7 @@ describe('ConnectionDetailScreen', () => {
         <NavigationContainer>
           <ConnectionDetailScreen />
         </NavigationContainer>
-      </Provider>
+      </Provider>,
     );
 
     // Should not show last contact section when undefined
@@ -377,10 +375,9 @@ describe('ConnectionDetailScreen', () => {
   it('shows loading state during disconnect', () => {
     const mockDisconnect = jest.fn();
 
-    jest.spyOn(connectionsApi.endpoints.disconnect, 'useMutation').mockReturnValue([
-      mockDisconnect,
-      { isLoading: true },
-    ] as any);
+    jest
+      .spyOn(connectionsApi.endpoints.disconnect, 'useMutation')
+      .mockReturnValue([mockDisconnect, { isLoading: true }] as any);
 
     const store = createMockStore();
 
@@ -389,7 +386,7 @@ describe('ConnectionDetailScreen', () => {
         <NavigationContainer>
           <ConnectionDetailScreen />
         </NavigationContainer>
-      </Provider>
+      </Provider>,
     );
 
     // Open dialog

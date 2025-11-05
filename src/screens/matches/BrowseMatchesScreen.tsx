@@ -27,7 +27,7 @@ const BrowseMatchesScreen: React.FC = () => {
 
   // Check network status
   useEffect(() => {
-    const unsubscribe = NetInfo.addEventListener((state) => {
+    const unsubscribe = NetInfo.addEventListener(state => {
       setIsOffline(!state.isConnected);
     });
 
@@ -70,7 +70,7 @@ const BrowseMatchesScreen: React.FC = () => {
         JSON.stringify({
           matches,
           cached_at: new Date().toISOString(),
-        })
+        }),
       );
       setLastRefresh(new Date());
     } catch (error) {
@@ -101,7 +101,7 @@ const BrowseMatchesScreen: React.FC = () => {
   // Skeleton loading cards
   const renderSkeleton = () => (
     <View style={styles.skeletonContainer}>
-      {[1, 2, 3].map((key) => (
+      {[1, 2, 3].map(key => (
         <Surface key={key} style={styles.skeletonCard}>
           <ActivityIndicator animating={true} size="large" />
           <Text variant="bodyMedium" style={styles.skeletonText}>
@@ -134,19 +134,15 @@ const BrowseMatchesScreen: React.FC = () => {
   return (
     <View style={styles.container}>
       {showStaleBanner && (
-        <Banner
-          visible={true}
-          icon="wifi-off"
-          style={styles.banner}
-        >
-          Offline - Showing cached matches from{' '}
-          {lastRefresh?.toLocaleDateString() || 'earlier'}. Pull to refresh when online.
+        <Banner visible={true} icon="wifi-off" style={styles.banner}>
+          Offline - Showing cached matches from {lastRefresh?.toLocaleDateString() || 'earlier'}.
+          Pull to refresh when online.
         </Banner>
       )}
 
       <FlatList
         data={displayMatches}
-        keyExtractor={(item) => item.sponsor_id}
+        keyExtractor={item => item.sponsor_id}
         renderItem={({ item }) => (
           <MatchCard
             match={item}
@@ -156,70 +152,65 @@ const BrowseMatchesScreen: React.FC = () => {
         )}
         ListEmptyComponent={renderEmpty}
         refreshControl={
-          <RefreshControl
-            refreshing={isFetching}
-            onRefresh={handleRefresh}
-            enabled={!isOffline}
-          />
+          <RefreshControl refreshing={isFetching} onRefresh={handleRefresh} enabled={!isOffline} />
         }
-        contentContainerStyle={
-          displayMatches.length === 0 ? styles.emptyList : styles.list
-        }
+        contentContainerStyle={displayMatches.length === 0 ? styles.emptyList : styles.list}
       />
     </View>
   );
 };
 
-const createStyles = (theme: any) => StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#f5f5f5',
-  },
-  banner: {
-    backgroundColor: '#FFF3E0',
-  },
-  list: {
-    paddingVertical: 8,
-  },
-  emptyList: {
-    flex: 1,
-  },
-  skeletonContainer: {
-    flex: 1,
-    padding: 16,
-  },
-  skeletonCard: {
-    height: 200,
-    marginVertical: 8,
-    borderRadius: 8,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  skeletonText: {
-    marginTop: 16,
-    color: theme.colors.onSurfaceVariant,
-  },
-  emptyContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    padding: 32,
-  },
-  emptyTitle: {
-    marginBottom: 16,
-    textAlign: 'center',
-    fontWeight: 'bold',
-  },
-  emptyMessage: {
-    textAlign: 'center',
-    color: theme.colors.onSurfaceVariant,
-    marginBottom: 8,
-  },
-  emptyHint: {
-    textAlign: 'center',
-    color: '#999',
-    fontStyle: 'italic',
-  },
-});
+const createStyles = (theme: any) =>
+  StyleSheet.create({
+    container: {
+      flex: 1,
+      backgroundColor: '#f5f5f5',
+    },
+    banner: {
+      backgroundColor: '#FFF3E0',
+    },
+    list: {
+      paddingVertical: 8,
+    },
+    emptyList: {
+      flex: 1,
+    },
+    skeletonContainer: {
+      flex: 1,
+      padding: 16,
+    },
+    skeletonCard: {
+      height: 200,
+      marginVertical: 8,
+      borderRadius: 8,
+      justifyContent: 'center',
+      alignItems: 'center',
+    },
+    skeletonText: {
+      marginTop: 16,
+      color: theme.colors.onSurfaceVariant,
+    },
+    emptyContainer: {
+      flex: 1,
+      justifyContent: 'center',
+      alignItems: 'center',
+      padding: 32,
+    },
+    emptyTitle: {
+      marginBottom: 16,
+      textAlign: 'center',
+      fontWeight: 'bold',
+    },
+    emptyMessage: {
+      textAlign: 'center',
+      color: theme.colors.onSurfaceVariant,
+      marginBottom: 8,
+    },
+    emptyHint: {
+      textAlign: 'center',
+      color: '#999',
+      fontStyle: 'italic',
+    },
+  });
 
 export default BrowseMatchesScreen;
