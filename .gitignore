@@ -52,3 +52,4 @@ logs/
 # Build artifacts
 dist/
 build/
+.worktrees/
