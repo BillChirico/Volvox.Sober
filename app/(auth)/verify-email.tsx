@@ -109,7 +109,6 @@ export default function VerifyEmailScreen() {
     <View
       style={[styles.container, { backgroundColor: theme.colors.background }]}
       testID="verify-email-screen"
-      accessibilityRole="main"
       accessibilityLabel="Email verification screen"
     >
       <View style={styles.content}>

@@ -103,7 +103,7 @@ const SignupForm: React.FC<SignupFormProps> = ({ onSuccess }) => {
     const result = await dispatch(signupThunk({ email, password }));
 
     // Handle success
-    if (result.payload?.success) {
+    if ((result.payload as { success: boolean })?.success) {
       setShowSuccess(true);
       // Clear form
       setEmail('');

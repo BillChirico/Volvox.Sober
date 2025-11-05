@@ -20,7 +20,10 @@ interface UpdatePasswordPayload {
   newPassword: string;
 }
 
-export const signupThunk = createAsyncThunk(
+export const signupThunk = createAsyncThunk<
+  { success: boolean },
+  SignupPayload
+>(
   'auth/signup',
   async (payload: SignupPayload, { dispatch }) => {
     dispatch(setLoading(true));
@@ -50,7 +53,10 @@ export const signupThunk = createAsyncThunk(
   }
 );
 
-export const loginThunk = createAsyncThunk(
+export const loginThunk = createAsyncThunk<
+  { success: boolean },
+  LoginPayload
+>(
   'auth/login',
   async (payload: LoginPayload, { dispatch }) => {
     dispatch(setLoading(true));
@@ -80,7 +86,10 @@ export const loginThunk = createAsyncThunk(
   }
 );
 
-export const logoutThunk = createAsyncThunk(
+export const logoutThunk = createAsyncThunk<
+  { success: boolean },
+  void
+>(
   'auth/logout',
   async (_, { dispatch }) => {
     dispatch(setLoading(true));
@@ -104,7 +113,10 @@ export const logoutThunk = createAsyncThunk(
   }
 );
 
-export const resetPasswordRequestThunk = createAsyncThunk(
+export const resetPasswordRequestThunk = createAsyncThunk<
+  { success: boolean },
+  ResetPasswordPayload
+>(
   'auth/resetPasswordRequest',
   async (payload: ResetPasswordPayload, { dispatch }) => {
     dispatch(setLoading(true));
@@ -128,7 +140,10 @@ export const resetPasswordRequestThunk = createAsyncThunk(
   }
 );
 
-export const updatePasswordThunk = createAsyncThunk(
+export const updatePasswordThunk = createAsyncThunk<
+  { success: boolean },
+  UpdatePasswordPayload
+>(
   'auth/updatePassword',
   async (payload: UpdatePasswordPayload, { dispatch }) => {
     dispatch(setLoading(true));

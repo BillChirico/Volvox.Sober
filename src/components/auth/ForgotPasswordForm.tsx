@@ -197,7 +197,6 @@ const ForgotPasswordForm: React.FC<ForgotPasswordFormProps> = ({
     <View
       style={[styles.container, { backgroundColor: theme.colors.background }]}
       testID="forgot-password-form"
-      accessibilityRole="form"
       accessibilityLabel={
         isPasswordUpdateMode ? 'Update password form' : 'Password reset request form'
       }

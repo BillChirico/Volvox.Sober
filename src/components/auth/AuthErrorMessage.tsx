@@ -1,11 +1,12 @@
 import React from 'react';
-import { View, StyleSheet } from 'react-native';
+import { View, StyleSheet, ViewStyle, StyleProp } from 'react-native';
 import { Text, IconButton, useTheme } from 'react-native-paper';
 
 export interface AuthErrorMessageProps {
   message: string | string[] | null | undefined;
   dismissible?: boolean;
   onDismiss?: () => void;
+  style?: StyleProp<ViewStyle>;
 }
 
 /**
@@ -31,6 +32,7 @@ const AuthErrorMessage: React.FC<AuthErrorMessageProps> = ({
   message,
   dismissible = false,
   onDismiss,
+  style,
 }) => {
   const theme = useTheme();
 
@@ -60,6 +62,7 @@ const AuthErrorMessage: React.FC<AuthErrorMessageProps> = ({
           backgroundColor: theme.colors.errorContainer,
           borderColor: theme.colors.error,
         },
+        style,
       ]}
       accessibilityLiveRegion="polite"
       accessibilityRole="alert"

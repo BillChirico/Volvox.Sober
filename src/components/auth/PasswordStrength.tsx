@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react';
-import { View, StyleSheet } from 'react-native';
+import { View, StyleSheet, ViewStyle, StyleProp } from 'react-native';
 import { Text, useTheme } from 'react-native-paper';
 import {
   calculatePasswordStrength,
@@ -11,6 +11,7 @@ import {
 export interface PasswordStrengthProps {
   password: string;
   visible?: boolean;
+  style?: StyleProp<ViewStyle>;
 }
 
 /**
@@ -33,6 +34,7 @@ export interface PasswordStrengthProps {
 const PasswordStrength: React.FC<PasswordStrengthProps> = ({
   password,
   visible = true,
+  style,
 }) => {
   const theme = useTheme();
 
@@ -58,7 +60,7 @@ const PasswordStrength: React.FC<PasswordStrengthProps> = ({
 
   return (
     <View
-      style={styles.container}
+      style={[styles.container, style]}
       testID="password-strength-indicator"
       accessibilityLabel={accessibilityLabel}
       accessibilityRole="progressbar"
@@ -93,7 +95,7 @@ const PasswordStrength: React.FC<PasswordStrengthProps> = ({
           style={[
             styles.bar,
             {
-              width: barWidth,
+              width: barWidth as `${number}%`,
               backgroundColor: strengthColor,
             },
           ]}
@@ -148,7 +150,6 @@ const styles = StyleSheet.create({
   bar: {
     height: '100%',
     borderRadius: 4,
-    transition: 'width 0.3s ease',
   },
   feedbackContainer: {
     marginTop: 8,

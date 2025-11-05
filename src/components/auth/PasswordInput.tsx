@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { TextInput, useTheme, HelperText } from 'react-native-paper';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, View, ViewStyle, StyleProp } from 'react-native';
 
 export interface PasswordInputProps {
   label: string;
@@ -10,10 +10,11 @@ export interface PasswordInputProps {
   helperText?: string;
   placeholder?: string;
   disabled?: boolean;
-  onBlur?: () => void;
+  onBlur?: () => void | Promise<void> | boolean | Promise<boolean>;
   testID?: string;
   accessibilityLabel?: string;
   accessibilityHint?: string;
+  style?: StyleProp<ViewStyle>;
 }
 
 /**
@@ -48,6 +49,7 @@ const PasswordInput: React.FC<PasswordInputProps> = ({
   testID = 'password-input',
   accessibilityLabel,
   accessibilityHint,
+  style,
 }) => {
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
   const theme = useTheme();
@@ -65,7 +67,7 @@ const PasswordInput: React.FC<PasswordInputProps> = ({
     : 'Double tap to show your password';
 
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, style]}>
       <TextInput
         testID={testID}
         label={label}

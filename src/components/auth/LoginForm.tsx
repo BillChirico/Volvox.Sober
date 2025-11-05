@@ -115,7 +115,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ onSuccess, onForgotPassword }) =>
     const result = await dispatch(loginThunk({ email, password }));
 
     // Handle success
-    if (result.payload?.success) {
+    if ((result.payload as { success: boolean })?.success) {
       // Clear form
       setEmail('');
       setPassword('');
@@ -157,7 +157,6 @@ const LoginForm: React.FC<LoginFormProps> = ({ onSuccess, onForgotPassword }) =>
     <View
       style={[styles.container, { backgroundColor: theme.colors.background }]}
       testID="login-form"
-      accessibilityRole="form"
       accessibilityLabel="Login form"
     >
       <Text
