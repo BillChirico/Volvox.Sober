@@ -3,10 +3,12 @@ name: Claude Code Review
 on:
   pull_request:
     types: [opened, synchronize]
-    
+
 jobs:
   claude-review:
     runs-on: ubuntu-latest
+    # Runs for all PRs including bot-created PRs (Dependabot, Renovate, etc.)
+    # Only runs on same-repository PRs for security (GitHub default behavior)
     permissions:
       contents: write
       pull-requests: write
