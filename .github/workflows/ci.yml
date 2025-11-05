@@ -89,10 +89,14 @@ jobs:
         run: npx expo config --type public
 
   build-validation:
-    name: Build Validation
+    name: Build Validation (Web, iOS, Android)
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    timeout-minutes: 30
     needs: validate
+
+    strategy:
+      matrix:
+        platform: [web, ios, android]
 
     steps:
       - name: Checkout repository
@@ -110,19 +114,25 @@ jobs:
           node-version: '20.x'
           cache: 'pnpm'
 
+      - name: Setup Expo
+        uses: expo/expo-github-action@v8
+        with:
+          expo-version: latest
+          token: ${{ secrets.EXPO_TOKEN }}
+
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
-      - name: Export web build
-        run: npx expo export --platform web
+      - name: Export ${{ matrix.platform }} build
+        run: npx expo export --platform ${{ matrix.platform }}
         env:
           NODE_ENV: production
           CI: true
 
-      - name: Upload build artifacts
+      - name: Upload ${{ matrix.platform }} build artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: web-build
+          name: ${{ matrix.platform }}-build
           path: dist/
           retention-days: 7
 
