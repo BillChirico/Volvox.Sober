@@ -1,57 +1,145 @@
 /**
- * Supabase client configuration
- * Provides typed Supabase client for the application
+ * Supabase Client Service
+ * Singleton instance for interacting with Supabase backend
  */
 
-import { createClient } from '@supabase/supabase-js'
-import type { Database } from '../types/database.types'
+import { createClient, SupabaseClient, Session } from '@supabase/supabase-js';
+import * as SecureStore from 'expo-secure-store';
+import { Platform } from 'react-native';
 
-// Environment variables (to be configured)
-const SUPABASE_URL = process.env.SUPABASE_URL || ''
-const SUPABASE_ANON_KEY = process.env.SUPABASE_ANON_KEY || ''
-
-if (!SUPABASE_URL || !SUPABASE_ANON_KEY) {
-  console.warn('Supabase credentials not configured. Set SUPABASE_URL and SUPABASE_ANON_KEY.')
-}
+const SUPABASE_URL = process.env.EXPO_PUBLIC_SUPABASE_URL || '';
+const SUPABASE_ANON_KEY = process.env.EXPO_PUBLIC_SUPABASE_ANON_KEY || '';
 
 /**
- * Typed Supabase client
- * Provides type-safe access to database tables and functions
+ * Secure storage adapter for Supabase auth tokens
+ * Uses expo-secure-store for native platforms
  */
-export const supabase = createClient<Database>(SUPABASE_URL, SUPABASE_ANON_KEY, {
+const SecureStoreAdapter = {
+  async getItem(key: string): Promise<string | null> {
+    try {
+      if (Platform.OS === 'web') {
+        // Fallback to localStorage for web
+        return localStorage.getItem(key);
+      }
+      return await SecureStore.getItemAsync(key);
+    } catch (error) {
+      console.error('Error getting item from secure store:', error);
+      return null;
+    }
+  },
+
+  async setItem(key: string, value: string): Promise<void> {
+    try {
+      if (Platform.OS === 'web') {
+        // Fallback to localStorage for web
+        localStorage.setItem(key, value);
+        return;
+      }
+      await SecureStore.setItemAsync(key, value);
+    } catch (error) {
+      console.error('Error setting item in secure store:', error);
+    }
+  },
+
+  async removeItem(key: string): Promise<void> {
+    try {
+      if (Platform.OS === 'web') {
+        // Fallback to localStorage for web
+        localStorage.removeItem(key);
+        return;
+      }
+      await SecureStore.deleteItemAsync(key);
+    } catch (error) {
+      console.error('Error removing item from secure store:', error);
+    }
+  },
+};
+
+/**
+ * Create Supabase client with secure storage for auth tokens
+ */
+const supabaseClient: SupabaseClient = createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
   auth: {
-    persistSession: true,
+    storage: SecureStoreAdapter,
     autoRefreshToken: true,
+    persistSession: true,
     detectSessionInUrl: false,
   },
-  realtime: {
-    params: {
-      eventsPerSecond: 10,
+});
+
+/**
+ * Get current auth session
+ */
+export const getSession = async (): Promise<Session | null> => {
+  const {
+    data: { session },
+  } = await supabaseClient.auth.getSession();
+  return session;
+};
+
+/**
+ * Get current user
+ */
+export const getUser = async () => {
+  const {
+    data: { user },
+  } = await supabaseClient.auth.getUser();
+  return user;
+};
+
+/**
+ * Sign up with email and password
+ */
+export const signUp = async (email: string, password: string, metadata?: Record<string, unknown>) => {
+  return await supabaseClient.auth.signUp({
+    email,
+    password,
+    options: {
+      data: metadata,
     },
-  },
-})
+  });
+};
 
 /**
- * Get current authenticated user
+ * Sign in with email and password
  */
-export const getCurrentUser = async () => {
-  const { data: { user }, error } = await supabase.auth.getUser()
-  if (error) throw error
-  return user
-}
+export const signIn = async (email: string, password: string) => {
+  return await supabaseClient.auth.signInWithPassword({
+    email,
+    password,
+  });
+};
 
 /**
- * Get current user ID
+ * Sign out
  */
-export const getCurrentUserId = async () => {
-  const user = await getCurrentUser()
-  return user?.id
-}
+export const signOut = async () => {
+  return await supabaseClient.auth.signOut();
+};
 
 /**
- * Check if user is authenticated
+ * Reset password (request email)
  */
-export const isAuthenticated = async () => {
-  const { data: { session } } = await supabase.auth.getSession()
-  return !!session
-}
+export const resetPassword = async (email: string) => {
+  return await supabaseClient.auth.resetPasswordForEmail(email, {
+    redirectTo: 'volvox-sober://reset-password',
+  });
+};
+
+/**
+ * Update password
+ */
+export const updatePassword = async (newPassword: string) => {
+  return await supabaseClient.auth.updateUser({
+    password: newPassword,
+  });
+};
+
+/**
+ * Listen to auth state changes
+ */
+export const onAuthStateChange = (callback: (event: string, session: Session | null) => void) => {
+  return supabaseClient.auth.onAuthStateChange(callback);
+};
+
+export default supabaseClient;

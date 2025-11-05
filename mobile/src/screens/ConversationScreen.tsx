@@ -280,17 +280,17 @@ export const ConversationScreen: React.FC<ConversationScreenProps> = ({
 // Styles
 // ============================================================
 
-const styles = StyleSheet.create({
+const createStyles = (theme: any) => StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#FFFFFF',
+    backgroundColor: theme.colors.surface,
   },
   centerContainer: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
     padding: 20,
-    backgroundColor: '#FFFFFF',
+    backgroundColor: theme.colors.surface,
   },
   messageList: {
     paddingVertical: 12,
@@ -302,7 +302,7 @@ const styles = StyleSheet.create({
   loadingText: {
     marginTop: 12,
     fontSize: 16,
-    color: '#8E8E93',
+    color: theme.colors.onSurfaceVariant,
   },
   errorText: {
     fontSize: 16,

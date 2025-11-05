@@ -1,38 +1,33 @@
 # API Contracts
 
-This directory contains the API contracts and database schema for Volvox.Sober.
+**Feature**: 001-volvox-sober-recovery
+**Format**: OpenAPI 3.0
+**Base URL**: `https://[project-id].supabase.co`
 
-## Files
+## Contract Files
 
-- **`database.sql`**: PostgreSQL schema migrations (tables, indexes, RLS policies, triggers)
-- **`types.ts`**: TypeScript type definitions matching database schema
-- **`api-schema.yaml`**: Supabase Edge Function signatures and RPC definitions
+This directory contains OpenAPI specifications for all Volvox.Sober API endpoints:
 
-## Generation Commands
+- **auth.yaml** - Authentication (signup, login, password reset) ✅ Created
+- **matching.yaml** - Sponsor-sponsee matching algorithm ✅ Created
+- **users.yaml** - User profiles and preferences
+- **connections.yaml** - Connection requests and management
+- **sobriety.yaml** - Sobriety tracking and milestones
+- **steps.yaml** - 12-step worksheets and progress
+- **messages.yaml** - In-app messaging and check-ins
 
-### Generate TypeScript Types from Database
+## Implementation Notes
 
-```bash
-supabase gen types typescript --local > contracts/types.ts
-```
+- **Authentication**: All endpoints require `Authorization: Bearer <JWT>` header except auth endpoints
+- **RLS Enforcement**: Database Row Level Security policies enforce data access at the database layer
+- **Edge Functions**: Compute-heavy operations (matching algorithm) run as Supabase Edge Functions
+- **Real-time**: Message delivery uses Supabase Realtime subscriptions (WebSocket), not REST polling
+- **Pagination**: List endpoints use cursor-based pagination with `limit` and `cursor` parameters
+- **Error Codes**: Standard HTTP status codes + Supabase error codes in response body
 
-### Validate Database Schema
+## Contract Status
 
-```bash
-supabase db lint
-```
+✅ = Specified
+⏳ = To be specified during implementation
 
-### Test RLS Policies
-
-```bash
-supabase test db
-```
-
-## Implementation Status
-
-- [x] Data model designed (`data-model.md`)
-- [ ] `database.sql` - PostgreSQL migrations (pending implementation)
-- [ ] `types.ts` - TypeScript definitions (auto-generated after migrations)
-- [ ] `api-schema.yaml` - Edge Function contracts (pending implementation)
-
-**Note**: These contracts will be implemented during `/spec-kitty.tasks` execution phase.
+**Current Status**: Sample contracts created (auth, matching). Remaining contracts follow same patterns.

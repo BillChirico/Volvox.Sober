@@ -173,17 +173,17 @@ const formatTimestamp = (timestamp: string): string => {
 // Styles
 // ============================================================
 
-const styles = StyleSheet.create({
+const createStyles = (theme: any) => StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#F5F5F5',
+    backgroundColor: theme.colors.background,
   },
   centerContainer: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
     padding: 20,
-    backgroundColor: '#F5F5F5',
+    backgroundColor: theme.colors.background,
   },
   listContent: {
     paddingVertical: 8,
@@ -191,7 +191,7 @@ const styles = StyleSheet.create({
   conversationItem: {
     flexDirection: 'row',
     padding: 16,
-    backgroundColor: '#FFFFFF',
+    backgroundColor: theme.colors.surface,
     borderBottomWidth: 1,
     borderBottomColor: '#E5E5E5',
   },
@@ -205,12 +205,12 @@ const styles = StyleSheet.create({
     width: 50,
     height: 50,
     borderRadius: 25,
-    backgroundColor: '#007AFF',
+    backgroundColor: theme.colors.primary,
     justifyContent: 'center',
     alignItems: 'center',
   },
   avatarText: {
-    color: '#FFFFFF',
+    color: theme.colors.onPrimary,
     fontSize: 20,
     fontWeight: '600',
   },
@@ -226,14 +226,14 @@ const styles = StyleSheet.create({
   },
   partnerName: {
     fontSize: 16,
-    color: '#000000',
+    color: theme.colors.onSurface,
   },
   boldText: {
     fontWeight: '600',
   },
   timestamp: {
     fontSize: 12,
-    color: '#8E8E93',
+    color: theme.colors.onSurfaceVariant,
   },
   conversationFooter: {
     flexDirection: 'row',
@@ -243,11 +243,11 @@ const styles = StyleSheet.create({
   lastMessage: {
     flex: 1,
     fontSize: 14,
-    color: '#8E8E93',
+    color: theme.colors.onSurfaceVariant,
     marginRight: 8,
   },
   badge: {
-    backgroundColor: '#007AFF',
+    backgroundColor: theme.colors.primary,
     borderRadius: 10,
     minWidth: 20,
     height: 20,
@@ -256,14 +256,14 @@ const styles = StyleSheet.create({
     paddingHorizontal: 6,
   },
   badgeText: {
-    color: '#FFFFFF',
+    color: theme.colors.onPrimary,
     fontSize: 12,
     fontWeight: '600',
   },
   loadingText: {
     marginTop: 12,
     fontSize: 16,
-    color: '#8E8E93',
+    color: theme.colors.onSurfaceVariant,
   },
   errorText: {
     fontSize: 16,
@@ -272,26 +272,26 @@ const styles = StyleSheet.create({
     marginBottom: 16,
   },
   retryButton: {
-    backgroundColor: '#007AFF',
+    backgroundColor: theme.colors.primary,
     paddingHorizontal: 24,
     paddingVertical: 12,
     borderRadius: 8,
   },
   retryButtonText: {
-    color: '#FFFFFF',
+    color: theme.colors.onPrimary,
     fontSize: 16,
     fontWeight: '600',
   },
   emptyText: {
     fontSize: 18,
     fontWeight: '600',
-    color: '#000000',
+    color: theme.colors.onSurface,
     marginBottom: 8,
     textAlign: 'center',
   },
   emptySubtext: {
     fontSize: 14,
-    color: '#8E8E93',
+    color: theme.colors.onSurfaceVariant,
     textAlign: 'center',
     paddingHorizontal: 32,
   },

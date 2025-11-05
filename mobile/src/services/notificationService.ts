@@ -1,277 +1,296 @@
 /**
- * Notification Service
- * Handles push notification registration and FCM token management
- *
- * Note: This is a placeholder implementation. Full FCM integration
- * will be completed in T039 with the Edge Function for sending notifications.
+ * Notification Service - Expo Notifications integration and handlers (T133, T135-T137)
  */
 
-import { Platform } from 'react-native'
-import messaging from '@react-native-firebase/messaging'
-import { supabase } from './supabase'
-import { getCurrentUserId } from './supabase'
+import * as Notifications from 'expo-notifications';
+import { Platform } from 'react-native';
+import { supabase } from './supabase';
+import { NavigationContainerRef } from '@react-navigation/native';
 
-// ============================================================
-// FCM Token Management
-// ============================================================
+export type NotificationType =
+  | 'new_message'
+  | 'connection_request'
+  | 'check_in_reminder'
+  | 'milestone_achieved'
+  | 'step_work_comment'
+  | 'step_work_submitted'
+  | 'step_work_reviewed';
 
-/**
- * Request notification permissions
- */
-export const requestNotificationPermission = async (): Promise<boolean> => {
-  try {
-    const authStatus = await messaging().requestPermission()
-    const enabled =
-      authStatus === messaging.AuthorizationStatus.AUTHORIZED ||
-      authStatus === messaging.AuthorizationStatus.PROVISIONAL
+interface NotificationData {
+  type: NotificationType;
+  entity_id?: string;
+  connection_id?: string;
+  step_id?: string;
+  [key: string]: string | undefined;
+}
 
-    if (enabled) {
-      console.log('Notification permission granted:', authStatus)
-    }
+// Configure how notifications are handled when app is in foreground
+Notifications.setNotificationHandler({
+  handleNotification: async () => ({
+    shouldShowAlert: true,
+    shouldPlaySound: true,
+    shouldSetBadge: true,
+  }),
+});
 
-    return enabled
-  } catch (error) {
-    console.error('Failed to request notification permission:', error)
-    return false
+class NotificationService {
+  private navigationRef: NavigationContainerRef<any> | null = null;
+  private notificationListener: any = null;
+  private responseListener: any = null;
+
+  /**
+   * Initialize notification service
+   */
+  async initialize(navigationRef: NavigationContainerRef<any>) {
+    this.navigationRef = navigationRef;
+
+    // Request permission (T133)
+    await this.requestPermission();
+
+    // Get and register Expo push token
+    await this.registerToken();
+
+    // Setup foreground notification handler (T135)
+    this.notificationListener = Notifications.addNotificationReceivedListener(
+      this.handleForegroundNotification
+    );
+
+    // Setup notification response handler (T137 - Deep linking)
+    this.responseListener = Notifications.addNotificationResponseReceivedListener(
+      this.handleNotificationResponse
+    );
   }
-}
 
-/**
- * Get FCM token for this device
- */
-export const getFCMToken = async (): Promise<string | null> => {
-  try {
-    // Check permission first
-    const hasPermission = await messaging().hasPermission()
-    if (!hasPermission) {
-      const granted = await requestNotificationPermission()
-      if (!granted) {
-        return null
-      }
-    }
-
-    // Get token
-    const token = await messaging().getToken()
-    console.log('FCM Token:', token)
-    return token
-  } catch (error) {
-    console.error('Failed to get FCM token:', error)
-    return null
-  }
-}
-
-/**
- * Store FCM token in user profile for server-side notifications
- */
-export const registerFCMToken = async (): Promise<void> => {
-  try {
-    const token = await getFCMToken()
-    if (!token) {
-      console.warn('No FCM token available')
-      return
-    }
-
-    const userId = await getCurrentUserId()
-
-    // Store token in users table
-    const { error } = await supabase
-      .from('users')
-      .update({
-        fcm_token: token,
-        fcm_token_updated_at: new Date().toISOString(),
-      })
-      .eq('id', userId)
-
-    if (error) {
-      throw error
-    }
-
-    console.log('FCM token registered successfully')
-  } catch (error) {
-    console.error('Failed to register FCM token:', error)
-  }
-}
-
-/**
- * Clear FCM token (on logout)
- */
-export const clearFCMToken = async (): Promise<void> => {
-  try {
-    const userId = await getCurrentUserId()
-
-    const { error } = await supabase
-      .from('users')
-      .update({
-        fcm_token: null,
-        fcm_token_updated_at: null,
-      })
-      .eq('id', userId)
-
-    if (error) {
-      throw error
-    }
-
-    // Delete token from FCM
-    await messaging().deleteToken()
-
-    console.log('FCM token cleared successfully')
-  } catch (error) {
-    console.error('Failed to clear FCM token:', error)
-  }
-}
-
-// ============================================================
-// Notification Handlers
-// ============================================================
-
-/**
- * Set up foreground notification handler
- * Called when app is open and notification arrives
- */
-export const setupForegroundNotificationHandler = (
-  onNotification: (notification: any) => void
-) => {
-  return messaging().onMessage(async (remoteMessage) => {
-    console.log('Foreground notification received:', remoteMessage)
-    onNotification(remoteMessage)
-  })
-}
-
-/**
- * Set up background notification handler
- * Called when app is in background and notification is tapped
- */
-export const setupBackgroundNotificationHandler = (
-  onNotificationOpen: (notification: any) => void
-) => {
-  return messaging().onNotificationOpenedApp(async (remoteMessage) => {
-    console.log('Background notification opened:', remoteMessage)
-    onNotificationOpen(remoteMessage)
-  })
-}
-
-/**
- * Check if app was opened from a notification (cold start)
- */
-export const checkInitialNotification = async (): Promise<any | null> => {
-  try {
-    const remoteMessage = await messaging().getInitialNotification()
-    if (remoteMessage) {
-      console.log('App opened from notification:', remoteMessage)
-      return remoteMessage
-    }
-    return null
-  } catch (error) {
-    console.error('Failed to check initial notification:', error)
-    return null
-  }
-}
-
-/**
- * Set up notification badge count (iOS)
- */
-export const setBadgeCount = async (count: number): Promise<void> => {
-  if (Platform.OS === 'ios') {
+  /**
+   * Request notification permission (T133)
+   */
+  private async requestPermission(): Promise<boolean> {
     try {
-      await messaging().setApplicationBadge(count)
+      const { status: existingStatus } = await Notifications.getPermissionsAsync();
+      let finalStatus = existingStatus;
+
+      if (existingStatus !== 'granted') {
+        const { status } = await Notifications.requestPermissionsAsync();
+        finalStatus = status;
+      }
+
+      if (finalStatus !== 'granted') {
+        console.warn('Notification permission denied');
+        return false;
+      }
+
+      // Configure notification channel for Android
+      if (Platform.OS === 'android') {
+        await Notifications.setNotificationChannelAsync('default', {
+          name: 'Default',
+          importance: Notifications.AndroidImportance.MAX,
+          vibrationPattern: [0, 250, 250, 250],
+          lightColor: '#FF231F7C',
+        });
+      }
+
+      return true;
     } catch (error) {
-      console.error('Failed to set badge count:', error)
+      console.error('Permission request error:', error);
+      return false;
+    }
+  }
+
+  /**
+   * Register Expo push token with Supabase (T133)
+   */
+  private async registerToken(): Promise<void> {
+    try {
+      // Get Expo push token
+      const tokenData = await Notifications.getExpoPushTokenAsync();
+      const token = tokenData.data;
+
+      if (!token) {
+        console.warn('No Expo push token available');
+        return;
+      }
+
+      await this.updateToken(token);
+    } catch (error) {
+      console.error('Token registration error:', error);
+    }
+  }
+
+  /**
+   * Update push token in database
+   */
+  private async updateToken(token: string): Promise<void> {
+    try {
+      const { data: { user } } = await supabase.auth.getUser();
+
+      if (!user) {
+        console.warn('No authenticated user for token update');
+        return;
+      }
+
+      // Get current device tokens
+      const { data: userData } = await supabase
+        .from('users')
+        .select('device_tokens')
+        .eq('id', user.id)
+        .single();
+
+      const existingTokens: string[] = userData?.device_tokens || [];
+
+      // Add new token if not already present
+      if (!existingTokens.includes(token)) {
+        const updatedTokens = [...existingTokens, token];
+
+        await supabase
+          .from('users')
+          .update({ device_tokens: updatedTokens })
+          .eq('id', user.id);
+
+        console.log('Expo push token registered:', token);
+      }
+    } catch (error) {
+      console.error('Token update error:', error);
+    }
+  }
+
+  /**
+   * Handle foreground notifications (T135)
+   */
+  private handleForegroundNotification = async (
+    notification: Notifications.Notification
+  ): Promise<void> => {
+    console.log('Foreground notification:', notification);
+
+    // Notification will be displayed automatically by Expo
+    // We can add custom behavior here if needed
+  };
+
+  /**
+   * Handle notification tap/open (T137 - Deep linking)
+   */
+  private handleNotificationResponse = (
+    response: Notifications.NotificationResponse
+  ): void => {
+    const data = response.notification.request.content.data as NotificationData;
+
+    if (!this.navigationRef || !data.type) {
+      console.warn('Cannot navigate: missing navigation ref or type');
+      return;
+    }
+
+    // Navigate based on notification type
+    this.navigateToScreen(data);
+  };
+
+  /**
+   * Navigate to appropriate screen based on notification type
+   */
+  private navigateToScreen(data: NotificationData): void {
+    if (!this.navigationRef) return;
+
+    switch (data.type) {
+      case 'new_message':
+        if (data.connection_id) {
+          this.navigationRef.navigate('MessageThread', {
+            connectionId: data.connection_id,
+          });
+        }
+        break;
+
+      case 'connection_request':
+        this.navigationRef.navigate('ConnectionRequests');
+        break;
+
+      case 'check_in_reminder':
+        if (data.entity_id) {
+          this.navigationRef.navigate('CheckInResponse', {
+            checkinId: data.entity_id,
+          });
+        }
+        break;
+
+      case 'milestone_achieved':
+        this.navigationRef.navigate('SobrietyDashboard');
+        break;
+
+      case 'step_work_comment':
+      case 'step_work_reviewed':
+        if (data.step_id) {
+          this.navigationRef.navigate('StepWork', {
+            stepId: data.step_id,
+          });
+        }
+        break;
+
+      case 'step_work_submitted':
+        if (data.step_id && data.entity_id) {
+          this.navigationRef.navigate('SponsorReview', {
+            stepWorkId: data.entity_id,
+            sponseeId: data.connection_id || '',
+          });
+        }
+        break;
+
+      default:
+        console.warn('Unknown notification type for navigation:', data.type);
+    }
+  }
+
+  /**
+   * Schedule a local notification (for testing)
+   */
+  async scheduleLocalNotification(
+    title: string,
+    body: string,
+    data: NotificationData,
+    seconds: number = 1
+  ): Promise<string> {
+    return await Notifications.scheduleNotificationAsync({
+      content: {
+        title,
+        body,
+        data,
+        sound: true,
+      },
+      trigger: {
+        seconds,
+      },
+    });
+  }
+
+  /**
+   * Cancel all scheduled notifications
+   */
+  async cancelAllNotifications(): Promise<void> {
+    await Notifications.cancelAllScheduledNotificationsAsync();
+  }
+
+  /**
+   * Get badge count
+   */
+  async getBadgeCount(): Promise<number> {
+    return await Notifications.getBadgeCountAsync();
+  }
+
+  /**
+   * Set badge count
+   */
+  async setBadgeCount(count: number): Promise<void> {
+    await Notifications.setBadgeCountAsync(count);
+  }
+
+  /**
+   * Cleanup notification listeners
+   */
+  cleanup(): void {
+    if (this.notificationListener) {
+      Notifications.removeNotificationSubscription(this.notificationListener);
+    }
+    if (this.responseListener) {
+      Notifications.removeNotificationSubscription(this.responseListener);
     }
   }
 }
 
-/**
- * Clear all notifications
- */
-export const clearAllNotifications = async (): Promise<void> => {
-  try {
-    if (Platform.OS === 'ios') {
-      await messaging().setApplicationBadge(0)
-    }
-    // Android notification clearing would go here
-  } catch (error) {
-    console.error('Failed to clear notifications:', error)
-  }
-}
-
-// ============================================================
-// Notification Payload Builders (for Edge Function)
-// ============================================================
-
-/**
- * Build notification payload for check-in reminder
- * This structure will be used by the Edge Function in T039
- */
-export const buildCheckInNotificationPayload = (
-  fcmToken: string,
-  checkInId: string,
-  sponseeName: string,
-  questions: string[]
-) => {
-  return {
-    token: fcmToken,
-    notification: {
-      title: 'Daily Check-In Reminder',
-      body: `Time to complete your check-in with ${questions.length} ${questions.length === 1 ? 'question' : 'questions'}`,
-    },
-    data: {
-      type: 'check-in',
-      checkInId,
-      deepLink: `volvoxsober://check-in-response?checkInId=${checkInId}`,
-    },
-    android: {
-      priority: 'high',
-      notification: {
-        channelId: 'check-ins',
-        sound: 'default',
-      },
-    },
-    apns: {
-      payload: {
-        aps: {
-          sound: 'default',
-          badge: 1,
-        },
-      },
-    },
-  }
-}
-
-/**
- * Build notification payload for missed check-in alert (to sponsor)
- * This structure will be used by the Edge Function in T039
- */
-export const buildMissedCheckInNotificationPayload = (
-  fcmToken: string,
-  sponseeName: string,
-  consecutiveMisses: number
-) => {
-  return {
-    token: fcmToken,
-    notification: {
-      title: 'Check-In Alert',
-      body: `${sponseeName} has missed ${consecutiveMisses} consecutive check-ins`,
-    },
-    data: {
-      type: 'missed-check-in-alert',
-      sponseeName,
-      consecutiveMisses: consecutiveMisses.toString(),
-    },
-    android: {
-      priority: 'high',
-      notification: {
-        channelId: 'alerts',
-        sound: 'default',
-      },
-    },
-    apns: {
-      payload: {
-        aps: {
-          sound: 'default',
-          badge: 1,
-          'interruption-level': 'time-sensitive',
-        },
-      },
-    },
-  }
-}
+// Export singleton instance
+export const notificationService = new NotificationService();

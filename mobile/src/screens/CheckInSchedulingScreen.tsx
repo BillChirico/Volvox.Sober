@@ -328,10 +328,10 @@ export const CheckInSchedulingScreen: React.FC<CheckInSchedulingScreenProps> = (
 // Styles
 // ============================================================
 
-const styles = StyleSheet.create({
+const createStyles = (theme: any) => StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#FFFFFF',
+    backgroundColor: theme.colors.surface,
   },
   content: {
     padding: 20,
@@ -348,12 +348,12 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 24,
     fontWeight: 'bold',
-    color: '#000000',
+    color: theme.colors.onSurface,
     marginBottom: 4,
   },
   subtitle: {
     fontSize: 16,
-    color: '#8E8E93',
+    color: theme.colors.onSurfaceVariant,
   },
   existingSection: {
     marginBottom: 32,
@@ -361,12 +361,12 @@ const styles = StyleSheet.create({
   sectionTitle: {
     fontSize: 18,
     fontWeight: '600',
-    color: '#000000',
+    color: theme.colors.onSurface,
     marginBottom: 12,
   },
   existingCheckIn: {
     padding: 16,
-    backgroundColor: '#F5F5F5',
+    backgroundColor: theme.colors.background,
     borderRadius: 12,
     marginBottom: 12,
   },
@@ -382,16 +382,16 @@ const styles = StyleSheet.create({
   existingCheckInRecurrence: {
     fontSize: 16,
     fontWeight: '600',
-    color: '#000000',
+    color: theme.colors.onSurface,
     marginBottom: 4,
   },
   existingCheckInTime: {
     fontSize: 14,
-    color: '#8E8E93',
+    color: theme.colors.onSurfaceVariant,
   },
   existingCheckInQuestions: {
     fontSize: 14,
-    color: '#8E8E93',
+    color: theme.colors.onSurfaceVariant,
     marginBottom: 12,
   },
   existingCheckInActions: {
@@ -401,7 +401,7 @@ const styles = StyleSheet.create({
   actionButton: {
     flex: 1,
     padding: 12,
-    backgroundColor: '#007AFF',
+    backgroundColor: theme.colors.primary,
     borderRadius: 8,
     alignItems: 'center',
   },
@@ -411,10 +411,10 @@ const styles = StyleSheet.create({
   actionButtonText: {
     fontSize: 14,
     fontWeight: '600',
-    color: '#FFFFFF',
+    color: theme.colors.onPrimary,
   },
   actionButtonDeleteText: {
-    color: '#FFFFFF',
+    color: theme.colors.onPrimary,
   },
   form: {
     marginBottom: 24,
@@ -433,22 +433,22 @@ const styles = StyleSheet.create({
     minHeight: 52,
   },
   buttonPrimary: {
-    backgroundColor: '#007AFF',
+    backgroundColor: theme.colors.primary,
   },
   buttonSecondary: {
-    backgroundColor: '#F5F5F5',
+    backgroundColor: theme.colors.background,
     borderWidth: 1,
     borderColor: '#E5E5E5',
   },
   buttonPrimaryText: {
     fontSize: 16,
     fontWeight: '600',
-    color: '#FFFFFF',
+    color: theme.colors.onPrimary,
   },
   buttonSecondaryText: {
     fontSize: 16,
     fontWeight: '600',
-    color: '#000000',
+    color: theme.colors.onSurface,
   },
   errorText: {
     fontSize: 16,
