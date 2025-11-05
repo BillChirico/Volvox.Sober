@@ -11,8 +11,7 @@ import { selectIsAuthenticated, selectUser } from '../store/auth/authSelectors';
  *
  * Rules:
  * 1. Unauthenticated users → redirect to login screen
- * 2. Authenticated but unverified users → blocked from main app (FR-005)
- * 3. Authenticated and verified users → allow access to main app
+ * 2. Authenticated users → allow access to main app (email verification is non-blocking per FR-005)
  *
  * @returns void
  */
@@ -33,21 +32,10 @@ export const useAuthRedirect = () => {
         router.replace('/(auth)/login');
       }
     } else {
-      // Authenticated → check email verification status
-      const isEmailVerified = user?.email_confirmed_at !== null;
-
-      if (!isEmailVerified) {
-        // Email not verified → block access to main app (FR-005)
-        if (inTabsGroup) {
-          // Redirect to login and show verification message
-          router.replace('/(auth)/login');
-        }
-      } else {
-        // Email verified → allow access to main app
-        if (inAuthGroup) {
-          // User is authenticated and verified, redirect to main app
-          router.replace('/(tabs)/sobriety');
-        }
+      // Authenticated → allow access to main app (email verification is non-blocking)
+      if (inAuthGroup) {
+        // User is authenticated, redirect to main app
+        router.replace('/(tabs)/sobriety');
       }
     }
   }, [isAuthenticated, user, inAuthGroup, inTabsGroup, router]);

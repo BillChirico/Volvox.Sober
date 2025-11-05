@@ -7,6 +7,11 @@ export default function WelcomeScreen() {
   const { theme } = useAppTheme();
   const router = useRouter();
 
+  const handleGetStarted = () => {
+    // Direct users to signup screen to create an account
+    router.push('/(auth)/signup');
+  };
+
   return (
     <View style={[styles.container, { backgroundColor: theme.colors.background }]}>
       <Text variant="headlineLarge" style={{ color: theme.colors.onBackground, marginBottom: 16 }}>
@@ -18,7 +23,7 @@ export default function WelcomeScreen() {
 
       <Button
         mode="contained"
-        onPress={() => router.push('/(onboarding)/email-verification')}
+        onPress={handleGetStarted}
         style={{ marginBottom: 16 }}
       >
         Get Started
