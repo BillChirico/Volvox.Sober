@@ -1,9 +1,10 @@
 import { Stack } from 'expo-router';
 import { Provider as ReduxProvider } from 'react-redux';
+import { PersistGate } from 'redux-persist/integration/react';
 import { PaperProvider } from 'react-native-paper';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { ThemeProvider, useAppTheme } from '../src/theme/ThemeContext';
-import { store } from '../src/store';
+import { store, persistor } from '../src/store';
 import { StatusBar } from 'expo-status-bar';
 
 function RootLayoutContent() {
@@ -46,9 +47,11 @@ function RootLayoutContent() {
 export default function RootLayout() {
   return (
     <ReduxProvider store={store}>
-      <ThemeProvider>
-        <RootLayoutContent />
-      </ThemeProvider>
+      <PersistGate loading={null} persistor={persistor}>
+        <ThemeProvider>
+          <RootLayoutContent />
+        </ThemeProvider>
+      </PersistGate>
     </ReduxProvider>
   );
 }

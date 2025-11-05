@@ -21,7 +21,7 @@ export default function LoginScreen() {
       </Text>
 
       <View style={styles.footer}>
-        <Link href="/(auth)/register" asChild>
+        <Link href="/(auth)/signup" asChild>
           <Button mode="text">Don't have an account? Sign up</Button>
         </Link>
         <Link href="/(auth)/forgot-password" asChild>

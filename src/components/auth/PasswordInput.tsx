@@ -11,6 +11,7 @@ export interface PasswordInputProps {
   placeholder?: string;
   disabled?: boolean;
   onBlur?: () => void;
+  testID?: string;
 }
 
 /**
@@ -42,6 +43,7 @@ const PasswordInput: React.FC<PasswordInputProps> = ({
   placeholder,
   disabled = false,
   onBlur,
+  testID = 'password-input',
 }) => {
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
   const theme = useTheme();
@@ -61,7 +63,7 @@ const PasswordInput: React.FC<PasswordInputProps> = ({
   return (
     <View style={styles.container}>
       <TextInput
-        testID="password-input"
+        testID={testID}
         label={label}
         value={value}
         onChangeText={onChangeText}

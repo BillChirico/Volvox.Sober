@@ -183,6 +183,7 @@ jest.mock('react-native-paper', () => {
       React.createElement(RN.TouchableOpacity, {
         ...props,
         testID: props.testID,
+        disabled: props.disabled,
       }),
     IconButton: (props) =>
       React.createElement(RN.TouchableOpacity, {

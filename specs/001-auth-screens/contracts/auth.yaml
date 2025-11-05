@@ -1,0 +1,868 @@
+# Authentication API Contract
+
+version: 1.0.0
+service: Supabase Auth (GoTrue)
+base_url: https://{project_ref}.supabase.co/auth/v1
+description: Authentication endpoints provided by Supabase Auth for user signup, login, email verification, and password management
+
+## Common Headers
+
+All requests require:
+```
+apikey: {SUPABASE_ANON_KEY}
+Content-Type: application/json
+```
+
+All responses return:
+```
+Content-Type: application/json
+```
+
+## Error Response Format
+
+All endpoints return errors in this format:
+
+```yaml
+status: 400 | 401 | 403 | 422 | 429 | 500
+body:
+  error: string              # Error type (e.g., "invalid_credentials")
+  error_description: string  # Human-readable description
+  msg: string               # User-facing message (optional)
+```
+
+Common error codes:
+- `400`: Bad request (malformed JSON, missing fields)
+- `401`: Unauthorized (invalid credentials, expired token)
+- `403`: Forbidden (unverified email, insufficient permissions)
+- `422`: Unprocessable entity (validation failed)
+- `429`: Too many requests (rate limit exceeded)
+- `500`: Internal server error (Supabase service issue)
+
+---
+
+## Endpoint 1: User Signup
+
+**Endpoint**: `POST /signup`
+**Description**: Create a new user account with email and password. Sends verification email automatically.
+**User Story**: US1 (New User Registration)
+
+### Request
+
+```yaml
+method: POST
+path: /signup
+headers:
+  apikey: {SUPABASE_ANON_KEY}
+  Content-Type: application/json
+
+body:
+  email: string              # Required, valid email format
+  password: string           # Required, min 8 chars (Supabase default: 6)
+  options:
+    data:
+      # Optional user metadata
+      full_name: string      # User's full name (not used in auth MVP)
+    emailRedirectTo: string  # Deep link for email verification
+                            # Example: "volvoxsober://auth/verify"
+```
+
+**Example Request**:
+```json
+{
+  "email": "user@example.com",
+  "password": "SecurePass123",
+  "options": {
+    "emailRedirectTo": "volvoxsober://auth/verify"
+  }
+}
+```
+
+### Response - Success (200 OK)
+
+```yaml
+status: 200
+body:
+  user:
+    id: string               # UUID v4
+    email: string
+    email_confirmed_at: null # Always null until email verified
+    created_at: string       # ISO 8601 timestamp
+    updated_at: string
+    app_metadata: object     # Empty object by default
+    user_metadata: object    # Empty object by default
+  session: null              # Always null until email verified
+```
+
+**Example Response**:
+```json
+{
+  "user": {
+    "id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+    "email": "user@example.com",
+    "email_confirmed_at": null,
+    "created_at": "2025-11-04T10:30:00.000Z",
+    "updated_at": "2025-11-04T10:30:00.000Z",
+    "app_metadata": {},
+    "user_metadata": {}
+  },
+  "session": null
+}
+```
+
+### Response - Error (422 Unprocessable Entity)
+
+**Scenario**: Email already registered
+
+```json
+{
+  "error": "email_exists",
+  "error_description": "A user with this email address has already been registered",
+  "msg": "User already registered"
+}
+```
+
+**Client-Side Mapping** (FR-011):
+```typescript
+// Map to user-friendly message
+"This email is already registered. Please login instead."
+```
+
+**Scenario**: Weak password
+
+```json
+{
+  "error": "validation_failed",
+  "error_description": "Password should be at least 6 characters",
+  "msg": "Password is too weak"
+}
+```
+
+**Client-Side Mapping**:
+```typescript
+"Password must be at least 8 characters with a letter and number"
+```
+
+**Scenario**: Invalid email format
+
+```json
+{
+  "error": "validation_failed",
+  "error_description": "Unable to validate email address: invalid format",
+  "msg": "Invalid email"
+}
+```
+
+**Client-Side Mapping**:
+```typescript
+"Please enter a valid email address"
+```
+
+### Success Criteria
+- SC-001: New users can complete registration in under 2 minutes
+- SC-003: Verification emails delivered within 1 minute
+- FR-001: Allow new users to create accounts
+- FR-002: Validate email format
+- FR-003: Enforce password requirements
+- FR-004: Send verification emails
+- FR-012: Prevent duplicate accounts
+
+---
+
+## Endpoint 2: User Login
+
+**Endpoint**: `POST /token?grant_type=password`
+**Description**: Authenticate user with email and password. Returns session tokens.
+**User Story**: US2 (Existing User Login)
+
+### Request
+
+```yaml
+method: POST
+path: /token?grant_type=password
+headers:
+  apikey: {SUPABASE_ANON_KEY}
+  Content-Type: application/json
+
+body:
+  email: string     # Required
+  password: string  # Required
+```
+
+**Example Request**:
+```json
+{
+  "email": "user@example.com",
+  "password": "SecurePass123"
+}
+```
+
+### Response - Success (200 OK)
+
+```yaml
+status: 200
+body:
+  access_token: string      # JWT token (1 hour expiry)
+  token_type: "bearer"      # Always "bearer"
+  expires_in: number        # Seconds until expiry (default: 3600)
+  expires_at: number        # Unix timestamp of expiry
+  refresh_token: string     # JWT refresh token (rotating)
+  user:
+    id: string
+    email: string
+    email_confirmed_at: string | null  # Must be non-null for successful login
+    created_at: string
+    updated_at: string
+    last_sign_in_at: string  # Updated to current time
+    app_metadata: object
+    user_metadata: object
+```
+
+**Example Response**:
+```json
+{
+  "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+  "token_type": "bearer",
+  "expires_in": 3600,
+  "expires_at": 1699027200,
+  "refresh_token": "v1.MXqRtIEbJhcwPwbKHwj7fQ...",
+  "user": {
+    "id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+    "email": "user@example.com",
+    "email_confirmed_at": "2025-11-04T10:35:00.000Z",
+    "created_at": "2025-11-04T10:30:00.000Z",
+    "updated_at": "2025-11-04T11:00:00.000Z",
+    "last_sign_in_at": "2025-11-04T11:00:00.000Z",
+    "app_metadata": {},
+    "user_metadata": {}
+  }
+}
+```
+
+### Response - Error (400 Bad Request)
+
+**Scenario**: Invalid credentials (incorrect password or email not found)
+
+```json
+{
+  "error": "invalid_grant",
+  "error_description": "Invalid login credentials",
+  "msg": "Invalid login credentials"
+}
+```
+
+**Client-Side Mapping** (FR-011 - security: don't reveal which field is wrong):
+```typescript
+"Incorrect email or password"
+```
+
+**Scenario**: Email not verified
+
+```json
+{
+  "error": "email_not_confirmed",
+  "error_description": "Email not confirmed",
+  "msg": "Email not confirmed"
+}
+```
+
+**Client-Side Mapping** (FR-005):
+```typescript
+"Please verify your email address before logging in"
+// Show "Resend verification email" button
+```
+
+### Success Criteria
+- SC-002: 95% of login attempts succeed within 3 seconds
+- SC-006: 90% of users successfully complete first login
+- FR-006: Authenticate with correct credentials
+- FR-005: Prevent unverified users from accessing app
+- FR-011: Clear error messages without revealing security details
+
+---
+
+## Endpoint 3: Password Reset Request
+
+**Endpoint**: `POST /recover`
+**Description**: Send password reset email with magic link
+**User Story**: US3 (Password Recovery)
+
+### Request
+
+```yaml
+method: POST
+path: /recover
+headers:
+  apikey: {SUPABASE_ANON_KEY}
+  Content-Type: application/json
+
+body:
+  email: string              # Required
+  options:
+    redirectTo: string       # Deep link for password reset
+                            # Example: "volvoxsober://auth/forgot-password"
+```
+
+**Example Request**:
+```json
+{
+  "email": "user@example.com",
+  "options": {
+    "redirectTo": "volvoxsober://auth/forgot-password"
+  }
+}
+```
+
+### Response - Success (200 OK)
+
+**Always returns success** regardless of whether email exists (security: prevent email enumeration, FR-011)
+
+```yaml
+status: 200
+body: {}  # Empty object
+```
+
+**Client-Side Display** (FR-011):
+```typescript
+"If an account exists with this email, you will receive a password reset link"
+```
+
+### Success Criteria
+- SC-004: Password reset emails delivered within 1 minute
+- FR-008: Provide password reset functionality
+- FR-009: Expire reset links after 24 hours
+- FR-011: Generic message to prevent email enumeration
+
+---
+
+## Endpoint 4: Update Password
+
+**Endpoint**: `PUT /user`
+**Description**: Update user password (requires valid reset token or active session)
+**User Story**: US3 (Password Recovery - reset step)
+
+### Request
+
+```yaml
+method: PUT
+path: /user
+headers:
+  apikey: {SUPABASE_ANON_KEY}
+  Authorization: Bearer {access_token}  # Required (from reset token or session)
+  Content-Type: application/json
+
+body:
+  password: string  # Required, new password (min 8 chars recommended)
+```
+
+**Example Request**:
+```json
+{
+  "password": "NewSecurePass456"
+}
+```
+
+### Response - Success (200 OK)
+
+```yaml
+status: 200
+body:
+  user:
+    id: string
+    email: string
+    email_confirmed_at: string
+    created_at: string
+    updated_at: string  # Updated to current time
+    app_metadata: object
+    user_metadata: object
+```
+
+**Example Response**:
+```json
+{
+  "user": {
+    "id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+    "email": "user@example.com",
+    "email_confirmed_at": "2025-11-04T10:35:00.000Z",
+    "created_at": "2025-11-04T10:30:00.000Z",
+    "updated_at": "2025-11-04T11:15:00.000Z",
+    "app_metadata": {},
+    "user_metadata": {}
+  }
+}
+```
+
+### Response - Error (401 Unauthorized)
+
+**Scenario**: Expired or invalid reset token
+
+```json
+{
+  "error": "invalid_token",
+  "error_description": "Token has expired or is invalid",
+  "msg": "Invalid token"
+}
+```
+
+**Client-Side Mapping** (FR-009):
+```typescript
+"This reset link has expired. Please request a new one."
+```
+
+**Scenario**: Reset token already used
+
+```json
+{
+  "error": "invalid_token",
+  "error_description": "Token has already been used",
+  "msg": "Token already used"
+}
+```
+
+**Client-Side Mapping**:
+```typescript
+"This reset link has already been used. Please request a new one if needed."
+```
+
+### Success Criteria
+- FR-008: Password reset functionality works
+- FR-009: Reset links expire after 24 hours
+- FR-010: Passwords hashed securely by Supabase
+
+---
+
+## Endpoint 5: Logout
+
+**Endpoint**: `POST /logout`
+**Description**: Invalidate current session and refresh token
+**User Story**: US2 (Login - logout counterpart)
+
+### Request
+
+```yaml
+method: POST
+path: /logout
+headers:
+  apikey: {SUPABASE_ANON_KEY}
+  Authorization: Bearer {access_token}  # Required
+  Content-Type: application/json
+
+body: {}  # Empty body
+```
+
+**Example Request**:
+```json
+{}
+```
+
+### Response - Success (204 No Content)
+
+```yaml
+status: 204
+body: null  # No response body
+```
+
+**Client-Side Action**:
+```typescript
+// Clear Redux state
+dispatch(authSlice.actions.clearAuth())
+// Clear persisted state
+persistor.purge()
+// Navigate to login screen
+router.replace('/(auth)/login')
+```
+
+### Response - Error (401 Unauthorized)
+
+**Scenario**: Invalid or expired token
+
+```json
+{
+  "error": "invalid_token",
+  "error_description": "Token has expired or is invalid"
+}
+```
+
+**Client-Side Handling**:
+```typescript
+// Still clear local state even if server logout fails
+// User intent is clear: they want to log out
+dispatch(authSlice.actions.clearAuth())
+```
+
+---
+
+## Endpoint 6: Get Session
+
+**Endpoint**: `GET /user`
+**Description**: Retrieve current user session (used for session validation on app start)
+**User Story**: US2 (Session persistence, FR-007)
+
+### Request
+
+```yaml
+method: GET
+path: /user
+headers:
+  apikey: {SUPABASE_ANON_KEY}
+  Authorization: Bearer {access_token}  # Required
+```
+
+### Response - Success (200 OK)
+
+```yaml
+status: 200
+body:
+  user:
+    id: string
+    email: string
+    email_confirmed_at: string | null
+    created_at: string
+    updated_at: string
+    last_sign_in_at: string
+    app_metadata: object
+    user_metadata: object
+```
+
+**Example Response**:
+```json
+{
+  "user": {
+    "id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+    "email": "user@example.com",
+    "email_confirmed_at": "2025-11-04T10:35:00.000Z",
+    "created_at": "2025-11-04T10:30:00.000Z",
+    "updated_at": "2025-11-04T11:00:00.000Z",
+    "last_sign_in_at": "2025-11-04T11:00:00.000Z",
+    "app_metadata": {},
+    "user_metadata": {}
+  }
+}
+```
+
+### Response - Error (401 Unauthorized)
+
+**Scenario**: Expired or invalid token
+
+```json
+{
+  "error": "invalid_token",
+  "error_description": "Token has expired or is invalid"
+}
+```
+
+**Client-Side Handling**:
+```typescript
+// Attempt token refresh with refresh_token
+// If refresh fails, logout user
+if (!refreshSuccess) {
+  dispatch(authSlice.actions.clearAuth())
+  router.replace('/(auth)/login')
+}
+```
+
+### Success Criteria
+- SC-007: Session persistence works 100% of the time
+- FR-007: Sessions persist across app restarts
+
+---
+
+## Endpoint 7: Refresh Token
+
+**Endpoint**: `POST /token?grant_type=refresh_token`
+**Description**: Exchange refresh token for new access token (automatic via Supabase SDK)
+**User Story**: US2 (Session persistence)
+
+### Request
+
+```yaml
+method: POST
+path: /token?grant_type=refresh_token
+headers:
+  apikey: {SUPABASE_ANON_KEY}
+  Content-Type: application/json
+
+body:
+  refresh_token: string  # Required
+```
+
+**Example Request**:
+```json
+{
+  "refresh_token": "v1.MXqRtIEbJhcwPwbKHwj7fQ..."
+}
+```
+
+### Response - Success (200 OK)
+
+```yaml
+status: 200
+body:
+  access_token: string      # New JWT access token (1 hour expiry)
+  token_type: "bearer"
+  expires_in: number
+  expires_at: number
+  refresh_token: string     # New refresh token (rotated)
+  user:
+    id: string
+    email: string
+    email_confirmed_at: string
+    created_at: string
+    updated_at: string
+    last_sign_in_at: string
+    app_metadata: object
+    user_metadata: object
+```
+
+**Client-Side Handling** (automatic via Supabase SDK):
+```typescript
+// SDK automatically refreshes tokens when access_token expires
+// Updates Redux state with new tokens
+dispatch(authSlice.actions.setSession(newSession))
+```
+
+### Response - Error (400 Bad Request)
+
+**Scenario**: Invalid or expired refresh token
+
+```json
+{
+  "error": "invalid_grant",
+  "error_description": "Invalid Refresh Token"
+}
+```
+
+**Client-Side Handling**:
+```typescript
+// Logout user, force re-authentication
+dispatch(authSlice.actions.clearAuth())
+router.replace('/(auth)/login')
+```
+
+---
+
+## Endpoint 8: Resend Verification Email
+
+**Endpoint**: `POST /resend`
+**Description**: Resend email verification link (for unverified accounts)
+**User Story**: US1 (Registration - resend verification)
+
+### Request
+
+```yaml
+method: POST
+path: /resend
+headers:
+  apikey: {SUPABASE_ANON_KEY}
+  Content-Type: application/json
+
+body:
+  type: "signup"            # Required, always "signup" for email verification
+  email: string             # Required
+  options:
+    emailRedirectTo: string  # Deep link for verification
+```
+
+**Example Request**:
+```json
+{
+  "type": "signup",
+  "email": "user@example.com",
+  "options": {
+    "emailRedirectTo": "volvoxsober://auth/verify"
+  }
+}
+```
+
+### Response - Success (200 OK)
+
+```yaml
+status: 200
+body: {}  # Empty object
+```
+
+**Client-Side Display**:
+```typescript
+"Verification email sent! Please check your inbox."
+```
+
+### Response - Error (422 Unprocessable Entity)
+
+**Scenario**: Email already verified
+
+```json
+{
+  "error": "email_already_confirmed",
+  "error_description": "Email is already confirmed"
+}
+```
+
+**Client-Side Mapping**:
+```typescript
+"This email is already verified. You can login now."
+```
+
+---
+
+## Integration Notes
+
+### Client-Side Implementation (authService.ts)
+
+```typescript
+import { createClient } from '@supabase/supabase-js'
+
+const supabase = createClient(
+  process.env.EXPO_PUBLIC_SUPABASE_URL!,
+  process.env.EXPO_PUBLIC_SUPABASE_ANON_KEY!
+)
+
+export const authService = {
+  async signUp(email: string, password: string) {
+    const { data, error } = await supabase.auth.signUp({
+      email,
+      password,
+      options: {
+        emailRedirectTo: 'volvoxsober://auth/verify'
+      }
+    })
+    return { data, error }
+  },
+
+  async signIn(email: string, password: string) {
+    const { data, error } = await supabase.auth.signInWithPassword({
+      email,
+      password
+    })
+    return { data, error }
+  },
+
+  async resetPasswordRequest(email: string) {
+    const { data, error } = await supabase.auth.resetPasswordForEmail(email, {
+      redirectTo: 'volvoxsober://auth/forgot-password'
+    })
+    return { data, error }
+  },
+
+  async updatePassword(newPassword: string) {
+    const { data, error } = await supabase.auth.updateUser({
+      password: newPassword
+    })
+    return { data, error }
+  },
+
+  async signOut() {
+    const { error } = await supabase.auth.signOut()
+    return { error }
+  },
+
+  async getSession() {
+    const { data, error } = await supabase.auth.getSession()
+    return { data, error }
+  },
+
+  onAuthStateChange(callback: (event: string, session: Session | null) => void) {
+    return supabase.auth.onAuthStateChange(callback)
+  }
+}
+```
+
+### Error Mapping Utility
+
+```typescript
+export function mapAuthError(error: AuthError): string {
+  const message = error.message || ''
+
+  switch (true) {
+    case message.includes('Invalid login credentials'):
+      return 'Incorrect email or password'
+    case message.includes('Email not confirmed'):
+      return 'Please verify your email address before logging in'
+    case message.includes('User already registered'):
+      return 'This email is already registered. Please login instead.'
+    case message.includes('Password should be at least'):
+      return 'Password must be at least 8 characters with a letter and number'
+    case message.includes('Unable to validate email'):
+      return 'Please enter a valid email address'
+    case message.includes('Token has expired'):
+      return 'This link has expired. Please request a new one.'
+    case message.includes('Token has already been used'):
+      return 'This link has already been used. Please request a new one if needed.'
+    default:
+      return 'Unable to complete request. Please try again.'
+  }
+}
+```
+
+### Rate Limiting
+
+Supabase Auth automatically enforces rate limits:
+- **Signup**: 60 requests per hour per IP
+- **Login**: 120 requests per hour per IP
+- **Password Reset**: 60 requests per hour per IP
+- **Email Resend**: 30 requests per hour per email
+
+**Client-Side Handling** (HTTP 429):
+```typescript
+if (error.status === 429) {
+  return 'Too many attempts. Please wait a few minutes and try again.'
+}
+```
+
+---
+
+## Testing Scenarios
+
+### Contract Validation Tests
+
+1. **Signup**:
+   - ✅ Valid email + password → 200, user created, email sent
+   - ✅ Duplicate email → 422, error message
+   - ✅ Weak password → 422, error message
+   - ✅ Invalid email → 422, error message
+
+2. **Login**:
+   - ✅ Correct credentials + verified email → 200, session tokens
+   - ✅ Correct credentials + unverified email → 400, email not confirmed
+   - ✅ Wrong password → 400, invalid credentials
+   - ✅ Non-existent email → 400, invalid credentials (same message)
+
+3. **Password Reset**:
+   - ✅ Existing email → 200, email sent
+   - ✅ Non-existent email → 200 (generic success, security)
+   - ✅ Valid reset token + new password → 200, password updated
+   - ✅ Expired reset token → 401, token expired error
+
+4. **Session Management**:
+   - ✅ Valid access token → 200, user data
+   - ✅ Expired access token + valid refresh token → 200, new tokens
+   - ✅ Expired refresh token → 400, logout user
+
+---
+
+## Dependencies
+
+- **Supabase Auth Service**: Must be running and configured
+- **Email Delivery**: Supabase email service configured (SMTP or SendGrid)
+- **Deep Linking**: App configured to handle `volvoxsober://` URL scheme
+- **Environment Variables**:
+  - `EXPO_PUBLIC_SUPABASE_URL`
+  - `EXPO_PUBLIC_SUPABASE_ANON_KEY`
+
+---
+
+## Security Considerations
+
+1. **HTTPS Only**: All requests over HTTPS (enforced by Supabase)
+2. **Token Storage**: Access/refresh tokens stored in AsyncStorage (secure on mobile)
+3. **Email Enumeration Prevention**: Generic error messages (FR-011)
+4. **Password Hashing**: Bcrypt with salt (handled by Supabase, FR-010)
+5. **Token Expiry**: Access tokens expire after 1 hour (automatic refresh)
+6. **Rate Limiting**: Automatic rate limiting by Supabase (prevent brute force)
+
+---
+
+## Performance Targets
+
+- **Login Response Time**: < 3 seconds (SC-002)
+- **Signup Response Time**: < 3 seconds
+- **Email Delivery**: < 1 minute (SC-003, SC-004)
+- **Token Refresh**: < 500ms (automatic, transparent)

@@ -3,7 +3,7 @@
     "name": "Volvox Sober",
     "slug": "volvox-sober",
     "version": "1.0.0",
-    "scheme": "volvox-sober",
+    "scheme": "volvoxsober",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
@@ -15,7 +15,8 @@
     },
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.volvox.sober"
+      "bundleIdentifier": "com.volvox.sober",
+      "associatedDomains": ["applinks:volvoxsober.app"]
     },
     "android": {
       "adaptiveIcon": {
@@ -24,7 +25,18 @@
       },
       "package": "com.volvox.sober",
       "edgeToEdgeEnabled": true,
-      "predictiveBackGestureEnabled": false
+      "predictiveBackGestureEnabled": false,
+      "intentFilters": [
+        {
+          "action": "VIEW",
+          "data": [
+            {
+              "scheme": "volvoxsober"
+            }
+          ],
+          "category": ["BROWSABLE", "DEFAULT"]
+        }
+      ]
     },
     "web": {
       "favicon": "./assets/favicon.png",
