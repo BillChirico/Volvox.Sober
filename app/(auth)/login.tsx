@@ -23,7 +23,7 @@ export default function LoginScreen() {
 
   const handleLoginSuccess = () => {
     // Navigate to main app - replace navigation stack
-    // Auth redirect logic will verify email confirmation
+    // Email verification is non-blocking (users can access app without verification)
     router.replace('/(tabs)/sobriety');
   };
 
