@@ -12,6 +12,8 @@ export interface PasswordInputProps {
   disabled?: boolean;
   onBlur?: () => void;
   testID?: string;
+  accessibilityLabel?: string;
+  accessibilityHint?: string;
 }
 
 /**
@@ -44,6 +46,8 @@ const PasswordInput: React.FC<PasswordInputProps> = ({
   disabled = false,
   onBlur,
   testID = 'password-input',
+  accessibilityLabel,
+  accessibilityHint,
 }) => {
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
   const theme = useTheme();
@@ -53,10 +57,10 @@ const PasswordInput: React.FC<PasswordInputProps> = ({
   };
 
   const iconName = isPasswordVisible ? 'eye-off' : 'eye';
-  const accessibilityLabel = isPasswordVisible
+  const toggleAccessibilityLabel = isPasswordVisible
     ? 'Hide password'
     : 'Show password';
-  const accessibilityHint = isPasswordVisible
+  const toggleAccessibilityHint = isPasswordVisible
     ? 'Double tap to hide your password'
     : 'Double tap to show your password';
 
@@ -73,7 +77,8 @@ const PasswordInput: React.FC<PasswordInputProps> = ({
         disabled={disabled}
         placeholder={placeholder}
         mode="outlined"
-        accessibilityLabel={label}
+        accessibilityLabel={accessibilityLabel || label}
+        accessibilityHint={accessibilityHint}
         editable={!disabled}
         right={
           <TextInput.Icon
@@ -82,8 +87,8 @@ const PasswordInput: React.FC<PasswordInputProps> = ({
             disabled={disabled}
             forceTextInputFocus={false}
             testID="password-toggle-button"
-            accessibilityLabel={accessibilityLabel}
-            accessibilityHint={accessibilityHint}
+            accessibilityLabel={toggleAccessibilityLabel}
+            accessibilityHint={toggleAccessibilityHint}
             accessibilityRole="button"
           />
         }
