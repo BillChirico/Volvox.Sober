@@ -234,7 +234,7 @@ const SponsorProfileScreen: React.FC = () => {
   );
 };
 
-const styles = StyleSheet.create({
+const createStyles = (theme: any) => StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#f5f5f5',
@@ -251,7 +251,7 @@ const styles = StyleSheet.create({
   },
   subtitle: {
     marginBottom: 24,
-    color: '#666',
+    color: theme.colors.onSurfaceVariant,
   },
   input: {
     marginBottom: 8,

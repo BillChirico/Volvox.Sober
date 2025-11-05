@@ -238,7 +238,7 @@ const MatchDetailScreen: React.FC = () => {
   );
 };
 
-const styles = StyleSheet.create({
+const createStyles = (theme: any) => StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#f5f5f5',
@@ -302,7 +302,7 @@ const styles = StyleSheet.create({
     lineHeight: 22,
   },
   breakdownHint: {
-    color: '#666',
+    color: theme.colors.onSurfaceVariant,
     marginBottom: 16,
   },
   scoreBreakdown: {
@@ -326,7 +326,7 @@ const styles = StyleSheet.create({
     fontWeight: '600',
   },
   scoreDescription: {
-    color: '#666',
+    color: theme.colors.onSurfaceVariant,
     marginTop: 4,
   },
   connectButton: {

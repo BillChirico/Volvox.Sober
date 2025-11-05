@@ -166,7 +166,7 @@ const SendRequestScreen: React.FC = () => {
   );
 };
 
-const styles = StyleSheet.create({
+const createStyles = (theme: any) => StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#f5f5f5',
@@ -192,7 +192,7 @@ const styles = StyleSheet.create({
   },
   subtitle: {
     textAlign: 'center',
-    color: '#666',
+    color: theme.colors.onSurfaceVariant,
   },
   messageSection: {
     marginBottom: 24,
@@ -202,7 +202,7 @@ const styles = StyleSheet.create({
     marginBottom: 4,
   },
   hint: {
-    color: '#666',
+    color: theme.colors.onSurfaceVariant,
     marginBottom: 12,
   },
   textInput: {
@@ -210,7 +210,7 @@ const styles = StyleSheet.create({
   },
   characterCount: {
     textAlign: 'right',
-    color: '#666',
+    color: theme.colors.onSurfaceVariant,
   },
   characterCountError: {
     color: '#d32f2f',

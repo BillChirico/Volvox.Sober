@@ -10,6 +10,7 @@ import { useGetAllStepsQuery, useGetMyStepWorkQuery } from '../services/stepsApi
 
 export const StepListScreen: React.FC = () => {
   const theme = useTheme();
+  const styles = createStyles(theme);
   const navigation = useNavigation();
 
   const { data: steps, isLoading: stepsLoading } = useGetAllStepsQuery();
@@ -22,11 +23,11 @@ export const StepListScreen: React.FC = () => {
 
   const getStatusColor = (status: string) => {
     switch (status) {
-      case 'reviewed': return theme.colors.primary;
-      case 'submitted': return theme.colors.secondary;
-      case 'in_progress': return '#FFA500';
-      case 'not_started': return '#CCCCCC';
-      default: return '#CCCCCC';
+      case 'reviewed': return theme.colors.tertiary; // Green
+      case 'submitted': return theme.colors.primary; // Blue
+      case 'in_progress': return theme.colors.secondary; // Teal
+      case 'not_started': return theme.colors.outlineVariant; // Gray
+      default: return theme.colors.outlineVariant;
     }
   };
 
@@ -112,10 +113,10 @@ export const StepListScreen: React.FC = () => {
   );
 };
 
-const styles = StyleSheet.create({
+const createStyles = (theme: any) => StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#F5F5F5',
+    backgroundColor: theme.colors.background,
   },
   centerContainer: {
     flex: 1,
@@ -124,9 +125,9 @@ const styles = StyleSheet.create({
   },
   progressContainer: {
     padding: 20,
-    backgroundColor: 'white',
+    backgroundColor: theme.colors.surface,
     borderBottomWidth: 1,
-    borderBottomColor: '#E0E0E0',
+    borderBottomColor: theme.colors.outlineVariant,
   },
   title: {
     fontWeight: 'bold',
@@ -144,7 +145,9 @@ const styles = StyleSheet.create({
     padding: 16,
   },
   stepCard: {
+    marginHorizontal: 16,
     marginBottom: 12,
+    backgroundColor: theme.colors.surface,
     elevation: 2,
   },
   stepHeader: {
@@ -155,7 +158,7 @@ const styles = StyleSheet.create({
   },
   stepNumber: {
     fontWeight: 'bold',
-    color: '#333',
+    color: theme.colors.onSurface,
   },
   statusBadge: {
     paddingHorizontal: 12,
@@ -163,7 +166,7 @@ const styles = StyleSheet.create({
     borderRadius: 12,
   },
   statusText: {
-    color: 'white',
+    color: theme.colors.onPrimary, // White on colored backgrounds
     fontSize: 12,
     fontWeight: '600',
   },
@@ -172,7 +175,29 @@ const styles = StyleSheet.create({
     lineHeight: 20,
   },
   stepDescription: {
-    color: '#666',
+    color: theme.colors.onSurfaceVariant,
     lineHeight: 18,
+  },
+  completedBadge: {
+    marginTop: 8,
+  },
+  completedText: {
+    color: theme.colors.onSurface,
+  },
+  checkIcon: {
+    marginLeft: 8,
+  },
+  description: {
+    marginTop: 4,
+    color: theme.colors.onSurfaceVariant,
+  },
+  emptyContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 20,
+  },
+  emptyText: {
+    color: theme.colors.onSurfaceVariant,
   },
 });

@@ -35,6 +35,7 @@ interface MessageThreadScreenProps {
 export const MessageThreadScreen: React.FC<MessageThreadScreenProps> = ({ route }) => {
   const { connectionId, otherUserId, otherUserName } = route.params;
   const theme = useTheme();
+  const styles = createStyles(theme);
 
   const [messageText, setMessageText] = useState('');
   const [messages, setMessages] = useState<Message[]>([]);
@@ -351,10 +352,10 @@ export const MessageThreadScreen: React.FC<MessageThreadScreenProps> = ({ route 
   );
 };
 
-const styles = StyleSheet.create({
+const createStyles = (theme: any) => StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#F5F5F5',
+    backgroundColor: theme.colors.background,
   },
   centerContainer: {
     flex: 1,
@@ -377,7 +378,7 @@ const styles = StyleSheet.create({
   },
   otherMessage: {
     alignSelf: 'flex-start',
-    backgroundColor: '#E0E0E0',
+    backgroundColor: theme.colors.outlineVariant,
     borderBottomLeftRadius: 4,
   },
   messageText: {
@@ -392,30 +393,30 @@ const styles = StyleSheet.create({
   },
   messageTime: {
     fontSize: 11,
-    color: '#666',
+    color: theme.colors.onSurfaceVariant,
     marginRight: 4,
   },
   messageStatus: {
     fontSize: 11,
-    color: '#666',
+    color: theme.colors.onSurfaceVariant,
   },
   typingContainer: {
     padding: 8,
     paddingLeft: 16,
     backgroundColor: '#FFF',
     borderTopWidth: 1,
-    borderTopColor: '#E0E0E0',
+    borderTopColor: theme.colors.outlineVariant,
   },
   typingText: {
     fontSize: 13,
-    color: '#666',
+    color: theme.colors.onSurfaceVariant,
     fontStyle: 'italic',
   },
   inputContainer: {
     padding: 12,
     backgroundColor: '#FFF',
     borderTopWidth: 1,
-    borderTopColor: '#E0E0E0',
+    borderTopColor: theme.colors.outlineVariant,
   },
   textInput: {
     backgroundColor: '#FFF',

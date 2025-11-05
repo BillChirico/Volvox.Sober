@@ -30,6 +30,7 @@ interface RouteParams {
 
 export const SponsorReviewScreen: React.FC = () => {
   const theme = useTheme();
+  const styles = createStyles(theme);
   const route = useRoute();
   const navigation = useNavigation();
   const { stepWorkId, sponseeId } = route.params as RouteParams;
@@ -237,10 +238,10 @@ export const SponsorReviewScreen: React.FC = () => {
   );
 };
 
-const styles = StyleSheet.create({
+const createStyles = (theme: any) => StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#F5F5F5',
+    backgroundColor: theme.colors.background,
   },
   centerContainer: {
     flex: 1,
@@ -249,7 +250,7 @@ const styles = StyleSheet.create({
   },
   header: {
     padding: 20,
-    backgroundColor: 'white',
+    backgroundColor: theme.colors.surface,
     borderBottomWidth: 1,
     borderBottomColor: '#E0E0E0',
   },
@@ -258,7 +259,7 @@ const styles = StyleSheet.create({
     marginBottom: 8,
   },
   metadata: {
-    color: '#666',
+    color: theme.colors.onSurfaceVariant,
     marginTop: 4,
   },
   scrollContent: {
@@ -277,7 +278,7 @@ const styles = StyleSheet.create({
     lineHeight: 22,
   },
   answerContainer: {
-    backgroundColor: '#F5F5F5',
+    backgroundColor: theme.colors.background,
     padding: 12,
     borderRadius: 8,
     marginBottom: 12,
@@ -293,7 +294,7 @@ const styles = StyleSheet.create({
   },
   commentsLabel: {
     marginBottom: 8,
-    color: '#666',
+    color: theme.colors.onSurfaceVariant,
   },
   commentItem: {
     marginBottom: 12,
@@ -319,7 +320,7 @@ const styles = StyleSheet.create({
   },
   actions: {
     padding: 16,
-    backgroundColor: 'white',
+    backgroundColor: theme.colors.surface,
     borderTopWidth: 1,
     borderTopColor: '#E0E0E0',
   },

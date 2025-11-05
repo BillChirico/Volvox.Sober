@@ -16,6 +16,7 @@ interface ConversationsListScreenProps {
 
 export const ConversationsListScreen: React.FC<ConversationsListScreenProps> = ({ navigation }) => {
   const theme = useTheme();
+  const styles = createStyles(theme);
   const [searchQuery, setSearchQuery] = useState('');
 
   const { data: conversations, isLoading, refetch, isFetching } = useGetConversationsQuery();
@@ -103,10 +104,10 @@ export const ConversationsListScreen: React.FC<ConversationsListScreenProps> = (
   );
 };
 
-const styles = StyleSheet.create({
+const createStyles = (theme: any) => StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#F5F5F5',
+    backgroundColor: theme.colors.background,
   },
   centerContainer: {
     flex: 1,
@@ -121,7 +122,7 @@ const styles = StyleSheet.create({
     flexGrow: 1,
   },
   conversationItem: {
-    backgroundColor: 'white',
+    backgroundColor: theme.colors.surface,
     marginBottom: 1,
   },
   rightContent: {
@@ -130,11 +131,11 @@ const styles = StyleSheet.create({
     marginRight: 8,
   },
   timeText: {
-    color: '#666',
+    color: theme.colors.onSurfaceVariant,
     marginBottom: 4,
   },
   badge: {
-    backgroundColor: '#2196F3',
+    backgroundColor: theme.colors.primary,
   },
   emptyContainer: {
     flex: 1,
@@ -145,10 +146,10 @@ const styles = StyleSheet.create({
   emptyText: {
     textAlign: 'center',
     marginBottom: 8,
-    color: '#333',
+    color: theme.colors.onSurface,
   },
   emptySubtext: {
     textAlign: 'center',
-    color: '#666',
+    color: theme.colors.onSurfaceVariant,
   },
 });

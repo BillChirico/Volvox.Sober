@@ -136,7 +136,7 @@ const ConnectionsScreen: React.FC = () => {
   );
 };
 
-const styles = StyleSheet.create({
+const createStyles = (theme: any) => StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#f5f5f5',
@@ -154,7 +154,7 @@ const styles = StyleSheet.create({
   },
   loadingText: {
     marginTop: 16,
-    color: '#666',
+    color: theme.colors.onSurfaceVariant,
   },
   card: {
     marginHorizontal: 16,
@@ -191,7 +191,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   statLabel: {
-    color: '#666',
+    color: theme.colors.onSurfaceVariant,
     marginBottom: 4,
   },
   statValue: {
@@ -206,7 +206,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   progressLabel: {
-    color: '#666',
+    color: theme.colors.onSurfaceVariant,
   },
   progressValue: {
     fontWeight: 'bold',
@@ -225,7 +225,7 @@ const styles = StyleSheet.create({
   },
   emptyMessage: {
     textAlign: 'center',
-    color: '#666',
+    color: theme.colors.onSurfaceVariant,
   },
 });
 

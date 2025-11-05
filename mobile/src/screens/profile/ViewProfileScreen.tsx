@@ -252,7 +252,7 @@ const ViewProfileScreen: React.FC = () => {
   );
 };
 
-const styles = StyleSheet.create({
+const createStyles = (theme: any) => StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#f5f5f5',
@@ -288,7 +288,7 @@ const styles = StyleSheet.create({
   },
   program: {
     textAlign: 'center',
-    color: '#666',
+    color: theme.colors.onSurfaceVariant,
     marginBottom: 16,
   },
   divider: {
@@ -303,7 +303,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   statLabel: {
-    color: '#666',
+    color: theme.colors.onSurfaceVariant,
     marginTop: 4,
   },
   sectionTitle: {

@@ -22,6 +22,7 @@ import type { TriggerContext } from '@volvox-sober/types/sobriety';
 
 export const LogRelapseScreen = ({ navigation }: any) => {
   const theme = useTheme();
+  const styles = createStyles(theme);
   const { data: stats } = useGetSobrietyStatsQuery();
   const [logRelapse, { isLoading }] = useLogRelapseMutation();
 
@@ -285,7 +286,7 @@ export const LogRelapseScreen = ({ navigation }: any) => {
   );
 };
 
-const styles = StyleSheet.create({
+const createStyles = (theme: any) => StyleSheet.create({
   container: {
     flex: 1,
     padding: 16,

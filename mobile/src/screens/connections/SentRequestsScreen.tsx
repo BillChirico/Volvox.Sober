@@ -198,7 +198,7 @@ const SentRequestsScreen: React.FC = () => {
   );
 };
 
-const styles = StyleSheet.create({
+const createStyles = (theme: any) => StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#f5f5f5',
@@ -216,7 +216,7 @@ const styles = StyleSheet.create({
   },
   loadingText: {
     marginTop: 16,
-    color: '#666',
+    color: theme.colors.onSurfaceVariant,
   },
   card: {
     marginHorizontal: 16,
@@ -236,7 +236,7 @@ const styles = StyleSheet.create({
     marginBottom: 4,
   },
   timestamp: {
-    color: '#666',
+    color: theme.colors.onSurfaceVariant,
   },
   statusChip: {
     height: 28,
@@ -255,11 +255,11 @@ const styles = StyleSheet.create({
   messageLabel: {
     fontWeight: '600',
     marginBottom: 4,
-    color: '#666',
+    color: theme.colors.onSurfaceVariant,
   },
   message: {
     fontStyle: 'italic',
-    color: '#333',
+    color: theme.colors.onSurface,
   },
   declinedSurface: {
     backgroundColor: '#ffebee',
@@ -300,7 +300,7 @@ const styles = StyleSheet.create({
   },
   emptyMessage: {
     textAlign: 'center',
-    color: '#666',
+    color: theme.colors.onSurfaceVariant,
   },
   warningText: {
     marginTop: 8,

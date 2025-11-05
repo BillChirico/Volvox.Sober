@@ -20,6 +20,7 @@ import type { Relapse } from '@volvox-sober/types/sobriety';
 
 export const RelapseHistoryScreen = ({ navigation }: any) => {
   const theme = useTheme();
+  const styles = createStyles(theme);
   const { data: stats } = useGetSobrietyStatsQuery();
   const { data: relapses, isLoading, error } = useGetMyRelapsesQuery(
     stats?.id || '',
@@ -163,7 +164,7 @@ export const RelapseHistoryScreen = ({ navigation }: any) => {
   );
 };
 
-const styles = StyleSheet.create({
+const createStyles = (theme: any) => StyleSheet.create({
   container: {
     flex: 1,
     padding: 16,
@@ -176,7 +177,7 @@ const styles = StyleSheet.create({
     marginTop: 16,
   },
   errorText: {
-    color: 'red',
+    color: theme.colors.error,
     marginBottom: 16,
     fontSize: 16,
   },
@@ -239,7 +240,7 @@ const styles = StyleSheet.create({
   },
   noteLabel: {
     marginBottom: 4,
-    color: '#666',
+    color: theme.colors.onSurfaceVariant,
   },
   noteText: {
     marginBottom: 8,

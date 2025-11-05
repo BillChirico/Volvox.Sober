@@ -21,6 +21,7 @@ import type { MilestoneType } from '@volvox-sober/types/sobriety';
 
 export const SobrietyDashboardScreen = ({ navigation }: any) => {
   const theme = useTheme();
+  const styles = createStyles(theme);
   const { data: stats, isLoading, error } = useGetSobrietyStatsQuery();
 
   if (isLoading) {
@@ -227,7 +228,7 @@ export const SobrietyDashboardScreen = ({ navigation }: any) => {
   );
 };
 
-const styles = StyleSheet.create({
+const createStyles = (theme: any) => StyleSheet.create({
   container: {
     flex: 1,
     padding: 16,
@@ -240,7 +241,7 @@ const styles = StyleSheet.create({
     marginTop: 16,
   },
   errorText: {
-    color: 'red',
+    color: theme.colors.error,
     marginBottom: 16,
   },
   emptyTitle: {
@@ -328,7 +329,7 @@ const styles = StyleSheet.create({
   },
   achievedBadge: {
     fontSize: 24,
-    color: 'green',
+    color: theme.colors.tertiary,
   },
   statsCard: {
     marginBottom: 16,

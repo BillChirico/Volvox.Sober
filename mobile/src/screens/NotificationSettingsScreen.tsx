@@ -31,6 +31,7 @@ const DEFAULT_PREFERENCES: NotificationPreferences = {
 
 export const NotificationSettingsScreen: React.FC = () => {
   const theme = useTheme();
+  const styles = createStyles(theme);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [preferences, setPreferences] = useState<NotificationPreferences>(DEFAULT_PREFERENCES);
@@ -262,10 +263,10 @@ export const NotificationSettingsScreen: React.FC = () => {
   );
 };
 
-const styles = StyleSheet.create({
+const createStyles = (theme: any) => StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#F5F5F5',
+    backgroundColor: theme.colors.background,
   },
   centerContainer: {
     flex: 1,
@@ -274,33 +275,33 @@ const styles = StyleSheet.create({
   },
   header: {
     padding: 20,
-    backgroundColor: 'white',
+    backgroundColor: theme.colors.surface,
   },
   title: {
     fontWeight: 'bold',
     marginBottom: 8,
   },
   subtitle: {
-    color: '#666',
+    color: theme.colors.onSurfaceVariant,
     lineHeight: 20,
   },
   section: {
-    backgroundColor: 'white',
+    backgroundColor: theme.colors.surface,
     paddingVertical: 12,
   },
   sectionTitle: {
     paddingHorizontal: 16,
     paddingBottom: 8,
     fontWeight: '600',
-    color: '#333',
+    color: theme.colors.onSurface,
   },
   footer: {
     padding: 20,
-    backgroundColor: 'white',
+    backgroundColor: theme.colors.surface,
     marginTop: 16,
   },
   helpText: {
-    color: '#666',
+    color: theme.colors.onSurfaceVariant,
     lineHeight: 18,
     textAlign: 'center',
   },

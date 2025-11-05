@@ -23,6 +23,7 @@ interface RouteParams {
 
 export const StepWorkScreen: React.FC = () => {
   const theme = useTheme();
+  const styles = createStyles(theme);
   const route = useRoute();
   const navigation = useNavigation();
   const { stepId } = route.params as RouteParams;
@@ -284,10 +285,10 @@ export const StepWorkScreen: React.FC = () => {
   );
 };
 
-const styles = StyleSheet.create({
+const createStyles = (theme: any) => StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#F5F5F5',
+    backgroundColor: theme.colors.background,
   },
   centerContainer: {
     flex: 1,
@@ -296,16 +297,16 @@ const styles = StyleSheet.create({
   },
   header: {
     padding: 20,
-    backgroundColor: 'white',
+    backgroundColor: theme.colors.surface,
     borderBottomWidth: 1,
-    borderBottomColor: '#E0E0E0',
+    borderBottomColor: theme.colors.outlineVariant,
   },
   title: {
     fontWeight: 'bold',
     marginBottom: 8,
   },
   description: {
-    color: '#666',
+    color: theme.colors.onSurfaceVariant,
     lineHeight: 20,
   },
   statusContainer: {
@@ -316,13 +317,13 @@ const styles = StyleSheet.create({
     fontWeight: '600',
   },
   statusSaved: {
-    color: '#4CAF50',
+    color: theme.colors.tertiary, // Green for success
   },
   statusSaving: {
-    color: '#FF9800',
+    color: theme.colors.secondary, // Teal for in-progress
   },
   statusOffline: {
-    color: '#F44336',
+    color: theme.colors.error, // Red for offline/error
   },
   scrollContent: {
     flex: 1,
@@ -334,20 +335,20 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     padding: 16,
     gap: 12,
-    backgroundColor: 'white',
+    backgroundColor: theme.colors.surface,
     borderTopWidth: 1,
-    borderTopColor: '#E0E0E0',
+    borderTopColor: theme.colors.outlineVariant,
   },
   actionButton: {
     flex: 1,
   },
   readOnlyBanner: {
     padding: 16,
-    backgroundColor: '#E3F2FD',
+    backgroundColor: theme.colors.primaryContainer,
     alignItems: 'center',
   },
   readOnlyText: {
-    color: '#1976D2',
+    color: theme.colors.onPrimaryContainer,
     fontWeight: '600',
   },
 });

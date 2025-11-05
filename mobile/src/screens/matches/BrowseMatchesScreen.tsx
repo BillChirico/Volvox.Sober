@@ -170,7 +170,7 @@ const BrowseMatchesScreen: React.FC = () => {
   );
 };
 
-const styles = StyleSheet.create({
+const createStyles = (theme: any) => StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#f5f5f5',
@@ -197,7 +197,7 @@ const styles = StyleSheet.create({
   },
   skeletonText: {
     marginTop: 16,
-    color: '#666',
+    color: theme.colors.onSurfaceVariant,
   },
   emptyContainer: {
     flex: 1,
@@ -212,7 +212,7 @@ const styles = StyleSheet.create({
   },
   emptyMessage: {
     textAlign: 'center',
-    color: '#666',
+    color: theme.colors.onSurfaceVariant,
     marginBottom: 8,
   },
   emptyHint: {

@@ -10,6 +10,7 @@ import { useGetMyStepWorkQuery, useGetAllStepsQuery } from '../services/stepsApi
 
 export const StepWorkHistoryScreen: React.FC = () => {
   const theme = useTheme();
+  const styles = createStyles(theme);
   const navigation = useNavigation();
 
   const { data: steps, isLoading: stepsLoading } = useGetAllStepsQuery();
@@ -178,10 +179,10 @@ export const StepWorkHistoryScreen: React.FC = () => {
   );
 };
 
-const styles = StyleSheet.create({
+const createStyles = (theme: any) => StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#F5F5F5',
+    backgroundColor: theme.colors.background,
   },
   centerContainer: {
     flex: 1,
@@ -195,12 +196,12 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   emptySubtext: {
-    color: '#666',
+    color: theme.colors.onSurfaceVariant,
     textAlign: 'center',
   },
   header: {
     padding: 20,
-    backgroundColor: 'white',
+    backgroundColor: theme.colors.surface,
     borderBottomWidth: 1,
     borderBottomColor: '#E0E0E0',
   },
@@ -209,7 +210,7 @@ const styles = StyleSheet.create({
     marginBottom: 4,
   },
   subtitle: {
-    color: '#666',
+    color: theme.colors.onSurfaceVariant,
   },
   listContent: {
     padding: 16,
@@ -232,7 +233,7 @@ const styles = StyleSheet.create({
     height: 28,
   },
   statusChipText: {
-    color: 'white',
+    color: theme.colors.onPrimary,
     fontSize: 12,
     fontWeight: '600',
   },
@@ -249,7 +250,7 @@ const styles = StyleSheet.create({
     marginBottom: 4,
   },
   metadataLabel: {
-    color: '#666',
+    color: theme.colors.onSurfaceVariant,
     fontWeight: '600',
   },
   metadataValue: {

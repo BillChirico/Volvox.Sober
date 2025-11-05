@@ -90,7 +90,7 @@ const WelcomeScreen: React.FC = () => {
   );
 };
 
-const styles = StyleSheet.create({
+const createStyles = (theme: any) => StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#f5f5f5',
@@ -109,7 +109,7 @@ const styles = StyleSheet.create({
   subtitle: {
     marginBottom: 32,
     textAlign: 'center',
-    color: '#666',
+    color: theme.colors.onSurfaceVariant,
   },
   option: {
     marginBottom: 16,
@@ -124,7 +124,7 @@ const styles = StyleSheet.create({
   optionDescription: {
     marginLeft: 52,
     marginTop: 4,
-    color: '#666',
+    color: theme.colors.onSurfaceVariant,
   },
   button: {
     marginTop: 24,

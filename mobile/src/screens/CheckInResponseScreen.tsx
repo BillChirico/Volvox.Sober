@@ -298,10 +298,10 @@ export const CheckInResponseScreen: React.FC<CheckInResponseScreenProps> = ({
 // Styles
 // ============================================================
 
-const styles = StyleSheet.create({
+const createStyles = (theme: any) => StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#FFFFFF',
+    backgroundColor: theme.colors.surface,
   },
   scrollContainer: {
     flex: 1,
@@ -315,7 +315,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     padding: 20,
-    backgroundColor: '#FFFFFF',
+    backgroundColor: theme.colors.surface,
   },
   header: {
     marginBottom: 24,
@@ -323,31 +323,31 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 28,
     fontWeight: 'bold',
-    color: '#000000',
+    color: theme.colors.onSurface,
     marginBottom: 4,
   },
   subtitle: {
     fontSize: 16,
-    color: '#8E8E93',
+    color: theme.colors.onSurfaceVariant,
   },
   progressContainer: {
     marginBottom: 32,
   },
   progressBar: {
     height: 8,
-    backgroundColor: '#E5E5E5',
+    backgroundColor: theme.colors.surfaceVariant,
     borderRadius: 4,
     overflow: 'hidden',
     marginBottom: 8,
   },
   progressFill: {
     height: '100%',
-    backgroundColor: '#007AFF',
+    backgroundColor: theme.colors.primary,
     borderRadius: 4,
   },
   progressText: {
     fontSize: 14,
-    color: '#8E8E93',
+    color: theme.colors.onSurfaceVariant,
     textAlign: 'center',
   },
   questionsSection: {
@@ -358,7 +358,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
     padding: 16,
-    backgroundColor: '#F5F5F5',
+    backgroundColor: theme.colors.background,
     borderRadius: 12,
     marginBottom: 16,
   },
@@ -377,12 +377,12 @@ const styles = StyleSheet.create({
   historySectionTitle: {
     fontSize: 18,
     fontWeight: '600',
-    color: '#000000',
+    color: theme.colors.onSurface,
     marginBottom: 12,
   },
   historyItem: {
     padding: 16,
-    backgroundColor: '#F5F5F5',
+    backgroundColor: theme.colors.background,
     borderRadius: 12,
     marginBottom: 8,
   },
@@ -393,7 +393,7 @@ const styles = StyleSheet.create({
   },
   historyItemDate: {
     fontSize: 14,
-    color: '#8E8E93',
+    color: theme.colors.onSurfaceVariant,
   },
   historyItemStatus: {
     paddingHorizontal: 12,
@@ -409,7 +409,7 @@ const styles = StyleSheet.create({
   historyItemStatusText: {
     fontSize: 12,
     fontWeight: '600',
-    color: '#FFFFFF',
+    color: theme.colors.onPrimary,
   },
   actions: {
     flexDirection: 'row',
@@ -424,10 +424,10 @@ const styles = StyleSheet.create({
     minHeight: 52,
   },
   buttonPrimary: {
-    backgroundColor: '#007AFF',
+    backgroundColor: theme.colors.primary,
   },
   buttonSecondary: {
-    backgroundColor: '#F5F5F5',
+    backgroundColor: theme.colors.background,
     borderWidth: 1,
     borderColor: '#E5E5E5',
   },
@@ -438,12 +438,12 @@ const styles = StyleSheet.create({
   buttonPrimaryText: {
     fontSize: 16,
     fontWeight: '600',
-    color: '#FFFFFF',
+    color: theme.colors.onPrimary,
   },
   buttonSecondaryText: {
     fontSize: 16,
     fontWeight: '600',
-    color: '#000000',
+    color: theme.colors.onSurface,
   },
   buttonText: {
     fontSize: 16,
@@ -453,7 +453,7 @@ const styles = StyleSheet.create({
   loadingText: {
     marginTop: 12,
     fontSize: 16,
-    color: '#8E8E93',
+    color: theme.colors.onSurfaceVariant,
   },
   errorText: {
     fontSize: 16,

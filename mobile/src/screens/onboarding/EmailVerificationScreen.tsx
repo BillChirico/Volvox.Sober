@@ -135,7 +135,7 @@ const EmailVerificationScreen: React.FC = () => {
   );
 };
 
-const styles = StyleSheet.create({
+const createStyles = (theme: any) => StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#f5f5f5',
@@ -163,7 +163,7 @@ const styles = StyleSheet.create({
   instructions: {
     marginBottom: 24,
     textAlign: 'center',
-    color: '#666',
+    color: theme.colors.onSurfaceVariant,
   },
   verifyingContainer: {
     flexDirection: 'row',
@@ -173,7 +173,7 @@ const styles = StyleSheet.create({
   },
   verifyingText: {
     marginLeft: 8,
-    color: '#666',
+    color: theme.colors.onSurfaceVariant,
   },
   resendButton: {
     marginBottom: 12,

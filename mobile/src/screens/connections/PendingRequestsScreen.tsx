@@ -174,7 +174,7 @@ const PendingRequestsScreen: React.FC = () => {
   );
 };
 
-const styles = StyleSheet.create({
+const createStyles = (theme: any) => StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#f5f5f5',
@@ -192,7 +192,7 @@ const styles = StyleSheet.create({
   },
   loadingText: {
     marginTop: 16,
-    color: '#666',
+    color: theme.colors.onSurfaceVariant,
   },
   card: {
     marginHorizontal: 16,
@@ -212,7 +212,7 @@ const styles = StyleSheet.create({
     marginBottom: 4,
   },
   timestamp: {
-    color: '#666',
+    color: theme.colors.onSurfaceVariant,
   },
   messageSurface: {
     backgroundColor: '#f5f5f5',
@@ -222,7 +222,7 @@ const styles = StyleSheet.create({
   },
   message: {
     fontStyle: 'italic',
-    color: '#333',
+    color: theme.colors.onSurface,
   },
   actions: {
     flexDirection: 'row',
@@ -247,7 +247,7 @@ const styles = StyleSheet.create({
   },
   emptyMessage: {
     textAlign: 'center',
-    color: '#666',
+    color: theme.colors.onSurfaceVariant,
   },
   dialogText: {
     marginBottom: 16,
@@ -257,7 +257,7 @@ const styles = StyleSheet.create({
   },
   characterCount: {
     textAlign: 'right',
-    color: '#666',
+    color: theme.colors.onSurfaceVariant,
   },
 });
 

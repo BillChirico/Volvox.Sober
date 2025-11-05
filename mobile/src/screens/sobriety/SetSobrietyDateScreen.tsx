@@ -18,6 +18,7 @@ import { useSetSobrietyDateMutation } from '../../store/api/sobrietyApi';
 
 export const SetSobrietyDateScreen = ({ navigation, route }: any) => {
   const theme = useTheme();
+  const styles = createStyles(theme);
   const [setSobrietyDate, { isLoading }] = useSetSobrietyDateMutation();
 
   const existingData = route.params?.sobrietyData;
@@ -173,7 +174,7 @@ export const SetSobrietyDateScreen = ({ navigation, route }: any) => {
   );
 };
 
-const styles = StyleSheet.create({
+const createStyles = (theme: any) => StyleSheet.create({
   container: {
     flex: 1,
     padding: 16,
