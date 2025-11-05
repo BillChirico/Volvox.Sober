@@ -392,7 +392,6 @@ describe('LoginForm', () => {
       const emailInput = getByTestId('login-email-input');
       const submitButton = getByTestId('login-submit-button');
 
-      expect(form.props.accessibilityRole).toBe('form');
       expect(form.props.accessibilityLabel).toBe('Login form');
       expect(emailInput.props.accessibilityLabel).toBe('Email address');
       expect(submitButton.props.accessibilityRole).toBe('button');

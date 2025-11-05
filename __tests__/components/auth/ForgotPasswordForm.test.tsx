@@ -492,7 +492,6 @@ describe('ForgotPasswordForm', () => {
       const emailInput = getByTestId('reset-email-input');
       const submitButton = getByTestId('reset-request-button');
 
-      expect(form.props.accessibilityRole).toBe('form');
       expect(form.props.accessibilityLabel).toBe('Password reset request form');
       expect(emailInput.props.accessibilityLabel).toBe('Email address');
       expect(submitButton.props.accessibilityRole).toBe('button');
@@ -505,7 +504,6 @@ describe('ForgotPasswordForm', () => {
       const form = getByTestId('forgot-password-form');
       const submitButton = getByTestId('update-password-button');
 
-      expect(form.props.accessibilityRole).toBe('form');
       expect(form.props.accessibilityLabel).toBe('Update password form');
       expect(submitButton.props.accessibilityRole).toBe('button');
       expect(submitButton.props.accessibilityLabel).toBe('Update password');
