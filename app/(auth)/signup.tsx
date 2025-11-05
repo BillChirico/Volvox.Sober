@@ -1,5 +1,6 @@
 import { View, StyleSheet } from 'react-native';
-import { useRouter } from 'expo-router';
+import { Button } from 'react-native-paper';
+import { useRouter, Link } from 'expo-router';
 import SignupForm from '../../src/components/auth/SignupForm';
 
 /**
@@ -16,6 +17,7 @@ import SignupForm from '../../src/components/auth/SignupForm';
  * - Success message with email verification instructions
  * - Error handling and display
  * - Accessibility support (WCAG 2.1 AA)
+ * - Navigation link to login screen
  */
 export default function SignupScreen() {
   const router = useRouter();
@@ -29,6 +31,19 @@ export default function SignupScreen() {
   return (
     <View style={styles.container}>
       <SignupForm onSuccess={handleSignupSuccess} />
+
+      <View style={styles.footer}>
+        <Link href="/(auth)/login" asChild>
+          <Button
+            mode="text"
+            testID="login-link"
+            accessibilityRole="link"
+            accessibilityLabel="Already have an account? Login"
+          >
+            Already have an account? Login
+          </Button>
+        </Link>
+      </View>
     </View>
   );
 }
@@ -36,5 +51,9 @@ export default function SignupScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+  },
+  footer: {
+    padding: 20,
+    alignItems: 'center',
   },
 });

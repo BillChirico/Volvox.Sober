@@ -38,6 +38,13 @@ export default function AuthLayout() {
           title: 'Reset Password',
         }}
       />
+      <Stack.Screen
+        name="verify-email"
+        options={{
+          title: 'Verify Email',
+          headerShown: false,
+        }}
+      />
     </Stack>
   );
 }

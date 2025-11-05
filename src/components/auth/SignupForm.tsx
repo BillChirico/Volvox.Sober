@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { View, StyleSheet, ScrollView } from 'react-native';
 import { Text, Button, TextInput, useTheme } from 'react-native-paper';
+import { useFocusEffect } from '@react-navigation/native';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import { signupThunk } from '../../store/auth/authThunks';
 import { signupSchema } from '../../services/validationSchemas';
@@ -48,6 +49,21 @@ const SignupForm: React.FC<SignupFormProps> = ({ onSuccess }) => {
       dispatch(clearError());
     };
   }, [dispatch]);
+
+  // Clear form state when navigating away for security (FR-014)
+  useFocusEffect(
+    useCallback(() => {
+      // Cleanup function runs when screen loses focus
+      return () => {
+        setEmail('');
+        setPassword('');
+        setConfirmPassword('');
+        setValidationErrors({});
+        setShowSuccess(false);
+        dispatch(clearError());
+      };
+    }, [dispatch])
+  );
 
   const validateForm = async (): Promise<boolean> => {
     try {

@@ -69,6 +69,23 @@ class AuthService {
   }
 
   /**
+   * Resend verification email for unverified users
+   * @param email - User's email address
+   * @returns Promise with error information if any
+   */
+  async resendVerification(email: string): Promise<{ error: AuthError | null }> {
+    const { error } = await getSupabase().auth.resend({
+      type: 'signup',
+      email,
+      options: {
+        emailRedirectTo: 'volvoxsober://auth/verify',
+      },
+    });
+
+    return { error };
+  }
+
+  /**
    * Sign in an existing user with email and password
    * @param email - User's email address
    * @param password - User's password

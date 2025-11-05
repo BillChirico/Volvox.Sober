@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, fireEvent, waitFor } from '@testing-library/react-native';
+import { render, fireEvent, waitFor, act } from '@testing-library/react-native';
 import { Provider as PaperProvider } from 'react-native-paper';
 import { Provider as ReduxProvider } from 'react-redux';
 import { configureStore } from '@reduxjs/toolkit';
@@ -19,7 +19,7 @@ describe('SignupForm', () => {
     jest.clearAllMocks();
 
     // Mock signupThunk to return a thunk action that resolves successfully
-    mockSignupThunk.mockImplementation((payload: any) => {
+    mockSignupThunk.mockImplementation(() => {
       return async (dispatch: any) => {
         dispatch({ type: 'auth/signup/pending' });
         dispatch({ type: 'auth/signup/fulfilled', payload: { success: true } });
@@ -131,20 +131,17 @@ describe('SignupForm', () => {
   });
 
   it('should display error message on signup failure', async () => {
-    const { getByTestId, getByText } = renderComponent();
-    const emailInput = getByTestId('signup-email-input');
-    const passwordInput = getByTestId('signup-password-input');
-    const confirmPasswordInput = getByTestId('signup-confirm-password-input');
-    const submitButton = getByTestId('signup-submit-button');
+    const { getByText } = renderComponent();
 
-    // Mock signup failure
-    store.dispatch(setError('Email already in use'));
+    // Mock signup failure - dispatch error to store
+    await act(async () => {
+      store.dispatch(setError('Email already in use'));
+    });
 
-    fireEvent.changeText(emailInput, 'test@example.com');
-    fireEvent.changeText(passwordInput, 'TestPass123!');
-    fireEvent.changeText(confirmPasswordInput, 'TestPass123!');
-
-    expect(getByText('Email already in use')).toBeTruthy();
+    // Error should be displayed via AuthErrorMessage component
+    await waitFor(() => {
+      expect(getByText('Email already in use')).toBeTruthy();
+    });
   });
 
   it('should have proper accessibility labels', () => {
