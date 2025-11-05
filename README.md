@@ -1,9 +1,10 @@
 # Volvox.Sober
 
-> A cross-platform mobile application for sobriety support and recovery through authentic peer accountability
+> A universal Expo application for sobriety support and recovery through authentic peer accountability
 
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.x-blue.svg)](https://www.typescriptlang.org/)
-[![React Native](https://img.shields.io/badge/React%20Native-0.73+-61DAFB.svg)](https://reactnative.dev/)
+[![Expo](https://img.shields.io/badge/Expo-54.x-000020.svg)](https://expo.dev/)
+[![React Native](https://img.shields.io/badge/React%20Native-0.81+-61DAFB.svg)](https://reactnative.dev/)
 [![Supabase](https://img.shields.io/badge/Supabase-Backend-3ECF8E.svg)](https://supabase.com/)
 [![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 
@@ -23,7 +24,8 @@ Volvox.Sober is a sobriety companion app that connects individuals in recovery w
 ## Tech Stack
 
 ### Frontend
-- **React Native 0.73+** - Cross-platform iOS/Android
+- **Expo 54.x** - Universal app platform (iOS, Android, Web)
+- **React Native 0.81+** - Cross-platform native framework
 - **TypeScript 5.x** - Type-safe development
 - **Zustand + React Query** - State management
 - **React Navigation** - Stack + bottom tabs navigation
@@ -48,9 +50,10 @@ Volvox.Sober is a sobriety companion app that connects individuals in recovery w
 
 - Node.js 18.0.0 or higher
 - pnpm 8.0.0 or higher
-- React Native development environment ([setup guide](https://reactnative.dev/docs/environment-setup))
+- Expo CLI (installed automatically)
 - iOS: Xcode 14+ (macOS only)
 - Android: Android Studio + SDK 33+
+- Web: Modern browser (Chrome, Firefox, Safari, Edge)
 
 ### Installation
 
@@ -65,22 +68,18 @@ pnpm install
 # Copy environment variables
 cp .env.example .env
 # Edit .env with your Supabase credentials
-
-# iOS setup (macOS only)
-cd mobile/ios && pod install && cd ../..
 ```
 
 ### Development
 
 ```bash
-# Start Metro bundler
-pnpm mobile
+# Start Expo dev server (choose platform from menu)
+pnpm dev
 
-# Run on iOS (separate terminal)
-pnpm ios
-
-# Run on Android (separate terminal)
-pnpm android
+# Or run specific platforms:
+pnpm ios          # Run on iOS simulator/device
+pnpm android      # Run on Android emulator/device
+pnpm web          # Run in web browser
 ```
 
 ### Quality Checks
@@ -105,16 +104,30 @@ pnpm format
 ```
 volvox-sober/
 ├── apps/
-│   └── mobile/          # React Native application
+│   └── app/             # Universal Expo app (iOS, Android, Web)
+│       ├── src/         # Application source code
+│       ├── assets/      # Images, fonts, etc.
+│       ├── ios/         # iOS native code (generated)
+│       ├── android/     # Android native code (generated)
+│       ├── web/         # Web-specific code
+│       └── __tests__/   # Test files
 ├── packages/
 │   └── shared/          # Shared types and utilities
+│       └── types/       # TypeScript type definitions
 ├── supabase/            # Backend (migrations, functions, seeds)
 ├── kitty-specs/         # Feature specifications & planning
 ├── scripts/             # Build and utility scripts
-│   └── mobile/          # Mobile-specific scripts
 ├── docs/                # Project documentation
 └── [config files]       # Root configuration files
 ```
+
+### Platform-Specific Code
+
+Expo supports platform-specific files using extensions:
+- `Component.tsx` - Shared across all platforms
+- `Component.ios.tsx` - iOS-specific override
+- `Component.android.tsx` - Android-specific override
+- `Component.web.tsx` - Web-specific override
 
 ## Development Workflow
 

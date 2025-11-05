@@ -4,12 +4,13 @@ Last updated: 2025-11-04
 
 ## Project Overview
 
-Volvox.Sober is a cross-platform mobile application for sobriety support and recovery, enabling authentic peer accountability through curated sponsor/sponsee matching.
+Volvox.Sober is a universal Expo application (iOS, Android, Web) for sobriety support and recovery, enabling authentic peer accountability through curated sponsor/sponsee matching.
 
 ## Technology Stack
 
-### Frontend (Mobile App)
-- **Framework**: React Native 0.73+
+### Frontend (Universal App)
+- **Platform**: Expo 54.x (universal app platform)
+- **Framework**: React Native 0.81+
 - **Language**: TypeScript 5.x (strict mode)
 - **Navigation**: React Navigation (stack + bottom tabs)
 - **State Management**: Zustand + React Query
@@ -31,18 +32,24 @@ Volvox.Sober is a cross-platform mobile application for sobriety support and rec
 
 ```
 volvox-sober/
-├── mobile/              # React Native app
-│   ├── src/
-│   │   ├── screens/     # Route screens
-│   │   ├── components/  # Reusable UI components
-│   │   ├── services/    # API clients, business logic
-│   │   ├── types/       # TypeScript definitions
-│   │   ├── hooks/       # Custom React hooks
-│   │   ├── theme/       # Theme tokens and provider
-│   │   └── utils/       # Utility functions
-│   ├── tests/           # Test files
-│   ├── ios/             # Native iOS code
-│   └── android/         # Native Android code
+├── apps/
+│   └── app/             # Universal Expo app (iOS, Android, Web)
+│       ├── src/
+│       │   ├── screens/     # Route screens
+│       │   ├── components/  # Reusable UI components
+│       │   ├── services/    # API clients, business logic
+│       │   ├── types/       # TypeScript definitions
+│       │   ├── theme/       # Theme tokens and provider
+│       │   └── utils/       # Utility functions
+│       ├── __tests__/       # Test files
+│       ├── ios/             # iOS native code (generated)
+│       ├── android/         # Android native code (generated)
+│       ├── web/             # Web-specific code
+│       └── assets/          # Images, fonts, etc.
+│
+├── packages/
+│   └── shared/          # Shared code (types, utilities)
+│       └── types/       # TypeScript type definitions
 │
 ├── supabase/            # Backend
 │   ├── migrations/      # Database schema migrations
@@ -57,22 +64,33 @@ volvox-sober/
 │       ├── data-model.md # Database design
 │       └── tasks/       # Work package prompts
 │
-├── shared/              # Shared code (types, utilities)
+├── docs/                # Project documentation
 └── scripts/             # Build and utility scripts
 ```
+
+### Platform-Specific Files
+
+Expo supports platform-specific implementations:
+- `Component.tsx` - Shared across all platforms
+- `Component.ios.tsx` - iOS-specific override
+- `Component.android.tsx` - Android-specific override
+- `Component.web.tsx` - Web-specific override
 
 ## Commands
 
 ### Development
 ```bash
-# Start Metro bundler
-pnpm mobile
+# Start Expo dev server
+pnpm dev
 
 # Run on iOS
 pnpm ios
 
 # Run on Android
 pnpm android
+
+# Run on Web
+pnpm web
 ```
 
 ### Quality Checks
@@ -130,9 +148,10 @@ pnpm format
 
 1. **Node.js**: 18.0.0 or higher
 2. **pnpm**: 8.0.0 or higher
-3. **React Native CLI**: Follow React Native environment setup
+3. **Expo CLI**: Installed automatically with dependencies
 4. **iOS**: Xcode 14+ (macOS only)
 5. **Android**: Android Studio + SDK 33+
+6. **Web**: Modern browser (Chrome, Firefox, Safari, Edge)
 
 Copy `.env.example` to `.env` and configure environment variables.
 
