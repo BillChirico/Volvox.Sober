@@ -3,6 +3,7 @@ node_modules/
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+pnpm-debug.log*
 
 # React Native
 .expo/
@@ -15,11 +16,16 @@ yarn-error.log*
 *.orig.*
 web-build/
 ios/build/
+ios/Pods/
 android/app/build/
 android/.gradle/
+android/build/
 
 # macOS
 .DS_Store
+.AppleDouble
+.LSOverride
+._*
 
 # IDEs
 .vscode/
@@ -27,6 +33,9 @@ android/.gradle/
 *.swp
 *.swo
 *~
+.project
+.classpath
+.settings/
 
 # Environment files
 .env
@@ -44,6 +53,7 @@ supabase/.temp/
 # Test coverage
 coverage/
 *.coverage
+.nyc_output/
 
 # Logs
 logs/
@@ -53,3 +63,22 @@ logs/
 dist/
 build/
 .worktrees/
+
+# Temporary files
+tmp/
+temp/
+*.tmp
+*.temp
+
+# Lock files (keep pnpm-lock.yaml, ignore others)
+package-lock.json
+yarn.lock
+
+# Serena
+.serena/
+
+# Debug
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+lerna-debug.log*
