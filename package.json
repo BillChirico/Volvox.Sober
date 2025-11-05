@@ -7,6 +7,8 @@
     "ios": "pnpm --filter mobile ios",
     "android": "pnpm --filter mobile android",
     "test": "pnpm -r test",
+    "test:mobile": "pnpm --filter mobile test",
+    "test:e2e": "pnpm --filter mobile test:e2e",
     "lint": "pnpm -r lint",
     "lint:fix": "pnpm -r lint:fix",
     "format": "prettier --write \"**/*.{js,jsx,ts,tsx,json,md}\"",

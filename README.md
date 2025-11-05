@@ -104,12 +104,16 @@ pnpm format
 
 ```
 volvox-sober/
-├── mobile/              # React Native application
+├── apps/
+│   └── mobile/          # React Native application
+├── packages/
+│   └── shared/          # Shared types and utilities
 ├── supabase/            # Backend (migrations, functions, seeds)
-├── shared/              # Shared code (types, utilities)
 ├── kitty-specs/         # Feature specifications & planning
 ├── scripts/             # Build and utility scripts
-└── docs/                # Additional documentation
+│   └── mobile/          # Mobile-specific scripts
+├── docs/                # Project documentation
+└── [config files]       # Root configuration files
 ```
 
 ## Development Workflow
