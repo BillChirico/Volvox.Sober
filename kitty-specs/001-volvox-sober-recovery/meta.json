@@ -1,7 +1,0 @@
-{
-  "feature_number": "001",
-  "slug": "001-volvox-sober-recovery",
-  "friendly_name": "Volvox.Sober Recovery Platform",
-  "source_description": "Build an iOS and Android application for sobriety support that enables authentic peer accountability through curated sponsor/sponsee matching. Features include: mutual sobriety tracking with full transparency, algorithm-based matching using comprehensive criteria (recovery profile, preferences, demographics, values), structured 12-step AA worksheets that sponsors can edit, hybrid communication (in-app messaging + optional contact sharing) with structured check-ins, sponsor capacity management with request accept/deny/message capabilities, complete progress visibility for sponsors, and full dark/light mode support.",
-  "created_at": "2025-11-03T16:07:19Z"
-}

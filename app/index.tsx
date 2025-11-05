@@ -1,8 +1,10 @@
 import { Redirect } from 'expo-router';
 import { useAppSelector } from '../src/store/hooks';
+import { selectIsAuthenticated, selectUser } from '../src/store/auth/authSelectors';
 
 export default function Index() {
-  const { isAuthenticated, user } = useAppSelector((state) => state.auth);
+  const isAuthenticated = useAppSelector(selectIsAuthenticated);
+  const user = useAppSelector(selectUser);
 
   // Redirect to appropriate screen based on auth state
   if (!isAuthenticated) {
@@ -10,7 +12,7 @@ export default function Index() {
   }
 
   // Check if user needs to complete onboarding
-  if (user && !user.onboarding_completed) {
+  if (user && !user.user_metadata?.onboarding_completed) {
     return <Redirect href="/(onboarding)/welcome" />;
   }
 

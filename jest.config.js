@@ -1,9 +1,7 @@
 module.exports = {
-  // Use jest-expo preset but override its problemat setupFiles
-  ...require('jest-expo/jest-preset'),
+  // Use jest-expo preset
+  preset: 'jest-expo',
   setupFilesAfterEnv: ['<rootDir>/jest.setup.js'],
-  // Critical: Override setupFiles to exclude React Native's ES module setup
-  setupFiles: [],
   // Exclude E2E tests from unit test runs (use Detox for E2E)
   testPathIgnorePatterns: [
     '/node_modules/',
@@ -24,7 +22,5 @@ module.exports = {
   ],
   moduleNameMapper: {
     '^@/(.*)$': '<rootDir>/src/$1',
-    // Mock react-native to avoid ES module imports
-    '^react-native$': '<rootDir>/jest.setup.js',
   },
 };
