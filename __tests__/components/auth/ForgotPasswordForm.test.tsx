@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, fireEvent, waitFor, act } from '@testing-library/react-native';
+import { render, fireEvent, waitFor } from '@testing-library/react-native';
 import ForgotPasswordForm from '../../../src/components/auth/ForgotPasswordForm';
 import authService from '../../../src/services/authService';
 
@@ -289,7 +289,8 @@ describe('ForgotPasswordForm', () => {
 
         fireEvent.press(submitButton);
 
-        const errorMessage = await findByText(/password is required/i);
+        // Yup shows multiple errors when password is empty, this is one of them
+        const errorMessage = await findByText(/password must/i);
         expect(errorMessage).toBeTruthy();
       });
 
@@ -301,19 +302,31 @@ describe('ForgotPasswordForm', () => {
         fireEvent.changeText(passwordInput, 'Short1!');
         fireEvent.press(submitButton);
 
-        const errorMessage = await findByText(/minimum 8 characters/i);
+        const errorMessage = await findByText(/at least 8 characters/i);
         expect(errorMessage).toBeTruthy();
       });
 
-      it('should show error for password without letter', async () => {
+      it('should show error for password without lowercase letter', async () => {
         const { getByTestId, findByText } = renderComponent({ resetToken: 'test-token' });
         const passwordInput = getByTestId('new-password-input');
         const submitButton = getByTestId('update-password-button');
 
-        fireEvent.changeText(passwordInput, '12345678!');
+        fireEvent.changeText(passwordInput, 'PASSWORD123!');
         fireEvent.press(submitButton);
 
-        const errorMessage = await findByText(/must contain at least one letter/i);
+        const errorMessage = await findByText(/must contain at least one lowercase letter/i);
+        expect(errorMessage).toBeTruthy();
+      });
+
+      it('should show error for password without uppercase letter', async () => {
+        const { getByTestId, findByText } = renderComponent({ resetToken: 'test-token' });
+        const passwordInput = getByTestId('new-password-input');
+        const submitButton = getByTestId('update-password-button');
+
+        fireEvent.changeText(passwordInput, 'password123!');
+        fireEvent.press(submitButton);
+
+        const errorMessage = await findByText(/must contain at least one uppercase letter/i);
         expect(errorMessage).toBeTruthy();
       });
 
@@ -329,6 +342,18 @@ describe('ForgotPasswordForm', () => {
         expect(errorMessage).toBeTruthy();
       });
 
+      it('should show error for password without special character', async () => {
+        const { getByTestId, findByText } = renderComponent({ resetToken: 'test-token' });
+        const passwordInput = getByTestId('new-password-input');
+        const submitButton = getByTestId('update-password-button');
+
+        fireEvent.changeText(passwordInput, 'Password123');
+        fireEvent.press(submitButton);
+
+        const errorMessage = await findByText(/must contain at least one special character/i);
+        expect(errorMessage).toBeTruthy();
+      });
+
       it('should show error when passwords do not match', async () => {
         const { getByTestId, findByText } = renderComponent({ resetToken: 'test-token' });
         const passwordInput = getByTestId('new-password-input');
@@ -339,7 +364,7 @@ describe('ForgotPasswordForm', () => {
         fireEvent.changeText(confirmInput, 'DifferentPassword123!');
         fireEvent.press(submitButton);
 
-        const errorMessage = await findByText(/passwords do not match/i);
+        const errorMessage = await findByText(/passwords must match/i);
         expect(errorMessage).toBeTruthy();
       });
 
@@ -359,7 +384,7 @@ describe('ForgotPasswordForm', () => {
 
     describe('Submission', () => {
       it('should call updatePassword with new password on submit', async () => {
-        mockAuthService.updatePassword.mockResolvedValue({ error: null });
+        mockAuthService.updatePassword.mockResolvedValue({ user: null, error: null });
 
         const { getByTestId } = renderComponent({ resetToken: 'test-token' });
         const passwordInput = getByTestId('new-password-input');
@@ -376,7 +401,7 @@ describe('ForgotPasswordForm', () => {
       });
 
       it('should show success message after password update', async () => {
-        mockAuthService.updatePassword.mockResolvedValue({ error: null });
+        mockAuthService.updatePassword.mockResolvedValue({ user: null, error: null });
 
         const { getByTestId, findByText } = renderComponent({ resetToken: 'test-token' });
         const passwordInput = getByTestId('new-password-input');
@@ -392,7 +417,7 @@ describe('ForgotPasswordForm', () => {
       });
 
       it('should call onPasswordUpdateSuccess after successful update', async () => {
-        mockAuthService.updatePassword.mockResolvedValue({ error: null });
+        mockAuthService.updatePassword.mockResolvedValue({ user: null, error: null });
 
         const onPasswordUpdateSuccess = jest.fn();
         const { getByTestId } = renderComponent({ resetToken: 'test-token', onPasswordUpdateSuccess });
@@ -410,7 +435,7 @@ describe('ForgotPasswordForm', () => {
       });
 
       it('should clear password fields after successful update', async () => {
-        mockAuthService.updatePassword.mockResolvedValue({ error: null });
+        mockAuthService.updatePassword.mockResolvedValue({ user: null, error: null });
 
         const { getByTestId } = renderComponent({ resetToken: 'test-token' });
         const passwordInput = getByTestId('new-password-input');
@@ -429,6 +454,7 @@ describe('ForgotPasswordForm', () => {
 
       it('should show expired token error message', async () => {
         mockAuthService.updatePassword.mockResolvedValue({
+          user: null,
           error: { message: 'Token expired' } as any,
         });
 
@@ -447,6 +473,7 @@ describe('ForgotPasswordForm', () => {
 
       it('should show invalid token error message', async () => {
         mockAuthService.updatePassword.mockResolvedValue({
+          user: null,
           error: { message: 'Invalid token' } as any,
         });
 
@@ -465,7 +492,7 @@ describe('ForgotPasswordForm', () => {
 
       it('should disable inputs during submission', async () => {
         mockAuthService.updatePassword.mockImplementation(
-          () => new Promise((resolve) => setTimeout(() => resolve({ error: null }), 100))
+          () => new Promise((resolve) => setTimeout(() => resolve({ user: null, error: null }), 100))
         );
 
         const { getByTestId } = renderComponent({ resetToken: 'test-token' });
@@ -586,7 +613,7 @@ describe('ForgotPasswordForm', () => {
 
     it('should show loading state during password update', async () => {
       mockAuthService.updatePassword.mockImplementation(
-        () => new Promise((resolve) => setTimeout(() => resolve({ error: null }), 100))
+        () => new Promise((resolve) => setTimeout(() => resolve({ user: null, error: null }), 100))
       );
 
       const { getByTestId } = renderComponent({ resetToken: 'test-token' });

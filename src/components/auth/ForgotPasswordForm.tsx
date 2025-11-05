@@ -2,7 +2,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { View, StyleSheet } from 'react-native';
 import { TextInput, Button, Text, useTheme } from 'react-native-paper';
 import { useFocusEffect } from '@react-navigation/native';
-import { passwordResetSchema } from '../../services/validationSchemas';
+import { passwordResetSchema, updatePasswordSchema } from '../../services/validationSchemas';
 import { ValidationError } from 'yup';
 import authService from '../../services/authService';
 import PasswordInput from './PasswordInput';
@@ -94,27 +94,29 @@ const ForgotPasswordForm: React.FC<ForgotPasswordFormProps> = ({
     }
   };
 
-  const validatePasswordForm = (): boolean => {
-    const errors: Record<string, string> = {};
+  const validatePasswordForm = async (): Promise<boolean> => {
+    try {
+      await updatePasswordSchema.validate(
+        { newPassword, confirmNewPassword: confirmPassword },
+        { abortEarly: false }
+      );
+      setValidationErrors({});
+      return true;
+    } catch (err) {
+      const validationError = err as ValidationError;
+      const errors: Record<string, string> = {};
 
-    if (!newPassword) {
-      errors.newPassword = 'Password is required';
-    } else if (newPassword.length < 8) {
-      errors.newPassword = 'Minimum 8 characters required';
-    } else if (!/[a-zA-Z]/.test(newPassword)) {
-      errors.newPassword = 'Must contain at least one letter';
-    } else if (!/[0-9]/.test(newPassword)) {
-      errors.newPassword = 'Must contain at least one number';
+      validationError.inner.forEach((error) => {
+        if (error.path) {
+          // Map confirmNewPassword back to confirmPassword for consistency
+          const path = error.path === 'confirmNewPassword' ? 'confirmPassword' : error.path;
+          errors[path] = error.message;
+        }
+      });
+
+      setValidationErrors(errors);
+      return false;
     }
-
-    if (!confirmPassword) {
-      errors.confirmPassword = 'Please confirm your password';
-    } else if (newPassword !== confirmPassword) {
-      errors.confirmPassword = 'Passwords do not match';
-    }
-
-    setValidationErrors(errors);
-    return Object.keys(errors).length === 0;
   };
 
   const handleResetRequest = async (): Promise<void> => {
@@ -156,7 +158,7 @@ const ForgotPasswordForm: React.FC<ForgotPasswordFormProps> = ({
     setError('');
     setSuccess('');
 
-    const isValid = validatePasswordForm();
+    const isValid = await validatePasswordForm();
     if (!isValid) return;
 
     setLoading(true);
