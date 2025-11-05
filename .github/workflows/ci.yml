@@ -64,7 +64,7 @@ jobs:
         run: pnpm lint
 
       - name: Check code formatting
-        run: npx prettier --check .
+        run: pnpm format
 
       - name: Run type checking
         run: pnpm typecheck

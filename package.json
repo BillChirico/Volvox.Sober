@@ -16,6 +16,8 @@
     "build:e2e:ios": "detox build --configuration ios.sim.debug",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
+    "format": "prettier --check .",
+    "format:fix": "prettier --write .",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
