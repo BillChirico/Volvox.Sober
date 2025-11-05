@@ -1,5 +1,5 @@
 {
-  "extends": ["expo/tsconfig.base", "../../tsconfig.base.json"],
+  "extends": "expo/tsconfig.base",
   "compilerOptions": {
     "strict": true,
     "strictNullChecks": true,
@@ -12,8 +12,8 @@
     "noImplicitReturns": true,
     "noFallthroughCasesInSwitch": true,
     "paths": {
-      "@volvox-sober/shared": ["../../packages/shared"],
-      "@volvox-sober/shared/*": ["../../packages/shared/*"]
+      "@volvox-sober/shared": ["./packages/shared"],
+      "@volvox-sober/shared/*": ["./packages/shared/*"]
     }
   },
   "include": ["**/*.ts", "**/*.tsx"],
