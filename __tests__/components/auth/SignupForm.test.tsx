@@ -40,7 +40,7 @@ describe('SignupForm', () => {
         <PaperProvider>
           <SignupForm {...props} />
         </PaperProvider>
-      </ReduxProvider>
+      </ReduxProvider>,
     );
   };
 

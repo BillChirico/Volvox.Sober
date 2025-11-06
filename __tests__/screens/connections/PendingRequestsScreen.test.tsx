@@ -23,8 +23,7 @@ const createMockStore = () => {
     reducer: {
       [connectionsApi.reducerPath]: connectionsApi.reducer,
     },
-    middleware: (getDefaultMiddleware) =>
-      getDefaultMiddleware().concat(connectionsApi.middleware),
+    middleware: getDefaultMiddleware => getDefaultMiddleware().concat(connectionsApi.middleware),
   });
 };
 
@@ -73,7 +72,7 @@ describe('PendingRequestsScreen', () => {
         <NavigationContainer>
           <PendingRequestsScreen />
         </NavigationContainer>
-      </Provider>
+      </Provider>,
     );
 
     expect(getByText('Loading requests...')).toBeTruthy();
@@ -94,7 +93,7 @@ describe('PendingRequestsScreen', () => {
         <NavigationContainer>
           <PendingRequestsScreen />
         </NavigationContainer>
-      </Provider>
+      </Provider>,
     );
 
     expect(getByText('John Doe')).toBeTruthy();
@@ -117,7 +116,7 @@ describe('PendingRequestsScreen', () => {
         <NavigationContainer>
           <PendingRequestsScreen />
         </NavigationContainer>
-      </Provider>
+      </Provider>,
     );
 
     expect(getByText('No Pending Requests')).toBeTruthy();
@@ -136,10 +135,9 @@ describe('PendingRequestsScreen', () => {
       refetch: jest.fn(),
     } as any);
 
-    jest.spyOn(connectionsApi.endpoints.acceptRequest, 'useMutation').mockReturnValue([
-      mockAcceptRequest,
-      { isLoading: false },
-    ] as any);
+    jest
+      .spyOn(connectionsApi.endpoints.acceptRequest, 'useMutation')
+      .mockReturnValue([mockAcceptRequest, { isLoading: false }] as any);
 
     const store = createMockStore();
 
@@ -148,7 +146,7 @@ describe('PendingRequestsScreen', () => {
         <NavigationContainer>
           <PendingRequestsScreen />
         </NavigationContainer>
-      </Provider>
+      </Provider>,
     );
 
     const acceptButtons = getAllByText('Accept');
@@ -176,7 +174,7 @@ describe('PendingRequestsScreen', () => {
         <NavigationContainer>
           <PendingRequestsScreen />
         </NavigationContainer>
-      </Provider>
+      </Provider>,
     );
 
     const declineButtons = getAllByText('Decline');
@@ -196,10 +194,9 @@ describe('PendingRequestsScreen', () => {
       refetch: jest.fn(),
     } as any);
 
-    jest.spyOn(connectionsApi.endpoints.declineRequest, 'useMutation').mockReturnValue([
-      mockDeclineRequest,
-      { isLoading: false },
-    ] as any);
+    jest
+      .spyOn(connectionsApi.endpoints.declineRequest, 'useMutation')
+      .mockReturnValue([mockDeclineRequest, { isLoading: false }] as any);
 
     const store = createMockStore();
 
@@ -208,7 +205,7 @@ describe('PendingRequestsScreen', () => {
         <NavigationContainer>
           <PendingRequestsScreen />
         </NavigationContainer>
-      </Provider>
+      </Provider>,
     );
 
     // Open decline dialog
@@ -241,10 +238,9 @@ describe('PendingRequestsScreen', () => {
       refetch: jest.fn(),
     } as any);
 
-    jest.spyOn(connectionsApi.endpoints.declineRequest, 'useMutation').mockReturnValue([
-      mockDeclineRequest,
-      { isLoading: false },
-    ] as any);
+    jest
+      .spyOn(connectionsApi.endpoints.declineRequest, 'useMutation')
+      .mockReturnValue([mockDeclineRequest, { isLoading: false }] as any);
 
     const store = createMockStore();
 
@@ -253,7 +249,7 @@ describe('PendingRequestsScreen', () => {
         <NavigationContainer>
           <PendingRequestsScreen />
         </NavigationContainer>
-      </Provider>
+      </Provider>,
     );
 
     // Open decline dialog
@@ -287,7 +283,7 @@ describe('PendingRequestsScreen', () => {
         <NavigationContainer>
           <PendingRequestsScreen />
         </NavigationContainer>
-      </Provider>
+      </Provider>,
     );
 
     // Open decline dialog
@@ -321,7 +317,7 @@ describe('PendingRequestsScreen', () => {
         <NavigationContainer>
           <PendingRequestsScreen />
         </NavigationContainer>
-      </Provider>
+      </Provider>,
     );
 
     // Open decline dialog

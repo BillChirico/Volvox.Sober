@@ -94,13 +94,12 @@ const EmailVerificationScreen: React.FC = () => {
         </Text>
 
         <Text variant="bodyLarge" style={styles.message}>
-          Check your email at{' '}
-          <Text style={styles.email}>{email}</Text> to verify your account.
+          Check your email at <Text style={styles.email}>{email}</Text> to verify your account.
         </Text>
 
         <Text variant="bodyMedium" style={styles.instructions}>
-          Click the verification link in the email to complete your registration.
-          You'll be automatically redirected once verified.
+          Click the verification link in the email to complete your registration. You'll be
+          automatically redirected once verified.
         </Text>
 
         {isVerifying && (
@@ -116,18 +115,14 @@ const EmailVerificationScreen: React.FC = () => {
           mode="outlined"
           onPress={handleResendEmail}
           disabled={isResendDisabled}
-          style={styles.resendButton}
-        >
-          {isResendDisabled
-            ? `Resend Email (${resendCountdown}s)`
-            : 'Resend Verification Email'}
+          style={styles.resendButton}>
+          {isResendDisabled ? `Resend Email (${resendCountdown}s)` : 'Resend Verification Email'}
         </Button>
 
         <Button
           mode="text"
           onPress={() => supabaseClient.auth.signOut()}
-          style={styles.cancelButton}
-        >
+          style={styles.cancelButton}>
           Cancel and Sign Out
         </Button>
       </Surface>
@@ -135,52 +130,53 @@ const EmailVerificationScreen: React.FC = () => {
   );
 };
 
-const createStyles = (theme: any) => StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#f5f5f5',
-    justifyContent: 'center',
-  },
-  surface: {
-    margin: 16,
-    padding: 24,
-    borderRadius: 8,
-    elevation: 2,
-  },
-  title: {
-    marginBottom: 24,
-    textAlign: 'center',
-    fontWeight: 'bold',
-  },
-  message: {
-    marginBottom: 16,
-    textAlign: 'center',
-  },
-  email: {
-    fontWeight: 'bold',
-    color: '#2196F3',
-  },
-  instructions: {
-    marginBottom: 24,
-    textAlign: 'center',
-    color: theme.colors.onSurfaceVariant,
-  },
-  verifyingContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginBottom: 16,
-  },
-  verifyingText: {
-    marginLeft: 8,
-    color: theme.colors.onSurfaceVariant,
-  },
-  resendButton: {
-    marginBottom: 12,
-  },
-  cancelButton: {
-    marginTop: 8,
-  },
-});
+const createStyles = (theme: any) =>
+  StyleSheet.create({
+    container: {
+      flex: 1,
+      backgroundColor: '#f5f5f5',
+      justifyContent: 'center',
+    },
+    surface: {
+      margin: 16,
+      padding: 24,
+      borderRadius: 8,
+      elevation: 2,
+    },
+    title: {
+      marginBottom: 24,
+      textAlign: 'center',
+      fontWeight: 'bold',
+    },
+    message: {
+      marginBottom: 16,
+      textAlign: 'center',
+    },
+    email: {
+      fontWeight: 'bold',
+      color: '#2196F3',
+    },
+    instructions: {
+      marginBottom: 24,
+      textAlign: 'center',
+      color: theme.colors.onSurfaceVariant,
+    },
+    verifyingContainer: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'center',
+      marginBottom: 16,
+    },
+    verifyingText: {
+      marginLeft: 8,
+      color: theme.colors.onSurfaceVariant,
+    },
+    resendButton: {
+      marginBottom: 12,
+    },
+    cancelButton: {
+      marginTop: 8,
+    },
+  });
 
 export default EmailVerificationScreen;

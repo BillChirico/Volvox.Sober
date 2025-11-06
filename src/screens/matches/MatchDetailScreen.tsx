@@ -128,8 +128,7 @@ const MatchDetailScreen: React.FC = () => {
                     styles.scoreChip,
                     { backgroundColor: getScoreColor(match.score_breakdown.location, 25) },
                   ]}
-                  textStyle={styles.chipText}
-                >
+                  textStyle={styles.chipText}>
                   {match.score_breakdown.location}/25
                 </Chip>
               </View>
@@ -149,8 +148,7 @@ const MatchDetailScreen: React.FC = () => {
                     styles.scoreChip,
                     { backgroundColor: getScoreColor(match.score_breakdown.program_type, 25) },
                   ]}
-                  textStyle={styles.chipText}
-                >
+                  textStyle={styles.chipText}>
                   {match.score_breakdown.program_type}/25
                 </Chip>
               </View>
@@ -170,8 +168,7 @@ const MatchDetailScreen: React.FC = () => {
                     styles.scoreChip,
                     { backgroundColor: getScoreColor(match.score_breakdown.availability, 20) },
                   ]}
-                  textStyle={styles.chipText}
-                >
+                  textStyle={styles.chipText}>
                   {match.score_breakdown.availability}/20
                 </Chip>
               </View>
@@ -191,8 +188,7 @@ const MatchDetailScreen: React.FC = () => {
                     styles.scoreChip,
                     { backgroundColor: getScoreColor(match.score_breakdown.approach, 15) },
                   ]}
-                  textStyle={styles.chipText}
-                >
+                  textStyle={styles.chipText}>
                   {match.score_breakdown.approach}/15
                 </Chip>
               </View>
@@ -212,8 +208,7 @@ const MatchDetailScreen: React.FC = () => {
                     styles.scoreChip,
                     { backgroundColor: getScoreColor(match.score_breakdown.experience, 15) },
                   ]}
-                  textStyle={styles.chipText}
-                >
+                  textStyle={styles.chipText}>
                   {match.score_breakdown.experience}/15
                 </Chip>
               </View>
@@ -229,8 +224,7 @@ const MatchDetailScreen: React.FC = () => {
           mode="contained"
           onPress={handleSendRequest}
           style={styles.connectButton}
-          icon="hand-wave"
-        >
+          icon="hand-wave">
           Send Connection Request
         </Button>
       </Surface>
@@ -238,101 +232,102 @@ const MatchDetailScreen: React.FC = () => {
   );
 };
 
-const createStyles = (theme: any) => StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#f5f5f5',
-  },
-  surface: {
-    margin: 16,
-    padding: 24,
-    borderRadius: 8,
-    elevation: 2,
-  },
-  header: {
-    alignItems: 'center',
-    marginBottom: 16,
-  },
-  name: {
-    marginTop: 16,
-    marginBottom: 12,
-    fontWeight: 'bold',
-    textAlign: 'center',
-  },
-  scoreBadge: {
-    alignItems: 'center',
-    backgroundColor: '#4CAF50',
-    paddingVertical: 12,
-    paddingHorizontal: 24,
-    borderRadius: 8,
-  },
-  scoreText: {
-    color: '#fff',
-    fontWeight: 'bold',
-  },
-  scoreLabel: {
-    color: '#fff',
-    marginTop: 4,
-  },
-  divider: {
-    marginVertical: 16,
-  },
-  section: {
-    marginBottom: 8,
-  },
-  sectionTitle: {
-    fontWeight: 'bold',
-    marginBottom: 12,
-  },
-  infoRow: {
-    flexDirection: 'row',
-    marginBottom: 8,
-    alignItems: 'center',
-  },
-  label: {
-    fontWeight: '600',
-    marginRight: 8,
-    minWidth: 120,
-  },
-  approach: {
-    lineHeight: 22,
-    fontStyle: 'italic',
-  },
-  bio: {
-    lineHeight: 22,
-  },
-  breakdownHint: {
-    color: theme.colors.onSurfaceVariant,
-    marginBottom: 16,
-  },
-  scoreBreakdown: {
-    gap: 16,
-  },
-  scoreItem: {
-    marginBottom: 12,
-  },
-  scoreHeader: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginBottom: 4,
-  },
-  scoreChip: {
-    height: 28,
-  },
-  chipText: {
-    fontSize: 12,
-    color: '#fff',
-    fontWeight: '600',
-  },
-  scoreDescription: {
-    color: theme.colors.onSurfaceVariant,
-    marginTop: 4,
-  },
-  connectButton: {
-    marginTop: 24,
-    paddingVertical: 8,
-  },
-});
+const createStyles = (theme: any) =>
+  StyleSheet.create({
+    container: {
+      flex: 1,
+      backgroundColor: '#f5f5f5',
+    },
+    surface: {
+      margin: 16,
+      padding: 24,
+      borderRadius: 8,
+      elevation: 2,
+    },
+    header: {
+      alignItems: 'center',
+      marginBottom: 16,
+    },
+    name: {
+      marginTop: 16,
+      marginBottom: 12,
+      fontWeight: 'bold',
+      textAlign: 'center',
+    },
+    scoreBadge: {
+      alignItems: 'center',
+      backgroundColor: '#4CAF50',
+      paddingVertical: 12,
+      paddingHorizontal: 24,
+      borderRadius: 8,
+    },
+    scoreText: {
+      color: '#fff',
+      fontWeight: 'bold',
+    },
+    scoreLabel: {
+      color: '#fff',
+      marginTop: 4,
+    },
+    divider: {
+      marginVertical: 16,
+    },
+    section: {
+      marginBottom: 8,
+    },
+    sectionTitle: {
+      fontWeight: 'bold',
+      marginBottom: 12,
+    },
+    infoRow: {
+      flexDirection: 'row',
+      marginBottom: 8,
+      alignItems: 'center',
+    },
+    label: {
+      fontWeight: '600',
+      marginRight: 8,
+      minWidth: 120,
+    },
+    approach: {
+      lineHeight: 22,
+      fontStyle: 'italic',
+    },
+    bio: {
+      lineHeight: 22,
+    },
+    breakdownHint: {
+      color: theme.colors.onSurfaceVariant,
+      marginBottom: 16,
+    },
+    scoreBreakdown: {
+      gap: 16,
+    },
+    scoreItem: {
+      marginBottom: 12,
+    },
+    scoreHeader: {
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+      marginBottom: 4,
+    },
+    scoreChip: {
+      height: 28,
+    },
+    chipText: {
+      fontSize: 12,
+      color: '#fff',
+      fontWeight: '600',
+    },
+    scoreDescription: {
+      color: theme.colors.onSurfaceVariant,
+      marginTop: 4,
+    },
+    connectButton: {
+      marginTop: 24,
+      paddingVertical: 8,
+    },
+  });
 
 export default MatchDetailScreen;

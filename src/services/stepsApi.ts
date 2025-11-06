@@ -58,7 +58,7 @@ export const stepsApi = createApi({
   reducerPath: 'stepsApi',
   baseQuery: fakeBaseQuery(),
   tagTypes: ['Steps', 'StepWork'],
-  endpoints: (builder) => ({
+  endpoints: builder => ({
     // Get all 12 steps (reference data)
     getAllSteps: builder.query<Step[], void>({
       async queryFn() {
@@ -76,7 +76,9 @@ export const stepsApi = createApi({
     // Get all step work for current user
     getMyStepWork: builder.query<StepWork[], void>({
       async queryFn() {
-        const { data: { user } } = await supabase.auth.getUser();
+        const {
+          data: { user },
+        } = await supabase.auth.getUser();
         if (!user) return { error: { message: 'Not authenticated' } };
 
         const { data, error } = await supabase
@@ -94,7 +96,9 @@ export const stepsApi = createApi({
     // Get specific step work by step ID
     getStepWork: builder.query<StepWork | null, string>({
       async queryFn(stepId) {
-        const { data: { user } } = await supabase.auth.getUser();
+        const {
+          data: { user },
+        } = await supabase.auth.getUser();
         if (!user) return { error: { message: 'Not authenticated' } };
 
         const { data, error } = await supabase
@@ -111,13 +115,18 @@ export const stepsApi = createApi({
     }),
 
     // Save step work (create or update)
-    saveStepWork: builder.mutation<StepWork, {
-      stepId: string;
-      responses: StepWorkResponse[];
-      status?: 'not_started' | 'in_progress' | 'submitted';
-    }>({
+    saveStepWork: builder.mutation<
+      StepWork,
+      {
+        stepId: string;
+        responses: StepWorkResponse[];
+        status?: 'not_started' | 'in_progress' | 'submitted';
+      }
+    >({
       async queryFn({ stepId, responses, status = 'in_progress' }) {
-        const { data: { user } } = await supabase.auth.getUser();
+        const {
+          data: { user },
+        } = await supabase.auth.getUser();
         if (!user) return { error: { message: 'Not authenticated' } };
 
         // Check if step work exists
@@ -168,12 +177,17 @@ export const stepsApi = createApi({
     }),
 
     // Submit step work for review
-    submitStepWork: builder.mutation<StepWork, {
-      stepId: string;
-      responses: StepWorkResponse[];
-    }>({
+    submitStepWork: builder.mutation<
+      StepWork,
+      {
+        stepId: string;
+        responses: StepWorkResponse[];
+      }
+    >({
       async queryFn({ stepId, responses }) {
-        const { data: { user } } = await supabase.auth.getUser();
+        const {
+          data: { user },
+        } = await supabase.auth.getUser();
         if (!user) return { error: { message: 'Not authenticated' } };
 
         const { data: existing } = await supabase
@@ -225,7 +239,7 @@ export const stepsApi = createApi({
               userData.full_name || 'A sponsee',
               stepData.step_number,
               stepId,
-              stepWorkData.id
+              stepWorkData.id,
             );
           }
         }
@@ -239,13 +253,18 @@ export const stepsApi = createApi({
     }),
 
     // Add sponsor comment
-    addSponsorComment: builder.mutation<StepWork, {
-      stepWorkId: string;
-      questionId: number;
-      commentText: string;
-    }>({
+    addSponsorComment: builder.mutation<
+      StepWork,
+      {
+        stepWorkId: string;
+        questionId: number;
+        commentText: string;
+      }
+    >({
       async queryFn({ stepWorkId, questionId, commentText }) {
-        const { data: { user } } = await supabase.auth.getUser();
+        const {
+          data: { user },
+        } = await supabase.auth.getUser();
         if (!user) return { error: { message: 'Not authenticated' } };
 
         // Get existing step work
@@ -290,7 +309,7 @@ export const stepsApi = createApi({
           await sendStepWorkCommentNotification(
             stepWorkData.sponsee_id,
             stepData.step_number,
-            stepWorkData.step_id
+            stepWorkData.step_id,
           );
         }
 
@@ -300,11 +319,16 @@ export const stepsApi = createApi({
     }),
 
     // Mark step work as reviewed
-    markAsReviewed: builder.mutation<StepWork, {
-      stepWorkId: string;
-    }>({
+    markAsReviewed: builder.mutation<
+      StepWork,
+      {
+        stepWorkId: string;
+      }
+    >({
       async queryFn({ stepWorkId }) {
-        const { data: { user } } = await supabase.auth.getUser();
+        const {
+          data: { user },
+        } = await supabase.auth.getUser();
         if (!user) return { error: { message: 'Not authenticated' } };
 
         const now = new Date().toISOString();
@@ -336,7 +360,7 @@ export const stepsApi = createApi({
           await sendStepWorkReviewedNotification(
             reviewedWork.sponsee_id,
             stepData.step_number,
-            reviewedWork.step_id
+            reviewedWork.step_id,
           );
         }
 

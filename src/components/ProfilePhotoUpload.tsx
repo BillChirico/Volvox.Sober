@@ -29,7 +29,7 @@ const ProfilePhotoUpload: React.FC<ProfilePhotoUploadProps> = ({
         70, // quality (0-100)
         0, // rotation
         undefined, // outputPath
-        false // keepMeta
+        false, // keepMeta
       );
       return resized.uri;
     } catch (error) {
@@ -46,7 +46,7 @@ const ProfilePhotoUpload: React.FC<ProfilePhotoUploadProps> = ({
       maxHeight: 800,
     };
 
-    ImagePicker.launchImageLibrary(options, async (response) => {
+    ImagePicker.launchImageLibrary(options, async response => {
       if (response.didCancel) {
         return;
       }
@@ -63,7 +63,7 @@ const ProfilePhotoUpload: React.FC<ProfilePhotoUploadProps> = ({
         if (asset.fileSize && asset.fileSize > 1024 * 1024) {
           Alert.alert(
             'Image Too Large',
-            'Please select an image smaller than 1MB or we will compress it for you.'
+            'Please select an image smaller than 1MB or we will compress it for you.',
           );
         }
 
@@ -95,9 +95,7 @@ const ProfilePhotoUpload: React.FC<ProfilePhotoUploadProps> = ({
           // Get public URL
           const {
             data: { publicUrl },
-          } = supabaseClient.storage
-            .from('profile-photos')
-            .getPublicUrl(fileName);
+          } = supabaseClient.storage.from('profile-photos').getPublicUrl(fileName);
 
           // Update user profile with photo URL
           const { error: updateError } = await supabaseClient
@@ -138,12 +136,7 @@ const ProfilePhotoUpload: React.FC<ProfilePhotoUploadProps> = ({
         </>
       )}
 
-      <Button
-        mode="outlined"
-        onPress={selectPhoto}
-        disabled={isUploading}
-        style={styles.button}
-      >
+      <Button mode="outlined" onPress={selectPhoto} disabled={isUploading} style={styles.button}>
         {photoUrl ? 'Change Photo' : 'Upload Photo'}
       </Button>
     </View>

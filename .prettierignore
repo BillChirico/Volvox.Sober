@@ -1,0 +1,28 @@
+# Dependencies
+node_modules/
+.pnpm-store/
+
+# Build outputs
+dist/
+build/
+*.tsbuildinfo
+
+# Generated files
+.expo/
+.expo-shared/
+ios/
+android/
+
+# Coverage
+coverage/
+
+# Logs
+*.log
+npm-debug.log*
+
+# IDE
+.vscode/
+.idea/
+
+# Problematic YAML files (Prettier parser errors)
+specs/001-auth-screens/contracts/auth.yaml

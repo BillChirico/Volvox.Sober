@@ -48,15 +48,13 @@ export async function sendNewMessageNotification(
   recipientId: string,
   senderName: string,
   messageContent: string,
-  connectionId: string
+  connectionId: string,
 ): Promise<void> {
   await sendNotification({
     userId: recipientId,
     type: 'new_message',
     title: `${senderName} sent you a message`,
-    body: messageContent.length > 50
-      ? `${messageContent.substring(0, 50)}...`
-      : messageContent,
+    body: messageContent.length > 50 ? `${messageContent.substring(0, 50)}...` : messageContent,
     data: {
       connection_id: connectionId,
     },
@@ -69,7 +67,7 @@ export async function sendNewMessageNotification(
 export async function sendConnectionRequestNotification(
   recipientId: string,
   requesterName: string,
-  connectionRequestId: string
+  connectionRequestId: string,
 ): Promise<void> {
   await sendNotification({
     userId: recipientId,
@@ -88,7 +86,7 @@ export async function sendConnectionRequestNotification(
 export async function sendCheckInReminderNotification(
   userId: string,
   promptText: string,
-  checkinId: string
+  checkinId: string,
 ): Promise<void> {
   await sendNotification({
     userId: userId,
@@ -106,7 +104,7 @@ export async function sendCheckInReminderNotification(
  */
 export async function sendMilestoneAchievedNotification(
   userId: string,
-  daysCount: number
+  daysCount: number,
 ): Promise<void> {
   await sendNotification({
     userId: userId,
@@ -123,7 +121,7 @@ export async function sendMilestoneAchievedNotification(
 export async function sendStepWorkCommentNotification(
   sponseeId: string,
   stepNumber: number,
-  stepId: string
+  stepId: string,
 ): Promise<void> {
   await sendNotification({
     userId: sponseeId,
@@ -144,7 +142,7 @@ export async function sendStepWorkSubmittedNotification(
   sponseeName: string,
   stepNumber: number,
   stepId: string,
-  stepWorkId: string
+  stepWorkId: string,
 ): Promise<void> {
   await sendNotification({
     userId: sponsorId,
@@ -164,7 +162,7 @@ export async function sendStepWorkSubmittedNotification(
 export async function sendStepWorkReviewedNotification(
   sponseeId: string,
   stepNumber: number,
-  stepId: string
+  stepId: string,
 ): Promise<void> {
   await sendNotification({
     userId: sponseeId,

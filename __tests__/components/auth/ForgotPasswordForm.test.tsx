@@ -14,7 +14,7 @@ jest.mock('../../../src/services/authService', () => ({
 
 // Mock navigation
 jest.mock('@react-navigation/native', () => ({
-  useFocusEffect: jest.fn((callback) => callback()),
+  useFocusEffect: jest.fn(callback => callback()),
 }));
 
 const mockAuthService = authService as jest.Mocked<typeof authService>;
@@ -66,7 +66,7 @@ describe('ForgotPasswordForm', () => {
           resetToken="new-token"
           onResetRequestSuccess={jest.fn()}
           onPasswordUpdateSuccess={jest.fn()}
-        />
+        />,
       );
 
       expect(getByTestId('new-password-input')).toBeTruthy();
@@ -169,7 +169,7 @@ describe('ForgotPasswordForm', () => {
 
         // Generic message that doesn't reveal if account exists (FR-011)
         const successMessage = await findByText(
-          /If an account exists with this email, you will receive a password reset link/i
+          /If an account exists with this email, you will receive a password reset link/i,
         );
         expect(successMessage).toBeTruthy();
       });
@@ -185,9 +185,12 @@ describe('ForgotPasswordForm', () => {
         fireEvent.changeText(emailInput, 'test@example.com');
         fireEvent.press(submitButton);
 
-        await waitFor(() => {
-          expect(onResetRequestSuccess).toHaveBeenCalled();
-        }, { timeout: 4000 });
+        await waitFor(
+          () => {
+            expect(onResetRequestSuccess).toHaveBeenCalled();
+          },
+          { timeout: 4000 },
+        );
       });
 
       it('should clear email field after successful submission', async () => {
@@ -223,7 +226,7 @@ describe('ForgotPasswordForm', () => {
 
       it('should disable inputs during submission', async () => {
         mockAuthService.resetPasswordRequest.mockImplementation(
-          () => new Promise((resolve) => setTimeout(() => resolve({ error: null }), 100))
+          () => new Promise(resolve => setTimeout(() => resolve({ error: null }), 100)),
         );
 
         const { getByTestId } = renderComponent({ resetToken: null });
@@ -420,7 +423,10 @@ describe('ForgotPasswordForm', () => {
         mockAuthService.updatePassword.mockResolvedValue({ user: null, error: null });
 
         const onPasswordUpdateSuccess = jest.fn();
-        const { getByTestId } = renderComponent({ resetToken: 'test-token', onPasswordUpdateSuccess });
+        const { getByTestId } = renderComponent({
+          resetToken: 'test-token',
+          onPasswordUpdateSuccess,
+        });
         const passwordInput = getByTestId('new-password-input');
         const confirmInput = getByTestId('confirm-password-input');
         const submitButton = getByTestId('update-password-button');
@@ -429,9 +435,12 @@ describe('ForgotPasswordForm', () => {
         fireEvent.changeText(confirmInput, 'NewPassword123!');
         fireEvent.press(submitButton);
 
-        await waitFor(() => {
-          expect(onPasswordUpdateSuccess).toHaveBeenCalled();
-        }, { timeout: 3000 });
+        await waitFor(
+          () => {
+            expect(onPasswordUpdateSuccess).toHaveBeenCalled();
+          },
+          { timeout: 3000 },
+        );
       });
 
       it('should clear password fields after successful update', async () => {
@@ -492,7 +501,7 @@ describe('ForgotPasswordForm', () => {
 
       it('should disable inputs during submission', async () => {
         mockAuthService.updatePassword.mockImplementation(
-          () => new Promise((resolve) => setTimeout(() => resolve({ user: null, error: null }), 100))
+          () => new Promise(resolve => setTimeout(() => resolve({ user: null, error: null }), 100)),
         );
 
         const { getByTestId } = renderComponent({ resetToken: 'test-token' });
@@ -542,7 +551,9 @@ describe('ForgotPasswordForm', () => {
       const emailInput = getByTestId('reset-email-input');
       const submitButton = getByTestId('reset-request-button');
 
-      expect(emailInput.props.accessibilityHint).toBe('Enter your email to receive a password reset link');
+      expect(emailInput.props.accessibilityHint).toBe(
+        'Enter your email to receive a password reset link',
+      );
       expect(submitButton.props.accessibilityHint).toBe('Request a password reset email');
     });
 
@@ -596,7 +607,7 @@ describe('ForgotPasswordForm', () => {
   describe('Loading State', () => {
     it('should show loading state during reset request', async () => {
       mockAuthService.resetPasswordRequest.mockImplementation(
-        () => new Promise((resolve) => setTimeout(() => resolve({ error: null }), 100))
+        () => new Promise(resolve => setTimeout(() => resolve({ error: null }), 100)),
       );
 
       const { getByTestId } = renderComponent({ resetToken: null });
@@ -613,7 +624,7 @@ describe('ForgotPasswordForm', () => {
 
     it('should show loading state during password update', async () => {
       mockAuthService.updatePassword.mockImplementation(
-        () => new Promise((resolve) => setTimeout(() => resolve({ user: null, error: null }), 100))
+        () => new Promise(resolve => setTimeout(() => resolve({ user: null, error: null }), 100)),
       );
 
       const { getByTestId } = renderComponent({ resetToken: 'test-token' });
@@ -655,7 +666,7 @@ describe('ForgotPasswordForm', () => {
           resetToken="test-token"
           onResetRequestSuccess={jest.fn()}
           onPasswordUpdateSuccess={jest.fn()}
-        />
+        />,
       );
 
       // Error should be cleared

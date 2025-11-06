@@ -12,15 +12,16 @@ export default function WelcomeScreen() {
       <Text variant="headlineLarge" style={{ color: theme.colors.onBackground, marginBottom: 16 }}>
         Welcome to Volvox.Sober
       </Text>
-      <Text variant="bodyLarge" style={{ color: theme.colors.onBackground, marginBottom: 32, textAlign: 'center' }}>
+      <Text
+        variant="bodyLarge"
+        style={{ color: theme.colors.onBackground, marginBottom: 32, textAlign: 'center' }}>
         Your journey to sobriety starts here
       </Text>
 
       <Button
         mode="contained"
         onPress={() => router.push('/(onboarding)/email-verification')}
-        style={{ marginBottom: 16 }}
-      >
+        style={{ marginBottom: 16 }}>
         Get Started
       </Button>
     </View>

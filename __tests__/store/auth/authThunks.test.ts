@@ -55,9 +55,7 @@ describe('authThunks', () => {
         error: null,
       });
 
-      await store.dispatch(
-        signupThunk({ email: 'test@example.com', password: 'Test1234' })
-      );
+      await store.dispatch(signupThunk({ email: 'test@example.com', password: 'Test1234' }));
 
       const state = store.getState().auth;
       expect(state.user).toEqual(mockUser);
@@ -75,9 +73,7 @@ describe('authThunks', () => {
         error: mockError,
       });
 
-      await store.dispatch(
-        signupThunk({ email: 'test@example.com', password: 'Test1234' })
-      );
+      await store.dispatch(signupThunk({ email: 'test@example.com', password: 'Test1234' }));
 
       const state = store.getState().auth;
       expect(state.user).toBeNull();
@@ -110,9 +106,7 @@ describe('authThunks', () => {
         error: null,
       });
 
-      await store.dispatch(
-        loginThunk({ email: 'test@example.com', password: 'Test1234' })
-      );
+      await store.dispatch(loginThunk({ email: 'test@example.com', password: 'Test1234' }));
 
       const state = store.getState().auth;
       expect(state.user).toEqual(mockUser);
@@ -130,9 +124,7 @@ describe('authThunks', () => {
         error: mockError,
       });
 
-      await store.dispatch(
-        loginThunk({ email: 'test@example.com', password: 'wrong' })
-      );
+      await store.dispatch(loginThunk({ email: 'test@example.com', password: 'wrong' }));
 
       const state = store.getState().auth;
       expect(state.user).toBeNull();
@@ -166,9 +158,7 @@ describe('authThunks', () => {
         error: null,
       });
 
-      await store.dispatch(
-        loginThunk({ email: 'test@example.com', password: 'Test1234' })
-      );
+      await store.dispatch(loginThunk({ email: 'test@example.com', password: 'Test1234' }));
 
       // Now logout
       (authService as any).signOut.mockResolvedValue({ error: null });
@@ -201,9 +191,7 @@ describe('authThunks', () => {
         error: null,
       });
 
-      await store.dispatch(
-        resetPasswordRequestThunk({ email: 'test@example.com' })
-      );
+      await store.dispatch(resetPasswordRequestThunk({ email: 'test@example.com' }));
 
       const state = store.getState().auth;
       expect(state.loading).toBe(false);
@@ -217,9 +205,7 @@ describe('authThunks', () => {
         error: mockError,
       });
 
-      await store.dispatch(
-        resetPasswordRequestThunk({ email: 'test@example.com' })
-      );
+      await store.dispatch(resetPasswordRequestThunk({ email: 'test@example.com' }));
 
       const state = store.getState().auth;
       expect(state.loading).toBe(false);
@@ -270,7 +256,7 @@ describe('authThunks', () => {
     it('should set loading to true during async operations', async () => {
       (authService as any).signIn.mockImplementation(
         () =>
-          new Promise((resolve) => {
+          new Promise(resolve => {
             setTimeout(() => {
               resolve({
                 user: {
@@ -290,11 +276,11 @@ describe('authThunks', () => {
                 error: null,
               });
             }, 100);
-          })
+          }),
       );
 
       const promise = store.dispatch(
-        loginThunk({ email: 'test@example.com', password: 'Test1234' })
+        loginThunk({ email: 'test@example.com', password: 'Test1234' }),
       );
 
       // Check loading state immediately

@@ -37,9 +37,8 @@ const WelcomeScreen: React.FC = () => {
         </Text>
 
         <RadioButton.Group
-          onValueChange={(value) => setSelectedRole(value as UserRole)}
-          value={selectedRole}
-        >
+          onValueChange={value => setSelectedRole(value as UserRole)}
+          value={selectedRole}>
           <Surface style={styles.option}>
             <RadioButton.Item
               label="I need a sponsor"
@@ -81,8 +80,7 @@ const WelcomeScreen: React.FC = () => {
           mode="contained"
           onPress={handleContinue}
           disabled={!selectedRole}
-          style={styles.button}
-        >
+          style={styles.button}>
           Continue
         </Button>
       </Surface>
@@ -90,46 +88,47 @@ const WelcomeScreen: React.FC = () => {
   );
 };
 
-const createStyles = (theme: any) => StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#f5f5f5',
-  },
-  surface: {
-    margin: 16,
-    padding: 24,
-    borderRadius: 8,
-    elevation: 2,
-  },
-  title: {
-    marginBottom: 8,
-    textAlign: 'center',
-    fontWeight: 'bold',
-  },
-  subtitle: {
-    marginBottom: 32,
-    textAlign: 'center',
-    color: theme.colors.onSurfaceVariant,
-  },
-  option: {
-    marginBottom: 16,
-    padding: 12,
-    borderRadius: 8,
-    elevation: 1,
-  },
-  optionLabel: {
-    fontSize: 16,
-    fontWeight: '600',
-  },
-  optionDescription: {
-    marginLeft: 52,
-    marginTop: 4,
-    color: theme.colors.onSurfaceVariant,
-  },
-  button: {
-    marginTop: 24,
-    paddingVertical: 8,
-  },
-});
+const createStyles = (theme: any) =>
+  StyleSheet.create({
+    container: {
+      flex: 1,
+      backgroundColor: '#f5f5f5',
+    },
+    surface: {
+      margin: 16,
+      padding: 24,
+      borderRadius: 8,
+      elevation: 2,
+    },
+    title: {
+      marginBottom: 8,
+      textAlign: 'center',
+      fontWeight: 'bold',
+    },
+    subtitle: {
+      marginBottom: 32,
+      textAlign: 'center',
+      color: theme.colors.onSurfaceVariant,
+    },
+    option: {
+      marginBottom: 16,
+      padding: 12,
+      borderRadius: 8,
+      elevation: 1,
+    },
+    optionLabel: {
+      fontSize: 16,
+      fontWeight: '600',
+    },
+    optionDescription: {
+      marginLeft: 52,
+      marginTop: 4,
+      color: theme.colors.onSurfaceVariant,
+    },
+    button: {
+      marginTop: 24,
+      paddingVertical: 8,
+    },
+  });
 
 export default WelcomeScreen;

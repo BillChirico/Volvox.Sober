@@ -43,17 +43,12 @@ function extractTextContent(children: React.ReactNode): string {
 
   // React elements → recursively extract from props.children
   if (React.isValidElement(children)) {
-    return children.props.children
-      ? extractTextContent(children.props.children)
-      : '';
+    return children.props.children ? extractTextContent(children.props.children) : '';
   }
 
   // Arrays → map and concatenate with spaces
   if (Array.isArray(children)) {
-    return children
-      .map(extractTextContent)
-      .filter(Boolean)
-      .join(' ');
+    return children.map(extractTextContent).filter(Boolean).join(' ');
   }
 
   // null, undefined, boolean → return empty string
@@ -62,6 +57,7 @@ function extractTextContent(children: React.ReactNode): string {
 ```
 
 **Key Benefits:**
+
 - ✅ `<Text>Label</Text>` → extracts "Label"
 - ✅ `[<Icon />, <Text>Send</Text>]` → extracts "Send" (ignores Icon)
 - ✅ `<View><Text>Submit</Text></View>` → recursively finds "Submit"
@@ -87,7 +83,7 @@ export const AccessibleButton = ({
   if (__DEV__ && !label) {
     console.warn(
       'AccessibleButton: No accessibility label found. ' +
-      'For icon-only buttons, provide explicit accessibilityLabel.'
+        'For icon-only buttons, provide explicit accessibilityLabel.',
     );
   }
 
@@ -97,8 +93,7 @@ export const AccessibleButton = ({
       accessibilityLabel={label || undefined}
       accessibilityHint={accessibilityHint}
       accessibilityRole={accessibilityRole}
-      {...props}
-    >
+      {...props}>
       {children}
     </TouchableOpacity>
   );
@@ -108,14 +103,14 @@ export const AccessibleButton = ({
 ## Usage Examples
 
 ### ✅ Good: String children (automatic extraction)
+
 ```tsx
-<AccessibleButton onPress={handleSubmit}>
-  Submit
-</AccessibleButton>
+<AccessibleButton onPress={handleSubmit}>Submit</AccessibleButton>
 // Label: "Submit"
 ```
 
 ### ✅ Good: Text component (automatic extraction)
+
 ```tsx
 <AccessibleButton onPress={handleDelete}>
   <Text>Delete</Text>
@@ -124,17 +119,16 @@ export const AccessibleButton = ({
 ```
 
 ### ✅ Good: Icon-only (explicit label required)
+
 ```tsx
-<AccessibleButton
-  accessibilityLabel="Send message"
-  onPress={handleSend}
->
+<AccessibleButton accessibilityLabel="Send message" onPress={handleSend}>
   <SendIcon />
 </AccessibleButton>
 // Label: "Send message"
 ```
 
 ### ✅ Good: Mixed icon + text (automatic extraction)
+
 ```tsx
 <AccessibleButton onPress={handleEdit}>
   <EditIcon />
@@ -144,6 +138,7 @@ export const AccessibleButton = ({
 ```
 
 ### ✅ Good: Nested structures (recursive extraction)
+
 ```tsx
 <AccessibleButton onPress={handleSave}>
   <View>
@@ -159,6 +154,7 @@ export const AccessibleButton = ({
 All 12 test cases pass ✅:
 
 ### Accessibility Label Extraction (8 tests)
+
 1. ✅ Explicit accessibilityLabel takes precedence
 2. ✅ Extracts text from string children
 3. ✅ Extracts text from Text component children
@@ -169,11 +165,13 @@ All 12 test cases pass ✅:
 8. ✅ Handles complex nested structures
 
 ### Accessibility Properties (3 tests)
+
 9. ✅ Button is accessible by default
 10. ✅ Supports accessibilityHint
 11. ✅ Supports accessibilityRole
 
 ### Button Behavior (1 test)
+
 12. ✅ Calls onPress when pressed
 
 ## Files Created
@@ -202,22 +200,17 @@ mobile/
 Current code has many TouchableOpacity instances WITHOUT accessibility labels:
 
 **Before:**
+
 ```tsx
-<TouchableOpacity
-  style={styles.sendButton}
-  onPress={handleSend}
->
+<TouchableOpacity style={styles.sendButton} onPress={handleSend}>
   <SendIcon />
 </TouchableOpacity>
 ```
 
 **After:**
+
 ```tsx
-<AccessibleButton
-  accessibilityLabel="Send message"
-  style={styles.sendButton}
-  onPress={handleSend}
->
+<AccessibleButton accessibilityLabel="Send message" style={styles.sendButton} onPress={handleSend}>
   <SendIcon />
 </AccessibleButton>
 ```
@@ -225,6 +218,7 @@ Current code has many TouchableOpacity instances WITHOUT accessibility labels:
 ### Files to Update
 
 Search for `TouchableOpacity` usage in:
+
 - `mobile/src/screens/CheckInSchedulingScreen.tsx`
 - `mobile/src/screens/ConversationListScreen.tsx`
 - `mobile/src/screens/CheckInResponseScreen.tsx`

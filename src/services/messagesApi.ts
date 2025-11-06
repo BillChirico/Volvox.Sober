@@ -46,23 +46,27 @@ export const messagesApi = createApi({
   reducerPath: 'messagesApi',
   baseQuery: fakeBaseQuery(),
   tagTypes: ['Messages', 'Conversations', 'UnreadCount'],
-  endpoints: (builder) => ({
+  endpoints: builder => ({
     // T115: Get conversation list with last message and unread count
     getConversations: builder.query<Conversation[], void>({
       async queryFn() {
-        const { data: { user } } = await supabase.auth.getUser();
+        const {
+          data: { user },
+        } = await supabase.auth.getUser();
         if (!user) return { error: { message: 'Not authenticated' } };
 
         // Get all active connections
         const { data: connections, error: connError } = await supabase
           .from('connections')
-          .select(`
+          .select(
+            `
             id,
             sponsor_id,
             sponsee_id,
             users!connections_sponsor_id_fkey(id, full_name),
             users!connections_sponsee_id_fkey(id, full_name)
-          `)
+          `,
+          )
           .eq('status', 'active')
           .or(`sponsor_id.eq.${user.id},sponsee_id.eq.${user.id}`);
 
@@ -73,9 +77,10 @@ export const messagesApi = createApi({
         const conversations: Conversation[] = await Promise.all(
           connections.map(async (conn: any) => {
             const otherId = conn.sponsor_id === user.id ? conn.sponsee_id : conn.sponsor_id;
-            const otherUser = conn.sponsor_id === user.id
-              ? conn.users[1] // sponsee
-              : conn.users[0]; // sponsor
+            const otherUser =
+              conn.sponsor_id === user.id
+                ? conn.users[1] // sponsee
+                : conn.users[0]; // sponsor
 
             // Get last message
             const { data: lastMsg } = await supabase
@@ -102,12 +107,12 @@ export const messagesApi = createApi({
               last_message_at: lastMsg?.sent_at || conn.created_at,
               unread_count: count || 0,
             };
-          })
+          }),
         );
 
         // Sort by most recent message
-        conversations.sort((a, b) =>
-          new Date(b.last_message_at).getTime() - new Date(a.last_message_at).getTime()
+        conversations.sort(
+          (a, b) => new Date(b.last_message_at).getTime() - new Date(a.last_message_at).getTime(),
         );
 
         return { data: conversations };
@@ -127,15 +132,15 @@ export const messagesApi = createApi({
         if (error) return { error };
         return { data: data as Message[] };
       },
-      providesTags: (_result, _error, connectionId) => [
-        { type: 'Messages', id: connectionId },
-      ],
+      providesTags: (_result, _error, connectionId) => [{ type: 'Messages', id: connectionId }],
     }),
 
     // T116: Send message
     sendMessage: builder.mutation<Message, SendMessageParams>({
       async queryFn({ connection_id, recipient_id, message_text }) {
-        const { data: { user } } = await supabase.auth.getUser();
+        const {
+          data: { user },
+        } = await supabase.auth.getUser();
         if (!user) return { error: { message: 'Not authenticated' } };
 
         const { data, error } = await supabase
@@ -164,7 +169,7 @@ export const messagesApi = createApi({
             recipient_id,
             senderData.full_name || 'Someone',
             message_text,
-            connection_id
+            connection_id,
           );
         }
 
@@ -209,7 +214,9 @@ export const messagesApi = createApi({
     // T118: Mark all messages in connection as read
     markConnectionAsRead: builder.mutation<void, string>({
       async queryFn(connectionId) {
-        const { data: { user } } = await supabase.auth.getUser();
+        const {
+          data: { user },
+        } = await supabase.auth.getUser();
         if (!user) return { error: { message: 'Not authenticated' } };
 
         const { error } = await supabase
@@ -228,7 +235,9 @@ export const messagesApi = createApi({
     // T122: Get total unread message count
     getUnreadCount: builder.query<number, void>({
       async queryFn() {
-        const { data: { user } } = await supabase.auth.getUser();
+        const {
+          data: { user },
+        } = await supabase.auth.getUser();
         if (!user) return { error: { message: 'Not authenticated' } };
 
         const { count, error } = await supabase
@@ -249,7 +258,7 @@ export const messagesApi = createApi({
 export const createMessagesSubscription = (
   connectionId: string,
   userId: string,
-  onNewMessage: (message: Message) => void
+  onNewMessage: (message: Message) => void,
 ): RealtimeChannel => {
   const channel = supabase
     .channel(`messages:${connectionId}`)
@@ -261,10 +270,10 @@ export const createMessagesSubscription = (
         table: 'messages',
         filter: `connection_id=eq.${connectionId}`,
       },
-      (payload) => {
+      payload => {
         const message = payload.new as Message;
         onNewMessage(message);
-      }
+      },
     )
     .subscribe();
 
@@ -274,7 +283,7 @@ export const createMessagesSubscription = (
 // T119: Typing indicator helper
 export const createTypingChannel = (
   connectionId: string,
-  onTyping: (event: TypingEvent) => void
+  onTyping: (event: TypingEvent) => void,
 ): RealtimeChannel => {
   const channel = supabase
     .channel(`typing:${connectionId}`)
@@ -291,7 +300,7 @@ export const sendTypingEvent = (
   channel: RealtimeChannel,
   userId: string,
   connectionId: string,
-  isTyping: boolean
+  isTyping: boolean,
 ): void => {
   channel.send({
     type: 'broadcast',

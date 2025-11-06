@@ -50,8 +50,7 @@ describe('LogRelapseScreen', () => {
       reducer: {
         [sobrietyApi.reducerPath]: sobrietyApi.reducer,
       },
-      middleware: (getDefaultMiddleware) =>
-        getDefaultMiddleware().concat(sobrietyApi.middleware),
+      middleware: getDefaultMiddleware => getDefaultMiddleware().concat(sobrietyApi.middleware),
       preloadedState: {
         [sobrietyApi.reducerPath]: {
           queries: {
@@ -73,7 +72,7 @@ describe('LogRelapseScreen', () => {
             <LogRelapseScreen navigation={{ navigate: mockNavigate, goBack: mockGoBack }} />
           </NavigationContainer>
         </PaperProvider>
-      </Provider>
+      </Provider>,
     );
   };
 
@@ -93,9 +92,7 @@ describe('LogRelapseScreen', () => {
     const store = createMockStore();
     const { getByText } = renderScreen(store);
 
-    expect(
-      getByText(/your private note is only visible to you/i)
-    ).toBeTruthy();
+    expect(getByText(/your private note is only visible to you/i)).toBeTruthy();
   });
 
   it('should display error state when no sobriety date set', () => {
@@ -160,7 +157,7 @@ describe('LogRelapseScreen', () => {
         expect.arrayContaining([
           expect.objectContaining({ text: 'Cancel' }),
           expect.objectContaining({ text: 'Confirm' }),
-        ])
+        ]),
       );
     });
   });
@@ -182,7 +179,7 @@ describe('LogRelapseScreen', () => {
     const { getByText } = renderScreen(store);
 
     expect(
-      getByText(/identifying triggers helps recognize patterns in your recovery/i)
+      getByText(/identifying triggers helps recognize patterns in your recovery/i),
     ).toBeTruthy();
   });
 

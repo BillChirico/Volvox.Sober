@@ -37,7 +37,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ onSuccess, onForgotPassword }) =>
   const theme = useTheme();
   const dispatch = useAppDispatch();
 
-  const { loading, error } = useAppSelector((state) => state.auth);
+  const { loading, error } = useAppSelector(state => state.auth);
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -74,22 +74,19 @@ const LoginForm: React.FC<LoginFormProps> = ({ onSuccess, onForgotPassword }) =>
         setResendMessage('');
         dispatch(clearError());
       };
-    }, [dispatch])
+    }, [dispatch]),
   );
 
   const validateForm = async (): Promise<boolean> => {
     try {
-      await loginSchema.validate(
-        { email, password },
-        { abortEarly: false }
-      );
+      await loginSchema.validate({ email, password }, { abortEarly: false });
       setValidationErrors({});
       return true;
     } catch (err) {
       const validationError = err as ValidationError;
       const errors: Record<string, string> = {};
 
-      validationError.inner.forEach((error) => {
+      validationError.inner.forEach(error => {
         if (error.path) {
           errors[error.path] = error.message;
         }
@@ -157,30 +154,20 @@ const LoginForm: React.FC<LoginFormProps> = ({ onSuccess, onForgotPassword }) =>
     <View
       style={[styles.container, { backgroundColor: theme.colors.background }]}
       testID="login-form"
-      accessibilityLabel="Login form"
-    >
-      <Text
-        variant="headlineLarge"
-        style={[styles.title, { color: theme.colors.onBackground }]}
-      >
+      accessibilityLabel="Login form">
+      <Text variant="headlineLarge" style={[styles.title, { color: theme.colors.onBackground }]}>
         Welcome Back
       </Text>
 
       {/* Display error message if present */}
-      {error && (
-        <AuthErrorMessage
-          message={error}
-          style={styles.errorMessage}
-        />
-      )}
+      {error && <AuthErrorMessage message={error} style={styles.errorMessage} />}
 
       {/* Resend verification option for unverified users */}
       {showResendVerification && (
         <View style={styles.resendContainer}>
           <Text
             variant="bodyMedium"
-            style={[styles.resendText, { color: theme.colors.onSurfaceVariant }]}
-          >
+            style={[styles.resendText, { color: theme.colors.onSurfaceVariant }]}>
             Your email is not verified. Please check your inbox for the verification email.
           </Text>
           <Button
@@ -192,8 +179,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ onSuccess, onForgotPassword }) =>
             testID="resend-verification-button"
             accessibilityRole="button"
             accessibilityLabel="Resend verification email"
-            accessibilityHint="Send a new verification email to your inbox"
-          >
+            accessibilityHint="Send a new verification email to your inbox">
             Resend Verification Email
           </Button>
           {resendMessage && (
@@ -208,8 +194,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ onSuccess, onForgotPassword }) =>
                 },
               ]}
               accessibilityLiveRegion="polite"
-              accessibilityRole="alert"
-            >
+              accessibilityRole="alert">
               {resendMessage}
             </Text>
           )}
@@ -239,8 +224,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ onSuccess, onForgotPassword }) =>
           variant="bodySmall"
           style={[styles.validationError, { color: theme.colors.error }]}
           accessibilityLiveRegion="polite"
-          accessibilityRole="alert"
-        >
+          accessibilityRole="alert">
           {validationErrors.email}
         </Text>
       )}
@@ -263,8 +247,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ onSuccess, onForgotPassword }) =>
           variant="bodySmall"
           style={[styles.validationError, { color: theme.colors.error }]}
           accessibilityLiveRegion="polite"
-          accessibilityRole="alert"
-        >
+          accessibilityRole="alert">
           {validationErrors.password}
         </Text>
       )}
@@ -278,8 +261,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ onSuccess, onForgotPassword }) =>
           testID="forgot-password-link"
           accessibilityRole="link"
           accessibilityLabel="Forgot password?"
-          accessibilityHint="Navigate to password reset screen"
-        >
+          accessibilityHint="Navigate to password reset screen">
           Forgot Password?
         </Button>
       )}
@@ -295,8 +277,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ onSuccess, onForgotPassword }) =>
         accessibilityRole="button"
         accessibilityLabel="Login"
         accessibilityHint="Submit login credentials"
-        accessibilityState={{ disabled: loading }}
-      >
+        accessibilityState={{ disabled: loading }}>
         Login
       </Button>
     </View>

@@ -11,8 +11,7 @@ const createMockStore = () => {
     reducer: {
       [connectionsApi.reducerPath]: connectionsApi.reducer,
     },
-    middleware: (getDefaultMiddleware) =>
-      getDefaultMiddleware().concat(connectionsApi.middleware),
+    middleware: getDefaultMiddleware => getDefaultMiddleware().concat(connectionsApi.middleware),
   });
 };
 
@@ -84,7 +83,7 @@ describe('SentRequestsScreen', () => {
         <NavigationContainer>
           <SentRequestsScreen />
         </NavigationContainer>
-      </Provider>
+      </Provider>,
     );
 
     expect(getByText('Loading sent requests...')).toBeTruthy();
@@ -105,7 +104,7 @@ describe('SentRequestsScreen', () => {
         <NavigationContainer>
           <SentRequestsScreen />
         </NavigationContainer>
-      </Provider>
+      </Provider>,
     );
 
     expect(getByText('John Sponsor')).toBeTruthy();
@@ -129,7 +128,7 @@ describe('SentRequestsScreen', () => {
         <NavigationContainer>
           <SentRequestsScreen />
         </NavigationContainer>
-      </Provider>
+      </Provider>,
     );
 
     expect(getByText('No Sent Requests')).toBeTruthy();
@@ -151,7 +150,7 @@ describe('SentRequestsScreen', () => {
         <NavigationContainer>
           <SentRequestsScreen />
         </NavigationContainer>
-      </Provider>
+      </Provider>,
     );
 
     expect(getByText('pending')).toBeTruthy();
@@ -172,7 +171,7 @@ describe('SentRequestsScreen', () => {
         <NavigationContainer>
           <SentRequestsScreen />
         </NavigationContainer>
-      </Provider>
+      </Provider>,
     );
 
     expect(getByText('accepted')).toBeTruthy();
@@ -193,7 +192,7 @@ describe('SentRequestsScreen', () => {
         <NavigationContainer>
           <SentRequestsScreen />
         </NavigationContainer>
-      </Provider>
+      </Provider>,
     );
 
     expect(getByText('declined')).toBeTruthy();
@@ -214,7 +213,7 @@ describe('SentRequestsScreen', () => {
         <NavigationContainer>
           <SentRequestsScreen />
         </NavigationContainer>
-      </Provider>
+      </Provider>,
     );
 
     expect(getByText('cancelled')).toBeTruthy();
@@ -235,7 +234,7 @@ describe('SentRequestsScreen', () => {
         <NavigationContainer>
           <SentRequestsScreen />
         </NavigationContainer>
-      </Provider>
+      </Provider>,
     );
 
     expect(getByText(/Reason: At capacity right now/)).toBeTruthy();
@@ -256,7 +255,7 @@ describe('SentRequestsScreen', () => {
         <NavigationContainer>
           <SentRequestsScreen />
         </NavigationContainer>
-      </Provider>
+      </Provider>,
     );
 
     expect(getByText(/Request accepted! You are now connected/)).toBeTruthy();
@@ -277,7 +276,7 @@ describe('SentRequestsScreen', () => {
         <NavigationContainer>
           <SentRequestsScreen />
         </NavigationContainer>
-      </Provider>
+      </Provider>,
     );
 
     // Only one pending request in mock data, so only one cancel button
@@ -300,7 +299,7 @@ describe('SentRequestsScreen', () => {
         <NavigationContainer>
           <SentRequestsScreen />
         </NavigationContainer>
-      </Provider>
+      </Provider>,
     );
 
     const cancelButton = getByText('Cancel Request');
@@ -320,10 +319,9 @@ describe('SentRequestsScreen', () => {
       refetch: jest.fn(),
     } as any);
 
-    jest.spyOn(connectionsApi.endpoints.cancelRequest, 'useMutation').mockReturnValue([
-      mockCancelRequest,
-      { isLoading: false },
-    ] as any);
+    jest
+      .spyOn(connectionsApi.endpoints.cancelRequest, 'useMutation')
+      .mockReturnValue([mockCancelRequest, { isLoading: false }] as any);
 
     const store = createMockStore();
 
@@ -332,7 +330,7 @@ describe('SentRequestsScreen', () => {
         <NavigationContainer>
           <SentRequestsScreen />
         </NavigationContainer>
-      </Provider>
+      </Provider>,
     );
 
     // Open cancel dialog
@@ -363,7 +361,7 @@ describe('SentRequestsScreen', () => {
         <NavigationContainer>
           <SentRequestsScreen />
         </NavigationContainer>
-      </Provider>
+      </Provider>,
     );
 
     // Open cancel dialog
@@ -396,7 +394,7 @@ describe('SentRequestsScreen', () => {
         <NavigationContainer>
           <SentRequestsScreen />
         </NavigationContainer>
-      </Provider>
+      </Provider>,
     );
 
     expect(getByText(/I would like to work with you/)).toBeTruthy();
@@ -417,7 +415,7 @@ describe('SentRequestsScreen', () => {
         <NavigationContainer>
           <SentRequestsScreen />
         </NavigationContainer>
-      </Provider>
+      </Provider>,
     );
 
     expect(getByText('No message provided')).toBeTruthy();

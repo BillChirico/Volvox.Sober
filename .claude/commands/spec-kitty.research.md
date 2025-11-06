@@ -2,7 +2,6 @@
 description: Run the Phase 0 research workflow to scaffold research artifacts before task planning.
 ---
 
-
 ## Goal
 
 Create `research.md`, `data-model.md`, and supporting CSV stubs based on the active mission so implementation planning can reference concrete decisions and evidence.

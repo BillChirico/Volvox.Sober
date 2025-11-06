@@ -59,7 +59,7 @@ const SponsorProfileScreen: React.FC = () => {
           approach: formData.approach,
           bio: formData.bio,
         },
-        { abortEarly: false }
+        { abortEarly: false },
       );
 
       // Update Redux store
@@ -76,7 +76,7 @@ const SponsorProfileScreen: React.FC = () => {
           availability: formData.availability,
           approach: formData.approach,
           bio: formData.bio,
-        })
+        }),
       );
 
       // Navigate to email verification
@@ -84,7 +84,7 @@ const SponsorProfileScreen: React.FC = () => {
     } catch (error) {
       if (error instanceof Yup.ValidationError) {
         const validationErrors: Record<string, string> = {};
-        error.inner.forEach((err) => {
+        error.inner.forEach(err => {
           if (err.path) {
             validationErrors[err.path] = err.message;
           }
@@ -107,7 +107,7 @@ const SponsorProfileScreen: React.FC = () => {
         <TextInput
           label="Name *"
           value={formData.name}
-          onChangeText={(text) => setFormData({ ...formData, name: text })}
+          onChangeText={text => setFormData({ ...formData, name: text })}
           mode="outlined"
           style={styles.input}
           error={!!errors.name}
@@ -119,7 +119,7 @@ const SponsorProfileScreen: React.FC = () => {
         <TextInput
           label="City *"
           value={formData.city}
-          onChangeText={(text) => setFormData({ ...formData, city: text })}
+          onChangeText={text => setFormData({ ...formData, city: text })}
           mode="outlined"
           style={styles.input}
           error={!!errors.city}
@@ -131,7 +131,7 @@ const SponsorProfileScreen: React.FC = () => {
         <TextInput
           label="State *"
           value={formData.state}
-          onChangeText={(text) => setFormData({ ...formData, state: text })}
+          onChangeText={text => setFormData({ ...formData, state: text })}
           mode="outlined"
           style={styles.input}
           error={!!errors.state}
@@ -143,7 +143,7 @@ const SponsorProfileScreen: React.FC = () => {
         <TextInput
           label="Years Sober *"
           value={formData.yearsSober}
-          onChangeText={(text) => setFormData({ ...formData, yearsSober: text })}
+          onChangeText={text => setFormData({ ...formData, yearsSober: text })}
           mode="outlined"
           keyboardType="numeric"
           style={styles.input}
@@ -156,7 +156,7 @@ const SponsorProfileScreen: React.FC = () => {
         <TextInput
           label="Maximum Sponsees *"
           value={formData.maxSponsees}
-          onChangeText={(text) => setFormData({ ...formData, maxSponsees: text })}
+          onChangeText={text => setFormData({ ...formData, maxSponsees: text })}
           mode="outlined"
           keyboardType="numeric"
           style={styles.input}
@@ -173,13 +173,11 @@ const SponsorProfileScreen: React.FC = () => {
             <Button
               mode="outlined"
               onPress={() => setShowAvailabilityMenu(true)}
-              style={styles.input}
-            >
+              style={styles.input}>
               {formData.availability || 'Select Availability *'}
             </Button>
-          }
-        >
-          {availabilityOptions.map((option) => (
+          }>
+          {availabilityOptions.map(option => (
             <Menu.Item
               key={option}
               onPress={() => {
@@ -197,7 +195,7 @@ const SponsorProfileScreen: React.FC = () => {
         <TextInput
           label="Sponsorship Approach *"
           value={formData.approach}
-          onChangeText={(text) => setFormData({ ...formData, approach: text })}
+          onChangeText={text => setFormData({ ...formData, approach: text })}
           mode="outlined"
           multiline
           numberOfLines={3}
@@ -211,7 +209,7 @@ const SponsorProfileScreen: React.FC = () => {
         <TextInput
           label="Bio"
           value={formData.bio}
-          onChangeText={(text) => setFormData({ ...formData, bio: text })}
+          onChangeText={text => setFormData({ ...formData, bio: text })}
           mode="outlined"
           multiline
           numberOfLines={4}
@@ -222,11 +220,7 @@ const SponsorProfileScreen: React.FC = () => {
           {formData.bio.length}/500 characters
         </HelperText>
 
-        <Button
-          mode="contained"
-          onPress={validateAndContinue}
-          style={styles.button}
-        >
+        <Button mode="contained" onPress={validateAndContinue} style={styles.button}>
           Continue
         </Button>
       </Surface>
@@ -234,32 +228,33 @@ const SponsorProfileScreen: React.FC = () => {
   );
 };
 
-const createStyles = (theme: any) => StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#f5f5f5',
-  },
-  surface: {
-    margin: 16,
-    padding: 24,
-    borderRadius: 8,
-    elevation: 2,
-  },
-  title: {
-    marginBottom: 8,
-    fontWeight: 'bold',
-  },
-  subtitle: {
-    marginBottom: 24,
-    color: theme.colors.onSurfaceVariant,
-  },
-  input: {
-    marginBottom: 8,
-  },
-  button: {
-    marginTop: 24,
-    paddingVertical: 8,
-  },
-});
+const createStyles = (theme: any) =>
+  StyleSheet.create({
+    container: {
+      flex: 1,
+      backgroundColor: '#f5f5f5',
+    },
+    surface: {
+      margin: 16,
+      padding: 24,
+      borderRadius: 8,
+      elevation: 2,
+    },
+    title: {
+      marginBottom: 8,
+      fontWeight: 'bold',
+    },
+    subtitle: {
+      marginBottom: 24,
+      color: theme.colors.onSurfaceVariant,
+    },
+    input: {
+      marginBottom: 8,
+    },
+    button: {
+      marginTop: 24,
+      paddingVertical: 8,
+    },
+  });
 
 export default SponsorProfileScreen;

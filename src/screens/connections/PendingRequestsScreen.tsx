@@ -1,7 +1,22 @@
 import React, { useState } from 'react';
 import { View, StyleSheet, FlatList, RefreshControl } from 'react-native';
-import { Text, Surface, Avatar, Button, Card, ActivityIndicator, Dialog, Portal, TextInput } from 'react-native-paper';
-import { useGetPendingRequestsQuery, useAcceptRequestMutation, useDeclineRequestMutation, ConnectionRequest } from '../../store/api/connectionsApi';
+import {
+  Text,
+  Surface,
+  Avatar,
+  Button,
+  Card,
+  ActivityIndicator,
+  Dialog,
+  Portal,
+  TextInput,
+} from 'react-native-paper';
+import {
+  useGetPendingRequestsQuery,
+  useAcceptRequestMutation,
+  useDeclineRequestMutation,
+  ConnectionRequest,
+} from '../../store/api/connectionsApi';
 import { formatDistanceToNow } from 'date-fns';
 
 const PendingRequestsScreen: React.FC = () => {
@@ -80,8 +95,7 @@ const PendingRequestsScreen: React.FC = () => {
               mode="outlined"
               onPress={() => showDeclineDialog(item.id)}
               style={styles.declineButton}
-              disabled={isAccepting || isDeclining}
-            >
+              disabled={isAccepting || isDeclining}>
               Decline
             </Button>
 
@@ -91,8 +105,7 @@ const PendingRequestsScreen: React.FC = () => {
               style={styles.acceptButton}
               loading={isAccepting}
               disabled={isAccepting || isDeclining}
-              icon="check"
-            >
+              icon="check">
               Accept
             </Button>
           </View>
@@ -127,15 +140,11 @@ const PendingRequestsScreen: React.FC = () => {
     <View style={styles.container}>
       <FlatList
         data={requests || []}
-        keyExtractor={(item) => item.id}
+        keyExtractor={item => item.id}
         renderItem={renderRequest}
         ListEmptyComponent={renderEmpty}
-        refreshControl={
-          <RefreshControl refreshing={isFetching} onRefresh={refetch} />
-        }
-        contentContainerStyle={
-          (requests || []).length === 0 ? styles.emptyList : styles.list
-        }
+        refreshControl={<RefreshControl refreshing={isFetching} onRefresh={refetch} />}
+        contentContainerStyle={(requests || []).length === 0 ? styles.emptyList : styles.list}
       />
 
       {/* Decline Dialog */}
@@ -174,91 +183,92 @@ const PendingRequestsScreen: React.FC = () => {
   );
 };
 
-const createStyles = (theme: any) => StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#f5f5f5',
-  },
-  list: {
-    paddingVertical: 8,
-  },
-  emptyList: {
-    flex: 1,
-  },
-  loadingContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  loadingText: {
-    marginTop: 16,
-    color: theme.colors.onSurfaceVariant,
-  },
-  card: {
-    marginHorizontal: 16,
-    marginVertical: 8,
-  },
-  header: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: 12,
-  },
-  requestInfo: {
-    marginLeft: 12,
-    flex: 1,
-  },
-  name: {
-    fontWeight: 'bold',
-    marginBottom: 4,
-  },
-  timestamp: {
-    color: theme.colors.onSurfaceVariant,
-  },
-  messageSurface: {
-    backgroundColor: '#f5f5f5',
-    padding: 12,
-    borderRadius: 8,
-    marginBottom: 16,
-  },
-  message: {
-    fontStyle: 'italic',
-    color: theme.colors.onSurface,
-  },
-  actions: {
-    flexDirection: 'row',
-    gap: 12,
-  },
-  declineButton: {
-    flex: 1,
-  },
-  acceptButton: {
-    flex: 1,
-  },
-  emptyContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    padding: 32,
-  },
-  emptyTitle: {
-    marginBottom: 16,
-    textAlign: 'center',
-    fontWeight: 'bold',
-  },
-  emptyMessage: {
-    textAlign: 'center',
-    color: theme.colors.onSurfaceVariant,
-  },
-  dialogText: {
-    marginBottom: 16,
-  },
-  reasonInput: {
-    marginBottom: 8,
-  },
-  characterCount: {
-    textAlign: 'right',
-    color: theme.colors.onSurfaceVariant,
-  },
-});
+const createStyles = (theme: any) =>
+  StyleSheet.create({
+    container: {
+      flex: 1,
+      backgroundColor: '#f5f5f5',
+    },
+    list: {
+      paddingVertical: 8,
+    },
+    emptyList: {
+      flex: 1,
+    },
+    loadingContainer: {
+      flex: 1,
+      justifyContent: 'center',
+      alignItems: 'center',
+    },
+    loadingText: {
+      marginTop: 16,
+      color: theme.colors.onSurfaceVariant,
+    },
+    card: {
+      marginHorizontal: 16,
+      marginVertical: 8,
+    },
+    header: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      marginBottom: 12,
+    },
+    requestInfo: {
+      marginLeft: 12,
+      flex: 1,
+    },
+    name: {
+      fontWeight: 'bold',
+      marginBottom: 4,
+    },
+    timestamp: {
+      color: theme.colors.onSurfaceVariant,
+    },
+    messageSurface: {
+      backgroundColor: '#f5f5f5',
+      padding: 12,
+      borderRadius: 8,
+      marginBottom: 16,
+    },
+    message: {
+      fontStyle: 'italic',
+      color: theme.colors.onSurface,
+    },
+    actions: {
+      flexDirection: 'row',
+      gap: 12,
+    },
+    declineButton: {
+      flex: 1,
+    },
+    acceptButton: {
+      flex: 1,
+    },
+    emptyContainer: {
+      flex: 1,
+      justifyContent: 'center',
+      alignItems: 'center',
+      padding: 32,
+    },
+    emptyTitle: {
+      marginBottom: 16,
+      textAlign: 'center',
+      fontWeight: 'bold',
+    },
+    emptyMessage: {
+      textAlign: 'center',
+      color: theme.colors.onSurfaceVariant,
+    },
+    dialogText: {
+      marginBottom: 16,
+    },
+    reasonInput: {
+      marginBottom: 8,
+    },
+    characterCount: {
+      textAlign: 'right',
+      color: theme.colors.onSurfaceVariant,
+    },
+  });
 
 export default PendingRequestsScreen;

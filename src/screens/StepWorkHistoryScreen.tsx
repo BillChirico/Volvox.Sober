@@ -18,11 +18,11 @@ export const StepWorkHistoryScreen: React.FC = () => {
 
   // Filter submitted or reviewed step work
   const history = stepWork?.filter(
-    (work) => work.status === 'submitted' || work.status === 'reviewed'
+    work => work.status === 'submitted' || work.status === 'reviewed',
   );
 
   const getStepInfo = (stepId: string) => {
-    return steps?.find((s) => s.id === stepId);
+    return steps?.find(s => s.id === stepId);
   };
 
   const getStatusColor = (status: string) => {
@@ -97,7 +97,7 @@ export const StepWorkHistoryScreen: React.FC = () => {
       {/* History List */}
       <FlatList
         data={history}
-        keyExtractor={(item) => item.id}
+        keyExtractor={item => item.id}
         renderItem={({ item }) => {
           const step = getStepInfo(item.step_id);
           if (!step) return null;
@@ -111,12 +111,8 @@ export const StepWorkHistoryScreen: React.FC = () => {
                       Step {step.step_number}
                     </Text>
                     <Chip
-                      style={[
-                        styles.statusChip,
-                        { backgroundColor: getStatusColor(item.status) },
-                      ]}
-                      textStyle={styles.statusChipText}
-                    >
+                      style={[styles.statusChip, { backgroundColor: getStatusColor(item.status) }]}
+                      textStyle={styles.statusChipText}>
                       {getStatusLabel(item.status)}
                     </Chip>
                   </View>
@@ -179,97 +175,98 @@ export const StepWorkHistoryScreen: React.FC = () => {
   );
 };
 
-const createStyles = (theme: any) => StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: theme.colors.background,
-  },
-  centerContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    padding: 20,
-  },
-  emptyText: {
-    fontWeight: '600',
-    marginBottom: 8,
-    textAlign: 'center',
-  },
-  emptySubtext: {
-    color: theme.colors.onSurfaceVariant,
-    textAlign: 'center',
-  },
-  header: {
-    padding: 20,
-    backgroundColor: theme.colors.surface,
-    borderBottomWidth: 1,
-    borderBottomColor: '#E0E0E0',
-  },
-  title: {
-    fontWeight: 'bold',
-    marginBottom: 4,
-  },
-  subtitle: {
-    color: theme.colors.onSurfaceVariant,
-  },
-  listContent: {
-    padding: 16,
-  },
-  historyCard: {
-    marginBottom: 12,
-    elevation: 2,
-  },
-  cardHeader: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginBottom: 8,
-  },
-  stepNumber: {
-    fontWeight: 'bold',
-    color: '#333',
-  },
-  statusChip: {
-    height: 28,
-  },
-  statusChipText: {
-    color: theme.colors.onPrimary,
-    fontSize: 12,
-    fontWeight: '600',
-  },
-  stepTitle: {
-    marginBottom: 12,
-    lineHeight: 20,
-  },
-  metadata: {
-    marginBottom: 12,
-  },
-  metadataRow: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginBottom: 4,
-  },
-  metadataLabel: {
-    color: theme.colors.onSurfaceVariant,
-    fontWeight: '600',
-  },
-  metadataValue: {
-    color: '#333',
-  },
-  commentsIndicator: {
-    paddingVertical: 8,
-    paddingHorizontal: 12,
-    backgroundColor: '#E3F2FD',
-    borderRadius: 8,
-    marginBottom: 8,
-  },
-  commentsText: {
-    color: '#1976D2',
-    fontWeight: '600',
-  },
-  viewPrompt: {
-    color: '#2196F3',
-    textAlign: 'right',
-    marginTop: 8,
-  },
-});
+const createStyles = (theme: any) =>
+  StyleSheet.create({
+    container: {
+      flex: 1,
+      backgroundColor: theme.colors.background,
+    },
+    centerContainer: {
+      flex: 1,
+      justifyContent: 'center',
+      alignItems: 'center',
+      padding: 20,
+    },
+    emptyText: {
+      fontWeight: '600',
+      marginBottom: 8,
+      textAlign: 'center',
+    },
+    emptySubtext: {
+      color: theme.colors.onSurfaceVariant,
+      textAlign: 'center',
+    },
+    header: {
+      padding: 20,
+      backgroundColor: theme.colors.surface,
+      borderBottomWidth: 1,
+      borderBottomColor: '#E0E0E0',
+    },
+    title: {
+      fontWeight: 'bold',
+      marginBottom: 4,
+    },
+    subtitle: {
+      color: theme.colors.onSurfaceVariant,
+    },
+    listContent: {
+      padding: 16,
+    },
+    historyCard: {
+      marginBottom: 12,
+      elevation: 2,
+    },
+    cardHeader: {
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+      marginBottom: 8,
+    },
+    stepNumber: {
+      fontWeight: 'bold',
+      color: '#333',
+    },
+    statusChip: {
+      height: 28,
+    },
+    statusChipText: {
+      color: theme.colors.onPrimary,
+      fontSize: 12,
+      fontWeight: '600',
+    },
+    stepTitle: {
+      marginBottom: 12,
+      lineHeight: 20,
+    },
+    metadata: {
+      marginBottom: 12,
+    },
+    metadataRow: {
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      marginBottom: 4,
+    },
+    metadataLabel: {
+      color: theme.colors.onSurfaceVariant,
+      fontWeight: '600',
+    },
+    metadataValue: {
+      color: '#333',
+    },
+    commentsIndicator: {
+      paddingVertical: 8,
+      paddingHorizontal: 12,
+      backgroundColor: '#E3F2FD',
+      borderRadius: 8,
+      marginBottom: 8,
+    },
+    commentsText: {
+      color: '#1976D2',
+      fontWeight: '600',
+    },
+    viewPrompt: {
+      color: '#2196F3',
+      textAlign: 'right',
+      marginTop: 8,
+    },
+  });

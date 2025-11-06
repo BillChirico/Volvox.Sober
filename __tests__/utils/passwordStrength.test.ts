@@ -119,9 +119,9 @@ describe('Password Strength Utilities', () => {
       it('should provide specific feedback for missing requirements', () => {
         const result = calculatePasswordStrength('password');
         expect(result.feedback.length).toBeGreaterThan(1);
-        expect(result.feedback.some((f) => f.includes('uppercase'))).toBe(true);
-        expect(result.feedback.some((f) => f.includes('numbers'))).toBe(true);
-        expect(result.feedback.some((f) => f.includes('special'))).toBe(true);
+        expect(result.feedback.some(f => f.includes('uppercase'))).toBe(true);
+        expect(result.feedback.some(f => f.includes('numbers'))).toBe(true);
+        expect(result.feedback.some(f => f.includes('special'))).toBe(true);
       });
 
       it('should provide positive feedback for strong password', () => {

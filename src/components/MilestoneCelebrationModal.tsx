@@ -67,11 +67,7 @@ export const MilestoneCelebrationModal: React.FC<MilestoneCelebrationModalProps>
 
   return (
     <Portal>
-      <Modal
-        visible={visible}
-        onDismiss={onDismiss}
-        contentContainerStyle={styles.modalContainer}
-      >
+      <Modal visible={visible} onDismiss={onDismiss} contentContainerStyle={styles.modalContainer}>
         <Card style={styles.card}>
           <Card.Content>
             <View style={styles.emojiContainer}>
@@ -102,8 +98,8 @@ export const MilestoneCelebrationModal: React.FC<MilestoneCelebrationModalProps>
             <Card style={styles.encouragementCard}>
               <Card.Content>
                 <Text variant="bodyMedium" style={styles.encouragement}>
-                  "Recovery is not a race. You don't have to feel guilty if it takes you longer
-                  than you thought it would. Keep going, you're doing great."
+                  "Recovery is not a race. You don't have to feel guilty if it takes you longer than
+                  you thought it would. Keep going, you're doing great."
                 </Text>
               </Card.Content>
             </Card>
@@ -114,8 +110,7 @@ export const MilestoneCelebrationModal: React.FC<MilestoneCelebrationModalProps>
                   mode="contained"
                   onPress={onShare}
                   style={styles.shareButton}
-                  icon="share-variant"
-                >
+                  icon="share-variant">
                   Share with Sponsor
                 </Button>
               )}

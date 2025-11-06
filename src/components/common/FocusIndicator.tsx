@@ -81,8 +81,7 @@ export const FocusIndicator: React.FC<FocusIndicatorProps> = ({
       ]}
       // Enhanced accessibility for keyboard navigation
       accessibilityState={{ focused: isFocused }}
-      focusable={true}
-    >
+      focusable={true}>
       {children}
     </Pressable>
   );

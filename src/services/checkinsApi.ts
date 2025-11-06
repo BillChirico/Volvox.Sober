@@ -55,21 +55,11 @@ export interface SubmitCheckinResponseParams {
 
 // T125: Pre-defined prompt templates
 export const CHECKIN_TEMPLATES: CheckinQuestion[][] = [
-  [
-    { question_id: 1, question_text: 'How are you feeling today?' },
-  ],
-  [
-    { question_id: 2, question_text: 'Any challenges this week?' },
-  ],
-  [
-    { question_id: 3, question_text: 'Rate your recovery (1-10)' },
-  ],
-  [
-    { question_id: 4, question_text: 'What are you grateful for today?' },
-  ],
-  [
-    { question_id: 5, question_text: 'Have you attended any meetings recently?' },
-  ],
+  [{ question_id: 1, question_text: 'How are you feeling today?' }],
+  [{ question_id: 2, question_text: 'Any challenges this week?' }],
+  [{ question_id: 3, question_text: 'Rate your recovery (1-10)' }],
+  [{ question_id: 4, question_text: 'What are you grateful for today?' }],
+  [{ question_id: 5, question_text: 'Have you attended any meetings recently?' }],
   [
     { question_id: 1, question_text: 'How are you feeling today?' },
     { question_id: 6, question_text: 'What support do you need right now?' },
@@ -80,8 +70,30 @@ export const CHECKIN_TEMPLATES: CheckinQuestion[][] = [
 export const analyzeSentiment = (answers: CheckinAnswer[]): 'positive' | 'neutral' | 'negative' => {
   const text = answers.map(a => a.answer_text.toLowerCase()).join(' ');
 
-  const positiveKeywords = ['great', 'good', 'excellent', 'wonderful', 'amazing', 'happy', 'grateful', 'better', 'improving', 'strong'];
-  const negativeKeywords = ['struggling', 'difficult', 'hard', 'bad', 'terrible', 'awful', 'depressed', 'anxious', 'worse', 'failing'];
+  const positiveKeywords = [
+    'great',
+    'good',
+    'excellent',
+    'wonderful',
+    'amazing',
+    'happy',
+    'grateful',
+    'better',
+    'improving',
+    'strong',
+  ];
+  const negativeKeywords = [
+    'struggling',
+    'difficult',
+    'hard',
+    'bad',
+    'terrible',
+    'awful',
+    'depressed',
+    'anxious',
+    'worse',
+    'failing',
+  ];
 
   let positiveCount = 0;
   let negativeCount = 0;
@@ -104,7 +116,7 @@ const calculateNextScheduledAt = (
   recurrence: 'daily' | 'weekly' | 'custom',
   scheduledTime: string, // HH:MM
   timezone: string,
-  customIntervalDays?: number
+  customIntervalDays?: number,
 ): string => {
   const now = new Date();
   const [hours, minutes] = scheduledTime.split(':').map(Number);
@@ -134,7 +146,7 @@ export const checkinsApi = createApi({
   reducerPath: 'checkinsApi',
   baseQuery: fakeBaseQuery(),
   tagTypes: ['Checkins', 'CheckinResponses'],
-  endpoints: (builder) => ({
+  endpoints: builder => ({
     // T124: Get check-ins for a connection
     getCheckins: builder.query<Checkin[], string>({
       async queryFn(connectionId) {
@@ -147,9 +159,7 @@ export const checkinsApi = createApi({
         if (error) return { error };
         return { data: data as Checkin[] };
       },
-      providesTags: (_result, _error, connectionId) => [
-        { type: 'Checkins', id: connectionId },
-      ],
+      providesTags: (_result, _error, connectionId) => [{ type: 'Checkins', id: connectionId }],
     }),
 
     // T124: Create check-in schedule
@@ -162,7 +172,9 @@ export const checkinsApi = createApi({
         scheduled_time,
         timezone,
       }) {
-        const { data: { user } } = await supabase.auth.getUser();
+        const {
+          data: { user },
+        } = await supabase.auth.getUser();
         if (!user) return { error: { message: 'Not authenticated' } };
 
         // Verify user is sponsor for this connection
@@ -180,7 +192,7 @@ export const checkinsApi = createApi({
           recurrence,
           scheduled_time,
           timezone,
-          custom_interval_days
+          custom_interval_days,
         );
 
         const { data, error } = await supabase
@@ -228,10 +240,7 @@ export const checkinsApi = createApi({
     // T124: Delete check-in schedule
     deleteCheckin: builder.mutation<void, string>({
       async queryFn(checkinId) {
-        const { error } = await supabase
-          .from('checkins')
-          .delete()
-          .eq('id', checkinId);
+        const { error } = await supabase.from('checkins').delete().eq('id', checkinId);
 
         if (error) return { error };
         return { data: undefined };
@@ -259,7 +268,9 @@ export const checkinsApi = createApi({
     // T127: Submit check-in response
     submitCheckinResponse: builder.mutation<CheckinResponse, SubmitCheckinResponseParams>({
       async queryFn({ checkin_id, connection_id, answers }) {
-        const { data: { user } } = await supabase.auth.getUser();
+        const {
+          data: { user },
+        } = await supabase.auth.getUser();
         if (!user) return { error: { message: 'Not authenticated' } };
 
         // T128: Analyze sentiment
@@ -295,7 +306,7 @@ export const checkinsApi = createApi({
             checkin.recurrence,
             timeString,
             checkin.timezone,
-            checkin.custom_interval_days || undefined
+            checkin.custom_interval_days || undefined,
           );
 
           await supabase

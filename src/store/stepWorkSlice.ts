@@ -37,10 +37,10 @@ const stepWorkSlice = createSlice({
     // Initialize progress from API data
     setProgress: (state, action: PayloadAction<StepProgress[]>) => {
       state.progress = {};
-      action.payload.forEach((step) => {
+      action.payload.forEach(step => {
         state.progress[step.stepId] = step;
       });
-      state.completedCount = action.payload.filter((s) => s.status === 'reviewed').length;
+      state.completedCount = action.payload.filter(s => s.status === 'reviewed').length;
       state.lastSyncedAt = new Date().toISOString();
     },
 
@@ -49,15 +49,12 @@ const stepWorkSlice = createSlice({
       const { stepId } = action.payload;
       state.progress[stepId] = action.payload;
       state.completedCount = Object.values(state.progress).filter(
-        (s) => s.status === 'reviewed'
+        s => s.status === 'reviewed',
       ).length;
     },
 
     // Update step status
-    updateStepStatus: (
-      state,
-      action: PayloadAction<{ stepId: string; status: StepStatus }>
-    ) => {
+    updateStepStatus: (state, action: PayloadAction<{ stepId: string; status: StepStatus }>) => {
       const { stepId, status } = action.payload;
       if (state.progress[stepId]) {
         state.progress[stepId].status = status;
@@ -72,7 +69,7 @@ const stepWorkSlice = createSlice({
         }
 
         state.completedCount = Object.values(state.progress).filter(
-          (s) => s.status === 'reviewed'
+          s => s.status === 'reviewed',
         ).length;
       }
     },
@@ -113,13 +110,13 @@ const stepWorkSlice = createSlice({
         state.progress[stepId].reviewedAt = new Date().toISOString();
         state.progress[stepId].lastUpdated = new Date().toISOString();
         state.completedCount = Object.values(state.progress).filter(
-          (s) => s.status === 'reviewed'
+          s => s.status === 'reviewed',
         ).length;
       }
     },
 
     // Reset all progress (for testing/debugging)
-    resetProgress: (state) => {
+    resetProgress: state => {
       state.progress = {};
       state.completedCount = 0;
       state.lastSyncedAt = null;
@@ -153,24 +150,24 @@ export const selectProgressPercentage = (state: RootState) => {
 };
 
 export const selectInProgressSteps = (state: RootState) =>
-  Object.values(state.stepWork.progress).filter((s) => s.status === 'in_progress');
+  Object.values(state.stepWork.progress).filter(s => s.status === 'in_progress');
 
 export const selectSubmittedSteps = (state: RootState) =>
-  Object.values(state.stepWork.progress).filter((s) => s.status === 'submitted');
+  Object.values(state.stepWork.progress).filter(s => s.status === 'submitted');
 
 export const selectReviewedSteps = (state: RootState) =>
-  Object.values(state.stepWork.progress).filter((s) => s.status === 'reviewed');
+  Object.values(state.stepWork.progress).filter(s => s.status === 'reviewed');
 
 export const selectNextStep = (state: RootState): number | null => {
   const progress = Object.values(state.stepWork.progress);
 
   // Find first not started or in progress step
-  const nextNotStarted = progress.find((s) => s.status === 'not_started');
+  const nextNotStarted = progress.find(s => s.status === 'not_started');
   if (nextNotStarted) {
     return nextNotStarted.stepNumber;
   }
 
-  const nextInProgress = progress.find((s) => s.status === 'in_progress');
+  const nextInProgress = progress.find(s => s.status === 'in_progress');
   if (nextInProgress) {
     return nextInProgress.stepNumber;
   }

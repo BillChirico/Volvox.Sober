@@ -30,8 +30,7 @@ const createMockStore = () => {
     reducer: {
       [connectionsApi.reducerPath]: connectionsApi.reducer,
     },
-    middleware: (getDefaultMiddleware) =>
-      getDefaultMiddleware().concat(connectionsApi.middleware),
+    middleware: getDefaultMiddleware => getDefaultMiddleware().concat(connectionsApi.middleware),
   });
 };
 
@@ -48,7 +47,7 @@ describe('SendRequestScreen', () => {
         <NavigationContainer>
           <SendRequestScreen />
         </NavigationContainer>
-      </Provider>
+      </Provider>,
     );
 
     expect(getByText('John Sponsor')).toBeTruthy();
@@ -63,7 +62,7 @@ describe('SendRequestScreen', () => {
         <NavigationContainer>
           <SendRequestScreen />
         </NavigationContainer>
-      </Provider>
+      </Provider>,
     );
 
     const input = getByPlaceholderText(/Hi, I'm interested in working with you/);
@@ -80,7 +79,7 @@ describe('SendRequestScreen', () => {
         <NavigationContainer>
           <SendRequestScreen />
         </NavigationContainer>
-      </Provider>
+      </Provider>,
     );
 
     const input = getByPlaceholderText(/Hi, I'm interested in working with you/);
@@ -98,7 +97,7 @@ describe('SendRequestScreen', () => {
         <NavigationContainer>
           <SendRequestScreen />
         </NavigationContainer>
-      </Provider>
+      </Provider>,
     );
 
     const input = getByPlaceholderText(/Hi, I'm interested in working with you/);
@@ -114,10 +113,9 @@ describe('SendRequestScreen', () => {
       data: { id: 'request-1' },
     });
 
-    jest.spyOn(connectionsApi.endpoints.sendRequest, 'useMutation').mockReturnValue([
-      mockSendRequest,
-      { isLoading: false },
-    ] as any);
+    jest
+      .spyOn(connectionsApi.endpoints.sendRequest, 'useMutation')
+      .mockReturnValue([mockSendRequest, { isLoading: false }] as any);
 
     const store = createMockStore();
 
@@ -126,7 +124,7 @@ describe('SendRequestScreen', () => {
         <NavigationContainer>
           <SendRequestScreen />
         </NavigationContainer>
-      </Provider>
+      </Provider>,
     );
 
     const input = getByPlaceholderText(/Hi, I'm interested in working with you/);
@@ -148,10 +146,9 @@ describe('SendRequestScreen', () => {
       data: { id: 'request-1' },
     });
 
-    jest.spyOn(connectionsApi.endpoints.sendRequest, 'useMutation').mockReturnValue([
-      mockSendRequest,
-      { isLoading: false },
-    ] as any);
+    jest
+      .spyOn(connectionsApi.endpoints.sendRequest, 'useMutation')
+      .mockReturnValue([mockSendRequest, { isLoading: false }] as any);
 
     const store = createMockStore();
 
@@ -160,7 +157,7 @@ describe('SendRequestScreen', () => {
         <NavigationContainer>
           <SendRequestScreen />
         </NavigationContainer>
-      </Provider>
+      </Provider>,
     );
 
     const sendButton = getByText('Send Request');
@@ -179,10 +176,9 @@ describe('SendRequestScreen', () => {
       data: { id: 'request-1' },
     });
 
-    jest.spyOn(connectionsApi.endpoints.sendRequest, 'useMutation').mockReturnValue([
-      mockSendRequest,
-      { isLoading: false },
-    ] as any);
+    jest
+      .spyOn(connectionsApi.endpoints.sendRequest, 'useMutation')
+      .mockReturnValue([mockSendRequest, { isLoading: false }] as any);
 
     const store = createMockStore();
 
@@ -191,7 +187,7 @@ describe('SendRequestScreen', () => {
         <NavigationContainer>
           <SendRequestScreen />
         </NavigationContainer>
-      </Provider>
+      </Provider>,
     );
 
     const sendButton = getByText('Send Request');
@@ -202,9 +198,12 @@ describe('SendRequestScreen', () => {
     });
 
     // Wait for navigation after delay
-    await waitFor(() => {
-      expect(mockGoBack).toHaveBeenCalled();
-    }, { timeout: 2000 });
+    await waitFor(
+      () => {
+        expect(mockGoBack).toHaveBeenCalled();
+      },
+      { timeout: 2000 },
+    );
   });
 
   it('displays guidelines for what to include', () => {
@@ -215,7 +214,7 @@ describe('SendRequestScreen', () => {
         <NavigationContainer>
           <SendRequestScreen />
         </NavigationContainer>
-      </Provider>
+      </Provider>,
     );
 
     expect(getByText(/What to Include:/)).toBeTruthy();
@@ -231,7 +230,7 @@ describe('SendRequestScreen', () => {
         <NavigationContainer>
           <SendRequestScreen />
         </NavigationContainer>
-      </Provider>
+      </Provider>,
     );
 
     const cancelButton = getByText('Cancel');

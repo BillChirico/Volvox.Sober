@@ -2,7 +2,6 @@
 description: Execute the implementation plan by processing and executing all tasks defined in tasks.md
 ---
 
-
 ## User Input
 
 ```text
@@ -16,6 +15,7 @@ You **MUST** consider the user input before proceeding (if not empty).
 Before proceeding with implementation, verify you are in the correct working directory:
 
 **Check your current branch:**
+
 ```bash
 git branch --show-current
 ```
@@ -26,6 +26,7 @@ git branch --show-current
 **This command MUST run from a feature worktree, not the main repository.**
 
 If you're on the `main` branch:
+
 1. Check for available worktrees: `ls .worktrees/`
 2. Navigate to the appropriate feature worktree: `cd .worktrees/<feature-name>`
 3. Verify you're in the right place: `git branch --show-current` should show the feature branch
@@ -42,12 +43,12 @@ The script will fail if you're not in a feature worktree. This is intentional - 
 
 2. Run `.kittify/scripts/bash/check-prerequisites.sh --json --require-tasks --include-tasks` from repo root and parse FEATURE_DIR and AVAILABLE_DOCS list. All paths must be absolute.
 
-2. **Check checklists status** (if FEATURE_DIR/checklists/ exists):
+3. **Check checklists status** (if FEATURE_DIR/checklists/ exists):
    - Scan all checklist files in the checklists/ directory
    - For each checklist, count:
-     * Total items: All lines matching `- [ ]` or `- [X]` or `- [x]`
-     * Completed items: Lines matching `- [X]` or `- [x]`
-     * Incomplete items: Lines matching `- [ ]`
+     - Total items: All lines matching `- [ ]` or `- [X]` or `- [x]`
+     - Completed items: Lines matching `- [X]` or `- [x]`
+     - Incomplete items: Lines matching `- [ ]`
    - Create a status table:
      ```
      | Checklist | Total | Completed | Incomplete | Status |
@@ -57,52 +58,54 @@ The script will fail if you're not in a feature worktree. This is intentional - 
      | security.md | 6   | 6         | 0          | ✓ PASS |
      ```
    - Calculate overall status:
-     * **PASS**: All checklists have 0 incomplete items
-     * **FAIL**: One or more checklists have incomplete items
-   
+     - **PASS**: All checklists have 0 incomplete items
+     - **FAIL**: One or more checklists have incomplete items
    - **If any checklist is incomplete**:
-     * Display the table with incomplete item counts
-     * **STOP** and ask: "Some checklists are incomplete. Do you want to proceed with implementation anyway? (yes/no)"
-     * Wait for user response before continuing
-     * If user says "no" or "wait" or "stop", halt execution
-     * If user says "yes" or "proceed" or "continue", proceed to step 3
-   
+     - Display the table with incomplete item counts
+     - **STOP** and ask: "Some checklists are incomplete. Do you want to proceed with implementation anyway? (yes/no)"
+     - Wait for user response before continuing
+     - If user says "no" or "wait" or "stop", halt execution
+     - If user says "yes" or "proceed" or "continue", proceed to step 3
    - **If all checklists are complete**:
-     * Display the table showing all checklists passed
-     * Automatically proceed to step 3
+     - Display the table showing all checklists passed
+     - Automatically proceed to step 3
 
-3. **MANDATORY: Initialize Task Workflow** ⚠️ BLOCKING STEP
+4. **MANDATORY: Initialize Task Workflow** ⚠️ BLOCKING STEP
 
    **For EACH task you will implement**:
 
    a. **Move task prompt to doing lane**:
-      ```bash
-      # Capture your shell PID
-      SHELL_PID=$(echo $$)
 
-      # Move prompt (example for T001)
-      .kittify/scripts/bash/tasks-move-to-lane.sh FEATURE-SLUG TXXX doing \
-        --shell-pid "$SHELL_PID" \
-        --agent "claude" \
-        --note "Started implementation"
-      ```
-      > Windows users: run `.kittify/scripts/powershell/tasks-move-to-lane.ps1` with the same arguments.
+   ```bash
+   # Capture your shell PID
+   SHELL_PID=$(echo $$)
+
+   # Move prompt (example for T001)
+   .kittify/scripts/bash/tasks-move-to-lane.sh FEATURE-SLUG TXXX doing \
+     --shell-pid "$SHELL_PID" \
+     --agent "claude" \
+     --note "Started implementation"
+   ```
+
+   > Windows users: run `.kittify/scripts/powershell/tasks-move-to-lane.ps1` with the same arguments.
 
    b. **Verify frontmatter metadata** in the moved file:
-      ```yaml
-      lane: "doing"
-      assignee: "Your Name or Agent ID"
-      agent: "claude"  # or codex, gemini, etc.
-      shell_pid: "12345"  # from echo $$
-      ```
+
+   ```yaml
+   lane: 'doing'
+   assignee: 'Your Name or Agent ID'
+   agent: 'claude' # or codex, gemini, etc.
+   shell_pid: '12345' # from echo $$
+   ```
 
    c. **Confirm the Activity Log** shows a new entry that records the transition to `doing` (the helper script adds it automatically—adjust the note if needed).
 
    d. **Commit the move**:
-      ```bash
-      git status --short
-      git commit -m "Start TXXX: Move to doing lane"
-      ```
+
+   ```bash
+   git status --short
+   git commit -m "Start TXXX: Move to doing lane"
+   ```
 
    **VALIDATION**: Before proceeding to implementation, verify:
    - [ ] Prompt file exists in `tasks/doing/phase-X-name/`
@@ -114,7 +117,7 @@ The script will fail if you're not in a feature worktree. This is intentional - 
    **If validation fails**: STOP and fix the workflow before implementing.
    (Optional) Run `.kittify/scripts/bash/validate-task-workflow.sh TXXX FEATURE_DIR` for automated checks.
 
-4. Load and analyze the implementation context:
+5. Load and analyze the implementation context:
    - **REQUIRED**: Read tasks.md for the complete task list and execution plan
    - **REQUIRED**: Read the task prompt file from `tasks/doing/phase-X-name/TXXX-slug.md` (moved in step 3)
    - **VERIFY**: Frontmatter shows `lane: "doing"`, `agent`, and `shell_pid`
@@ -125,28 +128,28 @@ The script will fail if you're not in a feature worktree. This is intentional - 
    - **IF EXISTS**: Read research.md for technical decisions and constraints
    - **IF EXISTS**: Read quickstart.md for integration scenarios
 
-5. Parse tasks.md structure and extract:
+6. Parse tasks.md structure and extract:
    - **Task phases**: Setup, Tests, Core, Integration, Polish
    - **Task dependencies**: Sequential vs parallel execution rules
    - **Task details**: ID, description, file paths, parallel markers [P]
    - **Execution flow**: Order and dependency requirements
 
-6. Execute implementation following the task plan:
+7. Execute implementation following the task plan:
    - **Phase-by-phase execution**: Complete each phase before moving to the next
-   - **Respect dependencies**: Run sequential tasks in order, parallel tasks [P] can run together  
+   - **Respect dependencies**: Run sequential tasks in order, parallel tasks [P] can run together
    - **Follow TDD approach**: Execute test tasks before their corresponding implementation tasks
    - **File-based coordination**: Tasks affecting the same files must run sequentially
    - **Validation checkpoints**: Verify each phase completion before proceeding
    - **Kanban discipline**: Use the lane helper scripts to keep the prompt in `tasks/doing/`, update the Activity Log, and capture your shell PID (`echo $$`). These should already be complete from step 3—verify before coding.
 
-7. Implementation execution rules:
+8. Implementation execution rules:
    - **Setup first**: Initialize project structure, dependencies, configuration
    - **Tests before code**: If you need to write tests for contracts, entities, and integration scenarios
    - **Core development**: Implement models, services, CLI commands, endpoints
    - **Integration work**: Database connections, middleware, logging, external services
    - **Polish and validation**: Unit tests, performance optimization, documentation
 
-8. Progress tracking and error handling:
+9. Progress tracking and error handling:
    - Report progress after each completed task
    - Halt execution if any non-parallel task fails
    - For parallel tasks [P], continue with successful tasks, report failed ones
@@ -165,6 +168,7 @@ The script will fail if you're not in a feature worktree. This is intentional - 
        --agent "claude" \
        --note "Ready for review"
      ```
+
      - Commit:
        ```bash
        git status --short
@@ -176,12 +180,12 @@ The script will fail if you're not in a feature worktree. This is intentional - 
      - [ ] Activity log has completion entry
      - [ ] Git commit exists for the move
 
-9. Completion validation:
-   - Verify all required tasks are completed
-   - Check that implemented features match the original specification
-   - Validate that tests pass and coverage meets requirements
-   - Confirm the implementation follows the technical plan
-   - Report final status with summary of completed work
+10. Completion validation:
+    - Verify all required tasks are completed
+    - Check that implemented features match the original specification
+    - Validate that tests pass and coverage meets requirements
+    - Confirm the implementation follows the technical plan
+    - Report final status with summary of completed work
 
 ## Task Workflow Summary (Quick Reference)
 
@@ -234,10 +238,17 @@ Leverage your agent’s native orchestration so one work package advances while 
 If an agent lacks built-in subagents, mimic the pattern manually: open a second terminal, move a review prompt to `tasks/doing/`, and run the reviewer commands there while your primary session keeps coding.
 
 [^claude_subagents]: Anthropic, “Subagents,” showing how to create and invoke Claude Code subagents and explicitly request them for parallel work.
+
 [^codex_cloud]: OpenAI Developers, “Codex Concepts,” describing how cloud tasks let Codex work on multiple jobs in parallel.
+
 [^cursor_parallel]: Cursor, “Cursor Agent CLI,” announcing you can “have multiple agents run in parallel in the terminal or remotely.”
+
 [^copilot_agent]: GitHub, “Kick off and track Copilot coding agent sessions from the GitHub CLI,” documenting the `gh agent-task` commands.
+
 [^gemini_parallel]: Dagger, “Make Gemini CLI work in parallel and isolated dev environments,” demonstrating two Gemini CLI agents operating simultaneously via Container Use.
+
 [^qwen_task]: Moncef Abboud, “How Coding Agents Actually Work: Inside OpenCode,” detailing the task tool instructions (“launch multiple agents concurrently whenever possible”) that Qwen Code inherits.
+
 [^opencode_parallel]: Moncef Abboud, “How Coding Agents Actually Work: Inside OpenCode,” same section describing the concurrent subagent guidance.
+
 [^amazonq_parallel]: Dagger, “Parallel AI Experiments Using Dagger + Amazon Q Developer CLI,” showing multiple Amazon Q CLI sessions running in parallel.

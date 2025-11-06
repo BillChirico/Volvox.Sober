@@ -23,8 +23,7 @@ export default function TabsLayout() {
         headerTitleStyle: {
           fontWeight: '600',
         },
-      }}
-    >
+      }}>
       <Tabs.Screen
         name="connections"
         options={{

@@ -2,7 +2,6 @@
 description: Perform structured code review and kanban transitions for completed task prompt files.
 ---
 
-
 ## User Input
 
 ```text
@@ -16,6 +15,7 @@ You **MUST** consider the user input before proceeding (if not empty).
 Before proceeding with review, verify you are in the correct working directory:
 
 **Check your current branch:**
+
 ```bash
 git branch --show-current
 ```
@@ -26,6 +26,7 @@ git branch --show-current
 **This command MUST run from a feature worktree, not the main repository.**
 
 If you're on the `main` branch:
+
 1. Check for available worktrees: `ls .worktrees/`
 2. Navigate to the appropriate feature worktree: `cd .worktrees/<feature-name>`
 3. Verify you're in the right place: `git branch --show-current` should show the feature branch
@@ -54,16 +55,17 @@ The script will fail if you're not in a feature worktree. This is intentional - 
    - Document findings explicitly: bugs, regressions, missing tests, risks, or validation notes.
 
 5. Decide outcome:
-  - **Needs changes**:
-     * Append a new entry in the prompt’s **Activity Log** detailing feedback (include timestamp, reviewer agent, shell PID).
-     * Update frontmatter `lane` back to `planned`, clear `assignee` if necessary, keep history entry.
-     * Add/revise a `## Review Feedback` section (create if missing) summarizing action items.
-     * Run `.kittify/scripts/bash/tasks-move-to-lane.sh <FEATURE> <TASK_ID> planned --note "Returned for changes"` (use the PowerShell equivalent on Windows) so the move and history update are staged consistently.
-  - **Approved**:
-     * Append Activity Log entry capturing approval details (capture shell PID via `echo $$` or helper script).
-     * Update frontmatter: set `lane=done`, set reviewer metadata (`agent`, `shell_pid`), optional `assignee` for approver.
-     * Use helper script to mark the task complete in `tasks.md` (see Step 6).
-     * Run `.kittify/scripts/bash/tasks-move-to-lane.sh <FEATURE> <TASK_ID> done --note "Approved for release"` (PowerShell variant available) to transition the prompt into `tasks/done/`.
+
+- **Needs changes**:
+  - Append a new entry in the prompt’s **Activity Log** detailing feedback (include timestamp, reviewer agent, shell PID).
+  - Update frontmatter `lane` back to `planned`, clear `assignee` if necessary, keep history entry.
+  - Add/revise a `## Review Feedback` section (create if missing) summarizing action items.
+  - Run `.kittify/scripts/bash/tasks-move-to-lane.sh <FEATURE> <TASK_ID> planned --note "Returned for changes"` (use the PowerShell equivalent on Windows) so the move and history update are staged consistently.
+- **Approved**:
+  - Append Activity Log entry capturing approval details (capture shell PID via `echo $$` or helper script).
+  - Update frontmatter: set `lane=done`, set reviewer metadata (`agent`, `shell_pid`), optional `assignee` for approver.
+  - Use helper script to mark the task complete in `tasks.md` (see Step 6).
+  - Run `.kittify/scripts/bash/tasks-move-to-lane.sh <FEATURE> <TASK_ID> done --note "Approved for release"` (PowerShell variant available) to transition the prompt into `tasks/done/`.
 
 6. Update `tasks.md` automatically:
    - Run `.kittify/scripts/bash/mark-task-status.sh --task-id <TASK_ID> --status done` (POSIX) or `.kittify/scripts/powershell/Set-TaskStatus.ps1 -TaskId <TASK_ID> -Status done` (PowerShell) from repo root.
@@ -71,10 +73,11 @@ The script will fail if you're not in a feature worktree. This is intentional - 
 
 7. Produce a review report summarizing:
    - Task ID and filename reviewed.
-  - Approval status and key findings.
-   - Tests executed and their results.
-   - Follow-up actions (if any) for other team members.
-   - Reminder to push changes or notify teammates as per project conventions.
+
+- Approval status and key findings.
+- Tests executed and their results.
+- Follow-up actions (if any) for other team members.
+- Reminder to push changes or notify teammates as per project conventions.
 
 Context for review: $ARGUMENTS
 

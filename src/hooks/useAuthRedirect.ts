@@ -64,8 +64,8 @@ export const useAuthRedirect = () => {
 export const useAuth = () => {
   const isAuthenticated = useAppSelector(selectIsAuthenticated);
   const user = useAppSelector(selectUser);
-  const loading = useAppSelector((state) => state.auth.loading);
-  const error = useAppSelector((state) => state.auth.error);
+  const loading = useAppSelector(state => state.auth.loading);
+  const error = useAppSelector(state => state.auth.error);
 
   const isEmailVerified = user?.email_confirmed_at !== null;
 

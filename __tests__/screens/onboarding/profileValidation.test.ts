@@ -70,7 +70,7 @@ describe('Profile Form Validation', () => {
       };
 
       await expect(sponseeProfileSchema.validate(invalidData)).rejects.toThrow(
-        'Sobriety date cannot be in the future'
+        'Sobriety date cannot be in the future',
       );
     });
 
@@ -84,7 +84,7 @@ describe('Profile Form Validation', () => {
       };
 
       await expect(sponseeProfileSchema.validate(invalidData)).rejects.toThrow(
-        'Step progress must be between 0 and 12'
+        'Step progress must be between 0 and 12',
       );
     });
 
@@ -101,7 +101,7 @@ describe('Profile Form Validation', () => {
       };
 
       await expect(sponseeProfileSchema.validate(invalidData)).rejects.toThrow(
-        'Bio must be less than 500 characters'
+        'Bio must be less than 500 characters',
       );
     });
   });
@@ -144,7 +144,7 @@ describe('Profile Form Validation', () => {
       };
 
       await expect(sponsorProfileSchema.validate(invalidData)).rejects.toThrow(
-        'Must have at least 1 year sober'
+        'Must have at least 1 year sober',
       );
     });
 
@@ -160,7 +160,7 @@ describe('Profile Form Validation', () => {
       };
 
       await expect(sponsorProfileSchema.validate(invalidData)).rejects.toThrow(
-        'Maximum 20 sponsees'
+        'Maximum 20 sponsees',
       );
     });
 
@@ -178,7 +178,7 @@ describe('Profile Form Validation', () => {
       };
 
       await expect(sponsorProfileSchema.validate(invalidData)).rejects.toThrow(
-        'Approach must be less than 200 characters'
+        'Approach must be less than 200 characters',
       );
     });
   });

@@ -118,7 +118,9 @@ describe('Auth Error Utilities', () => {
     it('should handle unknown error with generic message (FR-011)', () => {
       const error = new Error('Some random unknown error') as AuthError;
       const message = mapAuthError(error);
-      expect(message).toBe('An error occurred. Please try again or contact support if the problem persists.');
+      expect(message).toBe(
+        'An error occurred. Please try again or contact support if the problem persists.',
+      );
     });
 
     it('should handle case-insensitive error messages', () => {

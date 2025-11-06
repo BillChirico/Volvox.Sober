@@ -43,7 +43,9 @@ export const NotificationSettingsScreen: React.FC = () => {
 
   const loadPreferences = async () => {
     try {
-      const { data: { user } } = await supabase.auth.getUser();
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
 
       if (!user) {
         Alert.alert('Error', 'Not authenticated');
@@ -76,7 +78,9 @@ export const NotificationSettingsScreen: React.FC = () => {
       const updatedPreferences = { ...preferences, [key]: value };
       setPreferences(updatedPreferences);
 
-      const { data: { user } } = await supabase.auth.getUser();
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
 
       if (!user) {
         throw new Error('Not authenticated');
@@ -131,7 +135,7 @@ export const NotificationSettingsScreen: React.FC = () => {
           right={() => (
             <Switch
               value={preferences.newmessage}
-              onValueChange={(value) => updatePreference('newmessage', value)}
+              onValueChange={value => updatePreference('newmessage', value)}
               disabled={saving}
             />
           )}
@@ -153,7 +157,7 @@ export const NotificationSettingsScreen: React.FC = () => {
           right={() => (
             <Switch
               value={preferences.connectionrequest}
-              onValueChange={(value) => updatePreference('connectionrequest', value)}
+              onValueChange={value => updatePreference('connectionrequest', value)}
               disabled={saving}
             />
           )}
@@ -175,7 +179,7 @@ export const NotificationSettingsScreen: React.FC = () => {
           right={() => (
             <Switch
               value={preferences.checkinreminder}
-              onValueChange={(value) => updatePreference('checkinreminder', value)}
+              onValueChange={value => updatePreference('checkinreminder', value)}
               disabled={saving}
             />
           )}
@@ -197,7 +201,7 @@ export const NotificationSettingsScreen: React.FC = () => {
           right={() => (
             <Switch
               value={preferences.milestoneachieved}
-              onValueChange={(value) => updatePreference('milestoneachieved', value)}
+              onValueChange={value => updatePreference('milestoneachieved', value)}
               disabled={saving}
             />
           )}
@@ -219,7 +223,7 @@ export const NotificationSettingsScreen: React.FC = () => {
           right={() => (
             <Switch
               value={preferences.stepworkcomment}
-              onValueChange={(value) => updatePreference('stepworkcomment', value)}
+              onValueChange={value => updatePreference('stepworkcomment', value)}
               disabled={saving}
             />
           )}
@@ -232,7 +236,7 @@ export const NotificationSettingsScreen: React.FC = () => {
           right={() => (
             <Switch
               value={preferences.stepworksubmitted}
-              onValueChange={(value) => updatePreference('stepworksubmitted', value)}
+              onValueChange={value => updatePreference('stepworksubmitted', value)}
               disabled={saving}
             />
           )}
@@ -245,7 +249,7 @@ export const NotificationSettingsScreen: React.FC = () => {
           right={() => (
             <Switch
               value={preferences.stepworkreviewed}
-              onValueChange={(value) => updatePreference('stepworkreviewed', value)}
+              onValueChange={value => updatePreference('stepworkreviewed', value)}
               disabled={saving}
             />
           )}
@@ -255,54 +259,55 @@ export const NotificationSettingsScreen: React.FC = () => {
       {/* Help Text */}
       <View style={styles.footer}>
         <Text variant="bodySmall" style={styles.helpText}>
-          You can change these preferences at any time. Some notifications may still appear
-          in-app even if push notifications are disabled.
+          You can change these preferences at any time. Some notifications may still appear in-app
+          even if push notifications are disabled.
         </Text>
       </View>
     </ScrollView>
   );
 };
 
-const createStyles = (theme: any) => StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: theme.colors.background,
-  },
-  centerContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  header: {
-    padding: 20,
-    backgroundColor: theme.colors.surface,
-  },
-  title: {
-    fontWeight: 'bold',
-    marginBottom: 8,
-  },
-  subtitle: {
-    color: theme.colors.onSurfaceVariant,
-    lineHeight: 20,
-  },
-  section: {
-    backgroundColor: theme.colors.surface,
-    paddingVertical: 12,
-  },
-  sectionTitle: {
-    paddingHorizontal: 16,
-    paddingBottom: 8,
-    fontWeight: '600',
-    color: theme.colors.onSurface,
-  },
-  footer: {
-    padding: 20,
-    backgroundColor: theme.colors.surface,
-    marginTop: 16,
-  },
-  helpText: {
-    color: theme.colors.onSurfaceVariant,
-    lineHeight: 18,
-    textAlign: 'center',
-  },
-});
+const createStyles = (theme: any) =>
+  StyleSheet.create({
+    container: {
+      flex: 1,
+      backgroundColor: theme.colors.background,
+    },
+    centerContainer: {
+      flex: 1,
+      justifyContent: 'center',
+      alignItems: 'center',
+    },
+    header: {
+      padding: 20,
+      backgroundColor: theme.colors.surface,
+    },
+    title: {
+      fontWeight: 'bold',
+      marginBottom: 8,
+    },
+    subtitle: {
+      color: theme.colors.onSurfaceVariant,
+      lineHeight: 20,
+    },
+    section: {
+      backgroundColor: theme.colors.surface,
+      paddingVertical: 12,
+    },
+    sectionTitle: {
+      paddingHorizontal: 16,
+      paddingBottom: 8,
+      fontWeight: '600',
+      color: theme.colors.onSurface,
+    },
+    footer: {
+      padding: 20,
+      backgroundColor: theme.colors.surface,
+      marginTop: 16,
+    },
+    helpText: {
+      color: theme.colors.onSurfaceVariant,
+      lineHeight: 18,
+      textAlign: 'center',
+    },
+  });

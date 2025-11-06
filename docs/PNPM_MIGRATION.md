@@ -28,11 +28,13 @@ curl -fsSL https://get.pnpm.io/install.sh | sh -
 If you have an existing project with npm:
 
 1. **Remove old lockfile**:
+
    ```bash
    rm package-lock.json
    ```
 
 2. **Install dependencies with pnpm**:
+
    ```bash
    pnpm install
    ```
@@ -45,16 +47,16 @@ If you have an existing project with npm:
 
 ## Command Equivalents
 
-| npm | pnpm |
-|-----|------|
-| `npm install` | `pnpm install` |
-| `npm install <pkg>` | `pnpm add <pkg>` |
-| `npm install -D <pkg>` | `pnpm add -D <pkg>` |
-| `npm install -g <pkg>` | `pnpm add -g <pkg>` |
-| `npm uninstall <pkg>` | `pnpm remove <pkg>` |
-| `npm run <script>` | `pnpm <script>` (or `pnpm run <script>`) |
-| `npm test` | `pnpm test` |
-| `npx <command>` | `pnpm dlx <command>` |
+| npm                    | pnpm                                     |
+| ---------------------- | ---------------------------------------- |
+| `npm install`          | `pnpm install`                           |
+| `npm install <pkg>`    | `pnpm add <pkg>`                         |
+| `npm install -D <pkg>` | `pnpm add -D <pkg>`                      |
+| `npm install -g <pkg>` | `pnpm add -g <pkg>`                      |
+| `npm uninstall <pkg>`  | `pnpm remove <pkg>`                      |
+| `npm run <script>`     | `pnpm <script>` (or `pnpm run <script>`) |
+| `npm test`             | `pnpm test`                              |
+| `npx <command>`        | `pnpm dlx <command>`                     |
 
 ## Key Differences
 
@@ -105,6 +107,7 @@ These settings ensure compatibility with React Native's Metro bundler.
 ### Issue: Module not found errors
 
 **Solution**:
+
 ```bash
 rm -rf node_modules pnpm-lock.yaml
 pnpm install
@@ -117,6 +120,7 @@ These are usually safe to ignore with React Native projects. Our `.npmrc` is con
 ### Issue: Cache corruption
 
 **Solution**:
+
 ```bash
 pnpm store prune
 pnpm install

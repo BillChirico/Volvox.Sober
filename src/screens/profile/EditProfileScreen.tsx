@@ -89,7 +89,7 @@ const EditProfileScreen: React.FC = () => {
           state: formData.state,
           bio: formData.bio,
         },
-        { abortEarly: false }
+        { abortEarly: false },
       );
 
       setSaving(true);
@@ -105,10 +105,7 @@ const EditProfileScreen: React.FC = () => {
       };
 
       // Update database
-      const { error } = await supabaseClient
-        .from('users')
-        .update(updateData)
-        .eq('id', userId);
+      const { error } = await supabaseClient.from('users').update(updateData).eq('id', userId);
 
       if (error) {
         throw error;
@@ -119,7 +116,7 @@ const EditProfileScreen: React.FC = () => {
     } catch (error) {
       if (error instanceof Yup.ValidationError) {
         const validationErrors: Record<string, string> = {};
-        error.inner.forEach((err) => {
+        error.inner.forEach(err => {
           if (err.path) {
             validationErrors[err.path] = err.message;
           }
@@ -160,7 +157,7 @@ const EditProfileScreen: React.FC = () => {
         <TextInput
           label="Name *"
           value={formData.name}
-          onChangeText={(text) => setFormData({ ...formData, name: text })}
+          onChangeText={text => setFormData({ ...formData, name: text })}
           mode="outlined"
           style={styles.input}
           error={!!errors.name}
@@ -172,7 +169,7 @@ const EditProfileScreen: React.FC = () => {
         <TextInput
           label="City *"
           value={formData.city}
-          onChangeText={(text) => setFormData({ ...formData, city: text })}
+          onChangeText={text => setFormData({ ...formData, city: text })}
           mode="outlined"
           style={styles.input}
           error={!!errors.city}
@@ -184,7 +181,7 @@ const EditProfileScreen: React.FC = () => {
         <TextInput
           label="State *"
           value={formData.state}
-          onChangeText={(text) => setFormData({ ...formData, state: text })}
+          onChangeText={text => setFormData({ ...formData, state: text })}
           mode="outlined"
           style={styles.input}
           error={!!errors.state}
@@ -196,7 +193,7 @@ const EditProfileScreen: React.FC = () => {
         <TextInput
           label="Bio"
           value={formData.bio}
-          onChangeText={(text) => setFormData({ ...formData, bio: text })}
+          onChangeText={text => setFormData({ ...formData, bio: text })}
           mode="outlined"
           multiline
           numberOfLines={4}
@@ -212,8 +209,7 @@ const EditProfileScreen: React.FC = () => {
           onPress={handleSave}
           loading={saving}
           disabled={saving}
-          style={styles.saveButton}
-        >
+          style={styles.saveButton}>
           Save Changes
         </Button>
 
@@ -225,30 +221,31 @@ const EditProfileScreen: React.FC = () => {
   );
 };
 
-const createStyles = (theme: any) => StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#f5f5f5',
-  },
-  surface: {
-    margin: 16,
-    padding: 24,
-    borderRadius: 8,
-    elevation: 2,
-  },
-  title: {
-    marginBottom: 16,
-    fontWeight: 'bold',
-    textAlign: 'center',
-  },
-  input: {
-    marginBottom: 8,
-  },
-  saveButton: {
-    marginTop: 24,
-    marginBottom: 12,
-    paddingVertical: 8,
-  },
-});
+const createStyles = (theme: any) =>
+  StyleSheet.create({
+    container: {
+      flex: 1,
+      backgroundColor: '#f5f5f5',
+    },
+    surface: {
+      margin: 16,
+      padding: 24,
+      borderRadius: 8,
+      elevation: 2,
+    },
+    title: {
+      marginBottom: 16,
+      fontWeight: 'bold',
+      textAlign: 'center',
+    },
+    input: {
+      marginBottom: 8,
+    },
+    saveButton: {
+      marginTop: 24,
+      marginBottom: 12,
+      paddingVertical: 8,
+    },
+  });
 
 export default EditProfileScreen;

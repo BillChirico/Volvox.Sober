@@ -31,7 +31,7 @@ export const usersApi = createApi({
   reducerPath: 'usersApi',
   baseQuery: fakeBaseQuery(),
   tagTypes: ['Profile'],
-  endpoints: (builder) => ({
+  endpoints: builder => ({
     // Get current user profile
     getProfile: builder.query<User, string>({
       async queryFn(userId) {

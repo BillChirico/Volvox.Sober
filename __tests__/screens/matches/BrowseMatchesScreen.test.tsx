@@ -65,8 +65,7 @@ const createMockStore = (initialState = {}) => {
       user: () => ({ user: { id: 'user-123' } }),
       [matchingApi.reducerPath]: matchingApi.reducer,
     },
-    middleware: (getDefaultMiddleware) =>
-      getDefaultMiddleware().concat(matchingApi.middleware),
+    middleware: getDefaultMiddleware => getDefaultMiddleware().concat(matchingApi.middleware),
     preloadedState: initialState,
   });
 };
@@ -85,7 +84,7 @@ describe('BrowseMatchesScreen', () => {
         <NavigationContainer>
           <BrowseMatchesScreen />
         </NavigationContainer>
-      </Provider>
+      </Provider>,
     );
 
     expect(getByText('Finding your matches...')).toBeTruthy();
@@ -107,13 +106,13 @@ describe('BrowseMatchesScreen', () => {
         <NavigationContainer>
           <BrowseMatchesScreen />
         </NavigationContainer>
-      </Provider>
+      </Provider>,
     );
 
     await waitFor(() => {
       expect(getByText('No Matches Found')).toBeTruthy();
       expect(
-        getByText("We couldn't find any sponsors that match your preferences right now.")
+        getByText("We couldn't find any sponsors that match your preferences right now."),
       ).toBeTruthy();
     });
   });
@@ -122,7 +121,7 @@ describe('BrowseMatchesScreen', () => {
     const store = createMockStore();
 
     // Mock offline state
-    (NetInfo.addEventListener as jest.Mock).mockImplementation((callback) => {
+    (NetInfo.addEventListener as jest.Mock).mockImplementation(callback => {
       callback({ isConnected: false });
       return jest.fn();
     });
@@ -132,7 +131,7 @@ describe('BrowseMatchesScreen', () => {
       JSON.stringify({
         matches: mockMatches.matches,
         cached_at: new Date().toISOString(),
-      })
+      }),
     );
 
     const { getByText } = render(
@@ -140,7 +139,7 @@ describe('BrowseMatchesScreen', () => {
         <NavigationContainer>
           <BrowseMatchesScreen />
         </NavigationContainer>
-      </Provider>
+      </Provider>,
     );
 
     await waitFor(() => {
@@ -163,13 +162,13 @@ describe('BrowseMatchesScreen', () => {
         <NavigationContainer>
           <BrowseMatchesScreen />
         </NavigationContainer>
-      </Provider>
+      </Provider>,
     );
 
     await waitFor(() => {
       expect(AsyncStorage.setItem).toHaveBeenCalledWith(
         'matches:user-123',
-        expect.stringContaining('sponsor-1')
+        expect.stringContaining('sponsor-1'),
       );
     });
   });
@@ -190,7 +189,7 @@ describe('BrowseMatchesScreen', () => {
         <NavigationContainer>
           <BrowseMatchesScreen />
         </NavigationContainer>
-      </Provider>
+      </Provider>,
     );
 
     // Simulate pull-to-refresh
@@ -220,7 +219,7 @@ describe('BrowseMatchesScreen', () => {
         <NavigationContainer>
           <BrowseMatchesScreen />
         </NavigationContainer>
-      </Provider>
+      </Provider>,
     );
 
     await waitFor(() => {
@@ -253,7 +252,7 @@ describe('BrowseMatchesScreen', () => {
         <NavigationContainer>
           <BrowseMatchesScreen />
         </NavigationContainer>
-      </Provider>
+      </Provider>,
     );
 
     await waitFor(() => {
@@ -273,7 +272,7 @@ describe('BrowseMatchesScreen', () => {
       JSON.stringify({
         matches: mockMatches.matches,
         cached_at: new Date().toISOString(),
-      })
+      }),
     );
 
     render(
@@ -281,7 +280,7 @@ describe('BrowseMatchesScreen', () => {
         <NavigationContainer>
           <BrowseMatchesScreen />
         </NavigationContainer>
-      </Provider>
+      </Provider>,
     );
 
     await waitFor(() => {

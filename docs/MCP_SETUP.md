@@ -13,16 +13,16 @@ Volvox.Sober leverages two types of MCP capabilities:
 
 These are automatically available in Claude Code:
 
-| Server | Purpose | When to Use |
-|--------|---------|-------------|
-| **Context7** | Official library docs | React Native features, library integrations |
-| **Magic** | UI component generation | Building forms, screens, navigation |
-| **Playwright** | Browser automation | E2E tests, visual testing, accessibility |
-| **Sequential** | Complex analysis | Debugging, architecture decisions |
-| **Serena** | Semantic code ops | Refactoring, symbol operations |
-| **Morphllm** | Pattern transformations | Bulk edits, style enforcement |
-| **Supabase** | Backend development | Migrations, RLS policies, Edge Functions |
-| **Tavily** | Web research | Best practices, documentation search |
+| Server         | Purpose                 | When to Use                                 |
+| -------------- | ----------------------- | ------------------------------------------- |
+| **Context7**   | Official library docs   | React Native features, library integrations |
+| **Magic**      | UI component generation | Building forms, screens, navigation         |
+| **Playwright** | Browser automation      | E2E tests, visual testing, accessibility    |
+| **Sequential** | Complex analysis        | Debugging, architecture decisions           |
+| **Serena**     | Semantic code ops       | Refactoring, symbol operations              |
+| **Morphllm**   | Pattern transformations | Bulk edits, style enforcement               |
+| **Supabase**   | Backend development     | Migrations, RLS policies, Edge Functions    |
+| **Tavily**     | Web research            | Best practices, documentation search        |
 
 **No configuration needed** - these work out of the box in Claude Code.
 
@@ -35,6 +35,7 @@ Extended capabilities that enhance development but require API keys.
 **Purpose**: Automate PR creation, issue tracking, code operations
 
 **Setup**:
+
 1. Generate Personal Access Token at: https://github.com/settings/tokens
 2. Required scopes: `repo`, `workflow`, `admin:org` (if using organization)
 3. Add to `.env`:
@@ -43,12 +44,14 @@ Extended capabilities that enhance development but require API keys.
    ```
 
 **Use Cases**:
+
 - Automated PR creation with proper formatting
 - Issue management and labeling
 - Branch operations and repository management
 - Code review workflow automation
 
 **Verification**:
+
 ```bash
 ./scripts/check-mcp-servers.sh
 # Should show: [GitHub] ✓ Configured
@@ -59,6 +62,7 @@ Extended capabilities that enhance development but require API keys.
 **Purpose**: Web, news, image, and video search capabilities
 
 **Setup**:
+
 1. Get API key at: https://brave.com/search/api/
 2. Add to `.env`:
    ```bash
@@ -66,12 +70,14 @@ Extended capabilities that enhance development but require API keys.
    ```
 
 **Use Cases**:
+
 - Technical documentation research
 - Best practice discovery
 - Library comparison and evaluation
 - Current security vulnerability research
 
 **Verification**:
+
 ```bash
 ./scripts/check-mcp-servers.sh
 # Should show: [Brave Search] ✓ Configured
@@ -82,6 +88,7 @@ Extended capabilities that enhance development but require API keys.
 **Purpose**: Advanced web research and content extraction
 
 **Setup**:
+
 1. Get API key at: https://app.tavily.com
 2. Add to `.env`:
    ```bash
@@ -89,12 +96,14 @@ Extended capabilities that enhance development but require API keys.
    ```
 
 **Use Cases**:
+
 - Deep research investigations
 - Website content extraction
 - Multi-source information synthesis
 - Site structure mapping
 
 **Verification**:
+
 ```bash
 ./scripts/check-mcp-servers.sh
 # Should show: [Tavily Search] ✓ Configured
@@ -105,8 +114,10 @@ Extended capabilities that enhance development but require API keys.
 **Purpose**: Payment processing for premium features/donations
 
 **Setup**:
+
 1. Get API keys at: https://dashboard.stripe.com/apikeys
 2. Add to `.env`:
+
    ```bash
    # Test environment (development)
    STRIPE_SECRET_KEY_TEST=sk_test_your_key
@@ -118,6 +129,7 @@ Extended capabilities that enhance development but require API keys.
    ```
 
 **Use Cases** (Future):
+
 - Premium feature subscriptions
 - Donation processing
 - Sponsorship program payments
@@ -144,6 +156,7 @@ Run the validation script to check all MCP servers:
 ```
 
 **Expected Output**:
+
 ```
 🔍 Volvox.Sober MCP Server Availability Check
 ==============================================
@@ -205,6 +218,7 @@ echo $TAVILY_API_KEY
 ## Configuration Levels
 
 ### Minimal Setup (Core Features Only)
+
 - ✅ Primary MCP Servers (built-in)
 - ❌ No Docker MCP API keys
 
@@ -212,6 +226,7 @@ echo $TAVILY_API_KEY
 **Limitations**: No GitHub automation, no web search, limited research
 
 ### Recommended Setup (Full Development Experience)
+
 - ✅ Primary MCP Servers (built-in)
 - ✅ GitHub Token
 - ✅ Brave OR Tavily API key
@@ -220,6 +235,7 @@ echo $TAVILY_API_KEY
 **Recommended for**: All active developers
 
 ### Complete Setup (All Features)
+
 - ✅ Primary MCP Servers (built-in)
 - ✅ GitHub Token
 - ✅ Brave API key
@@ -236,6 +252,7 @@ echo $TAVILY_API_KEY
 **Issue**: `./scripts/check-mcp-servers.sh` shows warnings
 
 **Solution**:
+
 1. Check `.env` file exists: `ls -la .env`
 2. Verify API keys are set: `cat .env | grep TOKEN`
 3. Reload environment: `source .env`
@@ -246,6 +263,7 @@ echo $TAVILY_API_KEY
 **Issue**: GitHub MCP operations fail despite token being set
 
 **Solution**:
+
 1. Verify token scopes at: https://github.com/settings/tokens
 2. Required scopes: `repo`, `workflow`, `admin:org`
 3. Regenerate token if scopes are incorrect
@@ -256,9 +274,11 @@ echo $TAVILY_API_KEY
 **Issue**: Search operations fail or return no results
 
 **Solution**:
+
 1. Verify API key is active in provider dashboard
 2. Check API usage limits haven't been exceeded
 3. Test API key with curl:
+
    ```bash
    # Brave
    curl -H "X-Subscription-Token: $BRAVE_API_KEY" \
@@ -275,6 +295,7 @@ echo $TAVILY_API_KEY
 **Issue**: Built-in MCPs show as unavailable
 
 **Solution**:
+
 1. Verify you're using Claude Code (not standard Claude)
 2. Check Claude Code version is up to date
 3. Restart Claude Code application
@@ -285,6 +306,7 @@ echo $TAVILY_API_KEY
 ### API Key Management
 
 1. **Never commit `.env` to version control**
+
    ```bash
    # Verify .env is in .gitignore
    cat .gitignore | grep .env

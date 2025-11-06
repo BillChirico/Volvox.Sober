@@ -36,8 +36,7 @@ describe('SetSobrietyDateScreen', () => {
       reducer: {
         [sobrietyApi.reducerPath]: sobrietyApi.reducer,
       },
-      middleware: (getDefaultMiddleware) =>
-        getDefaultMiddleware().concat(sobrietyApi.middleware),
+      middleware: getDefaultMiddleware => getDefaultMiddleware().concat(sobrietyApi.middleware),
     });
   };
 
@@ -52,7 +51,7 @@ describe('SetSobrietyDateScreen', () => {
             />
           </NavigationContainer>
         </PaperProvider>
-      </Provider>
+      </Provider>,
     );
   };
 

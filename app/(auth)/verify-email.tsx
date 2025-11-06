@@ -61,17 +61,15 @@ export default function VerifyEmailScreen() {
         if (error.message.includes('expired')) {
           setStatus('error');
           setMessage(
-            'This verification link has expired. Please sign up again to receive a new verification email.'
+            'This verification link has expired. Please sign up again to receive a new verification email.',
           );
         } else if (error.message.includes('already')) {
           setStatus('error');
-          setMessage(
-            'This email has already been verified. You can now log in to your account.'
-          );
+          setMessage('This email has already been verified. You can now log in to your account.');
         } else {
           setStatus('error');
           setMessage(
-            'Unable to verify your email. The link may be invalid or expired. Please try signing up again.'
+            'Unable to verify your email. The link may be invalid or expired. Please try signing up again.',
           );
         }
         return;
@@ -109,8 +107,7 @@ export default function VerifyEmailScreen() {
     <View
       style={[styles.container, { backgroundColor: theme.colors.background }]}
       testID="verify-email-screen"
-      accessibilityLabel="Email verification screen"
-    >
+      accessibilityLabel="Email verification screen">
       <View style={styles.content}>
         {status === 'loading' && (
           <>
@@ -122,14 +119,12 @@ export default function VerifyEmailScreen() {
             />
             <Text
               variant="headlineSmall"
-              style={[styles.title, { color: theme.colors.onBackground }]}
-            >
+              style={[styles.title, { color: theme.colors.onBackground }]}>
               Verifying Your Email
             </Text>
             <Text
               variant="bodyMedium"
-              style={[styles.message, { color: theme.colors.onSurfaceVariant }]}
-            >
+              style={[styles.message, { color: theme.colors.onSurfaceVariant }]}>
               Please wait while we verify your email address...
             </Text>
           </>
@@ -140,22 +135,19 @@ export default function VerifyEmailScreen() {
             <Text
               variant="displaySmall"
               style={[styles.icon, { color: theme.colors.primary }]}
-              accessibilityLabel="Success"
-            >
+              accessibilityLabel="Success">
               ✓
             </Text>
             <Text
               variant="headlineSmall"
               style={[styles.title, { color: theme.colors.onBackground }]}
-              accessibilityRole="header"
-            >
+              accessibilityRole="header">
               Email Verified!
             </Text>
             <Text
               variant="bodyMedium"
               style={[styles.message, { color: theme.colors.onSurfaceVariant }]}
-              accessibilityLiveRegion="polite"
-            >
+              accessibilityLiveRegion="polite">
               {message}
             </Text>
             <Button
@@ -165,8 +157,7 @@ export default function VerifyEmailScreen() {
               testID="go-to-login-button"
               accessibilityRole="button"
               accessibilityLabel="Go to login"
-              accessibilityHint="Navigate to login screen"
-            >
+              accessibilityHint="Navigate to login screen">
               Go to Login
             </Button>
           </>
@@ -177,23 +168,20 @@ export default function VerifyEmailScreen() {
             <Text
               variant="displaySmall"
               style={[styles.icon, { color: theme.colors.error }]}
-              accessibilityLabel="Error"
-            >
+              accessibilityLabel="Error">
               ✕
             </Text>
             <Text
               variant="headlineSmall"
               style={[styles.title, { color: theme.colors.onBackground }]}
-              accessibilityRole="header"
-            >
+              accessibilityRole="header">
               Verification Failed
             </Text>
             <Text
               variant="bodyMedium"
               style={[styles.message, { color: theme.colors.onSurfaceVariant }]}
               accessibilityLiveRegion="polite"
-              accessibilityRole="alert"
-            >
+              accessibilityRole="alert">
               {message}
             </Text>
             <View style={styles.buttonContainer}>
@@ -203,8 +191,7 @@ export default function VerifyEmailScreen() {
                 style={styles.button}
                 testID="go-to-login-button"
                 accessibilityRole="button"
-                accessibilityLabel="Go to login"
-              >
+                accessibilityLabel="Go to login">
                 Go to Login
               </Button>
               <Button
@@ -213,8 +200,7 @@ export default function VerifyEmailScreen() {
                 style={styles.button}
                 testID="go-to-signup-button"
                 accessibilityRole="button"
-                accessibilityLabel="Sign up again"
-              >
+                accessibilityLabel="Sign up again">
                 Sign Up Again
               </Button>
             </View>

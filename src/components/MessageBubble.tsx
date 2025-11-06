@@ -3,21 +3,18 @@
  * Displays a single message with sender/recipient styling
  */
 
-import React from 'react'
-import { View, Text, StyleSheet } from 'react-native'
-import type { Message } from '../types'
+import React from 'react';
+import { View, Text, StyleSheet } from 'react-native';
+import type { Message } from '../types';
 
 interface MessageBubbleProps {
-  message: Message
-  isCurrentUser: boolean
+  message: Message;
+  isCurrentUser: boolean;
 }
 
-export const MessageBubble: React.FC<MessageBubbleProps> = ({
-  message,
-  isCurrentUser,
-}) => {
-  const bubbleStyle = isCurrentUser ? styles.bubbleSent : styles.bubbleReceived
-  const textStyle = isCurrentUser ? styles.textSent : styles.textReceived
+export const MessageBubble: React.FC<MessageBubbleProps> = ({ message, isCurrentUser }) => {
+  const bubbleStyle = isCurrentUser ? styles.bubbleSent : styles.bubbleReceived;
+  const textStyle = isCurrentUser ? styles.textSent : styles.textReceived;
 
   return (
     <View style={[styles.container, isCurrentUser && styles.containerSent]}>
@@ -27,30 +24,26 @@ export const MessageBubble: React.FC<MessageBubbleProps> = ({
           <Text style={[styles.timestamp, isCurrentUser && styles.timestampSent]}>
             {formatTime(message.created_at)}
           </Text>
-          {isCurrentUser && message.read_at && (
-            <Text style={styles.readReceipt}>✓✓</Text>
-          )}
-          {isCurrentUser && !message.read_at && (
-            <Text style={styles.sentReceipt}>✓</Text>
-          )}
+          {isCurrentUser && message.read_at && <Text style={styles.readReceipt}>✓✓</Text>}
+          {isCurrentUser && !message.read_at && <Text style={styles.sentReceipt}>✓</Text>}
         </View>
       </View>
     </View>
-  )
-}
+  );
+};
 
 // ============================================================
 // Helper Functions
 // ============================================================
 
 const formatTime = (timestamp: string): string => {
-  const date = new Date(timestamp)
+  const date = new Date(timestamp);
   return date.toLocaleTimeString('en-US', {
     hour: 'numeric',
     minute: '2-digit',
     hour12: true,
-  })
-}
+  });
+};
 
 // ============================================================
 // Styles
@@ -111,4 +104,4 @@ const styles = StyleSheet.create({
     color: 'rgba(255, 255, 255, 0.7)',
     marginLeft: 4,
   },
-})
+});

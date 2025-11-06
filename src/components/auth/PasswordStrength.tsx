@@ -31,17 +31,13 @@ export interface PasswordStrengthProps {
  * />
  * ```
  */
-const PasswordStrength: React.FC<PasswordStrengthProps> = ({
-  password,
-  visible = true,
-  style,
-}) => {
+const PasswordStrength: React.FC<PasswordStrengthProps> = ({ password, visible = true, style }) => {
   const theme = useTheme();
 
   // Calculate password strength
   const strengthResult: PasswordStrengthResult = useMemo(
     () => calculatePasswordStrength(password),
-    [password]
+    [password],
   );
 
   const { strength, score, feedback } = strengthResult;
@@ -64,26 +60,13 @@ const PasswordStrength: React.FC<PasswordStrengthProps> = ({
       testID="password-strength-indicator"
       accessibilityLabel={accessibilityLabel}
       accessibilityRole="progressbar"
-      accessible={true}
-    >
+      accessible={true}>
       {/* Strength label */}
       <View style={styles.labelContainer}>
-        <Text
-          style={[
-            styles.label,
-            { color: theme.colors.onSurface },
-          ]}
-          variant="bodySmall"
-        >
+        <Text style={[styles.label, { color: theme.colors.onSurface }]} variant="bodySmall">
           Password Strength:
         </Text>
-        <Text
-          style={[
-            styles.strengthLabel,
-            { color: strengthColor },
-          ]}
-          variant="bodySmall"
-        >
+        <Text style={[styles.strengthLabel, { color: strengthColor }]} variant="bodySmall">
           {strengthLabel}
         </Text>
       </View>
@@ -108,12 +91,8 @@ const PasswordStrength: React.FC<PasswordStrengthProps> = ({
           {feedback.map((message, index) => (
             <Text
               key={index}
-              style={[
-                styles.feedbackText,
-                { color: theme.colors.onSurfaceVariant },
-              ]}
-              variant="bodySmall"
-            >
+              style={[styles.feedbackText, { color: theme.colors.onSurfaceVariant }]}
+              variant="bodySmall">
               • {message}
             </Text>
           ))}
