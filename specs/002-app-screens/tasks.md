@@ -242,10 +242,10 @@
 - [X] T098 [US4] Add pending requests section with accept/decline actions
 - [X] T099 [US4] Add active connections section sorted by last interaction
 - [X] T100 [US4] Add past connections section for historical reference
-- [ ] T101 [US4] Implement connection profile view with full details
-- [ ] T102 [US4] Implement end connection flow with optional feedback
+- [X] T101 [US4] Implement connection profile view with full details
+- [X] T102 [US4] Implement end connection flow with optional feedback
 - [X] T103 [US4] Add notification badge for pending requests count
-- [ ] T104 [US4] Test connections flow: accept request → view active → send message → end connection
+- [X] T104 [US4] Test connections flow: accept request → view active → send message → end connection
 
 **Checkpoint**: Connections management complete - users can manage relationships
 
@@ -273,8 +273,8 @@
 - [X] T111 [US5] Implement message sending with optimistic updates
 - [X] T112 [US5] Implement read receipt tracking and display
 - [X] T113 [US5] Add unread message badge on Messages tab
-- [ ] T114 [US5] Add offline message queue with sync on reconnect
-- [ ] T115 [US5] Test messaging flow: send message → receive reply → verify real-time delivery
+- [X] T114 [US5] Add offline message queue with sync on reconnect
+- [X] T115 [US5] Test messaging flow: send message → receive reply → verify real-time delivery
 
 **Checkpoint**: Messaging complete - users can communicate with connections
 
@@ -290,19 +290,19 @@
 
 ### Components for User Story 6
 
-- [ ] T116 [P] [US6] Create ProfileHeader component with photo and name in src/components/profile/ProfileHeader.tsx
-- [ ] T117 [P] [US6] Create SettingsSection component in src/components/profile/SettingsSection.tsx
-- [ ] T118 [P] [US6] Create NotificationSettings component in src/components/profile/NotificationSettings.tsx
+- [X] T116 [P] [US6] Create ProfileHeader component with photo and name in src/components/profile/ProfileHeader.tsx
+- [X] T117 [P] [US6] Create SettingsSection component in src/components/profile/SettingsSection.tsx
+- [X] T118 [P] [US6] Create NotificationSettings component in src/components/profile/NotificationSettings.tsx
 
 ### Screen for User Story 6
 
-- [ ] T119 [US6] Implement profile screen with view mode in app/(tabs)/profile.tsx
-- [ ] T120 [US6] Add profile edit mode with validation
-- [ ] T121 [US6] Implement role change with profile re-configuration
-- [ ] T122 [US6] Implement notification preferences management
-- [ ] T123 [US6] Add profile completion percentage indicator
-- [ ] T124 [US6] Add account settings (email, password, delete account)
-- [ ] T125 [US6] Test profile flow: edit profile → change role → update settings → verify persistence
+- [X] T119 [US6] Implement profile screen with view mode in app/(tabs)/profile.tsx
+- [X] T120 [US6] Add profile edit mode with validation
+- [X] T121 [US6] Implement role change with profile re-configuration
+- [X] T122 [US6] Implement notification preferences management
+- [X] T123 [US6] Add profile completion percentage indicator
+- [X] T124 [US6] Add account settings (email, password, delete account)
+- [X] T125 [US6] Test profile flow: edit profile → change role → update settings → verify persistence
 
 **Checkpoint**: Profile management complete - users can maintain their profiles
 
@@ -341,12 +341,12 @@
 
 ### Testing
 
-- [ ] T141 [P] Add E2E test for onboarding flow in __tests__/onboarding.spec.ts
-- [ ] T142 [P] Add E2E test for sobriety tracking in __tests__/sobriety-tracking.spec.ts
-- [ ] T143 [P] Add E2E test for matching in __tests__/matching.spec.ts
-- [ ] T144 [P] Add E2E test for connections in __tests__/connections.spec.ts
-- [ ] T145 [P] Add E2E test for messaging in __tests__/messaging.spec.ts
-- [ ] T146 [P] Add E2E test for navigation in __tests__/navigation.spec.ts
+- [X] T141 [P] Add E2E test for onboarding flow in __tests__/onboarding-flow.spec.ts
+- [X] T142 [P] Add E2E test for sobriety tracking in __tests__/sobriety-tracking.spec.ts
+- [X] T143 [P] Add E2E test for matching in __tests__/matching-flow.spec.ts
+- [X] T144 [P] Add E2E test for connections in __tests__/connections-flow.spec.ts
+- [X] T145 [P] Add E2E test for messaging in __tests__/messaging-flow.spec.ts
+- [X] T146 [P] Add E2E test for navigation in __tests__/navigation-flow.spec.ts
 
 ### Documentation & Validation
 
