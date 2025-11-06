@@ -183,8 +183,14 @@ pnpm format
 1. **Branch from main**: Create feature branch from `main`
 2. **Follow TDD**: Write tests first for new features
 3. **Type safety**: Ensure TypeScript strict mode compliance
-4. **Run checks**: Test + lint + typecheck before committing
-5. **Commit messages**: Conventional commits (feat:, fix:, docs:, etc.)
+4. **Quality checks**: Always run in this order when editing or adding files:
+   ```bash
+   pnpm lint:fix    # Linting with auto-fix (includes Prettier formatting)
+   pnpm typecheck   # TypeScript validation
+   pnpm test        # Run test suite
+   ```
+5. **Commit and push**: After completing all tasks, commit changes and push to remote
+6. **Commit messages**: Conventional commits (feat:, fix:, docs:, etc.)
 
 ## Environment Setup
 
@@ -638,3 +644,9 @@ This is not optional - MCP servers are project infrastructure and must be used w
 
 <!-- MANUAL ADDITIONS START -->
 <!-- MANUAL ADDITIONS END -->
+
+## Active Technologies
+- TypeScript 5.x (strict mode enabled) (002-app-screens)
+
+## Recent Changes
+- 002-app-screens: Added TypeScript 5.x (strict mode enabled)
