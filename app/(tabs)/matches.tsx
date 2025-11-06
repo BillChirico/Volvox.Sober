@@ -7,6 +7,7 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import { View, StyleSheet, FlatList, RefreshControl, Alert } from 'react-native';
 import { MatchCard } from '../../src/components/matches/MatchCard';
+import { MatchDetailModal } from '../../src/components/matches/MatchDetailModal';
 import { FilterBar, type FilterOptions } from '../../src/components/matches/FilterBar';
 import { LoadingSpinner } from '../../src/components/common/LoadingSpinner';
 import { EmptyState } from '../../src/components/common/EmptyState';
@@ -35,6 +36,8 @@ export default function MatchesScreen() {
     availability: [],
   });
   const [isApplyingFilters, setIsApplyingFilters] = useState(false);
+  const [selectedMatch, setSelectedMatch] = useState<MatchWithProfile | null>(null);
+  const [isDetailModalVisible, setIsDetailModalVisible] = useState(false);
 
   // Fetch matches on mount
   useEffect(() => {
@@ -90,7 +93,37 @@ export default function MatchesScreen() {
     return true;
   });
 
-  // Handle connection request
+  // Handle opening match detail
+  const handleMatchPress = useCallback((match: MatchWithProfile) => {
+    setSelectedMatch(match);
+    setIsDetailModalVisible(true);
+  }, []);
+
+  // Handle closing match detail
+  const handleCloseDetail = useCallback(() => {
+    setIsDetailModalVisible(false);
+    setSelectedMatch(null);
+  }, []);
+
+  // Handle connection request from detail modal
+  const handleConnectFromDetail = useCallback(async () => {
+    if (!user?.id || !selectedMatch) return;
+
+    try {
+      await sendRequest(user.id, selectedMatch.id);
+      setIsDetailModalVisible(false);
+      Alert.alert('Success', 'Connection request sent!', [{ text: 'OK' }]);
+    } catch (err) {
+      console.error('Error sending connection request:', err);
+      Alert.alert(
+        'Error',
+        'Failed to send connection request. Please try again.',
+        [{ text: 'OK' }]
+      );
+    }
+  }, [user?.id, selectedMatch, sendRequest]);
+
+  // Handle connection request from card
   const handleConnect = useCallback(
     (match: MatchWithProfile) => {
       Alert.alert(
@@ -124,6 +157,32 @@ export default function MatchesScreen() {
     },
     [user?.id, sendRequest]
   );
+
+  // Handle decline from detail modal (placeholder for T089)
+  const handleDeclineFromDetail = useCallback(() => {
+    if (!selectedMatch) return;
+
+    Alert.alert(
+      'Decline Match',
+      `Are you sure you want to decline ${selectedMatch.candidate.name}? You won't see this match again for 30 days.`,
+      [
+        {
+          text: 'Cancel',
+          style: 'cancel',
+        },
+        {
+          text: 'Decline',
+          style: 'destructive',
+          onPress: () => {
+            setIsDetailModalVisible(false);
+            Alert.alert('Feature Coming Soon', 'Decline functionality will be implemented in T089.', [
+              { text: 'OK' },
+            ]);
+          },
+        },
+      ]
+    );
+  }, [selectedMatch]);
 
   // Show error alert if error exists
   useEffect(() => {
@@ -200,12 +259,7 @@ export default function MatchesScreen() {
           renderItem={({ item }) => (
             <MatchCard
               match={item}
-              onPress={() => {
-                // Navigate to match detail
-                Alert.alert('Match Details', 'Match detail view coming soon!', [
-                  { text: 'OK' },
-                ]);
-              }}
+              onPress={() => handleMatchPress(item)}
               onConnect={() => handleConnect(item)}
             />
           )}
@@ -221,6 +275,15 @@ export default function MatchesScreen() {
           showsVerticalScrollIndicator={false}
         />
       )}
+
+      {/* Match Detail Modal */}
+      <MatchDetailModal
+        match={selectedMatch}
+        visible={isDetailModalVisible}
+        onDismiss={handleCloseDetail}
+        onConnect={handleConnectFromDetail}
+        onDecline={handleDeclineFromDetail}
+      />
     </View>
   );
 }
