@@ -234,16 +234,16 @@ export const ProfileForm: React.FC<ProfileFormProps> = ({
         When are you typically available?
       </Text>
       <View style={styles.chipContainer}>
-        {[...AVAILABILITY_OPTIONS].map((option) => (
+        {AVAILABILITY_OPTIONS.map((option) => (
           <Chip
             key={option}
-            selected={formData.availability?.includes(option) || false}
-            onPress={() => toggleAvailability(option)}
+            selected={formData.availability?.includes(option as AvailabilityOption) || false}
+            onPress={() => toggleAvailability(option as AvailabilityOption)}
             style={styles.chip}
             disabled={isSubmitting}
             accessibilityLabel={`Toggle ${option} availability`}
             accessibilityState={{
-              selected={formData.availability?.includes(option) || false,
+              selected: formData.availability?.includes(option as AvailabilityOption) || false,
             }}
           >
             {option}
