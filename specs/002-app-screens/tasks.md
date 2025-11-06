@@ -232,19 +232,19 @@
 
 ### Components for User Story 4
 
-- [ ] T094 [P] [US4] Create ConnectionCard component for active connections in src/components/connections/ConnectionCard.tsx
-- [ ] T095 [P] [US4] Create RequestCard component for pending requests in src/components/connections/RequestCard.tsx
-- [ ] T096 [P] [US4] Create ConnectionStatus component in src/components/connections/ConnectionStatus.tsx
+- [X] T094 [P] [US4] Create ConnectionCard component for active connections in src/components/connections/ConnectionCard.tsx
+- [X] T095 [P] [US4] Create RequestCard component for pending requests in src/components/connections/RequestCard.tsx
+- [X] T096 [P] [US4] Create ConnectionStatus component in src/components/connections/ConnectionStatus.tsx
 
 ### Screen for User Story 4
 
-- [ ] T097 [US4] Implement connections screen with 3 sections in app/(tabs)/connections.tsx
-- [ ] T098 [US4] Add pending requests section with accept/decline actions
-- [ ] T099 [US4] Add active connections section sorted by last interaction
-- [ ] T100 [US4] Add past connections section for historical reference
+- [X] T097 [US4] Implement connections screen with 3 sections in app/(tabs)/connections.tsx
+- [X] T098 [US4] Add pending requests section with accept/decline actions
+- [X] T099 [US4] Add active connections section sorted by last interaction
+- [X] T100 [US4] Add past connections section for historical reference
 - [ ] T101 [US4] Implement connection profile view with full details
 - [ ] T102 [US4] Implement end connection flow with optional feedback
-- [ ] T103 [US4] Add notification badge for pending requests count
+- [X] T103 [US4] Add notification badge for pending requests count
 - [ ] T104 [US4] Test connections flow: accept request → view active → send message → end connection
 
 **Checkpoint**: Connections management complete - users can manage relationships
