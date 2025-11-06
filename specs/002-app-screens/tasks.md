@@ -321,9 +321,9 @@
 
 ### Error Handling
 
-- [ ] T130 [P] Implement error boundaries for all screen groups
-- [ ] T131 [P] Add user-friendly error messages with retry actions
-- [ ] T132 [P] Add network error handling with offline indicators
+- [X] T130 [P] Implement error boundaries for all screen groups
+- [X] T131 [P] Add user-friendly error messages with retry actions
+- [X] T132 [P] Add network error handling with offline indicators
 
 ### Accessibility
 
