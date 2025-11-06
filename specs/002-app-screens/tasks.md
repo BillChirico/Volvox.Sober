@@ -335,9 +335,9 @@
 
 ### Dark Mode
 
-- [ ] T138 [P] Implement dark mode theme tokens in src/theme/
-- [ ] T139 [P] Apply dark mode styling across all components
-- [ ] T140 Test dark mode across all screens on iOS, Android, Web
+- [X] T138 [P] Implement dark mode theme tokens in src/theme/
+- [X] T139 [P] Apply dark mode styling across all components
+- [X] T140 Test dark mode across all screens on iOS, Android, Web
 
 ### Testing
 
