@@ -215,8 +215,8 @@
 
 ### Edge Function for User Story 3
 
-- [ ] T092 [US3] Implement matching algorithm Edge Function in supabase/functions/calculate-match-score/
-- [ ] T093 [US3] Test matching algorithm with various profile combinations
+- [X] T092 [US3] Implement matching algorithm Edge Function in supabase/functions/calculate-match-score/
+- [X] T093 [US3] Test matching algorithm with various profile combinations
 
 **Checkpoint**: Matching complete - users can discover compatible connections
 
