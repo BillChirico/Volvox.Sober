@@ -1,11 +1,12 @@
 /**
  * Messages Redux Thunks
- * Async operations for messaging with optimistic updates
+ * Async operations for messaging with optimistic updates and offline queue
  * Feature: 002-app-screens
  */
 
 import { createAsyncThunk } from '@reduxjs/toolkit'
-import { messageServiceV2 } from '../../services/messageServiceV2'
+import NetInfo from '@react-native-community/netinfo'
+import messageServiceV2 from '../../services/messageServiceV2'
 import {
   setConversations,
   setCurrentConversation,
@@ -19,8 +20,16 @@ import {
   setLoadingMore,
   setError,
   clearError,
+  addToQueue,
+  removeFromQueue,
+  incrementRetryCount,
+  setSyncing,
 } from './messagesSlice'
-import type { MessageWithSender } from '../../types'
+import type { MessageWithSender, QueuedMessage } from '../../types'
+import type { RootState } from '../index'
+
+// Maximum retry attempts for queued messages
+const MAX_RETRY_COUNT = 3
 
 /**
  * Fetch all conversation previews for user
@@ -122,7 +131,7 @@ export const loadMoreMessages = createAsyncThunk(
 )
 
 /**
- * Send new message with optimistic update
+ * Send new message with optimistic update and offline queue support
  */
 export const sendMessage = createAsyncThunk(
   'messages/send',
@@ -151,20 +160,40 @@ export const sendMessage = createAsyncThunk(
       dispatch(setSending(true))
       dispatch(clearError())
 
-      // Optimistic update: Add message immediately with 'sending' status
+      // Check network connectivity
+      const netInfo = await NetInfo.fetch()
+      const isOnline = netInfo.isConnected && netInfo.isInternetReachable !== false
+
       const tempId = `temp-${Date.now()}`
+
+      // Optimistic update: Add message immediately
       const optimisticMessage: MessageWithSender = {
         id: tempId,
         connection_id: connectionId,
         sender_id: senderId,
         text,
-        status: 'sending',
+        status: isOnline ? 'sending' : 'queued',
         created_at: new Date().toISOString(),
         sender: senderProfile,
       }
       dispatch(addMessage(optimisticMessage))
 
-      // Send to server
+      // If offline, queue the message
+      if (!isOnline) {
+        const queuedMessage: QueuedMessage = {
+          tempId,
+          connectionId,
+          senderId,
+          text,
+          senderProfile,
+          createdAt: new Date().toISOString(),
+          retryCount: 0,
+        }
+        dispatch(addToQueue(queuedMessage))
+        return { tempId, queued: true }
+      }
+
+      // Send to server if online
       const { data, error } = await messageServiceV2.sendMessage(
         connectionId,
         senderId,
@@ -275,5 +304,91 @@ export const unsubscribeFromConversation = createAsyncThunk(
   async (connectionId: string) => {
     messageServiceV2.unsubscribeFromMessages(connectionId)
     return connectionId
+  }
+)
+
+/**
+ * Sync offline message queue
+ * Attempts to send all queued messages when network is available
+ */
+export const syncOfflineQueue = createAsyncThunk(
+  'messages/syncQueue',
+  async (_, { dispatch, getState }) => {
+    const state = getState() as RootState
+    const queue = state.messages.offlineQueue
+
+    // Check if we have queued messages
+    if (queue.length === 0) {
+      return { synced: 0, failed: 0 }
+    }
+
+    // Check network connectivity
+    const netInfo = await NetInfo.fetch()
+    const isOnline = netInfo.isConnected && netInfo.isInternetReachable !== false
+
+    if (!isOnline) {
+      return { synced: 0, failed: 0, offline: true }
+    }
+
+    dispatch(setSyncing(true))
+
+    let syncedCount = 0
+    let failedCount = 0
+
+    // Process each queued message
+    for (const queuedMsg of queue) {
+      // Skip if max retries exceeded
+      if (queuedMsg.retryCount >= MAX_RETRY_COUNT) {
+        dispatch(removeFromQueue(queuedMsg.tempId))
+        dispatch(updateMessageStatus({ messageId: queuedMsg.tempId, status: 'failed' }))
+        failedCount++
+        continue
+      }
+
+      try {
+        // Update message status to sending
+        dispatch(updateMessageStatus({ messageId: queuedMsg.tempId, status: 'sending' }))
+
+        // Attempt to send
+        const { data, error } = await messageServiceV2.sendMessage(
+          queuedMsg.connectionId,
+          queuedMsg.senderId,
+          queuedMsg.text
+        )
+
+        if (error) {
+          // Increment retry count and keep in queue
+          dispatch(incrementRetryCount(queuedMsg.tempId))
+          dispatch(updateMessageStatus({ messageId: queuedMsg.tempId, status: 'queued' }))
+          failedCount++
+        } else {
+          // Success - remove from queue and update status
+          dispatch(removeFromQueue(queuedMsg.tempId))
+          dispatch(updateMessageStatus({ messageId: queuedMsg.tempId, status: 'sent' }))
+
+          // Update conversation preview
+          dispatch(
+            updateConversationPreview({
+              connectionId: queuedMsg.connectionId,
+              lastMessage: {
+                ...data,
+                sender: queuedMsg.senderProfile,
+              },
+              unreadCount: 0,
+            })
+          )
+          syncedCount++
+        }
+      } catch (error) {
+        // Network error - increment retry count
+        dispatch(incrementRetryCount(queuedMsg.tempId))
+        dispatch(updateMessageStatus({ messageId: queuedMsg.tempId, status: 'queued' }))
+        failedCount++
+      }
+    }
+
+    dispatch(setSyncing(false))
+
+    return { synced: syncedCount, failed: failedCount }
   }
 )

@@ -1,10 +1,11 @@
 /**
  * useMessages Hook
- * Custom hook for messaging operations with Realtime subscriptions
+ * Custom hook for messaging operations with Realtime subscriptions and offline queue
  * Feature: 002-app-screens
  */
 
 import { useCallback, useEffect, useRef } from 'react'
+import NetInfo from '@react-native-community/netinfo'
 import { useAppDispatch, useAppSelector } from './useAppDispatch'
 import {
   fetchConversations,
@@ -14,6 +15,7 @@ import {
   markAsRead,
   subscribeToConversation,
   unsubscribeFromConversation,
+  syncOfflineQueue,
 } from '../store/messages/messagesThunks'
 import {
   selectConversations,
@@ -29,6 +31,10 @@ import {
   selectConversationsSortedByActivity,
   selectIsMessagesOperationInProgress,
   selectMessageStatistics,
+  selectOfflineQueue,
+  selectIsSyncing,
+  selectQueuedMessagesCount,
+  selectHasQueuedMessages,
 } from '../store/messages/messagesSelectors'
 import { clearError, clearCurrentConversation } from '../store/messages/messagesSlice'
 import type { MessageWithSender } from '../types'
@@ -54,6 +60,10 @@ export const useMessages = () => {
   const sortedConversations = useAppSelector(selectConversationsSortedByActivity)
   const isOperationInProgress = useAppSelector(selectIsMessagesOperationInProgress)
   const statistics = useAppSelector(selectMessageStatistics)
+  const offlineQueue = useAppSelector(selectOfflineQueue)
+  const isSyncing = useAppSelector(selectIsSyncing)
+  const queuedMessagesCount = useAppSelector(selectQueuedMessagesCount)
+  const hasQueuedMessages = useAppSelector(selectHasQueuedMessages)
 
   // Actions
   const fetchAllConversations = useCallback(
@@ -141,6 +151,24 @@ export const useMessages = () => {
     dispatch(clearError())
   }, [dispatch])
 
+  const syncQueue = useCallback(() => {
+    return dispatch(syncOfflineQueue())
+  }, [dispatch])
+
+  // Network listener: Auto-sync queue when reconnecting
+  useEffect(() => {
+    const unsubscribe = NetInfo.addEventListener((state) => {
+      const isOnline = state.isConnected && state.isInternetReachable !== false
+
+      // If we just came online and have queued messages, sync them
+      if (isOnline && queuedMessagesCount > 0 && !isSyncing) {
+        dispatch(syncOfflineQueue())
+      }
+    })
+
+    return unsubscribe
+  }, [dispatch, queuedMessagesCount, isSyncing])
+
   // Cleanup subscription on unmount
   useEffect(() => {
     return () => {
@@ -165,6 +193,10 @@ export const useMessages = () => {
     sortedConversations,
     isOperationInProgress,
     statistics,
+    offlineQueue,
+    isSyncing,
+    queuedMessagesCount,
+    hasQueuedMessages,
 
     // Actions
     fetchAllConversations,
@@ -176,5 +208,6 @@ export const useMessages = () => {
     unsubscribeFromMessages,
     closeConversation,
     dismissError,
+    syncQueue,
   }
 }

@@ -173,15 +173,6 @@ export default function ConnectionsScreen() {
     []
   );
 
-  // Handle end connection
-  const handleEndConnection = useCallback(
-    (connection: ConnectionWithUsers) => {
-      setSelectedConnection(connection);
-      setShowEndModal(true);
-    },
-    []
-  );
-
   // Handle confirm end connection
   const handleConfirmEndConnection = useCallback(
     async (feedback?: string) => {

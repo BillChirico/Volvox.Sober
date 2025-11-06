@@ -1,310 +1,93 @@
 /**
- * Notification Settings Screen (T142)
- *
- * Allows users to manage notification preferences by category
+ * Notification Settings Screen
+ * Allows users to manage notification preferences
+ * Feature: 002-app-screens (T122)
  */
 
-import React, { useState, useEffect } from 'react';
-import { View, ScrollView, StyleSheet, Alert } from 'react-native';
-import { Text, Switch, List, Divider, ActivityIndicator, useTheme } from 'react-native-paper';
-import { supabase } from '../../../src/services/supabase';
+import React, { useEffect, useState } from 'react'
+import { View, StyleSheet, ScrollView } from 'react-native'
+import { Text, ActivityIndicator } from 'react-native-paper'
+import { useAppTheme } from '../../../src/theme/ThemeContext'
+import { NotificationSettings } from '../../../src/components/profile/NotificationSettings'
+import { useAuth } from '../../../src/hooks/useAuth'
 
-interface NotificationPreferences {
-  newmessage: boolean;
-  connectionrequest: boolean;
-  checkinreminder: boolean;
-  milestoneachieved: boolean;
-  stepworkcomment: boolean;
-  stepworksubmitted: boolean;
-  stepworkreviewed: boolean;
-}
+export default function NotificationSettingsScreen(): JSX.Element {
+  const { theme } = useAppTheme()
+  const { user } = useAuth()
+  const [isLoading, setIsLoading] = useState(true)
 
-const DEFAULT_PREFERENCES: NotificationPreferences = {
-  newmessage: true,
-  connectionrequest: true,
-  checkinreminder: true,
-  milestoneachieved: true,
-  stepworkcomment: true,
-  stepworksubmitted: true,
-  stepworkreviewed: true,
-};
-
-export const NotificationSettingsScreen: React.FC = () => {
-  const theme = useTheme();
-  const styles = createStyles(theme);
-  const [loading, setLoading] = useState(true);
-  const [saving, setSaving] = useState(false);
-  const [preferences, setPreferences] = useState<NotificationPreferences>(DEFAULT_PREFERENCES);
-
-  // Load preferences on mount
   useEffect(() => {
-    loadPreferences();
-  }, []);
+    // Simulate initial load
+    const timer = setTimeout(() => {
+      setIsLoading(false)
+    }, 300)
+    return () => clearTimeout(timer)
+  }, [])
 
-  const loadPreferences = async () => {
-    try {
-      const { data: { user } } = await supabase.auth.getUser();
-
-      if (!user) {
-        Alert.alert('Error', 'Not authenticated');
-        return;
-      }
-
-      const { data, error } = await supabase
-        .from('users')
-        .select('notification_preferences')
-        .eq('id', user.id)
-        .single();
-
-      if (error) throw error;
-
-      if (data?.notification_preferences) {
-        setPreferences({ ...DEFAULT_PREFERENCES, ...data.notification_preferences });
-      }
-    } catch (error) {
-      console.error('Failed to load preferences:', error);
-      Alert.alert('Error', 'Failed to load notification settings');
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const updatePreference = async (key: keyof NotificationPreferences, value: boolean) => {
-    try {
-      setSaving(true);
-
-      const updatedPreferences = { ...preferences, [key]: value };
-      setPreferences(updatedPreferences);
-
-      const { data: { user } } = await supabase.auth.getUser();
-
-      if (!user) {
-        throw new Error('Not authenticated');
-      }
-
-      const { error } = await supabase
-        .from('users')
-        .update({ notification_preferences: updatedPreferences })
-        .eq('id', user.id);
-
-      if (error) throw error;
-    } catch (error) {
-      console.error('Failed to update preference:', error);
-      Alert.alert('Error', 'Failed to update notification setting');
-      // Revert the change
-      setPreferences(prev => ({ ...prev, [key]: !value }));
-    } finally {
-      setSaving(false);
-    }
-  };
-
-  if (loading) {
+  if (isLoading || !user) {
     return (
-      <View style={styles.centerContainer}>
+      <View style={[styles.loadingContainer, { backgroundColor: theme.colors.background }]}>
         <ActivityIndicator size="large" />
+        <Text style={{ marginTop: 12, color: theme.colors.onSurfaceVariant }}>
+          Loading notification settings...
+        </Text>
       </View>
-    );
+    )
   }
 
   return (
-    <ScrollView style={styles.container}>
+    <ScrollView
+      style={[styles.container, { backgroundColor: theme.colors.background }]}
+      contentContainerStyle={styles.contentContainer}
+    >
       {/* Header */}
-      <View style={styles.header}>
-        <Text variant="titleLarge" style={styles.title}>
+      <View style={[styles.header, { backgroundColor: theme.colors.surface }]}>
+        <Text variant="headlineSmall" style={[styles.title, { color: theme.colors.onSurface }]}>
           Notification Preferences
         </Text>
-        <Text variant="bodyMedium" style={styles.subtitle}>
+        <Text variant="bodyMedium" style={[styles.subtitle, { color: theme.colors.onSurfaceVariant }]}>
           Choose which notifications you want to receive
         </Text>
       </View>
 
-      {/* Messaging Notifications */}
-      <View style={styles.section}>
-        <Text variant="titleMedium" style={styles.sectionTitle}>
-          Messaging
-        </Text>
-
-        <List.Item
-          title="New Messages"
-          description="Receive notifications when someone sends you a message"
-          left={() => <List.Icon icon="message-text" />}
-          right={() => (
-            <Switch
-              value={preferences.newmessage}
-              onValueChange={(value) => updatePreference('newmessage', value)}
-              disabled={saving}
-            />
-          )}
-        />
-      </View>
-
-      <Divider />
-
-      {/* Connection Notifications */}
-      <View style={styles.section}>
-        <Text variant="titleMedium" style={styles.sectionTitle}>
-          Connections
-        </Text>
-
-        <List.Item
-          title="Connection Requests"
-          description="Receive notifications for new connection requests"
-          left={() => <List.Icon icon="account-multiple-plus" />}
-          right={() => (
-            <Switch
-              value={preferences.connectionrequest}
-              onValueChange={(value) => updatePreference('connectionrequest', value)}
-              disabled={saving}
-            />
-          )}
-        />
-      </View>
-
-      <Divider />
-
-      {/* Check-in Notifications */}
-      <View style={styles.section}>
-        <Text variant="titleMedium" style={styles.sectionTitle}>
-          Check-Ins
-        </Text>
-
-        <List.Item
-          title="Check-In Reminders"
-          description="Receive reminders for scheduled check-ins"
-          left={() => <List.Icon icon="calendar-check" />}
-          right={() => (
-            <Switch
-              value={preferences.checkinreminder}
-              onValueChange={(value) => updatePreference('checkinreminder', value)}
-              disabled={saving}
-            />
-          )}
-        />
-      </View>
-
-      <Divider />
-
-      {/* Milestone Notifications */}
-      <View style={styles.section}>
-        <Text variant="titleMedium" style={styles.sectionTitle}>
-          Sobriety Milestones
-        </Text>
-
-        <List.Item
-          title="Milestone Achievements"
-          description="Receive congratulations for reaching sobriety milestones"
-          left={() => <List.Icon icon="trophy" />}
-          right={() => (
-            <Switch
-              value={preferences.milestoneachieved}
-              onValueChange={(value) => updatePreference('milestoneachieved', value)}
-              disabled={saving}
-            />
-          )}
-        />
-      </View>
-
-      <Divider />
-
-      {/* Step Work Notifications */}
-      <View style={styles.section}>
-        <Text variant="titleMedium" style={styles.sectionTitle}>
-          12-Step Program
-        </Text>
-
-        <List.Item
-          title="Step Work Comments"
-          description="Receive notifications when your sponsor comments on your step work"
-          left={() => <List.Icon icon="comment" />}
-          right={() => (
-            <Switch
-              value={preferences.stepworkcomment}
-              onValueChange={(value) => updatePreference('stepworkcomment', value)}
-              disabled={saving}
-            />
-          )}
-        />
-
-        <List.Item
-          title="Step Work Submissions"
-          description="Receive notifications when a sponsee submits step work (sponsors only)"
-          left={() => <List.Icon icon="file-upload" />}
-          right={() => (
-            <Switch
-              value={preferences.stepworksubmitted}
-              onValueChange={(value) => updatePreference('stepworksubmitted', value)}
-              disabled={saving}
-            />
-          )}
-        />
-
-        <List.Item
-          title="Step Work Reviews"
-          description="Receive notifications when your step work is reviewed"
-          left={() => <List.Icon icon="check-circle" />}
-          right={() => (
-            <Switch
-              value={preferences.stepworkreviewed}
-              onValueChange={(value) => updatePreference('stepworkreviewed', value)}
-              disabled={saving}
-            />
-          )}
-        />
-      </View>
-
-      {/* Help Text */}
-      <View style={styles.footer}>
-        <Text variant="bodySmall" style={styles.helpText}>
-          You can change these preferences at any time. Some notifications may still appear
-          in-app even if push notifications are disabled.
-        </Text>
-      </View>
+      {/* Notification Settings Component */}
+      <NotificationSettings
+        userId={user.id}
+        onPreferencesChange={(preferences) => {
+          console.log('Notification preferences updated:', preferences)
+        }}
+      />
     </ScrollView>
-  );
-};
+  )
+}
 
-const createStyles = (theme: any) => StyleSheet.create({
+const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: theme.colors.background,
   },
-  centerContainer: {
+  loadingContainer: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+    padding: 20,
+  },
+  contentContainer: {
+    paddingBottom: 32,
   },
   header: {
     padding: 20,
-    backgroundColor: theme.colors.surface,
+    marginBottom: 16,
+    elevation: 1,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.05,
+    shadowRadius: 2,
   },
   title: {
     fontWeight: 'bold',
     marginBottom: 8,
   },
   subtitle: {
-    color: theme.colors.onSurfaceVariant,
     lineHeight: 20,
   },
-  section: {
-    backgroundColor: theme.colors.surface,
-    paddingVertical: 12,
-  },
-  sectionTitle: {
-    paddingHorizontal: 16,
-    paddingBottom: 8,
-    fontWeight: '600',
-    color: theme.colors.onSurface,
-  },
-  footer: {
-    padding: 20,
-    backgroundColor: theme.colors.surface,
-    marginTop: 16,
-  },
-  helpText: {
-    color: theme.colors.onSurfaceVariant,
-    lineHeight: 18,
-    textAlign: 'center',
-  },
-});
-
-export default NotificationSettingsScreen;
+})

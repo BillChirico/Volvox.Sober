@@ -102,6 +102,8 @@ export interface MessagesState {
   isSending: boolean
   isLoadingMore: boolean
   error: string | null
+  offlineQueue: QueuedMessage[]
+  isSyncing: boolean
 }
 
 export interface MessageInputState {
@@ -121,4 +123,18 @@ export interface TypingState {
   [connectionId: string]: {
     [userId: string]: boolean
   }
+}
+
+// ============================================================
+// Offline Queue Types
+// ============================================================
+
+export interface QueuedMessage {
+  tempId: string
+  connectionId: string
+  senderId: string
+  text: string
+  senderProfile: { id: string; name: string; profile_photo_url?: string }
+  createdAt: string
+  retryCount: number
 }

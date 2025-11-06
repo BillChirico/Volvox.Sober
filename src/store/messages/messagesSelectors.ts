@@ -279,3 +279,35 @@ export const selectIsMessageFromUser = createSelector(
  * Alias for selectTotalUnreadCount (used by navigation components)
  */
 export const selectUnreadMessagesCount = selectTotalUnreadCount
+
+/**
+ * Select offline queue
+ */
+export const selectOfflineQueue = createSelector(
+  [selectMessagesState],
+  (messagesState) => messagesState.offlineQueue
+)
+
+/**
+ * Select syncing state
+ */
+export const selectIsSyncing = createSelector(
+  [selectMessagesState],
+  (messagesState) => messagesState.isSyncing
+)
+
+/**
+ * Select queued messages count
+ */
+export const selectQueuedMessagesCount = createSelector(
+  [selectOfflineQueue],
+  (queue) => queue.length
+)
+
+/**
+ * Select if there are queued messages
+ */
+export const selectHasQueuedMessages = createSelector(
+  [selectQueuedMessagesCount],
+  (count) => count > 0
+)

@@ -10,6 +10,7 @@ import {
   ConversationPreview,
   Conversation,
   MessageWithSender,
+  QueuedMessage,
 } from '../../types'
 
 const initialState: MessagesState = {
@@ -19,6 +20,8 @@ const initialState: MessagesState = {
   isSending: false,
   isLoadingMore: false,
   error: null,
+  offlineQueue: [],
+  isSyncing: false,
 }
 
 const messagesSlice = createSlice({
@@ -127,6 +130,25 @@ const messagesSlice = createSlice({
       state.isLoadingMore = false
       state.error = null
     },
+    // Offline queue actions
+    addToQueue: (state, action: PayloadAction<QueuedMessage>) => {
+      state.offlineQueue.push(action.payload)
+    },
+    removeFromQueue: (state, action: PayloadAction<string>) => {
+      state.offlineQueue = state.offlineQueue.filter((msg) => msg.tempId !== action.payload)
+    },
+    incrementRetryCount: (state, action: PayloadAction<string>) => {
+      const message = state.offlineQueue.find((msg) => msg.tempId === action.payload)
+      if (message) {
+        message.retryCount += 1
+      }
+    },
+    setSyncing: (state, action: PayloadAction<boolean>) => {
+      state.isSyncing = action.payload
+    },
+    clearQueue: (state) => {
+      state.offlineQueue = []
+    },
   },
 })
 
@@ -145,6 +167,11 @@ export const {
   clearError,
   clearCurrentConversation,
   clearMessages,
+  addToQueue,
+  removeFromQueue,
+  incrementRetryCount,
+  setSyncing,
+  clearQueue,
 } = messagesSlice.actions
 
 export default messagesSlice.reducer

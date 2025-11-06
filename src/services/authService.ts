@@ -122,6 +122,22 @@ class AuthService {
   }
 
   /**
+   * Update the user's email (must be authenticated)
+   * @param newEmail - New email address for the user
+   * @returns Promise with user and error information
+   */
+  async updateEmail(newEmail: string): Promise<{ user: User | null; error: AuthError | null }> {
+    const { data, error } = await getSupabase().auth.updateUser({
+      email: newEmail,
+    });
+
+    return {
+      user: data.user,
+      error: error,
+    };
+  }
+
+  /**
    * Update the user's password (must be authenticated)
    * @param newPassword - New password for the user
    * @returns Promise with user and error information
@@ -135,6 +151,43 @@ class AuthService {
       user: data.user,
       error: error,
     };
+  }
+
+  /**
+   * Delete the current user's account (must be authenticated)
+   * WARNING: This action is irreversible and will delete all user data
+   * @returns Promise with error information if any
+   */
+  async deleteAccount(): Promise<{ error: AuthError | Error | null }> {
+    try {
+      // Get current user ID
+      const { data: { user }, error: userError } = await getSupabase().auth.getUser();
+
+      if (userError || !user) {
+        return { error: userError || new Error('User not authenticated') };
+      }
+
+      // Call Supabase admin API to delete user
+      // Note: This requires RLS policies and/or Edge Function implementation
+      // For now, we'll use the auth.admin.deleteUser which requires service role
+      // In production, this should be handled via an Edge Function with proper authorization
+      const { error } = await getSupabase().rpc('delete_user_account', {
+        user_id: user.id,
+      });
+
+      if (error) {
+        return { error };
+      }
+
+      // Sign out after successful deletion
+      await this.signOut();
+
+      return { error: null };
+    } catch (error) {
+      return {
+        error: error instanceof Error ? error : new Error('Failed to delete account'),
+      };
+    }
   }
 
   /**

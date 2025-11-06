@@ -12,6 +12,8 @@ import {
   logoutThunk,
   resetPasswordRequestThunk,
   updatePasswordThunk,
+  updateEmailThunk,
+  deleteAccountThunk,
 } from '../store/auth/authThunks';
 import {
   selectSession,
@@ -63,9 +65,23 @@ export const useAuth = () => {
     [dispatch]
   );
 
+  const updateEmail = useCallback(
+    (newEmail: string, password: string) => {
+      return dispatch(updateEmailThunk({ newEmail, password }));
+    },
+    [dispatch]
+  );
+
   const updatePassword = useCallback(
-    (newPassword: string) => {
-      return dispatch(updatePasswordThunk({ newPassword }));
+    (currentPassword: string, newPassword: string) => {
+      return dispatch(updatePasswordThunk({ currentPassword, newPassword }));
+    },
+    [dispatch]
+  );
+
+  const deleteAccount = useCallback(
+    (password: string) => {
+      return dispatch(deleteAccountThunk({ password }));
     },
     [dispatch]
   );
@@ -88,7 +104,9 @@ export const useAuth = () => {
     login,
     logout,
     resetPasswordRequest,
+    updateEmail,
     updatePassword,
+    deleteAccount,
     dismissError,
   };
 };
