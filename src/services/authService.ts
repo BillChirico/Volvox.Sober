@@ -15,8 +15,22 @@ function getSupabase(): SupabaseClient {
     Constants.expoConfig?.extra?.EXPO_PUBLIC_SUPABASE_ANON_KEY ||
     process.env.EXPO_PUBLIC_SUPABASE_ANON_KEY;
 
+  // Validate existence
   if (!supabaseUrl || !supabaseAnonKey) {
     throw new Error('Missing Supabase environment variables. Please check your .env file.');
+  }
+
+  // Validate URL format
+  try {
+    new URL(supabaseUrl);
+  } catch {
+    throw new Error('Invalid SUPABASE_URL format - must be a valid URL');
+  }
+
+  // Validate anon key format (should be JWT-like)
+  const jwtPattern = /^[A-Za-z0-9-_=]+\.[A-Za-z0-9-_=]+\.?[A-Za-z0-9-_.+/=]*$/;
+  if (!jwtPattern.test(supabaseAnonKey)) {
+    throw new Error('Invalid SUPABASE_ANON_KEY format - must be a valid JWT token');
   }
 
   supabaseInstance = createClient(supabaseUrl, supabaseAnonKey);

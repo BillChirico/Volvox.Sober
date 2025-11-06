@@ -4,28 +4,39 @@
  * Migrated from src/screens/connections/ConnectionDetailScreen.tsx
  */
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, StyleSheet, ScrollView } from 'react-native';
-import { Text, Surface, Avatar, Button, Divider, Dialog, Portal, useTheme } from 'react-native-paper';
+import { Text, Surface, Avatar, Button, Divider, Dialog, Portal, useTheme, MD3Theme } from 'react-native-paper';
 import { useRouter, useLocalSearchParams } from 'expo-router';
-import { useDisconnectMutation, Connection } from '../../../src/store/api/connectionsApi';
+import { useDisconnectMutation } from '../../../src/store/api/connectionsApi';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../src/store';
+import { selectConnectionById } from '../../../src/store/connections/connectionsSelectors';
+import { selectUser } from '../../../src/store/auth/authSelectors';
 import { formatDistanceToNow, format } from 'date-fns';
 
 const ConnectionDetailScreen: React.FC = () => {
   const theme = useTheme();
   const router = useRouter();
-  const params = useLocalSearchParams<{ connection: string }>();
-  const userId = useSelector((state: RootState) => state.user?.user?.id);
+  const params = useLocalSearchParams<{ id: string }>();
+  const user = useSelector(selectUser);
+  const userId = user?.id;
 
-  // Parse connection from params (passed as JSON string)
-  const connection: Connection | undefined = params.connection
-    ? JSON.parse(params.connection as string)
-    : undefined;
+  // Fetch connection from store using ID (secure alternative to JSON parsing URL params)
+  const connection = useSelector((state: RootState) =>
+    params.id ? selectConnectionById(state, params.id) : null
+  );
 
   const [disconnect, { isLoading: isDisconnecting }] = useDisconnectMutation();
   const [disconnectDialogVisible, setDisconnectDialogVisible] = useState(false);
+
+  // Navigate back if connection not found
+  useEffect(() => {
+    if (params.id && !connection) {
+      console.error('Connection not found:', params.id);
+      router.back();
+    }
+  }, [params.id, connection, router]);
 
   if (!connection) {
     return null;
@@ -33,12 +44,13 @@ const ConnectionDetailScreen: React.FC = () => {
 
   // Determine if user is sponsor or sponsee
   const isSponsor = connection.sponsor_id === userId;
-  const otherPersonName = isSponsor ? connection.sponsee_name : connection.sponsor_name;
-  const otherPersonPhotoUrl = isSponsor ? connection.sponsee_photo_url : connection.sponsor_photo_url;
+  const otherPerson = isSponsor ? connection.sponsee : connection.sponsor;
+  const otherPersonName = otherPerson.name;
+  const otherPersonPhotoUrl = otherPerson.profile_photo_url;
   const roleLabel = isSponsor ? 'Your Sponsee' : 'Your Sponsor';
 
-  const connectedDate = format(new Date(connection.connected_at), 'MMMM d, yyyy');
-  const connectedSince = formatDistanceToNow(new Date(connection.connected_at), { addSuffix: true });
+  const connectedDate = format(new Date(connection.created_at), 'MMMM d, yyyy');
+  const connectedSince = formatDistanceToNow(new Date(connection.created_at), { addSuffix: true });
 
   const handleDisconnectConfirm = async () => {
     try {
@@ -106,68 +118,19 @@ const ConnectionDetailScreen: React.FC = () => {
             <Text variant="bodyMedium">{connectedSince}</Text>
           </View>
 
-          {connection.last_contact && (
+          {connection.last_interaction_at && (
             <View style={styles.infoRow}>
               <Text variant="bodyMedium" style={styles.label}>
-                💬 Last Contact:
+                💬 Last Interaction:
               </Text>
               <Text variant="bodyMedium">
-                {formatDistanceToNow(new Date(connection.last_contact), { addSuffix: true })}
+                {formatDistanceToNow(new Date(connection.last_interaction_at), { addSuffix: true })}
               </Text>
             </View>
           )}
         </View>
 
         <Divider style={styles.divider} />
-
-        {/* Progress Info */}
-        {isSponsor && connection.sponsee_step_progress !== undefined && (
-          <>
-            <View style={styles.section}>
-              <Text variant="titleMedium" style={styles.sectionTitle}>
-                Sponsee Progress
-              </Text>
-
-              <Surface style={styles.progressCard} elevation={0}>
-                <Text variant="bodySmall" style={styles.progressLabel}>
-                  Current Step
-                </Text>
-                <Text variant="displaySmall" style={styles.progressValue}>
-                  {connection.sponsee_step_progress}/12
-                </Text>
-                <Text variant="bodySmall" style={styles.progressHint}>
-                  Track their journey through the 12 steps
-                </Text>
-              </Surface>
-            </View>
-
-            <Divider style={styles.divider} />
-          </>
-        )}
-
-        {!isSponsor && connection.sponsor_years_sober !== undefined && (
-          <>
-            <View style={styles.section}>
-              <Text variant="titleMedium" style={styles.sectionTitle}>
-                Sponsor Experience
-              </Text>
-
-              <Surface style={styles.progressCard} elevation={0}>
-                <Text variant="bodySmall" style={styles.progressLabel}>
-                  Years Sober
-                </Text>
-                <Text variant="displaySmall" style={styles.progressValue}>
-                  {connection.sponsor_years_sober}
-                </Text>
-                <Text variant="bodySmall" style={styles.progressHint}>
-                  Experience in recovery
-                </Text>
-              </Surface>
-            </View>
-
-            <Divider style={styles.divider} />
-          </>
-        )}
 
         {/* Actions */}
         <View style={styles.actions}>
@@ -227,7 +190,7 @@ const ConnectionDetailScreen: React.FC = () => {
   );
 };
 
-const createStyles = (theme: any) => StyleSheet.create({
+const createStyles = (theme: MD3Theme) => StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: theme.colors.surfaceVariant,

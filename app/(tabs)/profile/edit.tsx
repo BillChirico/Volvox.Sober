@@ -134,7 +134,7 @@ export default function EditProfileScreen(): JSX.Element {
         state: formData.state?.trim() || undefined,
         country: formData.country?.trim() || undefined,
         recovery_program: formData.recovery_program,
-        availability: formData.availability as any, // Type assertion for const array compatibility
+        availability: formData.availability,
         sobriety_start_date: formData.sobriety_start_date || undefined,
       }
 

@@ -18,7 +18,6 @@ module.exports = {
       bundleIdentifier: 'com.volvox.sober',
       associatedDomains: [
         'applinks:volvoxsober.app',
-        'applinks:volvoxsober.app',
       ],
       infoPlist: {
         ITSAppUsesNonExemptEncryption: false,
