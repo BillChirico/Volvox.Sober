@@ -8,6 +8,7 @@ import React, { useEffect, useState, useCallback } from 'react';
 import { View, StyleSheet, FlatList, RefreshControl, Alert } from 'react-native';
 import { MatchCard } from '../../src/components/matches/MatchCard';
 import { MatchDetailModal } from '../../src/components/matches/MatchDetailModal';
+import { NoMatchesEmptyState } from '../../src/components/matches/NoMatchesEmptyState';
 import { FilterBar, type FilterOptions } from '../../src/components/matches/FilterBar';
 import { LoadingSpinner } from '../../src/components/common/LoadingSpinner';
 import { EmptyState } from '../../src/components/common/EmptyState';
@@ -205,20 +206,45 @@ export default function MatchesScreen() {
     );
   }
 
+  // Calculate profile completion (mock data - would come from user profile)
+  const calculateProfileCompletion = useCallback(() => {
+    // This would normally check actual user profile data
+    const fields = {
+      recovery_program: true, // Example: user.profile?.recovery_program
+      availability: false, // Example: user.profile?.availability?.length > 0
+      location: true, // Example: user.profile?.city && user.profile?.state
+      bio: false, // Example: user.profile?.bio
+      sobriety_date: true, // Example: user.profile?.sobriety_start_date
+    };
+
+    const totalFields = Object.keys(fields).length;
+    const completedFields = Object.values(fields).filter(Boolean).length;
+    const percentage = Math.round((completedFields / totalFields) * 100);
+
+    const missing: string[] = [];
+    if (!fields.recovery_program) missing.push('Recovery Program');
+    if (!fields.availability) missing.push('Availability');
+    if (!fields.location) missing.push('Location (City & State)');
+    if (!fields.bio) missing.push('Bio');
+    if (!fields.sobriety_date) missing.push('Sobriety Start Date');
+
+    return { percentage, missing };
+  }, []);
+
   // No matches state
   if (!hasSuggestedMatches && !isLoading) {
+    const { percentage, missing } = calculateProfileCompletion();
+
     return (
       <View style={[styles.container, { backgroundColor: theme.colors.background }]}>
-        <EmptyState
-          icon="account-search"
-          title="No Matches Yet"
-          description="Complete your profile to start seeing potential matches. Make sure to add your recovery program, availability, and location."
-          actionText="View Profile"
-          onAction={() => {
+        <NoMatchesEmptyState
+          completionPercentage={percentage}
+          missingFields={missing}
+          onImproveProfile={() => {
             // Navigate to profile tab
             Alert.alert(
-              'Complete Your Profile',
-              'Add more information to your profile to get better matches.',
+              'Improve Your Profile',
+              'Complete your profile to get better matches. Add your recovery program, availability, and location.',
               [{ text: 'OK' }]
             );
           }}

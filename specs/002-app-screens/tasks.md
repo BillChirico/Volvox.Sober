@@ -210,8 +210,8 @@
 - [X] T087 [US3] Add match profile detail view with full information
 - [X] T088 [US3] Implement connection request action with rate limiting (5 per day)
 - [X] T089 [US3] Implement decline match action with 30-day cooldown
-- [ ] T090 [US3] Add empty state for no matches with profile completion tips
-- [ ] T091 [US3] Test matching flow: view matches → filter → view profile → send request
+- [X] T090 [US3] Add empty state for no matches with profile completion tips
+- [X] T091 [US3] Test matching flow: view matches → filter → view profile → send request
 
 ### Edge Function for User Story 3
 
