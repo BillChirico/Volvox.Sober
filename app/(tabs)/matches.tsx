@@ -1,18 +1,226 @@
-import { View, StyleSheet } from 'react-native';
-import { Text } from 'react-native-paper';
+/**
+ * Matches Screen
+ * Browse and filter potential sponsor/sponsee matches
+ * Feature: 002-app-screens
+ */
+
+import React, { useEffect, useState, useCallback } from 'react';
+import { View, StyleSheet, FlatList, RefreshControl, Alert } from 'react-native';
+import { MatchCard } from '../../src/components/matches/MatchCard';
+import { FilterBar, type FilterOptions } from '../../src/components/matches/FilterBar';
+import { LoadingSpinner } from '../../src/components/common/LoadingSpinner';
+import { EmptyState } from '../../src/components/common/EmptyState';
+import { useMatches } from '../../src/hooks/useMatches';
+import { useAuth } from '../../src/hooks/useAuth';
 import { useAppTheme } from '../../src/theme/ThemeContext';
+import type { MatchWithProfile } from '../../src/types/match';
 
 export default function MatchesScreen() {
   const { theme } = useAppTheme();
+  const { user } = useAuth();
+  const {
+    suggestedMatches,
+    isLoading,
+    isRefreshing,
+    error,
+    hasSuggestedMatches,
+    fetchSuggested,
+    refresh,
+    sendRequest,
+    dismissError,
+  } = useMatches();
+
+  const [filters, setFilters] = useState<FilterOptions>({
+    recoveryPrograms: [],
+    availability: [],
+  });
+  const [isApplyingFilters, setIsApplyingFilters] = useState(false);
+
+  // Fetch matches on mount
+  useEffect(() => {
+    if (user?.id) {
+      fetchSuggested(user.id);
+    }
+  }, [user?.id, fetchSuggested]);
+
+  // Handle pull-to-refresh
+  const onRefresh = useCallback(async () => {
+    if (!user?.id) return;
+
+    try {
+      await refresh(user.id);
+    } catch (err) {
+      console.error('Error refreshing matches:', err);
+    }
+  }, [user?.id, refresh]);
+
+  // Handle filter changes
+  const handleFiltersChange = useCallback((newFilters: FilterOptions) => {
+    setIsApplyingFilters(true);
+    setFilters(newFilters);
+
+    // Simulate filter application (in real app, would refetch with filters)
+    setTimeout(() => {
+      setIsApplyingFilters(false);
+    }, 300);
+  }, []);
+
+  // Filter matches based on selected filters
+  const filteredMatches = suggestedMatches.filter((match) => {
+    const { candidate } = match;
+
+    // Filter by recovery program
+    if (
+      filters.recoveryPrograms.length > 0 &&
+      !filters.recoveryPrograms.includes(candidate.recovery_program || '')
+    ) {
+      return false;
+    }
+
+    // Filter by availability
+    if (filters.availability.length > 0) {
+      const hasMatchingAvailability = candidate.availability?.some((avail) =>
+        filters.availability.includes(avail)
+      );
+      if (!hasMatchingAvailability) {
+        return false;
+      }
+    }
+
+    return true;
+  });
+
+  // Handle connection request
+  const handleConnect = useCallback(
+    (match: MatchWithProfile) => {
+      Alert.alert(
+        'Send Connection Request',
+        `Send a connection request to ${match.candidate.name}?`,
+        [
+          {
+            text: 'Cancel',
+            style: 'cancel',
+          },
+          {
+            text: 'Send',
+            onPress: async () => {
+              if (!user?.id) return;
+
+              try {
+                await sendRequest(user.id, match.id);
+                Alert.alert('Success', 'Connection request sent!', [{ text: 'OK' }]);
+              } catch (err) {
+                console.error('Error sending connection request:', err);
+                Alert.alert(
+                  'Error',
+                  'Failed to send connection request. Please try again.',
+                  [{ text: 'OK' }]
+                );
+              }
+            },
+          },
+        ]
+      );
+    },
+    [user?.id, sendRequest]
+  );
+
+  // Show error alert if error exists
+  useEffect(() => {
+    if (error) {
+      Alert.alert('Error', error, [
+        {
+          text: 'OK',
+          onPress: dismissError,
+        },
+      ]);
+    }
+  }, [error, dismissError]);
+
+  // Loading state
+  if (isLoading && !hasSuggestedMatches) {
+    return (
+      <View style={[styles.container, { backgroundColor: theme.colors.background }]}>
+        <LoadingSpinner text="Finding your matches..." />
+      </View>
+    );
+  }
+
+  // No matches state
+  if (!hasSuggestedMatches && !isLoading) {
+    return (
+      <View style={[styles.container, { backgroundColor: theme.colors.background }]}>
+        <EmptyState
+          icon="account-search"
+          title="No Matches Yet"
+          description="Complete your profile to start seeing potential matches. Make sure to add your recovery program, availability, and location."
+          actionText="View Profile"
+          onAction={() => {
+            // Navigate to profile tab
+            Alert.alert(
+              'Complete Your Profile',
+              'Add more information to your profile to get better matches.',
+              [{ text: 'OK' }]
+            );
+          }}
+        />
+      </View>
+    );
+  }
+
+  const hasActiveFilters = filters.recoveryPrograms.length > 0 || filters.availability.length > 0;
+  const showEmptyFilterState = hasActiveFilters && filteredMatches.length === 0;
 
   return (
     <View style={[styles.container, { backgroundColor: theme.colors.background }]}>
-      <Text variant="headlineMedium" style={{ color: theme.colors.onBackground }}>
-        Matches
-      </Text>
-      <Text variant="bodyMedium" style={{ color: theme.colors.onBackground, marginTop: 8 }}>
-        Browse potential sponsor/sponsee matches
-      </Text>
+      {/* Filter Bar */}
+      <FilterBar
+        filters={filters}
+        onFiltersChange={handleFiltersChange}
+        isApplying={isApplyingFilters}
+      />
+
+      {/* Matches List */}
+      {showEmptyFilterState ? (
+        <View style={styles.emptyContainer}>
+          <EmptyState
+            icon="filter-off"
+            title="No Matches Found"
+            description="Try adjusting your filters to see more matches."
+            actionText="Clear Filters"
+            onAction={() =>
+              handleFiltersChange({ recoveryPrograms: [], availability: [] })
+            }
+          />
+        </View>
+      ) : (
+        <FlatList
+          data={filteredMatches}
+          keyExtractor={(item) => item.id}
+          renderItem={({ item }) => (
+            <MatchCard
+              match={item}
+              onPress={() => {
+                // Navigate to match detail
+                Alert.alert('Match Details', 'Match detail view coming soon!', [
+                  { text: 'OK' },
+                ]);
+              }}
+              onConnect={() => handleConnect(item)}
+            />
+          )}
+          contentContainerStyle={styles.listContent}
+          refreshControl={
+            <RefreshControl
+              refreshing={isRefreshing}
+              onRefresh={onRefresh}
+              tintColor={theme.colors.primary}
+              colors={[theme.colors.primary]}
+            />
+          }
+          showsVerticalScrollIndicator={false}
+        />
+      )}
     </View>
   );
 }
@@ -20,8 +228,12 @@ export default function MatchesScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    padding: 20,
+  },
+  listContent: {
+    paddingTop: 8,
+    paddingBottom: 16,
+  },
+  emptyContainer: {
+    flex: 1,
   },
 });

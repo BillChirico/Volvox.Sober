@@ -200,13 +200,13 @@
 
 ### Components for User Story 3
 
-- [ ] T083 [P] [US3] Create MatchCard component with compatibility badge in src/components/matches/MatchCard.tsx
-- [ ] T084 [P] [US3] Create CompatibilityBadge component in src/components/matches/CompatibilityBadge.tsx
-- [ ] T085 [P] [US3] Create FilterBar component for program/availability in src/components/matches/FilterBar.tsx
+- [X] T083 [P] [US3] Create MatchCard component with compatibility badge in src/components/matches/MatchCard.tsx
+- [X] T084 [P] [US3] Create CompatibilityBadge component in src/components/matches/CompatibilityBadge.tsx
+- [X] T085 [P] [US3] Create FilterBar component for program/availability in src/components/matches/FilterBar.tsx
 
 ### Screen for User Story 3
 
-- [ ] T086 [US3] Implement matches screen with filtered list in app/(tabs)/matches.tsx
+- [X] T086 [US3] Implement matches screen with filtered list in app/(tabs)/matches.tsx
 - [ ] T087 [US3] Add match profile detail view with full information
 - [ ] T088 [US3] Implement connection request action with rate limiting (5 per day)
 - [ ] T089 [US3] Implement decline match action with 30-day cooldown
