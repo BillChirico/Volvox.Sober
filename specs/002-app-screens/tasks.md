@@ -261,18 +261,18 @@
 
 ### Components for User Story 5
 
-- [ ] T105 [P] [US5] Create MessageThread component for thread list in src/components/messages/MessageThread.tsx
-- [ ] T106 [P] [US5] Create MessageInput component with character count in src/components/messages/MessageInput.tsx
-- [ ] T107 [P] [US5] Create MessageBubble component with timestamps in src/components/messages/MessageBubble.tsx
+- [X] T105 [P] [US5] Create MessageThread component for thread list in src/components/messages/MessageThread.tsx
+- [X] T106 [P] [US5] Create MessageInput component with character count in src/components/messages/MessageInput.tsx
+- [X] T107 [P] [US5] Create MessageBubble component with timestamps in src/components/messages/MessageBubble.tsx
 
 ### Screen for User Story 5
 
-- [ ] T108 [US5] Implement messages screen with thread list in app/(tabs)/messages.tsx
-- [ ] T109 [US5] Implement thread detail view with message history
-- [ ] T110 [US5] Add Realtime subscription for new messages in thread
-- [ ] T111 [US5] Implement message sending with optimistic updates
-- [ ] T112 [US5] Implement read receipt tracking and display
-- [ ] T113 [US5] Add unread message badge on Messages tab
+- [X] T108 [US5] Implement messages screen with thread list in app/(tabs)/messages.tsx
+- [X] T109 [US5] Implement thread detail view with message history
+- [X] T110 [US5] Add Realtime subscription for new messages in thread
+- [X] T111 [US5] Implement message sending with optimistic updates
+- [X] T112 [US5] Implement read receipt tracking and display
+- [X] T113 [US5] Add unread message badge on Messages tab
 - [ ] T114 [US5] Add offline message queue with sync on reconnect
 - [ ] T115 [US5] Test messaging flow: send message → receive reply → verify real-time delivery
 
