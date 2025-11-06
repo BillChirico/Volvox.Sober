@@ -327,11 +327,11 @@
 
 ### Accessibility
 
-- [ ] T133 [P] Run Playwright accessibility tests for all screens
-- [ ] T134 Manual VoiceOver testing on iOS for critical flows
-- [ ] T135 Manual TalkBack testing on Android for critical flows
-- [ ] T136 [P] Verify all touch targets are minimum 44x44 points
-- [ ] T137 [P] Verify color contrast meets WCAG 2.1 AA standards
+- [X] T133 [P] Run Playwright accessibility tests for all screens
+- [ ] T134 Manual VoiceOver testing on iOS for critical flows (requires manual execution)
+- [ ] T135 Manual TalkBack testing on Android for critical flows (requires manual execution)
+- [X] T136 [P] Verify all touch targets are minimum 44x44 points
+- [X] T137 [P] Verify color contrast meets WCAG 2.1 AA standards
 
 ### Dark Mode
 
