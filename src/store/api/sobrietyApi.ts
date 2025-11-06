@@ -6,7 +6,7 @@ import type {
   Relapse,
   SetSobrietyDatePayload,
   LogRelapsePayload,
-} from '@volvox-sober/types/sobriety';
+} from '@volvox-sober/shared/types/src/sobriety';
 
 export const sobrietyApi = createApi({
   reducerPath: 'sobrietyApi',

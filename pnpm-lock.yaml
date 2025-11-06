@@ -69,7 +69,7 @@ importers:
         specifier: ^5.14.5
         version: 5.14.5(react-native-safe-area-context@5.6.2(react-native@0.81.5(@babel/core@7.28.5)(@types/react@19.1.17)(react@19.1.0))(react@19.1.0))(react-native@0.81.5(@babel/core@7.28.5)(@types/react@19.1.17)(react@19.1.0))(react@19.1.0)
       react-native-safe-area-context:
-        specifier: ~5.6.0
+        specifier: ~5.6.2
         version: 5.6.2(react-native@0.81.5(@babel/core@7.28.5)(@types/react@19.1.17)(react@19.1.0))(react@19.1.0)
       react-native-screens:
         specifier: ~4.16.0
@@ -81,7 +81,7 @@ importers:
         specifier: ^6.0.0
         version: 6.0.0(react@19.1.0)(redux@5.0.1)
       yup:
-        specifier: ^1.7.0
+        specifier: ^1.7.1
         version: 1.7.1
     devDependencies:
       '@testing-library/react-native':
@@ -91,7 +91,7 @@ importers:
         specifier: ^29.5.14
         version: 29.5.14
       '@types/react':
-        specifier: ~19.1.0
+        specifier: ~19.1.17
         version: 19.1.17
       '@typescript-eslint/eslint-plugin':
         specifier: ^8.46.3
@@ -127,7 +127,7 @@ importers:
         specifier: ^3.6.2
         version: 3.6.2
       typescript:
-        specifier: ~5.9.2
+        specifier: ~5.9.3
         version: 5.9.3
 
   mobile:
@@ -5347,6 +5347,11 @@ packages:
 
   terser@5.44.0:
     resolution: {integrity: sha512-nIVck8DK+GM/0Frwd+nIhZ84pR/BX7rmXMfYwyg+Sri5oGVE99/E3KvXqpC2xHFxyqXyGHTKBSioxxplrO4I4w==}
+    engines: {node: '>=10'}
+    hasBin: true
+
+  terser@5.44.1:
+    resolution: {integrity: sha512-t/R3R/n0MSwnnazuPpPNVO60LX0SKL45pyl9YlvxIdkH0Of7D5qM2EVe+yASRIlY5pZ73nclYJfNANGWPwFDZw==}
     engines: {node: '>=10'}
     hasBin: true
 
@@ -12626,10 +12631,17 @@ snapshots:
       jest-worker: 27.5.1
       schema-utils: 4.3.3
       serialize-javascript: 6.0.2
-      terser: 5.44.0
+      terser: 5.44.1
       webpack: 5.102.1
 
   terser@5.44.0:
+    dependencies:
+      '@jridgewell/source-map': 0.3.11
+      acorn: 8.15.0
+      commander: 2.20.3
+      source-map-support: 0.5.21
+
+  terser@5.44.1:
     dependencies:
       '@jridgewell/source-map': 0.3.11
       acorn: 8.15.0

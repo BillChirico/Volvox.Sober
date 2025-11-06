@@ -1,0 +1,98 @@
+openapi: 3.0.0
+info:
+  title: Onboarding API
+  version: 1.0.0
+  description: User onboarding flow management
+
+paths:
+  /onboarding/progress:
+    get:
+      summary: Get onboarding progress
+      operationId: getOnboardingProgress
+      responses:
+        '200':
+          description: Progress retrieved
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OnboardingProgress'
+
+  /onboarding/role:
+    post:
+      summary: Select user role
+      operationId: selectRole
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [role]
+              properties:
+                role:
+                  type: string
+                  enum: [sponsor, sponsee]
+      responses:
+        '200':
+          description: Role selected successfully
+
+  /onboarding/profile:
+    post:
+      summary: Submit profile form
+      operationId: submitProfileForm
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProfileFormData'
+      responses:
+        '200':
+          description: Profile saved successfully
+
+  /onboarding/complete:
+    post:
+      summary: Mark onboarding complete
+      operationId: completeOnboarding
+      responses:
+        '200':
+          description: Onboarding completed
+
+components:
+  schemas:
+    OnboardingProgress:
+      type: object
+      properties:
+        welcome_completed:
+          type: boolean
+        role_selected:
+          type: boolean
+        profile_form_completed:
+          type: boolean
+        onboarding_completed:
+          type: boolean
+        last_step:
+          type: string
+          enum: [welcome, role_selection, profile_form, complete]
+
+    ProfileFormData:
+      type: object
+      required: [name, recovery_program, sobriety_start_date]
+      properties:
+        name:
+          type: string
+        recovery_program:
+          type: string
+        sobriety_start_date:
+          type: string
+          format: date
+        bio:
+          type: string
+        city:
+          type: string
+        state:
+          type: string
+        availability:
+          type: array
+          items:
+            type: string

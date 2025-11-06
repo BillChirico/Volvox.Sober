@@ -1,0 +1,165 @@
+openapi: 3.0.0
+info:
+  title: Connections API
+  version: 1.0.0
+
+paths:
+  /connections:
+    get:
+      summary: Get all connections
+      operationId: getConnections
+      parameters:
+        - name: status
+          in: query
+          schema:
+            type: string
+            enum: [pending, active, ended]
+      responses:
+        '200':
+          description: Connections retrieved
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  pending:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Connection'
+                  active:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Connection'
+                  past:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Connection'
+
+  /connections/{id}/accept:
+    post:
+      summary: Accept connection request
+      operationId: acceptConnection
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Connection accepted
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Connection'
+
+  /connections/{id}/decline:
+    post:
+      summary: Decline connection request
+      operationId: declineConnection
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Connection declined
+
+  /connections/{id}/end:
+    post:
+      summary: End active connection
+      operationId: endConnection
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                feedback:
+                  type: string
+                  maxLength: 500
+      responses:
+        '200':
+          description: Connection ended
+
+  /connections/{id}/profile:
+    get:
+      summary: Get connection profile
+      operationId: getConnectionProfile
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Connection profile retrieved
+          content:
+            application/json:
+              schema:
+                $ref: './profiles.yaml#/components/schemas/Profile'
+
+components:
+  schemas:
+    Connection:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        sponsor_id:
+          type: string
+          format: uuid
+        sponsee_id:
+          type: string
+          format: uuid
+        status:
+          type: string
+          enum: [pending, active, ended]
+        created_at:
+          type: string
+          format: date-time
+        accepted_at:
+          type: string
+          format: date-time
+          nullable: true
+        ended_at:
+          type: string
+          format: date-time
+          nullable: true
+        last_interaction_at:
+          type: string
+          format: date-time
+          nullable: true
+        end_feedback:
+          type: string
+          nullable: true
+        other_user:
+          $ref: '#/components/schemas/ConnectionUser'
+
+    ConnectionUser:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        role:
+          type: string
+        profile_photo_url:
+          type: string
+          nullable: true

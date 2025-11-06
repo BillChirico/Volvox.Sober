@@ -6,8 +6,8 @@
 import React from 'react';
 import { View, StyleSheet } from 'react-native';
 import { Modal, Portal, Text, Button, Card, useTheme } from 'react-native-paper';
-import { MILESTONE_DISPLAY_TEXT, MILESTONE_THRESHOLDS } from '@volvox-sober/types/sobriety';
-import type { MilestoneType } from '@volvox-sober/types/sobriety';
+import { MILESTONE_DISPLAY_TEXT, MILESTONE_THRESHOLDS } from '@volvox-sober/shared/types/src/sobriety';
+import type { MilestoneType } from '@volvox-sober/shared/types/src/sobriety';
 
 interface MilestoneCelebrationModalProps {
   visible: boolean;

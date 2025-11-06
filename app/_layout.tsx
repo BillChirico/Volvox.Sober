@@ -30,13 +30,6 @@ function RootLayoutContent() {
           <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
           <Stack.Screen name="(auth)" options={{ headerShown: false }} />
           <Stack.Screen name="(onboarding)" options={{ headerShown: false }} />
-          <Stack.Screen
-            name="modal"
-            options={{
-              presentation: 'modal',
-              headerTitle: 'Details',
-            }}
-          />
         </Stack>
         <StatusBar style={isDark ? 'light' : 'dark'} />
       </SafeAreaProvider>

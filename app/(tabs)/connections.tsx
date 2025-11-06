@@ -9,12 +9,15 @@ import { View, StyleSheet, SectionList, RefreshControl, Alert } from 'react-nati
 import { Text, Divider, FAB } from 'react-native-paper';
 import { ConnectionCard } from '../../src/components/connections/ConnectionCard';
 import { RequestCard } from '../../src/components/connections/RequestCard';
+import { ConnectionProfileModal } from '../../src/components/connections/ConnectionProfileModal';
+import { EndConnectionModal } from '../../src/components/connections/EndConnectionModal';
 import { LoadingSpinner } from '../../src/components/common/LoadingSpinner';
 import { EmptyState } from '../../src/components/common/EmptyState';
 import { useConnections } from '../../src/hooks/useConnections';
 import { useAuth } from '../../src/hooks/useAuth';
 import { useAppTheme } from '../../src/theme/ThemeContext';
 import { useRouter } from 'expo-router';
+import connectionService from '../../src/services/connectionService';
 import type { ConnectionWithUsers } from '../../src/types/connection';
 
 interface Section {
@@ -45,6 +48,10 @@ export default function ConnectionsScreen() {
 
   const [acceptingId, setAcceptingId] = useState<string | null>(null);
   const [decliningId, setDecliningId] = useState<string | null>(null);
+  const [selectedConnection, setSelectedConnection] = useState<ConnectionWithUsers | null>(null);
+  const [showProfileModal, setShowProfileModal] = useState(false);
+  const [showEndModal, setShowEndModal] = useState(false);
+  const [isEndingConnection, setIsEndingConnection] = useState(false);
 
   // Fetch all connections on mount
   useEffect(() => {
@@ -142,10 +149,8 @@ export default function ConnectionsScreen() {
   // Handle view connection profile
   const handleViewConnection = useCallback(
     (connection: ConnectionWithUsers) => {
-      // TODO: Navigate to connection profile detail screen
-      Alert.alert('Feature Coming Soon', 'Connection profile view will be implemented.', [
-        { text: 'OK' },
-      ]);
+      setSelectedConnection(connection);
+      setShowProfileModal(true);
     },
     []
   );
@@ -154,8 +159,7 @@ export default function ConnectionsScreen() {
   const handleMessageConnection = useCallback(
     (connection: ConnectionWithUsers) => {
       // Navigate to messages tab with this connection
-      // TODO: Implement navigation to messages with connection ID
-      router.push('/messages');
+      router.push(`/messages/${connection.id}`);
     },
     [router]
   );
@@ -163,12 +167,57 @@ export default function ConnectionsScreen() {
   // Handle view request profile
   const handleViewRequest = useCallback(
     (connection: ConnectionWithUsers) => {
-      // TODO: Navigate to request profile detail screen
-      Alert.alert('Feature Coming Soon', 'Request profile view will be implemented.', [
-        { text: 'OK' },
-      ]);
+      setSelectedConnection(connection);
+      setShowProfileModal(true);
     },
     []
+  );
+
+  // Handle end connection
+  const handleEndConnection = useCallback(
+    (connection: ConnectionWithUsers) => {
+      setSelectedConnection(connection);
+      setShowEndModal(true);
+    },
+    []
+  );
+
+  // Handle confirm end connection
+  const handleConfirmEndConnection = useCallback(
+    async (feedback?: string) => {
+      if (!user?.id || !selectedConnection) return;
+
+      try {
+        setIsEndingConnection(true);
+        
+        await connectionService.endConnection({
+          connectionId: selectedConnection.id,
+          endedAt: new Date().toISOString(),
+          endedBy: user.id,
+          endFeedback: feedback,
+        });
+
+        Alert.alert('Connection Ended', 'Your connection has been ended successfully.', [
+          { text: 'OK' },
+        ]);
+
+        // Refresh connections list
+        await refresh(user.id);
+        
+        // Close modals
+        setShowEndModal(false);
+        setShowProfileModal(false);
+        setSelectedConnection(null);
+      } catch (err) {
+        console.error('Error ending connection:', err);
+        Alert.alert('Error', 'Failed to end connection. Please try again.', [
+          { text: 'OK' },
+        ]);
+      } finally {
+        setIsEndingConnection(false);
+      }
+    },
+    [user?.id, selectedConnection, refresh]
   );
 
   // Show error alert if error exists
@@ -361,6 +410,44 @@ export default function ConnectionsScreen() {
           }`}
         />
       )}
+
+      {/* Connection Profile Modal */}
+      <ConnectionProfileModal
+        visible={showProfileModal}
+        connection={selectedConnection}
+        currentUserId={user?.id || ''}
+        onDismiss={() => {
+          setShowProfileModal(false);
+          setSelectedConnection(null);
+        }}
+        onMessage={() => {
+          if (selectedConnection) {
+            handleMessageConnection(selectedConnection);
+          }
+        }}
+        onEndConnection={() => {
+          setShowProfileModal(false);
+          setShowEndModal(true);
+        }}
+      />
+
+      {/* End Connection Modal */}
+      <EndConnectionModal
+        visible={showEndModal}
+        connectionName={
+          selectedConnection
+            ? user?.id === selectedConnection.sponsor_id
+              ? selectedConnection.sponsee.name
+              : selectedConnection.sponsor.name
+            : ''
+        }
+        onDismiss={() => {
+          setShowEndModal(false);
+          setSelectedConnection(null);
+        }}
+        onConfirm={handleConfirmEndConnection}
+        isLoading={isEndingConnection}
+      />
     </View>
   );
 }

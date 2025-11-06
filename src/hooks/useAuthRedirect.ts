@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 import { useRouter, useSegments } from 'expo-router';
 import { useAppSelector } from '../store/hooks';
 import { selectIsAuthenticated, selectUser } from '../store/auth/authSelectors';
+import authService from '../services/authService';
 
 /**
  * useAuthRedirect Hook
@@ -57,11 +58,22 @@ export const useAuth = () => {
 
   const isEmailVerified = user?.email_confirmed_at !== null;
 
+  /**
+   * Resend verification email to the current user
+   */
+  const resendVerificationEmail = async () => {
+    if (!user?.email) {
+      throw new Error('No user email available');
+    }
+    return await authService.resendVerification(user.email);
+  };
+
   return {
     isAuthenticated,
     user,
     loading,
     error,
     isEmailVerified,
+    resendVerificationEmail,
   };
 };

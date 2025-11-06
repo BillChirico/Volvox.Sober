@@ -110,8 +110,12 @@ class AuthService {
    * @returns Promise with error information if any
    */
   async resetPasswordRequest(email: string): Promise<{ error: AuthError | null }> {
+    // Use Supabase hosted page for password reset
+    // User will reset password in browser, then return to app to login
+    const supabaseUrl = Constants.expoConfig?.extra?.EXPO_PUBLIC_SUPABASE_URL || process.env.EXPO_PUBLIC_SUPABASE_URL;
+
     const { error } = await getSupabase().auth.resetPasswordForEmail(email, {
-      redirectTo: 'volvoxsober://auth/forgot-password',
+      redirectTo: `${supabaseUrl}/auth/v1/verify?type=recovery`,
     });
 
     return { error };

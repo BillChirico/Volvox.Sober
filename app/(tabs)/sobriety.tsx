@@ -11,11 +11,14 @@ import { DaysCounter } from '../../src/components/sobriety/DaysCounter';
 import { MilestoneCard } from '../../src/components/sobriety/MilestoneCard';
 import { ReflectionInput } from '../../src/components/sobriety/ReflectionInput';
 import { Timeline } from '../../src/components/sobriety/Timeline';
+import { SobrietyDatePicker } from '../../src/components/sobriety/SobrietyDatePicker';
 import { LoadingSpinner } from '../../src/components/common/LoadingSpinner';
 import { EmptyState } from '../../src/components/common/EmptyState';
 import { useSobrietyTracking } from '../../src/hooks/useSobrietyTracking';
 import { useAuth } from '../../src/hooks/useAuth';
 import { useAppTheme } from '../../src/theme/ThemeContext';
+import { isMilestone, getMilestoneForDays } from '../../src/utils/dateCalculations';
+import sobrietyService from '../../src/services/sobrietyService';
 import type { ReflectionFormData } from '../../src/types/sobriety';
 
 export default function SobrietyScreen() {
@@ -35,6 +38,7 @@ export default function SobrietyScreen() {
 
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [showReflectionInput, setShowReflectionInput] = useState(false);
+  const [showDatePicker, setShowDatePicker] = useState(false);
 
   // Fetch sobriety record on mount
   useEffect(() => {
@@ -57,15 +61,55 @@ export default function SobrietyScreen() {
     }
   }, [user?.id, refresh]);
 
+  // Handle sobriety date confirmation
+  const handleDateConfirm = useCallback(
+    async (date: Date) => {
+      if (!user?.id) return;
+
+      try {
+        const dateString = date.toISOString().split('T')[0];
+        
+        // Check if record exists
+        if (!record) {
+          // Create new sobriety record
+          await sobrietyService.createSobrietyRecord(user.id, dateString);
+        } else {
+          // Update existing sobriety record
+          await sobrietyService.updateSobrietyDate(user.id, dateString);
+        }
+
+        Alert.alert('Success', 'Your sobriety start date has been set!', [
+          { text: 'OK' },
+        ]);
+
+        // Refresh data
+        await refresh(user.id);
+      } catch (err) {
+        console.error('Error setting sobriety date:', err);
+        Alert.alert('Error', 'Failed to set start date. Please try again.', [
+          { text: 'OK' },
+        ]);
+      }
+    },
+    [user?.id, record, refresh]
+  );
+
   // Handle reflection submission
   const handleReflectionSubmit = useCallback(
-    async (_data: ReflectionFormData) => {
+    async (data: ReflectionFormData) => {
       if (!user?.id || !record) return;
 
       try {
+        const reflection = {
+          date: new Date().toISOString().split('T')[0],
+          text: data.text,
+          mood: data.mood,
+          created_at: new Date().toISOString(),
+        };
+
         // Add reflection to sobriety record
-        // This would be handled by a sobriety service method
-        // For now, we'll show a success message
+        await sobrietyService.addReflection(user.id, reflection);
+        
         Alert.alert('Success', 'Your reflection has been saved!', [{ text: 'OK' }]);
         setShowReflectionInput(false);
 
@@ -80,6 +124,33 @@ export default function SobrietyScreen() {
     },
     [user?.id, record, refresh]
   );
+
+  // T080: Milestone detection and notification
+  useEffect(() => {
+    if (daysSober !== null && daysSober !== undefined && isMilestone(daysSober)) {
+      const milestone = getMilestoneForDays(daysSober);
+
+      if (milestone) {
+        Alert.alert(
+          `🎉 ${milestone.name}!`,
+          milestone.description,
+          [
+            {
+              text: 'Share',
+              onPress: () => {
+                // TODO: Implement share functionality
+                console.log('Share milestone:', milestone);
+              },
+            },
+            {
+              text: 'OK',
+              style: 'cancel',
+            },
+          ]
+        );
+      }
+    }
+  }, [daysSober]);
 
   // Show error alert if error exists
   useEffect(() => {
@@ -111,14 +182,12 @@ export default function SobrietyScreen() {
           title="Start Your Journey"
           message="Begin tracking your sobriety and celebrate every milestone along the way."
           actionLabel="Set Start Date"
-          onAction={() => {
-            // Navigate to sobriety start date setup
-            Alert.alert(
-              'Set Start Date',
-              'This feature will allow you to set your sobriety start date.',
-              [{ text: 'OK' }]
-            );
-          }}
+          onAction={() => setShowDatePicker(true)}
+        />
+        <SobrietyDatePicker
+          visible={showDatePicker}
+          onDismiss={() => setShowDatePicker(false)}
+          onConfirm={handleDateConfirm}
         />
       </View>
     );

@@ -3,44 +3,29 @@
  * Domain models and UI types
  */
 
-import { Tables } from './database.types'
+// ============================================================
+// Database Types
+// ============================================================
 
-// Re-export database types
 export * from './database.types'
 
 // ============================================================
-// Message Types
+// Domain Types (Feature 002-app-screens)
 // ============================================================
 
-export interface Message extends Tables<'messages'> {
-  sender?: User
-  recipient?: User
-}
-
-export interface MessageWithConnection extends Message {
-  connection: Connection
-}
-
-export interface ConversationPreview {
-  connection: ConnectionWithUsers
-  lastMessage?: Message
-  unreadCount: number
-}
+export * from './profile'
+export * from './onboarding'
+export * from './sobriety'
+export * from './match'
+export * from './connection'
+export * from './message'
+export * from './navigation'
 
 // ============================================================
-// Connection Types
+// Legacy Types (from previous features)
 // ============================================================
 
-export interface Connection extends Tables<'connections'> {}
-
-export interface ConnectionWithUsers extends Connection {
-  sponsor: User
-  sponsee: User
-}
-
-// ============================================================
-// User Types
-// ============================================================
+import { Tables } from './database.types'
 
 export interface User extends Tables<'users'> {}
 
@@ -48,17 +33,13 @@ export interface UserProfile extends User {
   role?: 'sponsor' | 'sponsee'
 }
 
-// ============================================================
-// Check-In Types
-// ============================================================
-
 export interface CheckIn extends Tables<'check_ins'> {}
+
+export interface CheckInResponse extends Tables<'check_in_responses'> {}
 
 export interface CheckInWithConnection extends CheckIn {
   connection: ConnectionWithUsers
 }
-
-export interface CheckInResponse extends Tables<'check_in_responses'> {}
 
 export interface CheckInResponseWithCheckIn extends CheckInResponse {
   check_in: CheckIn
@@ -97,7 +78,7 @@ export interface ApiError {
 }
 
 // ============================================================
-// UI State Types
+// UI State Types (Shared)
 // ============================================================
 
 export interface LoadingState {
@@ -105,13 +86,10 @@ export interface LoadingState {
   error?: string
 }
 
-export interface MessageInputState {
-  text: string
-  isSending: boolean
+export interface AsyncOperationState extends LoadingState {
+  isSuccess: boolean
 }
 
-export interface ConversationState extends LoadingState {
-  messages: Message[]
-  hasMore: boolean
-  isLoadingMore: boolean
-}
+// Re-import connection types for legacy compatibility
+import { Connection, ConnectionWithUsers } from './connection'
+export type { Connection, ConnectionWithUsers }

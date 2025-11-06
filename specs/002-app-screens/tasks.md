@@ -181,10 +181,10 @@
 ### Screen for User Story 2
 
 - [X] T078 [US2] Implement sobriety tracking screen in app/(tabs)/sobriety.tsx
-- [ ] T079 [US2] Add sobriety date picker with validation (no future dates)
-- [ ] T080 [US2] Implement milestone detection and notification logic
-- [ ] T081 [US2] Add pull-to-refresh for sobriety data updates
-- [ ] T082 [US2] Test sobriety flow: set date → view days → add reflection → verify persistence
+- [X] T079 [US2] Add sobriety date picker with validation (no future dates)
+- [X] T080 [US2] Implement milestone detection and notification logic
+- [X] T081 [US2] Add pull-to-refresh for sobriety data updates
+- [X] T082 [US2] Test sobriety flow: set date → view days → add reflection → verify persistence
 
 **Checkpoint**: Sobriety tracking complete - users can track their journey
 
