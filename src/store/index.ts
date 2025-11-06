@@ -31,8 +31,15 @@ const rootReducer = combineReducers({
 
 const persistConfig = {
   key: 'root',
+  version: 1,
   storage: AsyncStorage,
-  whitelist: ['auth', 'profile', 'onboarding'],
+  whitelist: ['auth', 'profile', 'onboarding', 'sobriety', 'matches', 'connections', 'messages'],
+  // Blacklist sensitive data or temporary state
+  blacklist: [],
+  // Timeout for rehydration (10 seconds)
+  timeout: 10000,
+  // Enable debug mode in development
+  debug: __DEV__,
 }
 
 const persistedReducer = persistReducer(persistConfig, rootReducer)

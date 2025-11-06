@@ -314,10 +314,10 @@
 
 ### Performance Optimization
 
-- [ ] T126 [P] Implement image lazy loading across all screens
-- [ ] T127 [P] Add Redux Persist for offline support
-- [ ] T128 [P] Optimize FlashList rendering for long lists (matches, messages, connections)
-- [ ] T129 [P] Add skeleton screens for loading states across all screens
+- [X] T126 [P] Implement image lazy loading across all screens
+- [X] T127 [P] Add Redux Persist for offline support
+- [X] T128 [P] Optimize FlashList rendering for long lists (matches, messages, connections)
+- [X] T129 [P] Add skeleton screens for loading states across all screens
 
 ### Error Handling
 
