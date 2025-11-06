@@ -62,7 +62,7 @@ export const SetSobrietyDateScreen = ({ navigation, route }: any) => {
         start_date: startDate.toISOString().split('T')[0], // YYYY-MM-DD format
       }).unwrap();
 
-      router.push('SobrietyDashboard');
+      router.push('/(tabs)/sobriety');
     } catch (err: any) {
       setError(err?.data?.message || 'Failed to set sobriety date');
     }

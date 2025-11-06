@@ -90,7 +90,7 @@ export const LogRelapseScreen = ({ navigation }: any) => {
         [
           {
             text: 'OK',
-            onPress: () => router.push('SobrietyDashboard'),
+            onPress: () => router.push('/(tabs)/sobriety'),
           },
         ]
       );

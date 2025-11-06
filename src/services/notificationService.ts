@@ -188,40 +188,40 @@ class NotificationService {
     switch (data.type) {
       case 'new_message':
         if (data.connection_id) {
-          this.navigationRef.navigate('MessageThread', {
-            connectionId: data.connection_id,
+          this.navigationRef.navigate('/(tabs)/messages/[id]', {
+            id: data.connection_id,
           });
         }
         break;
 
       case 'connection_request':
-        this.navigationRef.navigate('ConnectionRequests');
+        this.navigationRef.navigate('/(tabs)/connections/pending');
         break;
 
       case 'check_in_reminder':
         if (data.entity_id) {
-          this.navigationRef.navigate('CheckInResponse', {
+          this.navigationRef.navigate('/(tabs)/check-ins/response', {
             checkinId: data.entity_id,
           });
         }
         break;
 
       case 'milestone_achieved':
-        this.navigationRef.navigate('SobrietyDashboard');
+        this.navigationRef.navigate('/(tabs)/sobriety');
         break;
 
       case 'step_work_comment':
       case 'step_work_reviewed':
         if (data.step_id) {
-          this.navigationRef.navigate('StepWork', {
-            stepId: data.step_id,
+          this.navigationRef.navigate('/(tabs)/steps/work/[id]', {
+            id: data.step_id,
           });
         }
         break;
 
       case 'step_work_submitted':
         if (data.step_id && data.entity_id) {
-          this.navigationRef.navigate('SponsorReview', {
+          this.navigationRef.navigate('/(tabs)/reviews/sponsor', {
             stepWorkId: data.entity_id,
             sponseeId: data.connection_id || '',
           });

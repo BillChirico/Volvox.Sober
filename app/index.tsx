@@ -36,11 +36,12 @@ export default function Index() {
     return <Redirect href="/(auth)/login" />;
   }
 
-  // Wait for onboarding progress to load
+  // If no onboarding progress after authenticated, start onboarding
+  // Note: The fetchOnboardingProgress will try to create a record if none exists
+  // If it fails to create or load, we should still redirect to onboarding to start fresh
   if (!onboardingProgress && user?.id) {
-    console.log('[Index] Waiting for onboarding progress to load');
-    // Loading state - could show a splash screen here
-    return null;
+    console.log('[Index] No onboarding progress found, redirecting to onboarding start');
+    return <Redirect href="/(onboarding)/welcome" />;
   }
 
   // Check if user needs to complete onboarding
