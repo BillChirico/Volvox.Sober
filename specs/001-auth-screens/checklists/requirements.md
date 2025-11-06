@@ -48,11 +48,13 @@
 ✅ **No clarification markers**: Specification makes informed decisions on all aspects (email/password auth, 8-character passwords, 24-hour token expiry, email verification required, etc.).
 
 ✅ **Testable requirements**: All FR items are testable:
+
 - FR-003: "minimum 8 characters, at least one letter and one number" - verifiable
 - FR-009: "expire password reset links after 24 hours" - testable
 - FR-018: "meet accessibility standards (WCAG 2.1 AA)" - measurable
 
 ✅ **Measurable success criteria**: All SC items have specific metrics:
+
 - SC-001: "under 2 minutes" - time-based
 - SC-002: "95% of login attempts...within 3 seconds" - percentage + time
 - SC-011: "100% of interactive elements have minimum 44x44pt touch targets" - percentage + pixel measurement

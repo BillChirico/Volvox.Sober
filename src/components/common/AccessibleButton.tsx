@@ -40,22 +40,14 @@ export const AccessibleButton: React.FC<AccessibleButtonProps> = ({
 
   return (
     <View
-      style={[
-        enforceMinTouchTarget && styles.touchTargetWrapper,
-        { minHeight: minTouchTarget },
-      ]}
-    >
+      style={[enforceMinTouchTarget && styles.touchTargetWrapper, { minHeight: minTouchTarget }]}>
       <Button
         {...rest}
         style={[enforceMinTouchTarget && { minHeight: minTouchTarget }, style]}
-        contentStyle={[
-          enforceMinTouchTarget && { minHeight: minTouchTarget },
-          contentStyle,
-        ]}
+        contentStyle={[enforceMinTouchTarget && { minHeight: minTouchTarget }, contentStyle]}
         accessibilityLabel={accessibilityLabel || String(children)}
         accessibilityHint={accessibilityHint || 'Double tap to activate'}
-        accessibilityRole="button"
-      >
+        accessibilityRole="button">
         {children}
       </Button>
     </View>

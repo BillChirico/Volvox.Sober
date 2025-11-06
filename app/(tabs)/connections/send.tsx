@@ -63,8 +63,7 @@ const SendRequestScreen: React.FC = () => {
   return (
     <KeyboardAvoidingView
       style={styles.container}
-      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-    >
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
       <ScrollView contentContainerStyle={styles.scrollContent}>
         <Surface style={styles.surface}>
           {/* Sponsor Info */}
@@ -104,11 +103,7 @@ const SendRequestScreen: React.FC = () => {
 
             <Text
               variant="bodySmall"
-              style={[
-                styles.characterCount,
-                isOverLimit && styles.characterCountError,
-              ]}
-            >
+              style={[styles.characterCount, isOverLimit && styles.characterCountError]}>
               {characterCount} / {maxCharacters} characters
             </Text>
           </View>
@@ -135,8 +130,7 @@ const SendRequestScreen: React.FC = () => {
               mode="outlined"
               onPress={() => router.back()}
               style={styles.cancelButton}
-              disabled={isLoading}
-            >
+              disabled={isLoading}>
               Cancel
             </Button>
 
@@ -146,8 +140,7 @@ const SendRequestScreen: React.FC = () => {
               style={styles.sendButton}
               loading={isLoading}
               disabled={isLoading || isOverLimit}
-              icon="send"
-            >
+              icon="send">
               Send Request
             </Button>
           </View>
@@ -167,94 +160,94 @@ const SendRequestScreen: React.FC = () => {
         action={{
           label: 'OK',
           onPress: () => setSnackbarVisible(false),
-        }}
-      >
+        }}>
         {snackbarMessage}
       </Snackbar>
     </KeyboardAvoidingView>
   );
 };
 
-const createStyles = (theme: any) => StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#f5f5f5',
-  },
-  scrollContent: {
-    flexGrow: 1,
-  },
-  surface: {
-    margin: 16,
-    padding: 24,
-    borderRadius: 8,
-    elevation: 2,
-  },
-  sponsorInfo: {
-    alignItems: 'center',
-    marginBottom: 24,
-  },
-  sponsorName: {
-    marginTop: 16,
-    marginBottom: 8,
-    fontWeight: 'bold',
-    textAlign: 'center',
-  },
-  subtitle: {
-    textAlign: 'center',
-    color: theme.colors.onSurfaceVariant,
-  },
-  messageSection: {
-    marginBottom: 24,
-  },
-  sectionTitle: {
-    fontWeight: 'bold',
-    marginBottom: 4,
-  },
-  hint: {
-    color: theme.colors.onSurfaceVariant,
-    marginBottom: 12,
-  },
-  textInput: {
-    marginBottom: 8,
-  },
-  characterCount: {
-    textAlign: 'right',
-    color: theme.colors.onSurfaceVariant,
-  },
-  characterCountError: {
-    color: '#d32f2f',
-  },
-  guidelines: {
-    backgroundColor: '#e3f2fd',
-    padding: 16,
-    borderRadius: 8,
-    marginBottom: 24,
-  },
-  guidelinesTitle: {
-    fontWeight: 'bold',
-    marginBottom: 8,
-    color: '#1976d2',
-  },
-  guidelineItem: {
-    marginBottom: 4,
-    color: '#555',
-  },
-  actions: {
-    flexDirection: 'row',
-    gap: 12,
-    marginBottom: 16,
-  },
-  cancelButton: {
-    flex: 1,
-  },
-  sendButton: {
-    flex: 1,
-  },
-  infoNote: {
-    textAlign: 'center',
-    color: '#999',
-    fontStyle: 'italic',
-  },
-});
+const createStyles = (theme: any) =>
+  StyleSheet.create({
+    container: {
+      flex: 1,
+      backgroundColor: '#f5f5f5',
+    },
+    scrollContent: {
+      flexGrow: 1,
+    },
+    surface: {
+      margin: 16,
+      padding: 24,
+      borderRadius: 8,
+      elevation: 2,
+    },
+    sponsorInfo: {
+      alignItems: 'center',
+      marginBottom: 24,
+    },
+    sponsorName: {
+      marginTop: 16,
+      marginBottom: 8,
+      fontWeight: 'bold',
+      textAlign: 'center',
+    },
+    subtitle: {
+      textAlign: 'center',
+      color: theme.colors.onSurfaceVariant,
+    },
+    messageSection: {
+      marginBottom: 24,
+    },
+    sectionTitle: {
+      fontWeight: 'bold',
+      marginBottom: 4,
+    },
+    hint: {
+      color: theme.colors.onSurfaceVariant,
+      marginBottom: 12,
+    },
+    textInput: {
+      marginBottom: 8,
+    },
+    characterCount: {
+      textAlign: 'right',
+      color: theme.colors.onSurfaceVariant,
+    },
+    characterCountError: {
+      color: '#d32f2f',
+    },
+    guidelines: {
+      backgroundColor: '#e3f2fd',
+      padding: 16,
+      borderRadius: 8,
+      marginBottom: 24,
+    },
+    guidelinesTitle: {
+      fontWeight: 'bold',
+      marginBottom: 8,
+      color: '#1976d2',
+    },
+    guidelineItem: {
+      marginBottom: 4,
+      color: '#555',
+    },
+    actions: {
+      flexDirection: 'row',
+      gap: 12,
+      marginBottom: 16,
+    },
+    cancelButton: {
+      flex: 1,
+    },
+    sendButton: {
+      flex: 1,
+    },
+    infoNote: {
+      textAlign: 'center',
+      color: '#999',
+      fontStyle: 'italic',
+    },
+  });
 
 export default SendRequestScreen;

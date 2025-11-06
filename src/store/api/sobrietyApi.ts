@@ -12,7 +12,7 @@ export const sobrietyApi = createApi({
   reducerPath: 'sobrietyApi',
   baseQuery: fakeBaseQuery(),
   tagTypes: ['SobrietyStats', 'Relapses'],
-  endpoints: (builder) => ({
+  endpoints: builder => ({
     // Get sobriety stats for current user (T098)
     getSobrietyStats: builder.query<SobrietyStats | null, void>({
       queryFn: async () => {
@@ -50,7 +50,7 @@ export const sobrietyApi = createApi({
 
     // Get sobriety stats for a connected user (sponsor/sponsee view) (T094)
     getConnectedUserSobrietyStats: builder.query<SobrietyStats | null, string>({
-      queryFn: async (userId) => {
+      queryFn: async userId => {
         try {
           const {
             data: { user },
@@ -187,7 +187,7 @@ export const sobrietyApi = createApi({
 
     // Get relapse history for current user
     getMyRelapses: builder.query<Relapse[], string>({
-      queryFn: async (sobrietyDateId) => {
+      queryFn: async sobrietyDateId => {
         try {
           const {
             data: { user },
@@ -217,7 +217,7 @@ export const sobrietyApi = createApi({
 
     // Get relapse history for connected user (sponsor view - NO private notes)
     getConnectedUserRelapses: builder.query<Omit<Relapse, 'private_note'>[], string>({
-      queryFn: async (sobrietyDateId) => {
+      queryFn: async sobrietyDateId => {
         try {
           const {
             data: { user },
@@ -231,7 +231,9 @@ export const sobrietyApi = createApi({
           // IMPORTANT: Explicitly exclude private_note to comply with privacy requirements
           const { data, error } = await supabaseClient
             .from('relapses')
-            .select('id, sobriety_date_id, relapse_date, trigger_context, sponsor_notified, created_at')
+            .select(
+              'id, sobriety_date_id, relapse_date, trigger_context, sponsor_notified, created_at',
+            )
             .eq('sobriety_date_id', sobrietyDateId)
             .order('relapse_date', { ascending: false });
 

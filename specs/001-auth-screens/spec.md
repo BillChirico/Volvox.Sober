@@ -5,7 +5,7 @@
 **Status**: Draft
 **Input**: User description: "Add a login and signup screen that uses supabase authentication"
 
-## User Scenarios & Testing *(mandatory)*
+## User Scenarios & Testing _(mandatory)_
 
 ### User Story 1 - New User Registration (Priority: P1)
 
@@ -88,7 +88,7 @@ Users need to easily move between login, signup, and password recovery screens b
 - What happens when a user's session expires while using the app? (Redirect to login screen with message "Your session has expired. Please login again")
 - What happens when a user tries to use a password reset link that was already used? (Show error: "This reset link has already been used. Please request a new one if needed")
 
-## Requirements *(mandatory)*
+## Requirements _(mandatory)_
 
 ### Functional Requirements
 
@@ -135,7 +135,7 @@ Users need to easily move between login, signup, and password recovery screens b
   - Expiration timestamp (24 hours from creation)
   - Usage status (unused/used/expired)
 
-## Success Criteria *(mandatory)*
+## Success Criteria _(mandatory)_
 
 ### Measurable Outcomes
 

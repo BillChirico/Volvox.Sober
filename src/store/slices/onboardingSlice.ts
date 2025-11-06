@@ -60,11 +60,12 @@ const onboardingSlice = createSlice({
     setCurrentStep: (state, action: PayloadAction<number>) => {
       state.currentStep = action.payload;
     },
-    resetOnboarding: (state) => {
+    resetOnboarding: state => {
       return initialState;
     },
   },
 });
 
-export const { setRole, updateProfileData, setCurrentStep, resetOnboarding } = onboardingSlice.actions;
+export const { setRole, updateProfileData, setCurrentStep, resetOnboarding } =
+  onboardingSlice.actions;
 export default onboardingSlice.reducer;

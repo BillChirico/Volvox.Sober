@@ -1,9 +1,4 @@
-export type ConnectionStatus =
-  | 'pending'
-  | 'accepted'
-  | 'declined'
-  | 'blocked'
-  | 'removed';
+export type ConnectionStatus = 'pending' | 'accepted' | 'declined' | 'blocked' | 'removed';
 
 export interface Connection {
   id: string;

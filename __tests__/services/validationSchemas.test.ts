@@ -31,7 +31,7 @@ describe('Validation Schemas', () => {
       };
 
       await expect(loginSchema.validate(invalidData)).rejects.toThrow(
-        'Please enter a valid email address'
+        'Please enter a valid email address',
       );
     });
 
@@ -63,7 +63,7 @@ describe('Validation Schemas', () => {
       };
 
       await expect(signupSchema.validate(invalidData)).rejects.toThrow(
-        'Password must be at least 8 characters'
+        'Password must be at least 8 characters',
       );
     });
 
@@ -75,7 +75,7 @@ describe('Validation Schemas', () => {
       };
 
       await expect(signupSchema.validate(invalidData)).rejects.toThrow(
-        'Password must contain at least one lowercase letter'
+        'Password must contain at least one lowercase letter',
       );
     });
 
@@ -87,7 +87,7 @@ describe('Validation Schemas', () => {
       };
 
       await expect(signupSchema.validate(invalidData)).rejects.toThrow(
-        'Password must contain at least one uppercase letter'
+        'Password must contain at least one uppercase letter',
       );
     });
 
@@ -99,7 +99,7 @@ describe('Validation Schemas', () => {
       };
 
       await expect(signupSchema.validate(invalidData)).rejects.toThrow(
-        'Password must contain at least one number'
+        'Password must contain at least one number',
       );
     });
 
@@ -111,7 +111,7 @@ describe('Validation Schemas', () => {
       };
 
       await expect(signupSchema.validate(invalidData)).rejects.toThrow(
-        'Password must contain at least one special character'
+        'Password must contain at least one special character',
       );
     });
 
@@ -132,7 +132,7 @@ describe('Validation Schemas', () => {
       };
 
       await expect(signupSchema.validate(invalidData)).rejects.toThrow(
-        'Please confirm your password'
+        'Please confirm your password',
       );
     });
   });
@@ -158,7 +158,7 @@ describe('Validation Schemas', () => {
       };
 
       await expect(passwordResetSchema.validate(invalidData)).rejects.toThrow(
-        'Please enter a valid email address'
+        'Please enter a valid email address',
       );
     });
   });
@@ -180,7 +180,7 @@ describe('Validation Schemas', () => {
       };
 
       await expect(updatePasswordSchema.validate(invalidData)).rejects.toThrow(
-        'Password must be at least 8 characters'
+        'Password must be at least 8 characters',
       );
     });
 
@@ -191,7 +191,7 @@ describe('Validation Schemas', () => {
       };
 
       await expect(updatePasswordSchema.validate(invalidData)).rejects.toThrow(
-        'Passwords must match'
+        'Passwords must match',
       );
     });
 
@@ -201,7 +201,7 @@ describe('Validation Schemas', () => {
       };
 
       await expect(updatePasswordSchema.validate(invalidData)).rejects.toThrow(
-        'Please confirm your new password'
+        'Please confirm your new password',
       );
     });
   });

@@ -55,13 +55,11 @@ const PasswordInput: React.FC<PasswordInputProps> = ({
   const theme = useTheme();
 
   const togglePasswordVisibility = () => {
-    setIsPasswordVisible((prev) => !prev);
+    setIsPasswordVisible(prev => !prev);
   };
 
   const iconName = isPasswordVisible ? 'eye-off' : 'eye';
-  const toggleAccessibilityLabel = isPasswordVisible
-    ? 'Hide password'
-    : 'Show password';
+  const toggleAccessibilityLabel = isPasswordVisible ? 'Hide password' : 'Show password';
   const toggleAccessibilityHint = isPasswordVisible
     ? 'Double tap to hide your password'
     : 'Double tap to show your password';
@@ -94,10 +92,7 @@ const PasswordInput: React.FC<PasswordInputProps> = ({
             accessibilityRole="button"
           />
         }
-        style={[
-          styles.input,
-          { backgroundColor: theme.colors.surface },
-        ]}
+        style={[styles.input, { backgroundColor: theme.colors.surface }]}
       />
       {helperText && (
         <HelperText type={error ? 'error' : 'info'} visible={!!helperText}>

@@ -71,7 +71,7 @@ const ForgotPasswordForm: React.FC<ForgotPasswordFormProps> = ({
         setError('');
         setSuccess('');
       };
-    }, [])
+    }, []),
   );
 
   const validateEmailForm = async (): Promise<boolean> => {
@@ -83,7 +83,7 @@ const ForgotPasswordForm: React.FC<ForgotPasswordFormProps> = ({
       const validationError = err as ValidationError;
       const errors: Record<string, string> = {};
 
-      validationError.inner.forEach((error) => {
+      validationError.inner.forEach(error => {
         if (error.path) {
           errors[error.path] = error.message;
         }
@@ -98,7 +98,7 @@ const ForgotPasswordForm: React.FC<ForgotPasswordFormProps> = ({
     try {
       await updatePasswordSchema.validate(
         { newPassword, confirmNewPassword: confirmPassword },
-        { abortEarly: false }
+        { abortEarly: false },
       );
       setValidationErrors({});
       return true;
@@ -106,7 +106,7 @@ const ForgotPasswordForm: React.FC<ForgotPasswordFormProps> = ({
       const validationError = err as ValidationError;
       const errors: Record<string, string> = {};
 
-      validationError.inner.forEach((error) => {
+      validationError.inner.forEach(error => {
         if (error.path) {
           // Map confirmNewPassword back to confirmPassword for consistency
           const path = error.path === 'confirmNewPassword' ? 'confirmPassword' : error.path;
@@ -137,7 +137,7 @@ const ForgotPasswordForm: React.FC<ForgotPasswordFormProps> = ({
       } else {
         // Generic success message (FR-011) - don't reveal if email exists
         setSuccess(
-          'If an account exists with this email, you will receive a password reset link shortly. Please check your inbox and spam folder.'
+          'If an account exists with this email, you will receive a password reset link shortly. Please check your inbox and spam folder.',
         );
         setEmail('');
 
@@ -172,7 +172,7 @@ const ForgotPasswordForm: React.FC<ForgotPasswordFormProps> = ({
         const errorMessage = updateError.message.toLowerCase();
         if (errorMessage.includes('expired') || errorMessage.includes('invalid')) {
           setError(
-            'This reset link has expired or is invalid. Please request a new password reset link.'
+            'This reset link has expired or is invalid. Please request a new password reset link.',
           );
         } else {
           setError('Unable to update password. Please try again.');
@@ -201,22 +201,17 @@ const ForgotPasswordForm: React.FC<ForgotPasswordFormProps> = ({
       testID="forgot-password-form"
       accessibilityLabel={
         isPasswordUpdateMode ? 'Update password form' : 'Password reset request form'
-      }
-    >
-      <Text
-        variant="headlineLarge"
-        style={[styles.title, { color: theme.colors.onBackground }]}
-      >
+      }>
+      <Text variant="headlineLarge" style={[styles.title, { color: theme.colors.onBackground }]}>
         {isPasswordUpdateMode ? 'Set New Password' : 'Reset Password'}
       </Text>
 
       <Text
         variant="bodyMedium"
-        style={[styles.description, { color: theme.colors.onSurfaceVariant }]}
-      >
+        style={[styles.description, { color: theme.colors.onSurfaceVariant }]}>
         {isPasswordUpdateMode
           ? 'Enter your new password below.'
-          : 'Enter your email address and we\'ll send you a link to reset your password.'}
+          : "Enter your email address and we'll send you a link to reset your password."}
       </Text>
 
       {/* Display error message */}
@@ -224,15 +219,12 @@ const ForgotPasswordForm: React.FC<ForgotPasswordFormProps> = ({
 
       {/* Display success message */}
       {success && (
-        <View
-          style={[styles.successContainer, { backgroundColor: theme.colors.primaryContainer }]}
-        >
+        <View style={[styles.successContainer, { backgroundColor: theme.colors.primaryContainer }]}>
           <Text
             variant="bodyMedium"
             style={{ color: theme.colors.onPrimaryContainer }}
             accessibilityLiveRegion="polite"
-            accessibilityRole="alert"
-          >
+            accessibilityRole="alert">
             {success}
           </Text>
         </View>
@@ -263,8 +255,7 @@ const ForgotPasswordForm: React.FC<ForgotPasswordFormProps> = ({
               variant="bodySmall"
               style={[styles.validationError, { color: theme.colors.error }]}
               accessibilityLiveRegion="polite"
-              accessibilityRole="alert"
-            >
+              accessibilityRole="alert">
               {validationErrors.email}
             </Text>
           )}
@@ -278,8 +269,7 @@ const ForgotPasswordForm: React.FC<ForgotPasswordFormProps> = ({
             testID="reset-request-button"
             accessibilityRole="button"
             accessibilityLabel="Send reset link"
-            accessibilityHint="Request a password reset email"
-          >
+            accessibilityHint="Request a password reset email">
             Send Reset Link
           </Button>
         </>
@@ -303,8 +293,7 @@ const ForgotPasswordForm: React.FC<ForgotPasswordFormProps> = ({
               variant="bodySmall"
               style={[styles.validationError, { color: theme.colors.error }]}
               accessibilityLiveRegion="polite"
-              accessibilityRole="alert"
-            >
+              accessibilityRole="alert">
               {validationErrors.newPassword}
             </Text>
           )}
@@ -329,8 +318,7 @@ const ForgotPasswordForm: React.FC<ForgotPasswordFormProps> = ({
               variant="bodySmall"
               style={[styles.validationError, { color: theme.colors.error }]}
               accessibilityLiveRegion="polite"
-              accessibilityRole="alert"
-            >
+              accessibilityRole="alert">
               {validationErrors.confirmPassword}
             </Text>
           )}
@@ -344,8 +332,7 @@ const ForgotPasswordForm: React.FC<ForgotPasswordFormProps> = ({
             testID="update-password-button"
             accessibilityRole="button"
             accessibilityLabel="Update password"
-            accessibilityHint="Save your new password"
-          >
+            accessibilityHint="Save your new password">
             Update Password
           </Button>
         </>

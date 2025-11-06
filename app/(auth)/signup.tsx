@@ -38,8 +38,7 @@ export default function SignupScreen() {
             mode="text"
             testID="login-link"
             accessibilityRole="link"
-            accessibilityLabel="Already have an account? Login"
-          >
+            accessibilityLabel="Already have an account? Login">
             Already have an account? Login
           </Button>
         </Link>

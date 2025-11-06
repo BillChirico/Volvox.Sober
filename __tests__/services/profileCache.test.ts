@@ -47,7 +47,7 @@ describe('Profile Cache Service', () => {
 
       expect(AsyncStorage.setItem).toHaveBeenCalledWith(
         `profile:${mockUserId}`,
-        expect.stringContaining('"id":"123e4567-e89b-12d3-a456-426614174000"')
+        expect.stringContaining('"id":"123e4567-e89b-12d3-a456-426614174000"'),
       );
 
       const callArgs = (AsyncStorage.setItem as jest.Mock).mock.calls[0][1];

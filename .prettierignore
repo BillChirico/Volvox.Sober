@@ -1,27 +1,39 @@
 # Dependencies
 node_modules/
+.pnpm-store/
 
 # Build outputs
 dist/
 build/
 web-build/
+*.tsbuildinfo
+
+# Generated files
 .expo/
 .expo-shared/
+expo-env.d.ts
+*.d.ts
+
+# Native builds
+ios/
+ios/build/
+ios/Pods/
+android/
+android/app/build/
+android/.gradle/
+android/build/
 
 # Coverage
 coverage/
 .nyc_output/
 
-# Native builds
-ios/build/
-ios/Pods/
-android/app/build/
-android/.gradle/
-android/build/
+# Logs
+*.log
+npm-debug.log*
 
-# Generated files
-expo-env.d.ts
-*.d.ts
+# IDE
+.vscode/
+.idea/
 
 # Serena
 .serena/
@@ -34,3 +46,6 @@ pnpm-lock.yaml
 # Markdown (keep user docs formatted)
 !README.md
 !CLAUDE.md
+
+# Problematic YAML files (Prettier parser errors)
+specs/001-auth-screens/contracts/auth.yaml

@@ -32,7 +32,7 @@ export const matchingApi = createApi({
   reducerPath: 'matchingApi',
   baseQuery: fakeBaseQuery(),
   tagTypes: ['Matches'],
-  endpoints: (builder) => ({
+  endpoints: builder => ({
     getMatches: builder.query<MatchesResponse, string>({
       queryFn: async (userId: string) => {
         try {

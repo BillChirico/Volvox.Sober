@@ -27,11 +27,7 @@ class OfflineMessageQueue {
   /**
    * Add message to offline queue
    */
-  async enqueue(
-    connectionId: string,
-    recipientId: string,
-    messageText: string
-  ): Promise<string> {
+  async enqueue(connectionId: string, recipientId: string, messageText: string): Promise<string> {
     const queueKey = `${QUEUE_KEY_PREFIX}${connectionId}`;
 
     // Get existing queue
@@ -135,7 +131,7 @@ class OfflineMessageQueue {
    */
   async syncConnection(
     connectionId: string,
-    sendFn: (recipientId: string, messageText: string) => Promise<void>
+    sendFn: (recipientId: string, messageText: string) => Promise<void>,
   ): Promise<{ successful: number; failed: number }> {
     const queue = await this.getQueue(connectionId);
 
@@ -180,7 +176,7 @@ class OfflineMessageQueue {
    * Sync all queued messages across all connections
    */
   async syncAll(
-    sendFn: (connectionId: string, recipientId: string, messageText: string) => Promise<void>
+    sendFn: (connectionId: string, recipientId: string, messageText: string) => Promise<void>,
   ): Promise<{ total: number; successful: number; failed: number }> {
     if (this.syncInProgress) {
       console.warn('Sync already in progress');
@@ -235,7 +231,7 @@ class OfflineMessageQueue {
    * Check if online and trigger sync
    */
   async checkAndSync(
-    sendFn: (connectionId: string, recipientId: string, messageText: string) => Promise<void>
+    sendFn: (connectionId: string, recipientId: string, messageText: string) => Promise<void>,
   ): Promise<void> {
     const netInfo = await NetInfo.fetch();
 
@@ -248,7 +244,7 @@ class OfflineMessageQueue {
    * Setup auto-sync on network reconnect
    */
   setupAutoSync(
-    sendFn: (connectionId: string, recipientId: string, messageText: string) => Promise<void>
+    sendFn: (connectionId: string, recipientId: string, messageText: string) => Promise<void>,
   ): () => void {
     const unsubscribe = NetInfo.addEventListener(state => {
       if (state.isConnected && !this.syncInProgress) {

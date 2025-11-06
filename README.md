@@ -24,6 +24,7 @@ Volvox.Sober is a sobriety companion app that connects individuals in recovery w
 ## Tech Stack
 
 ### Frontend
+
 - **Expo 54.x** - Universal app platform (iOS, Android, Web)
 - **Expo Router 4.x** - File-based routing (like Next.js)
 - **React Native 0.81+** - Cross-platform native framework
@@ -33,6 +34,7 @@ Volvox.Sober is a sobriety companion app that connects individuals in recovery w
 - **Yup** - Form validation
 
 ### Backend
+
 - **Supabase** - Backend-as-a-Service
 - **PostgreSQL 15+** - Database with RLS
 - **Supabase Auth** - Authentication (GoTrue)
@@ -40,6 +42,7 @@ Volvox.Sober is a sobriety companion app that connects individuals in recovery w
 - **Realtime** - WebSocket subscriptions
 
 ### Testing
+
 - **Jest** - Unit and integration tests
 - **React Native Testing Library** - Component testing
 - **Playwright** - End-to-end testing
@@ -140,6 +143,7 @@ volvox-sober/
 ### Platform-Specific Code
 
 Expo supports platform-specific files using extensions:
+
 - `Component.tsx` - Shared across all platforms
 - `Component.ios.tsx` - iOS-specific override
 - `Component.android.tsx` - Android-specific override

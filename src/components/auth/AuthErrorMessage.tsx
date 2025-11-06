@@ -46,7 +46,7 @@ const AuthErrorMessage: React.FC<AuthErrorMessageProps> = ({
 
   // Filter out empty messages
   const validMessages = messages.filter(
-    (msg) => msg && typeof msg === 'string' && msg.trim().length > 0
+    msg => msg && typeof msg === 'string' && msg.trim().length > 0,
   );
 
   if (validMessages.length === 0) {
@@ -66,8 +66,7 @@ const AuthErrorMessage: React.FC<AuthErrorMessageProps> = ({
       ]}
       accessibilityLiveRegion="polite"
       accessibilityRole="alert"
-      accessible={true}
-    >
+      accessible={true}>
       {/* Error icon */}
       <View style={styles.iconContainer} testID="error-icon">
         <Text style={{ color: theme.colors.error, fontSize: 20 }}>⚠️</Text>
@@ -78,12 +77,8 @@ const AuthErrorMessage: React.FC<AuthErrorMessageProps> = ({
         {validMessages.map((msg, index) => (
           <Text
             key={index}
-            style={[
-              styles.messageText,
-              { color: theme.colors.onErrorContainer },
-            ]}
-            variant="bodyMedium"
-          >
+            style={[styles.messageText, { color: theme.colors.onErrorContainer }]}
+            variant="bodyMedium">
             {msg}
           </Text>
         ))}

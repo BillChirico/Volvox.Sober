@@ -17,7 +17,7 @@ jest.mock('../../../src/services/authService', () => ({
 
 // Mock navigation
 jest.mock('@react-navigation/native', () => ({
-  useFocusEffect: jest.fn((callback) => callback()),
+  useFocusEffect: jest.fn(callback => callback()),
 }));
 
 describe('LoginForm', () => {
@@ -41,7 +41,7 @@ describe('LoginForm', () => {
     return render(
       <Provider store={store}>
         <LoginForm {...defaultProps} {...props} />
-      </Provider>
+      </Provider>,
     );
   };
 
@@ -182,7 +182,7 @@ describe('LoginForm', () => {
       // Dispatch successful login
       await act(async () => {
         await store.dispatch(
-          loginThunk({ email: 'test@example.com', password: 'Password123!' }) as any
+          loginThunk({ email: 'test@example.com', password: 'Password123!' }) as any,
         );
       });
 
@@ -205,7 +205,7 @@ describe('LoginForm', () => {
       // Simulate successful login by dispatching success
       await act(async () => {
         await store.dispatch(
-          loginThunk({ email: 'test@example.com', password: 'Password123!' }) as any
+          loginThunk({ email: 'test@example.com', password: 'Password123!' }) as any,
         );
       });
 
@@ -356,7 +356,7 @@ describe('LoginForm', () => {
 
       // Dispatch login thunk
       const loginPromise = store.dispatch(
-        loginThunk({ email: 'test@example.com', password: 'Password123!' }) as any
+        loginThunk({ email: 'test@example.com', password: 'Password123!' }) as any,
       );
 
       // During loading, inputs should be disabled
@@ -449,7 +449,7 @@ describe('LoginForm', () => {
       // Dispatch login action to trigger loading
       await act(async () => {
         await store.dispatch(
-          loginThunk({ email: 'test@example.com', password: 'Password123!' }) as any
+          loginThunk({ email: 'test@example.com', password: 'Password123!' }) as any,
         );
       });
 

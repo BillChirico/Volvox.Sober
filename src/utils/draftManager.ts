@@ -86,7 +86,7 @@ class DraftManager {
   async getAllDraftKeys(): Promise<string[]> {
     try {
       const allKeys = await AsyncStorage.getAllKeys();
-      return allKeys.filter((key) => key.startsWith(DRAFT_KEY_PREFIX));
+      return allKeys.filter(key => key.startsWith(DRAFT_KEY_PREFIX));
     } catch (error) {
       console.error('Failed to get draft keys:', error);
       return [];
@@ -109,7 +109,7 @@ class DraftManager {
    * Get draft metadata (when it was saved)
    */
   async getDraftMetadata(
-    stepId: string
+    stepId: string,
   ): Promise<{ savedAt: string; responses: DraftData } | null> {
     try {
       const key = this.getKey(stepId);

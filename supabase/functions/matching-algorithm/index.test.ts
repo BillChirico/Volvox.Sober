@@ -6,12 +6,7 @@ import { assertEquals, assertAlmostEquals } from 'https://deno.land/std@0.168.0/
 /**
  * Calculate distance in miles between two lat/lng coordinates
  */
-function calculateDistance(
-  lat1: number,
-  lng1: number,
-  lat2: number,
-  lng2: number
-): number {
+function calculateDistance(lat1: number, lng1: number, lat2: number, lng2: number): number {
   const R = 3959; // Earth's radius in miles
   const dLat = (lat2 - lat1) * (Math.PI / 180);
   const dLng = (lng2 - lng1) * (Math.PI / 180);
@@ -33,7 +28,7 @@ function scoreLocation(
   sponsorCity: string,
   sponsorState: string,
   sponsorLat: number,
-  sponsorLng: number
+  sponsorLng: number,
 ): number {
   const distance = calculateDistance(sponseeLat, sponseeLng, sponsorLat, sponsorLng);
 
@@ -69,19 +64,15 @@ function scoreApproach(sponseePreferences: string, sponsorApproach: string): num
       .toLowerCase()
       .replace(/[^\w\s]/g, '')
       .split(/\s+/)
-      .filter((word) => word.length > 2);
+      .filter(word => word.length > 2);
   };
 
   const sponseeTokens = tokenize(sponseePreferences);
   const sponsorTokens = tokenize(sponsorApproach);
 
   const vocabulary = Array.from(new Set([...sponseeTokens, ...sponsorTokens]));
-  const sponseeVector = vocabulary.map((word) =>
-    sponseeTokens.filter((t) => t === word).length
-  );
-  const sponsorVector = vocabulary.map((word) =>
-    sponsorTokens.filter((t) => t === word).length
-  );
+  const sponseeVector = vocabulary.map(word => sponseeTokens.filter(t => t === word).length);
+  const sponsorVector = vocabulary.map(word => sponsorTokens.filter(t => t === word).length);
 
   const dotProduct = sponseeVector.reduce((sum, val, i) => sum + val * sponsorVector[i], 0);
   const sponseeMag = Math.sqrt(sponseeVector.reduce((sum, val) => sum + val * val, 0));
@@ -113,7 +104,7 @@ Deno.test('scoreLocation - same city (< 10 miles)', () => {
     'San Francisco',
     'CA',
     37.7849,
-    -122.4094
+    -122.4094,
   );
   assertEquals(score, 25);
 });
@@ -127,7 +118,7 @@ Deno.test('scoreLocation - same state (< 100 miles)', () => {
     'Oakland',
     'CA',
     37.8044,
-    -122.2712
+    -122.2712,
   );
   assertEquals(score, 15);
 });
@@ -141,7 +132,7 @@ Deno.test('scoreLocation - within 100 miles', () => {
     'San Jose',
     'CA',
     37.3382,
-    -121.8863
+    -121.8863,
   );
   assertEquals(score, 15); // Same state, < 100 miles
 });
@@ -155,7 +146,7 @@ Deno.test('scoreLocation - far away (> 100 miles)', () => {
     'Los Angeles',
     'CA',
     34.0522,
-    -118.2437
+    -118.2437,
   );
   assertEquals(score, 0);
 });
@@ -232,29 +223,52 @@ Deno.test('scoreExperience - sponsor has no experience', () => {
 
 // Integration Tests
 Deno.test('Full compatibility score - excellent match', () => {
-  const locationScore = scoreLocation('San Francisco', 'CA', 37.7749, -122.4194, 'San Francisco', 'CA', 37.7849, -122.4094);
+  const locationScore = scoreLocation(
+    'San Francisco',
+    'CA',
+    37.7749,
+    -122.4194,
+    'San Francisco',
+    'CA',
+    37.7849,
+    -122.4094,
+  );
   const programTypeScore = 25; // Same program
   const availabilityScore = scoreAvailability('3-5 days', 'Daily');
   const approachScore = scoreApproach(
     'I believe in working through the steps systematically',
-    'I use a systematic step-by-step approach'
+    'I use a systematic step-by-step approach',
   );
   const experienceScore = scoreExperience(12, 3);
 
-  const totalScore = locationScore + programTypeScore + availabilityScore + approachScore + experienceScore;
+  const totalScore =
+    locationScore + programTypeScore + availabilityScore + approachScore + experienceScore;
 
   // Should be a high score
   assertEquals(totalScore >= 80, true);
 });
 
 Deno.test('Full compatibility score - poor match', () => {
-  const locationScore = scoreLocation('San Francisco', 'CA', 37.7749, -122.4194, 'New York', 'NY', 40.7128, -74.0060);
+  const locationScore = scoreLocation(
+    'San Francisco',
+    'CA',
+    37.7749,
+    -122.4194,
+    'New York',
+    'NY',
+    40.7128,
+    -74.006,
+  );
   const programTypeScore = 0; // Different program
   const availabilityScore = scoreAvailability('Daily', '1-2 days');
-  const approachScore = scoreApproach('meditation and mindfulness', 'accountability and discipline');
+  const approachScore = scoreApproach(
+    'meditation and mindfulness',
+    'accountability and discipline',
+  );
   const experienceScore = scoreExperience(24, 1);
 
-  const totalScore = locationScore + programTypeScore + availabilityScore + approachScore + experienceScore;
+  const totalScore =
+    locationScore + programTypeScore + availabilityScore + approachScore + experienceScore;
 
   // Should be a low score
   assertEquals(totalScore <= 20, true);
