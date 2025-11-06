@@ -149,17 +149,17 @@ export const ProfileForm: React.FC<ProfileFormProps> = ({
       <View style={styles.chipContainer}>
         {RECOVERY_PROGRAMS.map((program) => (
           <Chip
-            key={program.value}
-            selected={formData.recovery_program === program.value}
-            onPress={() => updateField('recovery_program', program.value)}
+            key={program}
+            selected={formData.recovery_program === program}
+            onPress={() => updateField('recovery_program', program)}
             style={styles.chip}
             disabled={isSubmitting}
-            accessibilityLabel={`Select ${program.label}`}
+            accessibilityLabel={`Select ${program}`}
             accessibilityState={{
-              selected: formData.recovery_program === program.value,
+              selected: formData.recovery_program === program,
             }}
           >
-            {program.label}
+            {program}
           </Chip>
         ))}
       </View>
@@ -234,19 +234,19 @@ export const ProfileForm: React.FC<ProfileFormProps> = ({
         When are you typically available?
       </Text>
       <View style={styles.chipContainer}>
-        {AVAILABILITY_OPTIONS.map((option) => (
+        {[...AVAILABILITY_OPTIONS].map((option) => (
           <Chip
-            key={option.value}
-            selected={formData.availability?.includes(option.value) || false}
-            onPress={() => toggleAvailability(option.value)}
+            key={option}
+            selected={formData.availability?.includes(option) || false}
+            onPress={() => toggleAvailability(option)}
             style={styles.chip}
             disabled={isSubmitting}
-            accessibilityLabel={`Toggle ${option.label} availability`}
+            accessibilityLabel={`Toggle ${option} availability`}
             accessibilityState={{
-              selected: formData.availability?.includes(option.value) || false,
+              selected={formData.availability?.includes(option) || false,
             }}
           >
-            {option.label}
+            {option}
           </Chip>
         ))}
       </View>

@@ -2,7 +2,6 @@ import { useEffect } from 'react';
 import { useRouter, useSegments } from 'expo-router';
 import { useAppSelector } from '../store/hooks';
 import { selectIsAuthenticated, selectUser } from '../store/auth/authSelectors';
-import authService from '../services/authService';
 
 /**
  * useAuthRedirect Hook
@@ -40,40 +39,4 @@ export const useAuthRedirect = () => {
       }
     }
   }, [isAuthenticated, user, inAuthGroup, inTabsGroup, router]);
-};
-
-/**
- * useAuth Hook
- *
- * Provides convenient access to authentication state and operations.
- * Use this hook in components that need to check auth status or perform auth actions.
- *
- * @returns Object containing auth state and helper functions
- */
-export const useAuth = () => {
-  const isAuthenticated = useAppSelector(selectIsAuthenticated);
-  const user = useAppSelector(selectUser);
-  const loading = useAppSelector(state => state.auth.loading);
-  const error = useAppSelector(state => state.auth.error);
-
-  const isEmailVerified = user?.email_confirmed_at !== null;
-
-  /**
-   * Resend verification email to the current user
-   */
-  const resendVerificationEmail = async () => {
-    if (!user?.email) {
-      throw new Error('No user email available');
-    }
-    return await authService.resendVerification(user.email);
-  };
-
-  return {
-    isAuthenticated,
-    user,
-    loading,
-    error,
-    isEmailVerified,
-    resendVerificationEmail,
-  };
 };

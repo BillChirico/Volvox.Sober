@@ -19,14 +19,14 @@ export default function SponsorProfileScreen() {
   const router = useRouter();
   const { user } = useAuth();
   const { completeStep, complete, isSaving } = useOnboarding();
-  const { updateProfile, isUpdating, error: profileError } = useProfile();
+  const { update, isSaving: isProfileSaving, error: profileError } = useProfile();
 
   const handleSubmit = async (data: ProfileFormData) => {
     if (!user?.id) return;
 
     try {
       // Update profile with form data
-      await updateProfile(user.id, data);
+      await update(user.id, data);
 
       // Mark profile form step as complete
       await completeStep(user.id, 'sponsor_profile');
@@ -51,7 +51,7 @@ export default function SponsorProfileScreen() {
       <ProfileForm
         role="sponsor"
         onSubmit={handleSubmit}
-        isSubmitting={isUpdating || isSaving}
+        isSubmitting={isProfileSaving || isSaving}
         errors={profileError ? { form: profileError } : {}}
       />
     </View>

@@ -20,7 +20,7 @@ export default function RoleSelectionScreen() {
   const router = useRouter();
   const { user } = useAuth();
   const { completeStep, isSaving } = useOnboarding();
-  const { updateProfile } = useProfile();
+  const { update } = useProfile();
   const [selectedRole, setSelectedRole] = useState<UserRole | null>(null);
 
   const handleContinue = async () => {
@@ -28,7 +28,7 @@ export default function RoleSelectionScreen() {
 
     try {
       // Update profile with selected role
-      await updateProfile(user.id, { role: selectedRole });
+      await update(user.id, { role: selectedRole });
 
       // Mark role selection step as complete
       await completeStep(user.id, 'role_selection');

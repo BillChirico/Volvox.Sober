@@ -24,6 +24,7 @@ import {
   selectIsEmailVerified,
 } from '../store/auth/authSelectors';
 import { clearError } from '../store/auth/authSlice';
+import authService from '../services/authService';
 
 /**
  * Hook for managing authentication
@@ -90,6 +91,13 @@ export const useAuth = () => {
     dispatch(clearError());
   }, [dispatch]);
 
+  const resendVerificationEmail = useCallback(async () => {
+    if (!user?.email) {
+      throw new Error('No user email available');
+    }
+    return await authService.resendVerification(user.email);
+  }, [user?.email]);
+
   return {
     // State
     session,
@@ -104,6 +112,7 @@ export const useAuth = () => {
     login,
     logout,
     resetPasswordRequest,
+    resendVerificationEmail,
     updateEmail,
     updatePassword,
     deleteAccount,
