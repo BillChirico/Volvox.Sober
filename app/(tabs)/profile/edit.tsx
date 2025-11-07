@@ -13,6 +13,7 @@ import { useAppTheme } from '../../../src/theme/ThemeContext';
 import { useProfile } from '../../../src/hooks/useProfile';
 import { useAuth } from '../../../src/hooks/useAuth';
 import ProfilePhotoUpload from '../../../src/components/ProfilePhotoUpload';
+import { SobrietyDatePicker } from '../../../src/components/sobriety/SobrietyDatePicker';
 import { RECOVERY_PROGRAMS } from '../../../src/constants/RecoveryPrograms';
 import { AVAILABILITY_OPTIONS } from '../../../src/constants/Availability';
 
@@ -33,6 +34,7 @@ const profileSchema = Yup.object().shape({
   recovery_program: Yup.string()
     .oneOf([...RECOVERY_PROGRAMS])
     .required('Recovery program is required'),
+  sobriety_start_date: Yup.string().required('Sobriety start date is required'),
   availability: Yup.array()
     .of(Yup.string().oneOf([...AVAILABILITY_OPTIONS]))
     .min(1, 'Please select at least one availability')
@@ -70,6 +72,7 @@ export default function EditProfileScreen() {
   });
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [isSaving, setIsSaving] = useState(false);
+  const [showDatePicker, setShowDatePicker] = useState(false);
 
   // Load profile data into form
   useEffect(() => {
@@ -156,6 +159,25 @@ export default function EditProfileScreen() {
 
   const handlePhotoUploadComplete = (photoUrl: string): void => {
     setFormData({ ...formData, profile_photo_url: photoUrl });
+  };
+
+  const handleDateConfirm = (date: Date): void => {
+    const formattedDate = date.toISOString().split('T')[0];
+    setFormData({ ...formData, sobriety_start_date: formattedDate });
+  };
+
+  const formatDateForDisplay = (dateString: string | undefined): string => {
+    if (!dateString) return 'Not set';
+    try {
+      const date = new Date(dateString);
+      return date.toLocaleDateString('en-US', {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+      });
+    } catch {
+      return 'Not set';
+    }
   };
 
   const handleCancel = (): void => {
@@ -322,6 +344,23 @@ export default function EditProfileScreen() {
           <HelperText type="error" visible={!!errors.recovery_program}>
             {errors.recovery_program}
           </HelperText>
+
+          <Text
+            variant="bodySmall"
+            style={{ marginTop: 16, marginBottom: 8, color: theme.colors.onSurfaceVariant }}>
+            Sobriety Start Date *
+          </Text>
+          <Button
+            mode="outlined"
+            onPress={() => setShowDatePicker(true)}
+            disabled={isSaving}
+            icon="calendar"
+            style={[styles.dateButton, errors.sobriety_start_date && styles.dateButtonError]}>
+            {formatDateForDisplay(formData.sobriety_start_date)}
+          </Button>
+          <HelperText type="error" visible={!!errors.sobriety_start_date}>
+            {errors.sobriety_start_date}
+          </HelperText>
         </View>
 
         {/* Availability */}
@@ -390,6 +429,14 @@ export default function EditProfileScreen() {
           </Button>
         </View>
       </Surface>
+
+      {/* Sobriety Date Picker Modal */}
+      <SobrietyDatePicker
+        visible={showDatePicker}
+        onDismiss={() => setShowDatePicker(false)}
+        onConfirm={handleDateConfirm}
+        initialDate={formData.sobriety_start_date ? new Date(formData.sobriety_start_date) : undefined}
+      />
     </ScrollView>
   );
 }
@@ -444,5 +491,13 @@ const styles = StyleSheet.create({
   },
   saveButton: {
     paddingVertical: 6,
+  },
+  dateButton: {
+    marginBottom: 8,
+    justifyContent: 'flex-start',
+  },
+  dateButtonError: {
+    borderColor: '#B00020',
+    borderWidth: 2,
   },
 });
