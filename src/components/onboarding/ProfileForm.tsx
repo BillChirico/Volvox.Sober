@@ -91,7 +91,17 @@ export const ProfileForm: React.FC<ProfileFormProps> = ({
   const handleSubmit = () => {
     if (!isFormValid()) return;
 
-    onSubmit(formData as ProfileFormData);
+    // Trim text fields before submission
+    const trimmedData: ProfileFormData = {
+      ...formData,
+      name: formData.name?.trim() || '',
+      bio: formData.bio?.trim() || undefined,
+      city: formData.city?.trim() || undefined,
+      state: formData.state?.trim() || undefined,
+      country: formData.country?.trim() || 'United States',
+    } as ProfileFormData;
+
+    onSubmit(trimmedData);
   };
 
   const isFormValid = (): boolean => {
