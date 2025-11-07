@@ -21,8 +21,7 @@ import { useProfile } from '../../../src/hooks/useProfile'
 import { useAuth } from '../../../src/hooks/useAuth'
 import ProfilePhotoUpload from '../../../src/components/ProfilePhotoUpload'
 import { RECOVERY_PROGRAMS } from '../../../src/constants/RecoveryPrograms'
-import { AVAILABILITY_OPTIONS, type AvailabilityOption } from '../../../src/constants/Availability'
-import type { ProfileFormData } from '../../../src/types'
+import { AVAILABILITY_OPTIONS } from '../../../src/constants/Availability'
 
 // Validation schema
 const profileSchema = Yup.object().shape({
@@ -58,12 +57,12 @@ interface FormData {
   state?: string
   country?: string
   recovery_program: string
-  availability: AvailabilityOption[]
+  availability: string[]
   profile_photo_url?: string
   sobriety_start_date?: string
 }
 
-export default function EditProfileScreen(): JSX.Element {
+export default function EditProfileScreen() {
   const { theme } = useAppTheme()
   const router = useRouter()
   const { profile, isLoading, update } = useProfile()
@@ -87,15 +86,15 @@ export default function EditProfileScreen(): JSX.Element {
   useEffect(() => {
     if (profile) {
       // Parse availability if it's stored as string/JSON
-      let availabilityArray: AvailabilityOption[] = []
+      let availabilityArray: string[] = []
       if (typeof profile.availability === 'string') {
         try {
-          availabilityArray = JSON.parse(profile.availability) as AvailabilityOption[]
+          availabilityArray = JSON.parse(profile.availability) as string[]
         } catch {
-          availabilityArray = profile.availability ? [profile.availability as AvailabilityOption] : []
+          availabilityArray = profile.availability ? [profile.availability as string] : []
         }
       } else if (Array.isArray(profile.availability)) {
-        availabilityArray = profile.availability as AvailabilityOption[]
+        availabilityArray = profile.availability as string[]
       }
 
       setFormData({
@@ -127,7 +126,7 @@ export default function EditProfileScreen(): JSX.Element {
       }
 
       // Prepare update data
-      const updateData: Partial<ProfileFormData> = {
+      const updateData: Partial<FormData> = {
         name: formData.name.trim(),
         bio: formData.bio?.trim() || undefined,
         city: formData.city?.trim() || undefined,
@@ -139,7 +138,7 @@ export default function EditProfileScreen(): JSX.Element {
       }
 
       // Update profile using hook
-      await update(user.id, updateData)
+      await update(user.id, updateData as any)
 
       Alert.alert('Success', 'Profile updated successfully!', [
         {

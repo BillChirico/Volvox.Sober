@@ -49,7 +49,7 @@ const roleChangeSchema = Yup.object().shape({
     }),
 })
 
-export default function ChangeRoleScreen(): JSX.Element {
+export default function ChangeRoleScreen() {
   const { theme } = useAppTheme()
   const router = useRouter()
   const { profile, update } = useProfile()

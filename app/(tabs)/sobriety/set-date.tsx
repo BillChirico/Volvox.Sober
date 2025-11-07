@@ -13,15 +13,18 @@ import {
   useTheme,
   HelperText,
 } from 'react-native-paper';
+import { useRouter, useLocalSearchParams } from 'expo-router';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { useSetSobrietyDateMutation } from '../../../src/store/api/sobrietyApi';
 
-export const SetSobrietyDateScreen = ({ navigation, route }: any) => {
+export const SetSobrietyDateScreen = () => {
   const theme = useTheme();
   const styles = createStyles(theme);
+  const router = useRouter();
+  const params = useLocalSearchParams<{ sobrietyData?: string }>();
   const [setSobrietyDate, { isLoading }] = useSetSobrietyDateMutation();
 
-  const existingData = params?.sobrietyData;
+  const existingData = params?.sobrietyData ? JSON.parse(params.sobrietyData) : null;
   const [startDate, setStartDate] = useState<Date>(
     existingData?.start_date ? new Date(existingData.start_date) : new Date()
   );
@@ -174,7 +177,7 @@ export const SetSobrietyDateScreen = ({ navigation, route }: any) => {
   );
 };
 
-const createStyles = (theme: any) => StyleSheet.create({
+const createStyles = (_theme: any) => StyleSheet.create({
   container: {
     flex: 1,
     padding: 16,

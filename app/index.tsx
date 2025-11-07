@@ -4,7 +4,7 @@
  * Feature: 002-app-screens
  */
 
-import { useEffect } from 'react';
+import { useEffect, useCallback } from 'react';
 import { Redirect } from 'expo-router';
 import { useAppSelector, useAppDispatch } from '../src/store/hooks';
 import { selectIsAuthenticated, selectUser } from '../src/store/auth/authSelectors';
@@ -22,13 +22,18 @@ export default function Index() {
     console.log('[Index] State:', { isAuthenticated, user: user?.id, onboardingProgress });
   }, [isAuthenticated, user?.id, onboardingProgress]);
 
-  // Fetch onboarding progress when user is authenticated
-  useEffect(() => {
+  // Memoized onboarding progress fetch
+  const loadOnboardingProgress = useCallback(() => {
     if (isAuthenticated && user?.id && !onboardingProgress) {
       console.log('[Index] Fetching onboarding progress for user:', user.id);
       dispatch(fetchOnboardingProgress(user.id));
     }
   }, [isAuthenticated, user?.id, onboardingProgress, dispatch]);
+
+  // Fetch onboarding progress when user is authenticated
+  useEffect(() => {
+    loadOnboardingProgress();
+  }, [loadOnboardingProgress]);
 
   // Redirect to appropriate screen based on auth state
   if (!isAuthenticated) {

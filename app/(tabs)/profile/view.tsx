@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { View, StyleSheet, ScrollView } from 'react-native';
-import { Text, Surface, Avatar, Button, Divider, Chip } from 'react-native-paper';
+import { Text, Surface, Avatar, Button, Divider, Chip, useTheme, MD3Theme } from 'react-native-paper';
 import { useRouter } from 'expo-router';
-import { supabaseClient } from '../../../src/services/supabase';
+import supabaseClient from '../../../src/services/supabase';
 
 interface UserProfile {
   id: string;
@@ -29,7 +29,97 @@ interface UserProfile {
   sponsor_count?: number;
 }
 
+// ============================================================
+// Styles
+// ============================================================
+
+const createStyles = (theme: MD3Theme) =>
+  StyleSheet.create({
+    container: {
+      flex: 1,
+      backgroundColor: '#f5f5f5',
+    },
+    surface: {
+      margin: 16,
+      padding: 24,
+      borderRadius: 8,
+      elevation: 2,
+    },
+    photoContainer: {
+      alignItems: 'center',
+      marginBottom: 16,
+    },
+    editButton: {
+      marginBottom: 24,
+    },
+    name: {
+      textAlign: 'center',
+      fontWeight: 'bold',
+      marginBottom: 12,
+    },
+    roleContainer: {
+      alignItems: 'center',
+      marginBottom: 12,
+    },
+    roleChip: {
+      marginBottom: 8,
+    },
+    location: {
+      textAlign: 'center',
+      marginBottom: 8,
+    },
+    program: {
+      textAlign: 'center',
+      color: theme.colors.onSurfaceVariant,
+      marginBottom: 16,
+    },
+    divider: {
+      marginVertical: 16,
+    },
+    statsContainer: {
+      flexDirection: 'row',
+      justifyContent: 'space-around',
+      marginVertical: 8,
+    },
+    stat: {
+      alignItems: 'center',
+    },
+    statLabel: {
+      color: theme.colors.onSurfaceVariant,
+      marginTop: 4,
+    },
+    sectionTitle: {
+      fontWeight: 'bold',
+      marginBottom: 12,
+    },
+    infoRow: {
+      flexDirection: 'row',
+      marginBottom: 8,
+    },
+    label: {
+      fontWeight: '600',
+      marginRight: 8,
+      minWidth: 120,
+    },
+    approachContainer: {
+      marginTop: 8,
+    },
+    approach: {
+      marginTop: 4,
+      fontStyle: 'italic',
+    },
+    bio: {
+      lineHeight: 22,
+    },
+  });
+
+// ============================================================
+// Component
+// ============================================================
+
 const ViewProfileScreen: React.FC = () => {
+  const theme = useTheme();
+  const styles = createStyles(theme);
   const router = useRouter();
   const [profile, setProfile] = useState<UserProfile | null>(null);
   const [loading, setLoading] = useState(true);
@@ -107,7 +197,7 @@ const ViewProfileScreen: React.FC = () => {
         {/* Edit Button */}
         <Button
           mode="contained"
-          onPress={() => router.push('EditProfile' as never)}
+          onPress={() => router.push('/(tabs)/profile/edit')}
           style={styles.editButton}
           icon="pencil">
           Edit Profile
@@ -252,85 +342,5 @@ const ViewProfileScreen: React.FC = () => {
     </ScrollView>
   );
 };
-
-const createStyles = (theme: any) =>
-  StyleSheet.create({
-    container: {
-      flex: 1,
-      backgroundColor: '#f5f5f5',
-    },
-    surface: {
-      margin: 16,
-      padding: 24,
-      borderRadius: 8,
-      elevation: 2,
-    },
-    photoContainer: {
-      alignItems: 'center',
-      marginBottom: 16,
-    },
-    editButton: {
-      marginBottom: 24,
-    },
-    name: {
-      textAlign: 'center',
-      fontWeight: 'bold',
-      marginBottom: 12,
-    },
-    roleContainer: {
-      alignItems: 'center',
-      marginBottom: 12,
-    },
-    roleChip: {
-      marginBottom: 8,
-    },
-    location: {
-      textAlign: 'center',
-      marginBottom: 8,
-    },
-    program: {
-      textAlign: 'center',
-      color: theme.colors.onSurfaceVariant,
-      marginBottom: 16,
-    },
-    divider: {
-      marginVertical: 16,
-    },
-    statsContainer: {
-      flexDirection: 'row',
-      justifyContent: 'space-around',
-      marginVertical: 8,
-    },
-    stat: {
-      alignItems: 'center',
-    },
-    statLabel: {
-      color: theme.colors.onSurfaceVariant,
-      marginTop: 4,
-    },
-    sectionTitle: {
-      fontWeight: 'bold',
-      marginBottom: 12,
-    },
-    infoRow: {
-      flexDirection: 'row',
-      marginBottom: 8,
-    },
-    label: {
-      fontWeight: '600',
-      marginRight: 8,
-      minWidth: 120,
-    },
-    approachContainer: {
-      marginTop: 8,
-    },
-    approach: {
-      marginTop: 4,
-      fontStyle: 'italic',
-    },
-    bio: {
-      lineHeight: 22,
-    },
-  });
 
 export default ViewProfileScreen;

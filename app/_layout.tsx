@@ -7,6 +7,7 @@ import { View, StyleSheet } from 'react-native';
 import { ThemeProvider, useAppTheme } from '../src/theme/ThemeContext';
 import { store, persistor } from '../src/store';
 import { StatusBar } from 'expo-status-bar';
+import { ErrorBoundary } from '../src/components/common/ErrorBoundary';
 
 function RootLayoutContent() {
   const { theme, isDark } = useAppTheme();
@@ -14,24 +15,26 @@ function RootLayoutContent() {
   return (
     <PaperProvider theme={theme}>
       <SafeAreaProvider>
-        <Stack
-          screenOptions={{
-            headerStyle: {
-              backgroundColor: theme.colors.surface,
-            },
-            headerTintColor: theme.colors.onSurface,
-            headerTitleStyle: {
-              fontWeight: '600',
-            },
-            contentStyle: {
-              backgroundColor: theme.colors.background,
-            },
-          }}>
-          <Stack.Screen name="index" options={{ headerShown: false }} />
-          <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-          <Stack.Screen name="(auth)" options={{ headerShown: false }} />
-          <Stack.Screen name="(onboarding)" options={{ headerShown: false }} />
-        </Stack>
+        <ErrorBoundary>
+          <Stack
+            screenOptions={{
+              headerStyle: {
+                backgroundColor: theme.colors.surface,
+              },
+              headerTintColor: theme.colors.onSurface,
+              headerTitleStyle: {
+                fontWeight: '600',
+              },
+              contentStyle: {
+                backgroundColor: theme.colors.background,
+              },
+            }}>
+            <Stack.Screen name="index" options={{ headerShown: false }} />
+            <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+            <Stack.Screen name="(auth)" options={{ headerShown: false }} />
+            <Stack.Screen name="(onboarding)" options={{ headerShown: false }} />
+          </Stack>
+        </ErrorBoundary>
         <StatusBar style={isDark ? 'light' : 'dark'} />
       </SafeAreaProvider>
     </PaperProvider>

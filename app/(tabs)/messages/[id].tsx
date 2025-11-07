@@ -13,6 +13,8 @@ import {
   KeyboardAvoidingView,
   Platform,
 } from 'react-native'
+import { useTheme, MD3Theme } from 'react-native-paper'
+import { useLocalSearchParams } from 'expo-router'
 import {
   getMessages,
   sendMessage,
@@ -25,19 +27,54 @@ import type { RealtimeSubscription } from '../../../src/services/realtimeService
 import { MessageBubble } from '../../../src/components/MessageBubble'
 import { MessageInput } from '../../../src/components/MessageInput'
 import { ConnectionStatusIndicator } from '../../../src/components/ConnectionStatusIndicator'
-import type { Message } from '../types'
-
-interface ConversationScreenProps {
-  connectionId: string
-  partnerName: string
-}
+import type { Message } from '../../../src/types'
 
 const MESSAGES_PER_PAGE = 50
 
-export const ConversationScreen: React.FC<ConversationScreenProps> = ({
-  connectionId,
-  partnerName,
-}) => {
+// ============================================================
+// Styles
+// ============================================================
+
+const createStyles = (theme: MD3Theme) => StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: theme.colors.surface,
+  },
+  centerContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 20,
+    backgroundColor: theme.colors.surface,
+  },
+  messageList: {
+    paddingVertical: 12,
+  },
+  loadingMore: {
+    paddingVertical: 12,
+    alignItems: 'center',
+  },
+  loadingText: {
+    marginTop: 12,
+    fontSize: 16,
+    color: theme.colors.onSurfaceVariant,
+  },
+  errorText: {
+    fontSize: 16,
+    color: '#FF3B30',
+    textAlign: 'center',
+  },
+})
+
+// ============================================================
+// Component
+// ============================================================
+
+export const ConversationScreen: React.FC = () => {
+  const theme = useTheme()
+  const styles = createStyles(theme)
+  const params = useLocalSearchParams<{ id: string }>()
+  const connectionId = params.id || ''
   const [messages, setMessages] = useState<Message[]>([])
   const [loading, setLoading] = useState(true)
   const [loadingMore, setLoadingMore] = useState(false)
@@ -102,15 +139,19 @@ export const ConversationScreen: React.FC<ConversationScreenProps> = ({
   useEffect(() => {
     if (!currentUserId || !partnerUserId) return
 
+    let mounted = true // Track component mount status
+
     const setupRealtime = async () => {
+      if (!mounted) return // Don't setup if unmounted during async operation
+
       try {
         const subscription = await subscribeToConversation(connectionId, {
           onMessage: (messageRow) => {
+            if (!mounted) return // Ignore callbacks if unmounted
+
             // New message received - add to bottom of list
             const newMessage: Message = {
               ...messageRow,
-              sender: undefined, // Will be populated by UI if needed
-              recipient: undefined,
             }
             setMessages((prev) => [...prev, newMessage])
 
@@ -123,6 +164,8 @@ export const ConversationScreen: React.FC<ConversationScreenProps> = ({
             markAllMessagesAsRead(connectionId).catch(console.error)
           },
           onReadReceipt: (messageId, readAt) => {
+            if (!mounted) return // Ignore callbacks if unmounted
+
             // Update read receipt for sent message
             setMessages((prev) =>
               prev.map((msg) =>
@@ -131,9 +174,11 @@ export const ConversationScreen: React.FC<ConversationScreenProps> = ({
             )
           },
           onConnected: () => {
+            if (!mounted) return
             setIsRealtimeConnected(true)
           },
           onDisconnected: () => {
+            if (!mounted) return
             setIsRealtimeConnected(false)
           },
           onError: (error) => {
@@ -141,7 +186,12 @@ export const ConversationScreen: React.FC<ConversationScreenProps> = ({
           },
         })
 
-        subscriptionRef.current = subscription
+        if (mounted) {
+          subscriptionRef.current = subscription
+        } else {
+          // Component unmounted during async setup, cleanup immediately
+          subscription.unsubscribeAll().catch(console.error)
+        }
       } catch (err) {
         console.error('Failed to setup realtime subscriptions:', err)
       }
@@ -151,6 +201,7 @@ export const ConversationScreen: React.FC<ConversationScreenProps> = ({
 
     // Cleanup subscriptions on unmount
     return () => {
+      mounted = false // Mark as unmounted
       if (subscriptionRef.current) {
         subscriptionRef.current.unsubscribeAll().catch(console.error)
       }
@@ -275,40 +326,5 @@ export const ConversationScreen: React.FC<ConversationScreenProps> = ({
     </KeyboardAvoidingView>
   )
 }
-
-// ============================================================
-// Styles
-// ============================================================
-
-const createStyles = (theme: any) => StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: theme.colors.surface,
-  },
-  centerContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    padding: 20,
-    backgroundColor: theme.colors.surface,
-  },
-  messageList: {
-    paddingVertical: 12,
-  },
-  loadingMore: {
-    paddingVertical: 12,
-    alignItems: 'center',
-  },
-  loadingText: {
-    marginTop: 12,
-    fontSize: 16,
-    color: theme.colors.onSurfaceVariant,
-  },
-  errorText: {
-    fontSize: 16,
-    color: '#FF3B30',
-    textAlign: 'center',
-  },
-})
 
 export default ConversationScreen;

@@ -13,7 +13,7 @@ import {
   Divider,
   useTheme,
 } from 'react-native-paper';
-import { useRoute, useNavigation } from 'expo-router';
+import { useLocalSearchParams, useRouter } from 'expo-router';
 import {
   useGetStepWorkQuery,
   useGetAllStepsQuery,
@@ -23,17 +23,12 @@ import {
   SponsorComment,
 } from '../../../src/services/stepsApi';
 
-interface RouteParams {
-  stepWorkId: string;
-  sponseeId: string;
-}
-
 export const SponsorReviewScreen: React.FC = () => {
   const theme = useTheme();
   const styles = createStyles(theme);
-  const params = useLocalSearchParams();
+  const params = useLocalSearchParams<{ stepWorkId: string; sponseeId: string }>();
   const router = useRouter();
-  const { stepWorkId, sponseeId } = params as RouteParams;
+  const { stepWorkId, sponseeId: _sponseeId } = params;
 
   const { data: steps } = useGetAllStepsQuery();
   const { data: stepWork, isLoading: workLoading } = useGetStepWorkQuery(stepWorkId);

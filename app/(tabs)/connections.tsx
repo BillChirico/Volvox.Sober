@@ -18,11 +18,11 @@ import { useAuth } from '../../src/hooks/useAuth';
 import { useAppTheme } from '../../src/theme/ThemeContext';
 import { useRouter } from 'expo-router';
 import connectionService from '../../src/services/connectionService';
-import type { ConnectionWithUsers } from '../../src/types/connection';
+import type { ConnectionWithUsers, ConnectionRequest } from '../../src/types/connection';
 
 interface Section {
   title: string;
-  data: ConnectionWithUsers[];
+  data: ConnectionWithUsers[] | ConnectionRequest[];
   type: 'pending' | 'active' | 'ended';
 }
 
@@ -292,61 +292,65 @@ export default function ConnectionsScreen() {
   );
 
   // Render item based on section type
-  const renderItem = ({ item, section }: { item: ConnectionWithUsers; section: Section }) => {
+  const renderItem = ({ item, section }: { item: ConnectionWithUsers | ConnectionRequest; section: Section }) => {
     if (!user?.id) return null;
 
     if (section.type === 'pending') {
+      // Note: pendingRequests is typed as ConnectionRequest[] but contains sponsor/sponsee
+      const connectionItem = item as ConnectionWithUsers;
       return (
         <RequestCard
-          connection={item}
+          connection={connectionItem}
           currentUserId={user.id}
-          onAccept={() => handleAcceptRequest(item)}
-          onDecline={() => handleDeclineRequest(item)}
-          onPress={() => handleViewRequest(item)}
-          isAccepting={acceptingId === item.id}
-          isDeclining={decliningId === item.id}
+          onAccept={() => handleAcceptRequest(connectionItem)}
+          onDecline={() => handleDeclineRequest(connectionItem)}
+          onPress={() => handleViewRequest(connectionItem)}
+          isAccepting={acceptingId === connectionItem.id}
+          isDeclining={decliningId === connectionItem.id}
         />
       );
     }
 
     if (section.type === 'active') {
+      const connectionItem = item as ConnectionWithUsers;
       return (
         <ConnectionCard
-          connection={item}
+          connection={connectionItem}
           currentUserId={user.id}
           daysSinceConnected={
-            item.accepted_at
+            connectionItem.accepted_at
               ? Math.floor(
-                  (Date.now() - new Date(item.accepted_at).getTime()) /
+                  (Date.now() - new Date(connectionItem.accepted_at).getTime()) /
                     (1000 * 60 * 60 * 24)
                 )
               : 0
           }
-          lastInteraction={item.last_interaction_at || undefined}
+          lastInteraction={connectionItem.last_interaction_at || undefined}
           unreadCount={0} // TODO: Get from messages state
-          onPress={() => handleViewConnection(item)}
-          onMessage={() => handleMessageConnection(item)}
+          onPress={() => handleViewConnection(connectionItem)}
+          onMessage={() => handleMessageConnection(connectionItem)}
         />
       );
     }
 
     // Ended connections
+    const connectionItem = item as ConnectionWithUsers;
     return (
       <ConnectionCard
-        connection={item}
+        connection={connectionItem}
         currentUserId={user.id}
         daysSinceConnected={
-          item.accepted_at
+          connectionItem.accepted_at
             ? Math.floor(
-                (Date.now() - new Date(item.accepted_at).getTime()) /
+                (Date.now() - new Date(connectionItem.accepted_at).getTime()) /
                   (1000 * 60 * 60 * 24)
               )
             : 0
         }
-        lastInteraction={item.ended_at || undefined}
+        lastInteraction={connectionItem.ended_at || undefined}
         unreadCount={0}
-        onPress={() => handleViewConnection(item)}
-        onMessage={() => handleMessageConnection(item)}
+        onPress={() => handleViewConnection(connectionItem)}
+        onMessage={() => handleMessageConnection(connectionItem)}
         isLoading={true} // Disable actions for ended connections
       />
     );
@@ -360,8 +364,8 @@ export default function ConnectionsScreen() {
   return (
     <View style={[styles.container, { backgroundColor: theme.colors.background }]}>
       <SectionList
-        sections={sections}
-        keyExtractor={(item) => item.id}
+        sections={sections as any}
+        keyExtractor={(item: any) => item.id}
         renderItem={renderItem}
         renderSectionHeader={renderSectionHeader}
         SectionSeparatorComponent={renderSectionSeparator}

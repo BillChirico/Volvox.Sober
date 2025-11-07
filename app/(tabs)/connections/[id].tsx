@@ -4,7 +4,7 @@
  * Migrated from src/screens/connections/ConnectionDetailScreen.tsx
  */
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { View, StyleSheet, ScrollView } from 'react-native';
 import { Text, Surface, Avatar, Button, Divider, Dialog, Portal, useTheme, MD3Theme } from 'react-native-paper';
 import { useRouter, useLocalSearchParams } from 'expo-router';
@@ -38,19 +38,29 @@ const ConnectionDetailScreen: React.FC = () => {
     }
   }, [params.id, connection, router]);
 
-  if (!connection) {
+  // Memoize derived values to prevent recalculation on every render
+  const derivedData = useMemo(() => {
+    if (!connection || !userId) return null;
+
+    const isSponsor = connection.sponsor_id === userId;
+    const otherPerson = isSponsor ? connection.sponsee : connection.sponsor;
+
+    return {
+      isSponsor,
+      otherPerson,
+      otherPersonName: otherPerson.name,
+      otherPersonPhotoUrl: otherPerson.profile_photo_url,
+      roleLabel: isSponsor ? 'Your Sponsee' : 'Your Sponsor',
+      connectedDate: format(new Date(connection.created_at), 'MMMM d, yyyy'),
+      connectedSince: formatDistanceToNow(new Date(connection.created_at), { addSuffix: true }),
+    };
+  }, [connection, userId]);
+
+  if (!connection || !derivedData) {
     return null;
   }
 
-  // Determine if user is sponsor or sponsee
-  const isSponsor = connection.sponsor_id === userId;
-  const otherPerson = isSponsor ? connection.sponsee : connection.sponsor;
-  const otherPersonName = otherPerson.name;
-  const otherPersonPhotoUrl = otherPerson.profile_photo_url;
-  const roleLabel = isSponsor ? 'Your Sponsee' : 'Your Sponsor';
-
-  const connectedDate = format(new Date(connection.created_at), 'MMMM d, yyyy');
-  const connectedSince = formatDistanceToNow(new Date(connection.created_at), { addSuffix: true });
+  const { otherPersonName, otherPersonPhotoUrl, roleLabel, connectedDate, connectedSince } = derivedData;
 
   const handleDisconnectConfirm = async () => {
     try {

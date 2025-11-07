@@ -19,28 +19,53 @@ export default function SponseeProfileScreen() {
   const router = useRouter();
   const { user } = useAuth();
   const { completeStep, complete, isSaving } = useOnboarding();
-  const { update, isSaving: isProfileSaving, error: profileError } = useProfile();
+  const { create, isSaving: isProfileSaving, error: profileError } = useProfile();
 
   const handleSubmit = async (data: ProfileFormData) => {
-    if (!user?.id) return;
+    if (!user?.id) {
+      console.error('No user ID found');
+      Alert.alert('Error', 'No user session found. Please log in again.');
+      return;
+    }
+
+    console.log('Starting profile creation for user:', user.id);
+    console.log('Profile data:', JSON.stringify(data, null, 2));
 
     try {
-      // Update profile with form data
-      await update(user.id, data);
+      // Create profile with form data
+      console.log('Calling create() function...');
+      const result = await create(user.id, data);
+      console.log('Create result:', result);
+
+      if (profileError) {
+        console.error('Profile creation error:', profileError);
+        Alert.alert(
+          'Profile Creation Failed',
+          `Error: ${profileError}`,
+          [{ text: 'OK' }]
+        );
+        return;
+      }
+
+      console.log('Profile created successfully');
 
       // Mark profile form step as complete
+      console.log('Completing onboarding step...');
       await completeStep(user.id, 'sponsee_profile');
 
       // Mark onboarding as complete
+      console.log('Marking onboarding complete...');
       await complete(user.id);
 
+      console.log('Navigating to main app...');
       // Navigate to main app (sobriety tab)
       router.replace('/(tabs)/sobriety');
     } catch (error) {
       console.error('Error saving sponsee profile:', error);
+      const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred';
       Alert.alert(
         'Error',
-        'Failed to save your profile. Please try again.',
+        `Failed to save your profile: ${errorMessage}`,
         [{ text: 'OK' }]
       );
     }

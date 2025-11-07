@@ -4,7 +4,7 @@
  */
 
 import React from 'react';
-import { View, StyleSheet, ScrollView, FlatList } from 'react-native';
+import { View, StyleSheet, FlatList } from 'react-native';
 import {
   Text,
   Card,
@@ -14,13 +14,15 @@ import {
   Chip,
   Divider,
 } from 'react-native-paper';
+import { useRouter } from 'expo-router';
 import { useGetSobrietyStatsQuery, useGetMyRelapsesQuery } from '../../../src/store/api/sobrietyApi';
 import { TRIGGER_CONTEXT_OPTIONS } from '@volvox-sober/shared/types/src/sobriety';
 import type { Relapse } from '@volvox-sober/shared/types/src/sobriety';
 
-export const RelapseHistoryScreen = ({ navigation }: any) => {
+export const RelapseHistoryScreen = () => {
   const theme = useTheme();
   const styles = createStyles(theme);
+  const router = useRouter();
   const { data: stats } = useGetSobrietyStatsQuery();
   const { data: relapses, isLoading, error } = useGetMyRelapsesQuery(
     stats?.id || '',
@@ -56,7 +58,7 @@ export const RelapseHistoryScreen = ({ navigation }: any) => {
         </Text>
         <Button
           mode="contained"
-          onPress={() => router.push('SetSobrietyDate')}
+          onPress={() => router.push('/(tabs)/sobriety/set-date')}
           style={styles.actionButton}
         >
           Set Sobriety Date

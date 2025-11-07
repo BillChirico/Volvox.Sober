@@ -15,7 +15,7 @@ import { useAuth } from '../../../src/hooks/useAuth'
 /**
  * Account settings screen for managing email, password, and account
  */
-export default function AccountSettingsScreen(): JSX.Element {
+export default function AccountSettingsScreen() {
   const { theme } = useAppTheme()
   const router = useRouter()
   const { user, updateEmail, updatePassword, deleteAccount, logout } = useAuth()

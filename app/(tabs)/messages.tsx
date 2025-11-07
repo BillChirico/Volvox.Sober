@@ -6,7 +6,7 @@
 
 import React, { useEffect, useState, useCallback } from 'react';
 import { View, StyleSheet, FlatList, RefreshControl, Alert, Modal } from 'react-native';
-import { Text, FAB, IconButton, Divider, Appbar } from 'react-native-paper';
+import { FAB, Divider, Appbar } from 'react-native-paper';
 import { MessageThread } from '../../src/components/messages/MessageThread';
 import { MessageBubble } from '../../src/components/messages/MessageBubble';
 import { MessageInput } from '../../src/components/messages/MessageInput';
@@ -14,17 +14,19 @@ import { LoadingSpinner } from '../../src/components/common/LoadingSpinner';
 import { EmptyState } from '../../src/components/common/EmptyState';
 import { useMessages } from '../../src/hooks/useMessages';
 import { useAuth } from '../../src/hooks/useAuth';
+import { useAppSelector } from '../../src/hooks/useAppDispatch';
+import { selectProfile } from '../../src/store/profile/profileSelectors';
 import { useAppTheme } from '../../src/theme/ThemeContext';
 import { useRouter } from 'expo-router';
 import type { ConversationPreview, MessageWithSender } from '../../src/types/message';
 
 export default function MessagesScreen() {
   const { theme } = useAppTheme();
-  const { user, profile } = useAuth();
+  const { user } = useAuth();
+  const profile = useAppSelector(selectProfile);
   const router = useRouter();
   const {
     sortedConversations,
-    currentConversation,
     currentMessages,
     isLoading,
     isSending,

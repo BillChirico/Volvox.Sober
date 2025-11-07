@@ -1,8 +1,8 @@
 module.exports = {
   expo: {
-    name: 'Volvox Sober',
+    name: 'Volvox.Sober',
     slug: 'volvox-sober',
-    version: '1.0.0',
+    version: '1.0.0-alpha.1',
     scheme: 'volvoxsober',
     orientation: 'portrait',
     icon: './assets/icon.png',

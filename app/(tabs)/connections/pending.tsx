@@ -6,184 +6,15 @@
 
 import React, { useState } from 'react';
 import { View, StyleSheet, FlatList, RefreshControl } from 'react-native';
-import { Text, Surface, Avatar, Button, Card, ActivityIndicator, Dialog, Portal, TextInput, useTheme } from 'react-native-paper';
+import { Text, Surface, Avatar, Button, Card, ActivityIndicator, Dialog, Portal, TextInput, useTheme, MD3Theme } from 'react-native-paper';
 import { useGetPendingRequestsQuery, useAcceptRequestMutation, useDeclineRequestMutation, ConnectionRequest } from '../../../src/store/api/connectionsApi';
 import { formatDistanceToNow } from 'date-fns';
 
-const PendingRequestsScreen: React.FC = () => {
-  const theme = useTheme();
-  const { data: requests, isLoading, refetch, isFetching } = useGetPendingRequestsQuery();
+// ============================================================
+// Styles
+// ============================================================
 
-  const [acceptRequest, { isLoading: isAccepting }] = useAcceptRequestMutation();
-  const [declineRequest, { isLoading: isDeclining }] = useDeclineRequestMutation();
-
-  const [declineDialogVisible, setDeclineDialogVisible] = useState(false);
-  const [selectedRequestId, setSelectedRequestId] = useState<string | null>(null);
-  const [declineReason, setDeclineReason] = useState('');
-
-  const handleAccept = async (requestId: string) => {
-    try {
-      await acceptRequest({ request_id: requestId }).unwrap();
-    } catch (error: any) {
-      console.error('Failed to accept request:', error);
-    }
-  };
-
-  const handleDeclineConfirm = async () => {
-    if (!selectedRequestId) return;
-
-    try {
-      await declineRequest({
-        request_id: selectedRequestId,
-        reason: declineReason.trim() || undefined,
-      }).unwrap();
-
-      setDeclineDialogVisible(false);
-      setSelectedRequestId(null);
-      setDeclineReason('');
-    } catch (error: any) {
-      console.error('Failed to decline request:', error);
-    }
-  };
-
-  const showDeclineDialog = (requestId: string) => {
-    setSelectedRequestId(requestId);
-    setDeclineDialogVisible(true);
-  };
-
-  const renderRequest = ({ item }: { item: ConnectionRequest }) => {
-    const daysSince = formatDistanceToNow(new Date(item.created_at), { addSuffix: true });
-
-    return (
-      <Card style={styles.card} mode="elevated">
-        <Card.Content>
-          <View style={styles.header}>
-            {item.sponsee_photo_url ? (
-              <Avatar.Image size={60} source={{ uri: item.sponsee_photo_url }} />
-            ) : (
-              <Avatar.Icon size={60} icon="account" />
-            )}
-
-            <View style={styles.requestInfo}>
-              <Text variant="titleMedium" style={styles.name}>
-                {item.sponsee_name}
-              </Text>
-              <Text variant="bodySmall" style={styles.timestamp}>
-                Sent {daysSince}
-              </Text>
-            </View>
-          </View>
-
-          {item.message && (
-            <Surface style={styles.messageSurface} elevation={0}>
-              <Text variant="bodyMedium" style={styles.message}>
-                "{item.message}"
-              </Text>
-            </Surface>
-          )}
-
-          <View style={styles.actions}>
-            <Button
-              mode="outlined"
-              onPress={() => showDeclineDialog(item.id)}
-              style={styles.declineButton}
-              disabled={isAccepting || isDeclining}
-            >
-              Decline
-            </Button>
-
-            <Button
-              mode="contained"
-              onPress={() => handleAccept(item.id)}
-              style={styles.acceptButton}
-              loading={isAccepting}
-              disabled={isAccepting || isDeclining}
-              icon="check"
-            >
-              Accept
-            </Button>
-          </View>
-        </Card.Content>
-      </Card>
-    );
-  };
-
-  const renderEmpty = () => (
-    <View style={styles.emptyContainer}>
-      <Text variant="headlineSmall" style={styles.emptyTitle}>
-        No Pending Requests
-      </Text>
-      <Text variant="bodyMedium" style={styles.emptyMessage}>
-        You don't have any pending connection requests at the moment.
-      </Text>
-    </View>
-  );
-
-  if (isLoading) {
-    return (
-      <View style={styles.loadingContainer}>
-        <ActivityIndicator animating={true} size="large" />
-        <Text variant="bodyMedium" style={styles.loadingText}>
-          Loading requests...
-        </Text>
-      </View>
-    );
-  }
-
-  const styles = createStyles(theme);
-
-  return (
-    <View style={styles.container}>
-      <FlatList
-        data={requests || []}
-        keyExtractor={(item) => item.id}
-        renderItem={renderRequest}
-        ListEmptyComponent={renderEmpty}
-        refreshControl={
-          <RefreshControl refreshing={isFetching} onRefresh={refetch} />
-        }
-        contentContainerStyle={
-          (requests || []).length === 0 ? styles.emptyList : styles.list
-        }
-      />
-
-      {/* Decline Dialog */}
-      <Portal>
-        <Dialog visible={declineDialogVisible} onDismiss={() => setDeclineDialogVisible(false)}>
-          <Dialog.Title>Decline Request</Dialog.Title>
-          <Dialog.Content>
-            <Text variant="bodyMedium" style={styles.dialogText}>
-              Would you like to provide feedback to the sponsee? (Optional)
-            </Text>
-
-            <TextInput
-              mode="outlined"
-              multiline
-              numberOfLines={4}
-              value={declineReason}
-              onChangeText={setDeclineReason}
-              placeholder="Example: I'm at capacity, but I encourage you to keep searching..."
-              style={styles.reasonInput}
-              maxLength={300}
-            />
-
-            <Text variant="bodySmall" style={styles.characterCount}>
-              {declineReason.length} / 300 characters
-            </Text>
-          </Dialog.Content>
-          <Dialog.Actions>
-            <Button onPress={() => setDeclineDialogVisible(false)}>Cancel</Button>
-            <Button onPress={handleDeclineConfirm} loading={isDeclining}>
-              Decline
-            </Button>
-          </Dialog.Actions>
-        </Dialog>
-      </Portal>
-    </View>
-  );
-};
-
-const createStyles = (theme: any) => StyleSheet.create({
+const createStyles = (theme: MD3Theme) => StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#f5f5f5',
@@ -268,6 +99,182 @@ const createStyles = (theme: any) => StyleSheet.create({
     textAlign: 'right',
     color: theme.colors.onSurfaceVariant,
   },
-});
+})
+
+// ============================================================
+// Component
+// ============================================================
+
+const PendingRequestsScreen: React.FC = () => {
+  const theme = useTheme();
+  const styles = createStyles(theme);
+  const { data: requests, isLoading, refetch, isFetching } = useGetPendingRequestsQuery();
+
+  const [acceptRequest, { isLoading: isAccepting }] = useAcceptRequestMutation();
+  const [declineRequest, { isLoading: isDeclining }] = useDeclineRequestMutation();
+
+  const [declineDialogVisible, setDeclineDialogVisible] = useState(false);
+  const [selectedRequestId, setSelectedRequestId] = useState<string | null>(null);
+  const [declineReason, setDeclineReason] = useState('');
+
+  const handleAccept = async (requestId: string) => {
+    try {
+      await acceptRequest({ request_id: requestId }).unwrap();
+    } catch (error: any) {
+      console.error('Failed to accept request:', error);
+    }
+  };
+
+  const handleDeclineConfirm = async () => {
+    if (!selectedRequestId) return;
+
+    try {
+      await declineRequest({
+        request_id: selectedRequestId,
+        reason: declineReason.trim() || undefined,
+      }).unwrap();
+
+      setDeclineDialogVisible(false);
+      setSelectedRequestId(null);
+      setDeclineReason('');
+    } catch (error: any) {
+      console.error('Failed to decline request:', error);
+    }
+  };
+
+  const showDeclineDialog = (requestId: string) => {
+    setSelectedRequestId(requestId);
+    setDeclineDialogVisible(true);
+  };
+
+  const renderRequest = ({ item }: { item: ConnectionRequest }) => {
+    const daysSince = formatDistanceToNow(new Date(item.created_at), { addSuffix: true });
+
+    return (
+      <Card style={styles.card} mode="elevated">
+        <Card.Content>
+          <View style={styles.header}>
+            {item.sponsee_photo_url ? (
+              <Avatar.Image size={60} source={{ uri: item.sponsee_photo_url }} />
+            ) : (
+              <Avatar.Icon size={60} icon="account" />
+            )}
+
+            <View style={styles.requestInfo}>
+              <Text variant="titleMedium" style={styles.name}>
+                {item.sponsee_name}
+              </Text>
+              <Text variant="bodySmall" style={styles.timestamp}>
+                Sent {daysSince}
+              </Text>
+            </View>
+          </View>
+
+          {item.introduction_message && (
+            <Surface style={styles.messageSurface} elevation={0}>
+              <Text variant="bodyMedium" style={styles.message}>
+                "{item.introduction_message}"
+              </Text>
+            </Surface>
+          )}
+
+          <View style={styles.actions}>
+            <Button
+              mode="outlined"
+              onPress={() => showDeclineDialog(item.id)}
+              style={styles.declineButton}
+              disabled={isAccepting || isDeclining}
+            >
+              Decline
+            </Button>
+
+            <Button
+              mode="contained"
+              onPress={() => handleAccept(item.id)}
+              style={styles.acceptButton}
+              loading={isAccepting}
+              disabled={isAccepting || isDeclining}
+              icon="check"
+            >
+              Accept
+            </Button>
+          </View>
+        </Card.Content>
+      </Card>
+    );
+  };
+
+  const renderEmpty = () => (
+    <View style={styles.emptyContainer}>
+      <Text variant="headlineSmall" style={styles.emptyTitle}>
+        No Pending Requests
+      </Text>
+      <Text variant="bodyMedium" style={styles.emptyMessage}>
+        You don't have any pending connection requests at the moment.
+      </Text>
+    </View>
+  );
+
+  if (isLoading) {
+    return (
+      <View style={styles.loadingContainer}>
+        <ActivityIndicator animating={true} size="large" />
+        <Text variant="bodyMedium" style={styles.loadingText}>
+          Loading requests...
+        </Text>
+      </View>
+    );
+  }
+
+  return (
+    <View style={styles.container}>
+      <FlatList
+        data={requests || []}
+        keyExtractor={(item) => item.id}
+        renderItem={renderRequest}
+        ListEmptyComponent={renderEmpty}
+        refreshControl={
+          <RefreshControl refreshing={isFetching} onRefresh={refetch} />
+        }
+        contentContainerStyle={
+          (requests || []).length === 0 ? styles.emptyList : styles.list
+        }
+      />
+
+      {/* Decline Dialog */}
+      <Portal>
+        <Dialog visible={declineDialogVisible} onDismiss={() => setDeclineDialogVisible(false)}>
+          <Dialog.Title>Decline Request</Dialog.Title>
+          <Dialog.Content>
+            <Text variant="bodyMedium" style={styles.dialogText}>
+              Would you like to provide feedback to the sponsee? (Optional)
+            </Text>
+
+            <TextInput
+              mode="outlined"
+              multiline
+              numberOfLines={4}
+              value={declineReason}
+              onChangeText={setDeclineReason}
+              placeholder="Example: I'm at capacity, but I encourage you to keep searching..."
+              style={styles.reasonInput}
+              maxLength={300}
+            />
+
+            <Text variant="bodySmall" style={styles.characterCount}>
+              {declineReason.length} / 300 characters
+            </Text>
+          </Dialog.Content>
+          <Dialog.Actions>
+            <Button onPress={() => setDeclineDialogVisible(false)}>Cancel</Button>
+            <Button onPress={handleDeclineConfirm} loading={isDeclining}>
+              Decline
+            </Button>
+          </Dialog.Actions>
+        </Dialog>
+      </Portal>
+    </View>
+  );
+};
 
 export default PendingRequestsScreen;

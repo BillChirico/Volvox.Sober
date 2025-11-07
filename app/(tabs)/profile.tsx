@@ -6,15 +6,16 @@
 
 import React, { useEffect, useState } from 'react'
 import { View, StyleSheet, ScrollView, Alert } from 'react-native'
-import { ActivityIndicator, Divider, Text } from 'react-native-paper'
+import { ActivityIndicator, Button, Divider, Text } from 'react-native-paper'
 import { useRouter } from 'expo-router'
+import Constants from 'expo-constants'
 import { useAppTheme } from '../../src/theme/ThemeContext'
 import { useProfile } from '../../src/hooks/useProfile'
 import { useAuth } from '../../src/hooks/useAuth'
 import { ProfileHeader } from '../../src/components/profile/ProfileHeader'
 import { SettingsSection, type SettingsItem } from '../../src/components/profile/SettingsSection'
 
-export default function ProfileScreen(): JSX.Element {
+export default function ProfileScreen() {
   const { theme } = useAppTheme()
   const router = useRouter()
   const { profile, isLoading, fetch } = useProfile()
@@ -37,7 +38,7 @@ export default function ProfileScreen(): JSX.Element {
   }
 
   const handleChangeRole = (): void => {
-    router.push('/profile/change-role' as any)
+    router.push('/profile/change-role')
   }
 
   const handleNotificationSettings = (): void => {
@@ -102,10 +103,28 @@ export default function ProfileScreen(): JSX.Element {
     return Math.round((completed / fields.length) * 100)
   }
 
-  if (isLoading || !profile) {
+  // Show loading spinner only while fetching
+  if (isLoading) {
     return (
       <View style={[styles.loadingContainer, { backgroundColor: theme.colors.background }]}>
         <ActivityIndicator size="large" />
+      </View>
+    )
+  }
+
+  // Handle case where profile doesn't exist yet
+  if (!profile) {
+    return (
+      <View style={[styles.loadingContainer, { backgroundColor: theme.colors.background }]}>
+        <Text variant="headlineSmall" style={{ marginBottom: 16 }}>
+          No Profile Found
+        </Text>
+        <Text variant="bodyMedium" style={{ marginBottom: 24, textAlign: 'center', paddingHorizontal: 32 }}>
+          Complete your profile to connect with sponsors or sponsees
+        </Text>
+        <Button mode="contained" onPress={() => router.push('/profile/edit')}>
+          Create Profile
+        </Button>
       </View>
     )
   }
@@ -208,7 +227,7 @@ export default function ProfileScreen(): JSX.Element {
       {/* Version info */}
       <View style={styles.versionContainer}>
         <Text style={[styles.versionText, { color: theme.colors.onSurfaceVariant }]}>
-          Volvox.Sober v1.0.0-alpha
+          Volvox.Sober v{Constants.expoConfig?.version || '1.0.0-alpha.1'}
         </Text>
       </View>
     </ScrollView>

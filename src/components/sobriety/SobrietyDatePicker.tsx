@@ -7,9 +7,10 @@
 import React, { useState } from 'react';
 import { View, StyleSheet, Platform } from 'react-native';
 import { Modal, Portal, Button, Text } from 'react-native-paper';
-import DateTimePicker from '@react-native-community/datetimepicker';
+import DateTimePicker, {
+  type DateTimePickerEvent,
+} from '@react-native-community/datetimepicker';
 import { useAppTheme } from '../../theme/ThemeContext';
-import type { DatePickerEvent } from '../../types/sobriety';
 
 interface SobrietyDatePickerProps {
   visible: boolean;
@@ -30,8 +31,12 @@ export function SobrietyDatePicker({
   );
   const [error, setError] = useState<string | null>(null);
 
-  const handleDateChange = (event: DatePickerEvent, date?: Date): void => {
+  const handleDateChange = (
+    event: DateTimePickerEvent,
+    date?: Date
+  ): void => {
     if (event.type === 'dismissed') {
+      onDismiss();
       return;
     }
 
@@ -52,18 +57,20 @@ export function SobrietyDatePicker({
         return;
       }
 
+      // Validation passed - apply the date immediately
       setError(null);
       setSelectedDate(date);
-    }
-  };
 
-  const handleConfirm = (): void => {
-    if (error) {
-      return;
+      // On native picker confirm, immediately apply and close
+      if (event.type === 'set') {
+        onConfirm(date);
+        // Defer dismiss to next frame to allow onConfirm to complete
+        // This prevents modal conflicts with alerts/dialogs from onConfirm
+        requestAnimationFrame(() => {
+          onDismiss();
+        });
+      }
     }
-
-    onConfirm(selectedDate);
-    onDismiss();
   };
 
   const maxDate = new Date(); // Today
@@ -97,7 +104,10 @@ export function SobrietyDatePicker({
               max={maxDate.toISOString().split('T')[0]}
               onChange={(e) => {
                 const newDate = new Date(e.target.value);
-                handleDateChange({ type: 'set' }, newDate);
+                handleDateChange(
+                  { type: 'set', nativeEvent: {} } as DateTimePickerEvent,
+                  newDate
+                );
               }}
               style={{
                 padding: 12,
@@ -135,14 +145,6 @@ export function SobrietyDatePicker({
         <View style={styles.actions}>
           <Button mode="text" onPress={onDismiss} style={styles.button}>
             Cancel
-          </Button>
-          <Button
-            mode="contained"
-            onPress={handleConfirm}
-            disabled={!!error}
-            style={styles.button}
-          >
-            Confirm
           </Button>
         </View>
       </Modal>

@@ -5,7 +5,8 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { View, ScrollView, StyleSheet, Alert } from 'react-native';
 import { Text, Button, ActivityIndicator, useTheme } from 'react-native-paper';
-import { useRoute, useNavigation } from 'expo-router';
+import { useLocalSearchParams, useRouter } from 'expo-router';
+// @ts-ignore - lodash.debounce doesn't have type definitions
 import debounce from 'lodash.debounce';
 import {
   useGetStepWorkQuery,
@@ -17,16 +18,12 @@ import {
 import { QuestionRenderer } from '../../../../src/components/QuestionRenderer';
 import { draftManager } from '../../../../src/utils/draftManager';
 
-interface RouteParams {
-  stepId: string;
-}
-
 export const StepWorkScreen: React.FC = () => {
   const theme = useTheme();
   const styles = createStyles(theme);
-  const params = useLocalSearchParams();
+  const params = useLocalSearchParams<{ stepId: string }>();
   const router = useRouter();
-  const { stepId } = params as RouteParams;
+  const { stepId } = params;
 
   const { data: steps } = useGetAllStepsQuery();
   const { data: stepWork, isLoading: workLoading } = useGetStepWorkQuery(stepId);
@@ -125,12 +122,6 @@ export const StepWorkScreen: React.FC = () => {
     },
     [stepId, debouncedSave]
   );
-
-  // Manual save
-  const handleManualSave = async () => {
-    debouncedSave.cancel(); // Cancel debounced save
-    await saveToServer(responses);
-  };
 
   // Submit for review
   const handleSubmit = async () => {

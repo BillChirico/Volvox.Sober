@@ -15,14 +15,16 @@ import {
   Menu,
   Divider,
 } from 'react-native-paper';
+import { useRouter } from 'expo-router';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { useLogRelapseMutation, useGetSobrietyStatsQuery } from '../../../src/store/api/sobrietyApi';
 import { TRIGGER_CONTEXT_OPTIONS } from '@volvox-sober/shared/types/src/sobriety';
 import type { TriggerContext } from '@volvox-sober/shared/types/src/sobriety';
 
-export const LogRelapseScreen = ({ navigation }: any) => {
+export const LogRelapseScreen = () => {
   const theme = useTheme();
   const styles = createStyles(theme);
+  const router = useRouter();
   const { data: stats } = useGetSobrietyStatsQuery();
   const [logRelapse, { isLoading }] = useLogRelapseMutation();
 
@@ -114,7 +116,7 @@ export const LogRelapseScreen = ({ navigation }: any) => {
         </Text>
         <Button
           mode="contained"
-          onPress={() => router.push('SetSobrietyDate')}
+          onPress={() => router.push('/(tabs)/sobriety/set-date')}
           style={styles.actionButton}
         >
           Set Sobriety Date
@@ -286,7 +288,7 @@ export const LogRelapseScreen = ({ navigation }: any) => {
   );
 };
 
-const createStyles = (theme: any) => StyleSheet.create({
+const createStyles = (_theme: any) => StyleSheet.create({
   container: {
     flex: 1,
     padding: 16,

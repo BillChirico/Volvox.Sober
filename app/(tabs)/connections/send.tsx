@@ -10,16 +10,10 @@ import { Text, TextInput, Button, Surface, Avatar, Snackbar, useTheme } from 're
 import { useRouter, useLocalSearchParams } from 'expo-router';
 import { useSendRequestMutation } from '../../../src/store/api/connectionsApi';
 
-interface RouteParams {
-  sponsorId: string;
-  sponsorName: string;
-  sponsorPhotoUrl?: string;
-}
-
 const SendRequestScreen: React.FC = () => {
   const theme = useTheme();
   const router = useRouter();
-  const params = useLocalSearchParams<RouteParams>();
+  const params = useLocalSearchParams<{ sponsorId: string; sponsorName: string; sponsorPhotoUrl?: string }>();
   const { sponsorId, sponsorName, sponsorPhotoUrl } = params;
 
   const [message, setMessage] = useState('');
@@ -38,7 +32,7 @@ const SendRequestScreen: React.FC = () => {
     try {
       await sendRequest({
         sponsor_id: sponsorId,
-        message: message.trim() || undefined,
+        introduction_message: message.trim() || undefined,
       }).unwrap();
 
       setSnackbarMessage(`Request sent to ${sponsorName}`);

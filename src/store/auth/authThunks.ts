@@ -187,12 +187,29 @@ export const updatePasswordThunk = createAsyncThunk<
   UpdatePasswordPayload
 >(
   'auth/updatePassword',
-  async (payload: UpdatePasswordPayload, { dispatch }) => {
+  async (payload: UpdatePasswordPayload, { dispatch, getState }) => {
     dispatch(setLoading(true));
     try {
-      // Note: Supabase doesn't provide a way to verify the current password
-      // before updating. The user must be authenticated to update their password.
-      // For additional security, consider implementing this check via an Edge Function.
+      // Defense-in-depth: Re-authenticate user before allowing password change
+      // This prevents unauthorized password changes if session is hijacked
+      const state = getState() as any; // Type assertion for getState
+      const userEmail = state.auth.user?.email;
+
+      if (!userEmail) {
+        dispatch(setError('User email not found. Please log in again.'));
+        dispatch(setLoading(false));
+        return { success: false };
+      }
+
+      // Re-authenticate with current password
+      const { error: authError } = await authService.signIn(userEmail, payload.currentPassword);
+      if (authError) {
+        dispatch(setError('Current password is incorrect'));
+        dispatch(setLoading(false));
+        return { success: false };
+      }
+
+      // Current password verified, now update to new password
       const { user, error } = await authService.updatePassword(payload.newPassword);
 
       if (error) {
@@ -220,11 +237,29 @@ export const deleteAccountThunk = createAsyncThunk<
   DeleteAccountPayload
 >(
   'auth/deleteAccount',
-  async (payload: DeleteAccountPayload, { dispatch }) => {
+  async (payload: DeleteAccountPayload, { dispatch, getState }) => {
     dispatch(setLoading(true));
     try {
-      // Note: Password verification would typically happen via Edge Function
-      // For now, we'll proceed with deletion if user is authenticated
+      // Defense-in-depth: Re-authenticate user before allowing account deletion
+      // This prevents unauthorized deletion if session is hijacked
+      const state = getState() as any; // Type assertion for getState
+      const userEmail = state.auth.user?.email;
+
+      if (!userEmail) {
+        dispatch(setError('User email not found. Please log in again.'));
+        dispatch(setLoading(false));
+        return { success: false };
+      }
+
+      // Re-authenticate with password
+      const { error: authError } = await authService.signIn(userEmail, payload.password);
+      if (authError) {
+        dispatch(setError('Password is incorrect. Account deletion cancelled.'));
+        dispatch(setLoading(false));
+        return { success: false };
+      }
+
+      // Password verified, proceed with account deletion
       const { error } = await authService.deleteAccount();
 
       if (error) {

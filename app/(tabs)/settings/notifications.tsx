@@ -11,7 +11,7 @@ import { useAppTheme } from '../../../src/theme/ThemeContext'
 import { NotificationSettings } from '../../../src/components/profile/NotificationSettings'
 import { useAuth } from '../../../src/hooks/useAuth'
 
-export default function NotificationSettingsScreen(): JSX.Element {
+export default function NotificationSettingsScreen() {
   const { theme } = useAppTheme()
   const { user } = useAuth()
   const [isLoading, setIsLoading] = useState(true)

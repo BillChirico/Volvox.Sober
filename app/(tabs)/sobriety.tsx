@@ -103,7 +103,6 @@ export default function SobrietyScreen() {
         const reflection = {
           date: new Date().toISOString().split('T')[0],
           text: data.text,
-          mood: data.mood,
           created_at: new Date().toISOString(),
         };
 
@@ -168,7 +167,7 @@ export default function SobrietyScreen() {
   if (isLoading && !record) {
     return (
       <View style={[styles.container, { backgroundColor: theme.colors.background }]}>
-        <LoadingSpinner message="Loading your sobriety journey..." />
+        <LoadingSpinner text="Loading your sobriety journey..." />
       </View>
     );
   }
@@ -180,8 +179,8 @@ export default function SobrietyScreen() {
         <EmptyState
           icon="calendar-heart"
           title="Start Your Journey"
-          message="Begin tracking your sobriety and celebrate every milestone along the way."
-          actionLabel="Set Start Date"
+          description="Begin tracking your sobriety and celebrate every milestone along the way."
+          actionText="Set Start Date"
           onAction={() => setShowDatePicker(true)}
         />
         <SobrietyDatePicker

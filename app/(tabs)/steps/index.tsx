@@ -77,7 +77,7 @@ export const StepListScreen: React.FC = () => {
           const status = getStepStatus(item.id);
           return (
             <TouchableOpacity
-              onPress={() => router.push('StepWork', { stepId: item.id })}
+              onPress={() => router.push(`/(tabs)/steps/work/${item.id}`)}
             >
               <Card style={styles.stepCard}>
                 <Card.Content>

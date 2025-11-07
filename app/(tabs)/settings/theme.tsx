@@ -111,14 +111,11 @@ const ThemeSettingsScreen = () => {
                   left={(props) => (
                     <List.Icon {...props} icon={getThemeIcon(mode)} />
                   )}
-                  right={(props) => (
+                  right={() => (
                     <RadioButton
-                      {...props}
                       value={mode}
                       disabled={isChanging}
-                      accessibilityLabel={`Select ${mode} theme`}
-                      accessibilityRole="radio"
-                      accessibilityState={{ checked: themeMode === mode }}
+                      color={paperTheme.colors.primary}
                     />
                   )}
                   onPress={() => handleThemeChange(mode)}

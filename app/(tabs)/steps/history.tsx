@@ -58,7 +58,7 @@ export const StepWorkHistoryScreen: React.FC = () => {
   };
 
   const handleViewStepWork = (stepId: string) => {
-    router.push('StepWork', { stepId });
+    router.push(`/(tabs)/steps/work/${stepId}`);
   };
 
   if (stepsLoading || workLoading) {
