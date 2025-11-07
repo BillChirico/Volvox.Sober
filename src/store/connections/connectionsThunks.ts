@@ -12,7 +12,6 @@ import {
   setSentRequests,
   setEndedConnections,
   addActiveConnection,
-  addPendingRequest,
   addSentRequest,
   removePendingRequest,
   removeSentRequest,

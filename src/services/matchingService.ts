@@ -288,8 +288,8 @@ class MatchingService {
   }
 
   private calculatePreferenceAlignment(
-    userPreferences: Record<string, unknown>,
-    candidatePreferences: Record<string, unknown>
+    _userPreferences: Record<string, unknown>,
+    _candidatePreferences: Record<string, unknown>
   ): number {
     // Simplified preference matching
     // In production, this would check specific preference fields

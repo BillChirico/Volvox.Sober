@@ -39,7 +39,6 @@ export function ConnectionProfileModal({
   // Determine which user to show (the other person in the connection)
   const isUserSponsor = connection.sponsor_id === currentUserId;
   const profile = isUserSponsor ? connection.sponsee : connection.sponsor;
-  const userRole = isUserSponsor ? 'sponsor' : 'sponsee';
   const theirRole = isUserSponsor ? 'sponsee' : 'sponsor';
 
   // Calculate connection duration

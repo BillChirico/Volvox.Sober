@@ -7,7 +7,6 @@ import { RealtimeChannel, RealtimePostgresChangesPayload } from '@supabase/supab
 import { supabase } from './supabase';
 import { getCurrentUserId } from './supabase';
 import type { Database } from '../types/database.types';
-import type { Message } from '../types';
 
 type MessageRow = Database['public']['Tables']['messages']['Row'];
 

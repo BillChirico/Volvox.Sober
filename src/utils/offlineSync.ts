@@ -18,8 +18,6 @@ import {
   SyncOperation,
 } from '../store/syncQueueSlice';
 import {
-  useSaveStepWorkMutation,
-  useSubmitStepWorkMutation,
   StepWorkResponse,
 } from '../services/stepsApi';
 

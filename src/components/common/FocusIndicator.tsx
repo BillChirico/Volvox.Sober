@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, StyleSheet, Pressable, PressableProps } from 'react-native';
+import { Pressable, PressableProps } from 'react-native';
 import { useTheme } from 'react-native-paper';
 
 interface FocusIndicatorProps extends PressableProps {

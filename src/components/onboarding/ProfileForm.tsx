@@ -95,12 +95,19 @@ export const ProfileForm: React.FC<ProfileFormProps> = ({
   };
 
   const isFormValid = (): boolean => {
-    return !!(
+    const hasRequiredFields = !!(
       formData.name &&
       formData.recovery_program &&
       formData.availability &&
       formData.availability.length > 0
     );
+
+    // For sponsees, sobriety_start_date is required
+    if (role === 'sponsee') {
+      return hasRequiredFields && !!formData.sobriety_start_date;
+    }
+
+    return hasRequiredFields;
   };
 
   return (

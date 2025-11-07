@@ -10,7 +10,6 @@ import {
   SobrietyRecordWithCalculations,
   SobrietyMilestone,
   SobrietyReflection,
-  MilestoneDay,
   MilestoneDefinition,
   MilestoneStatus,
   TablesInsert,

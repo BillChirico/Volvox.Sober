@@ -169,7 +169,7 @@ export const StepWorkScreen: React.FC = () => {
           },
         ]
       );
-    } catch (error) {
+    } catch (_error) {
       Alert.alert('Submission Failed', 'Please try again later.', [{ text: 'OK' }]);
     }
   };

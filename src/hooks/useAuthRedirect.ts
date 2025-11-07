@@ -23,7 +23,7 @@ export const useAuthRedirect = () => {
 
   const inAuthGroup = segments[0] === '(auth)';
   const inTabsGroup = segments[0] === '(tabs)';
-  const inOnboardingGroup = segments[0] === '(onboarding)';
+  const _inOnboardingGroup = segments[0] === '(onboarding)';
 
   useEffect(() => {
     if (!isAuthenticated) {

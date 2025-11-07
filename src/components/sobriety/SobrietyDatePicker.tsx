@@ -7,9 +7,7 @@
 import React, { useState } from 'react';
 import { View, StyleSheet, Platform } from 'react-native';
 import { Modal, Portal, Button, Text } from 'react-native-paper';
-import DateTimePicker, {
-  type DateTimePickerEvent,
-} from '@react-native-community/datetimepicker';
+import DateTimePicker, { type DateTimePickerEvent } from '@react-native-community/datetimepicker';
 import { useAppTheme } from '../../theme/ThemeContext';
 
 interface SobrietyDatePickerProps {
@@ -26,15 +24,10 @@ export function SobrietyDatePicker({
   initialDate,
 }: SobrietyDatePickerProps): JSX.Element {
   const { theme } = useAppTheme();
-  const [selectedDate, setSelectedDate] = useState<Date>(
-    initialDate || new Date()
-  );
+  const [selectedDate, setSelectedDate] = useState<Date>(initialDate || new Date());
   const [error, setError] = useState<string | null>(null);
 
-  const handleDateChange = (
-    event: DateTimePickerEvent,
-    date?: Date
-  ): void => {
+  const handleDateChange = (event: DateTimePickerEvent, date?: Date): void => {
     if (event.type === 'dismissed') {
       onDismiss();
       return;
@@ -81,18 +74,13 @@ export function SobrietyDatePicker({
       <Modal
         visible={visible}
         onDismiss={onDismiss}
-        contentContainerStyle={[
-          styles.modal,
-          { backgroundColor: theme.colors.surface },
-        ]}
-      >
+        contentContainerStyle={[styles.modal, { backgroundColor: theme.colors.surface }]}>
         <Text variant="headlineSmall" style={styles.title}>
           Set Sobriety Start Date
         </Text>
 
         <Text variant="bodyMedium" style={styles.description}>
-          Choose the date you began your sobriety journey. This cannot be a
-          future date.
+          Choose the date you began your sobriety journey. This cannot be a future date.
         </Text>
 
         <View style={styles.datePickerContainer}>
@@ -102,12 +90,9 @@ export function SobrietyDatePicker({
               type="date"
               value={selectedDate.toISOString().split('T')[0]}
               max={maxDate.toISOString().split('T')[0]}
-              onChange={(e) => {
+              onChange={e => {
                 const newDate = new Date(e.target.value);
-                handleDateChange(
-                  { type: 'set', nativeEvent: {} } as DateTimePickerEvent,
-                  newDate
-                );
+                handleDateChange({ type: 'set', nativeEvent: {} } as DateTimePickerEvent, newDate);
               }}
               style={{
                 padding: 12,
@@ -134,10 +119,7 @@ export function SobrietyDatePicker({
         </View>
 
         {error && (
-          <Text
-            variant="bodySmall"
-            style={[styles.error, { color: theme.colors.error }]}
-          >
+          <Text variant="bodySmall" style={[styles.error, { color: theme.colors.error }]}>
             {error}
           </Text>
         )}

@@ -7,7 +7,6 @@ import authReducer, {
   clearError,
   clearAuth,
 } from '../../../src/store/auth/authSlice';
-import type { AuthState } from '../../../src/store/auth/authSlice';
 
 describe('authSlice', () => {
   let store: ReturnType<typeof configureStore>;

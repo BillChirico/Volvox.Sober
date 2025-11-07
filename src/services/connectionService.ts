@@ -182,7 +182,7 @@ class ConnectionService {
     data: DeclineConnectionData
   ): Promise<{ error: Error | null }> {
     try {
-      const updateData: TablesUpdate<'connections'> = {
+      const _updateData: TablesUpdate<'connections'> = {
         declined_at: data.declinedAt,
       }
 

@@ -188,7 +188,7 @@ export const optimizeImageUri = (uri: string, width: number, height: number): st
     url.searchParams.set('fit', 'cover')
     url.searchParams.set('q', '80') // Quality: 80%
     return url.toString()
-  } catch (error) {
+  } catch (_error) {
     // If URL parsing fails, return original
     return uri
   }

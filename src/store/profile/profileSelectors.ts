@@ -6,7 +6,6 @@
 
 import { createSelector } from '@reduxjs/toolkit'
 import type { RootState } from '../index'
-import type { Profile } from '../../types'
 
 /**
  * Base selector for profile state

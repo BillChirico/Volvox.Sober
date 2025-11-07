@@ -33,8 +33,7 @@ test.describe('Sobriety Tracking Flow', () => {
         await expect(page.getByRole('dialog')).toBeVisible();
 
         // Select today's date (or a specific date)
-        const today = new Date();
-        const dateString = today.toISOString().split('T')[0];
+        // Note: Date selection is handled by the native date picker component
 
         // Confirm date selection
         await page.getByRole('button', { name: /confirm/i }).click();

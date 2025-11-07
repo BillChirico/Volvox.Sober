@@ -37,11 +37,13 @@ export default function SponseeProfileScreen() {
       const result = await create(user.id, data);
       console.log('Create result:', result);
 
-      if (profileError) {
-        console.error('Profile creation error:', profileError);
+      // Check if the async thunk was rejected
+      if (result.type && result.type.endsWith('/rejected')) {
+        const errorMessage = result.payload as string || profileError || 'Unknown error';
+        console.error('Profile creation error:', errorMessage);
         Alert.alert(
           'Profile Creation Failed',
-          `Error: ${profileError}`,
+          `Error: ${errorMessage}`,
           [{ text: 'OK' }]
         );
         return;

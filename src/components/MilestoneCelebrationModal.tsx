@@ -6,7 +6,7 @@
 import React from 'react';
 import { View, StyleSheet } from 'react-native';
 import { Modal, Portal, Text, Button, Card, useTheme } from 'react-native-paper';
-import { MILESTONE_DISPLAY_TEXT, MILESTONE_THRESHOLDS } from '@volvox-sober/shared/types/src/sobriety';
+import { MILESTONE_DISPLAY_TEXT } from '@volvox-sober/shared/types/src/sobriety';
 import type { MilestoneType } from '@volvox-sober/shared/types/src/sobriety';
 
 interface MilestoneCelebrationModalProps {
@@ -24,7 +24,7 @@ export const MilestoneCelebrationModal: React.FC<MilestoneCelebrationModalProps>
   onDismiss,
   onShare,
 }) => {
-  const theme = useTheme();
+  const _theme = useTheme();
 
   const getMilestoneEmoji = (milestoneType: MilestoneType): string => {
     switch (milestoneType) {
@@ -60,7 +60,6 @@ export const MilestoneCelebrationModal: React.FC<MilestoneCelebrationModalProps>
     }
   };
 
-  const milestoneThreshold = MILESTONE_THRESHOLDS[milestone];
   const displayText = MILESTONE_DISPLAY_TEXT[milestone];
   const emoji = getMilestoneEmoji(milestone);
   const message = getMilestoneMessage(milestone);

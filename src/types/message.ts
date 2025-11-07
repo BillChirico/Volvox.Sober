@@ -4,7 +4,7 @@
  */
 
 import { Tables } from './database.types'
-import { Connection, ConnectionWithUsers } from './connection'
+import { ConnectionWithUsers } from './connection'
 import { Profile } from './profile'
 
 // ============================================================

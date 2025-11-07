@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, StyleSheet, Image, Alert } from 'react-native';
+import { View, StyleSheet, Alert } from 'react-native';
 import { Button, Avatar, ActivityIndicator } from 'react-native-paper';
 import * as ImagePicker from 'react-native-image-picker';
 import ImageResizer from '@bam.tech/react-native-image-resizer';
@@ -81,7 +81,7 @@ const ProfilePhotoUpload: React.FC<ProfilePhotoUploadProps> = ({
           const response = await fetch(compressedUri);
           const blob = await response.blob();
 
-          const { data, error } = await supabaseClient.storage
+          const { error } = await supabaseClient.storage
             .from('profile-photos')
             .upload(fileName, blob, {
               contentType: asset.type || 'image/jpeg',

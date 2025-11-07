@@ -56,7 +56,7 @@ export const SponsorReviewScreen: React.FC = () => {
       setCommentInputs((prev) => ({ ...prev, [questionId]: '' }));
 
       Alert.alert('Comment Added', 'Your comment has been saved.', [{ text: 'OK' }]);
-    } catch (error) {
+    } catch (_error) {
       Alert.alert('Failed to Add Comment', 'Please try again later.', [{ text: 'OK' }]);
     }
   };
@@ -83,7 +83,7 @@ export const SponsorReviewScreen: React.FC = () => {
                   },
                 ]
               );
-            } catch (error) {
+            } catch (_error) {
               Alert.alert('Failed to Mark as Reviewed', 'Please try again later.', [
                 { text: 'OK' },
               ]);

@@ -379,7 +379,7 @@ export const syncOfflineQueue = createAsyncThunk(
           )
           syncedCount++
         }
-      } catch (error) {
+      } catch (_error) {
         // Network error - increment retry count
         dispatch(incrementRetryCount(queuedMsg.tempId))
         dispatch(updateMessageStatus({ messageId: queuedMsg.tempId, status: 'queued' }))

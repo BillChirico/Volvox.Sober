@@ -251,7 +251,7 @@ export const refreshDaysSober = createAsyncThunk(
  */
 export const checkNewMilestones = createAsyncThunk(
   'sobriety/checkNewMilestones',
-  async (userId: string, { dispatch, rejectWithValue }) => {
+  async (userId: string, { dispatch: _dispatch, rejectWithValue }) => {
     try {
       const { data, error } = await sobrietyService.getRecord(userId)
 

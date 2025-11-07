@@ -71,7 +71,7 @@ export function EndConnectionModal({
 
       await onConfirm(finalFeedback, selectedReason);
       handleDismiss();
-    } catch (err) {
+    } catch (_err) {
       setError('Failed to end connection. Please try again.');
     }
   };

@@ -88,7 +88,7 @@ export const TabBar: React.FC<BottomTabBarProps> = ({
       ]}
     >
       {state.routes.map((route, index) => {
-        const { options } = descriptors[route.key];
+        const { options: _options } = descriptors[route.key];
         const isFocused = state.index === index;
         const tabName = route.name;
         const iconConfig = TAB_ICONS[tabName];

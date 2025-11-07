@@ -60,7 +60,7 @@ const onboardingSlice = createSlice({
     setCurrentStep: (state, action: PayloadAction<number>) => {
       state.currentStep = action.payload;
     },
-    resetOnboarding: state => {
+    resetOnboarding: _state => {
       return initialState;
     },
   },
