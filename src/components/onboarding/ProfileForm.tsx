@@ -10,6 +10,7 @@ import { Text, TextInput, Button, Chip, HelperText } from 'react-native-paper';
 import { useAppTheme } from '../../theme/ThemeContext';
 import { RECOVERY_PROGRAMS } from '../../constants/RecoveryPrograms';
 import { AVAILABILITY_OPTIONS } from '../../constants/Availability';
+import { SobrietyDatePicker } from '../sobriety/SobrietyDatePicker';
 import type { ProfileFormData, UserRole, AvailabilityOption } from '../../types/profile';
 
 export interface ProfileFormProps {
@@ -50,6 +51,9 @@ export const ProfileForm: React.FC<ProfileFormProps> = ({
     availability: initialData.availability || [],
   });
 
+  // Date picker modal state
+  const [showDatePicker, setShowDatePicker] = useState(false);
+
   const updateField = (field: keyof ProfileFormData, value: any) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
   };
@@ -62,6 +66,26 @@ export const ProfileForm: React.FC<ProfileFormProps> = ({
         : [...current, option];
       return { ...prev, availability: updated };
     });
+  };
+
+  const handleDateConfirm = (date: Date) => {
+    // Format date as YYYY-MM-DD for database
+    const formattedDate = date.toISOString().split('T')[0];
+    updateField('sobriety_start_date', formattedDate);
+  };
+
+  const formatDateForDisplay = (dateString: string): string => {
+    if (!dateString) return 'Not set';
+    try {
+      const date = new Date(dateString);
+      return date.toLocaleDateString('en-US', {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+      });
+    } catch {
+      return 'Not set';
+    }
   };
 
   const handleSubmit = () => {
@@ -170,18 +194,24 @@ export const ProfileForm: React.FC<ProfileFormProps> = ({
       {/* Sobriety Start Date - Optional for sponsors, encouraged for sponsees */}
       {(role === 'sponsee' || role === 'both') && (
         <>
-          <TextInput
-            label={role === 'sponsee' ? 'Sobriety Start Date *' : 'Sobriety Start Date (Optional)'}
-            value={formData.sobriety_start_date}
-            onChangeText={(text) => updateField('sobriety_start_date', text)}
+          <Text
+            variant="labelLarge"
+            style={[styles.dateLabel, { color: theme.colors.onSurface }]}
+          >
+            {role === 'sponsee' ? 'Sobriety Start Date *' : 'Sobriety Start Date (Optional)'}
+          </Text>
+          <Button
             mode="outlined"
-            placeholder="YYYY-MM-DD"
-            error={!!errors.sobriety_start_date}
+            onPress={() => setShowDatePicker(true)}
             disabled={isSubmitting}
-            style={styles.input}
-            accessibilityLabel="Enter your sobriety start date"
-            accessibilityHint="Format: Year-Month-Day"
-          />
+            style={[styles.dateButton, errors.sobriety_start_date && styles.dateButtonError]}
+            contentStyle={styles.dateButtonContent}
+            icon="calendar"
+            accessibilityLabel="Select your sobriety start date"
+            accessibilityHint="Opens a date picker calendar"
+          >
+            {formatDateForDisplay(formData.sobriety_start_date || '')}
+          </Button>
           {errors.sobriety_start_date && (
             <HelperText type="error">{errors.sobriety_start_date}</HelperText>
           )}
@@ -274,6 +304,14 @@ export const ProfileForm: React.FC<ProfileFormProps> = ({
       >
         * Required fields
       </Text>
+
+      {/* Sobriety Date Picker Modal */}
+      <SobrietyDatePicker
+        visible={showDatePicker}
+        onDismiss={() => setShowDatePicker(false)}
+        onConfirm={handleDateConfirm}
+        initialDate={formData.sobriety_start_date ? new Date(formData.sobriety_start_date) : undefined}
+      />
     </ScrollView>
   );
 };
@@ -330,5 +368,20 @@ const styles = StyleSheet.create({
   requiredNote: {
     textAlign: 'center',
     marginBottom: 16,
+  },
+  dateLabel: {
+    marginBottom: 8,
+    marginTop: 16,
+  },
+  dateButton: {
+    marginBottom: 8,
+    justifyContent: 'flex-start',
+  },
+  dateButtonContent: {
+    paddingVertical: 8,
+  },
+  dateButtonError: {
+    borderColor: '#B00020',
+    borderWidth: 2,
   },
 });
