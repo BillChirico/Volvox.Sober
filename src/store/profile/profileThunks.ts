@@ -5,7 +5,7 @@
  */
 
 import { createAsyncThunk } from '@reduxjs/toolkit'
-import { profileService } from '../../services/profileService'
+import profileService from '../../services/profileService'
 import {
   setProfile,
   setLoading,
