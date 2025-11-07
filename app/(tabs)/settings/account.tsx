@@ -4,46 +4,46 @@
  * Feature: 002-app-screens
  */
 
-import React, { useState } from 'react'
-import { StyleSheet, ScrollView, Alert } from 'react-native'
-import { Text, Button, TextInput, Surface, HelperText, Divider } from 'react-native-paper'
-import { useRouter } from 'expo-router'
-import * as Yup from 'yup'
-import { useAppTheme } from '../../../src/theme/ThemeContext'
-import { useAuth } from '../../../src/hooks/useAuth'
+import React, { useState } from 'react';
+import { StyleSheet, ScrollView, Alert } from 'react-native';
+import { Text, Button, TextInput, Surface, HelperText, Divider } from 'react-native-paper';
+import { useRouter } from 'expo-router';
+import * as Yup from 'yup';
+import { useAppTheme } from '../../../src/theme/ThemeContext';
+import { useAuth } from '../../../src/hooks/useAuth';
 
 /**
  * Account settings screen for managing email, password, and account
  */
 export default function AccountSettingsScreen() {
-  const { theme } = useAppTheme()
-  const router = useRouter()
-  const { user, updateEmail, updatePassword, deleteAccount, logout } = useAuth()
+  const { theme } = useAppTheme();
+  const router = useRouter();
+  const { user, updateEmail, updatePassword, deleteAccount, logout } = useAuth();
 
   // Email update state
-  const [newEmail, setNewEmail] = useState<string>('')
-  const [emailPassword, setEmailPassword] = useState<string>('')
-  const [isUpdatingEmail, setIsUpdatingEmail] = useState<boolean>(false)
-  const [emailError, setEmailError] = useState<string>('')
+  const [newEmail, setNewEmail] = useState<string>('');
+  const [emailPassword, setEmailPassword] = useState<string>('');
+  const [isUpdatingEmail, setIsUpdatingEmail] = useState<boolean>(false);
+  const [emailError, setEmailError] = useState<string>('');
 
   // Password update state
-  const [currentPassword, setCurrentPassword] = useState<string>('')
-  const [newPassword, setNewPassword] = useState<string>('')
-  const [confirmPassword, setConfirmPassword] = useState<string>('')
-  const [isUpdatingPassword, setIsUpdatingPassword] = useState<boolean>(false)
-  const [passwordError, setPasswordError] = useState<string>('')
+  const [currentPassword, setCurrentPassword] = useState<string>('');
+  const [newPassword, setNewPassword] = useState<string>('');
+  const [confirmPassword, setConfirmPassword] = useState<string>('');
+  const [isUpdatingPassword, setIsUpdatingPassword] = useState<boolean>(false);
+  const [passwordError, setPasswordError] = useState<string>('');
 
   // Account deletion state
-  const [deletePassword, setDeletePassword] = useState<string>('')
-  const [deleteConfirmation, setDeleteConfirmation] = useState<string>('')
-  const [isDeletingAccount, setIsDeletingAccount] = useState<boolean>(false)
-  const [deleteError, setDeleteError] = useState<string>('')
+  const [deletePassword, setDeletePassword] = useState<string>('');
+  const [deleteConfirmation, setDeleteConfirmation] = useState<string>('');
+  const [isDeletingAccount, setIsDeletingAccount] = useState<boolean>(false);
+  const [deleteError, setDeleteError] = useState<string>('');
 
   // Validation schemas
   const emailSchema = Yup.object().shape({
     email: Yup.string().email('Invalid email address').required('Email is required'),
     password: Yup.string().required('Password is required for email change'),
-  })
+  });
 
   const passwordSchema = Yup.object().shape({
     currentPassword: Yup.string().required('Current password is required'),
@@ -56,24 +56,24 @@ export default function AccountSettingsScreen() {
     confirmPassword: Yup.string()
       .oneOf([Yup.ref('newPassword')], 'Passwords must match')
       .required('Please confirm your new password'),
-  })
+  });
 
   const deleteSchema = Yup.object().shape({
     password: Yup.string().required('Password is required to delete account'),
     confirmation: Yup.string()
       .oneOf(['DELETE'], 'Please type DELETE to confirm')
       .required('Confirmation is required'),
-  })
+  });
 
   /**
    * Handle email update
    */
   const handleUpdateEmail = async (): Promise<void> => {
     try {
-      setEmailError('')
+      setEmailError('');
 
       // Validate
-      await emailSchema.validate({ email: newEmail, password: emailPassword })
+      await emailSchema.validate({ email: newEmail, password: emailPassword });
 
       // Confirm action
       Alert.alert(
@@ -85,89 +85,85 @@ export default function AccountSettingsScreen() {
             text: 'Update',
             style: 'default',
             onPress: async () => {
-              setIsUpdatingEmail(true)
+              setIsUpdatingEmail(true);
               try {
-                await updateEmail(newEmail, emailPassword)
+                await updateEmail(newEmail, emailPassword);
                 Alert.alert(
                   'Email Updated',
                   'Please check your new email address to verify the change.',
-                  [{ text: 'OK', onPress: () => router.back() }]
-                )
-                setNewEmail('')
-                setEmailPassword('')
+                  [{ text: 'OK', onPress: () => router.back() }],
+                );
+                setNewEmail('');
+                setEmailPassword('');
               } catch (error: any) {
-                setEmailError(error.message || 'Failed to update email')
+                setEmailError(error.message || 'Failed to update email');
               } finally {
-                setIsUpdatingEmail(false)
+                setIsUpdatingEmail(false);
               }
             },
           },
-        ]
-      )
+        ],
+      );
     } catch (error: any) {
-      setEmailError(error.message || 'Invalid email or password')
+      setEmailError(error.message || 'Invalid email or password');
     }
-  }
+  };
 
   /**
    * Handle password update
    */
   const handleUpdatePassword = async (): Promise<void> => {
     try {
-      setPasswordError('')
+      setPasswordError('');
 
       // Validate
       await passwordSchema.validate({
         currentPassword,
         newPassword,
         confirmPassword,
-      })
+      });
 
       // Confirm action
-      Alert.alert(
-        'Update Password',
-        'Are you sure you want to change your password?',
-        [
-          { text: 'Cancel', style: 'cancel' },
-          {
-            text: 'Update',
-            style: 'default',
-            onPress: async () => {
-              setIsUpdatingPassword(true)
-              try {
-                await updatePassword(currentPassword, newPassword)
-                Alert.alert('Password Updated', 'Your password has been changed successfully.', [
-                  { text: 'OK', onPress: () => router.back() },
-                ])
-                setCurrentPassword('')
-                setNewPassword('')
-                setConfirmPassword('')
-              } catch (error: any) {
-                setPasswordError(error.message || 'Failed to update password')
-              } finally {
-                setIsUpdatingPassword(false)
-              }
-            },
+      Alert.alert('Update Password', 'Are you sure you want to change your password?', [
+        { text: 'Cancel', style: 'cancel' },
+        {
+          text: 'Update',
+          style: 'default',
+          onPress: async () => {
+            setIsUpdatingPassword(true);
+            try {
+              await updatePassword(currentPassword, newPassword);
+              Alert.alert('Password Updated', 'Your password has been changed successfully.', [
+                { text: 'OK', onPress: () => router.back() },
+              ]);
+              setCurrentPassword('');
+              setNewPassword('');
+              setConfirmPassword('');
+            } catch (error: any) {
+              setPasswordError(error.message || 'Failed to update password');
+            } finally {
+              setIsUpdatingPassword(false);
+            }
           },
-        ]
-      )
+        },
+      ]);
     } catch (error: any) {
-      setPasswordError(error.message || 'Invalid password')
+      setPasswordError(error.message || 'Invalid password');
     }
-  }
+  };
 
   /**
    * Handle account deletion
    */
   const handleDeleteAccount = async (): Promise<void> => {
     try {
-      setDeleteError('')
+      setDeleteError('');
 
       // Validate
       await deleteSchema.validate({
         password: deletePassword,
         confirmation: deleteConfirmation,
-      })
+      });
 
       // Final confirmation
       Alert.alert(
@@ -179,37 +175,36 @@ export default function AccountSettingsScreen() {
             text: 'Delete Account',
             style: 'destructive',
             onPress: async () => {
-              setIsDeletingAccount(true)
+              setIsDeletingAccount(true);
               try {
-                await deleteAccount(deletePassword)
-                await logout()
-                Alert.alert(
-                  'Account Deleted',
-                  'Your account has been permanently deleted.',
-                  [{ text: 'OK' }]
-                )
+                await deleteAccount(deletePassword);
+                await logout();
+                Alert.alert('Account Deleted', 'Your account has been permanently deleted.', [
+                  { text: 'OK' },
+                ]);
               } catch (error: any) {
-                setDeleteError(error.message || 'Failed to delete account')
-                setIsDeletingAccount(false)
+                setDeleteError(error.message || 'Failed to delete account');
+                setIsDeletingAccount(false);
               }
             },
           },
-        ]
-      )
+        ],
+      );
     } catch (error: any) {
-      setDeleteError(error.message || 'Invalid password or confirmation')
+      setDeleteError(error.message || 'Invalid password or confirmation');
     }
-  }
+  };
 
   return (
     <ScrollView
       style={[styles.container, { backgroundColor: theme.colors.background }]}
-      contentContainerStyle={styles.contentContainer}
-    >
+      contentContainerStyle={styles.contentContainer}>
       <Text variant="headlineSmall" style={[styles.title, { color: theme.colors.onSurface }]}>
         Account Settings
       </Text>
-      <Text variant="bodyMedium" style={[styles.subtitle, { color: theme.colors.onSurfaceVariant }]}>
+      <Text
+        variant="bodyMedium"
+        style={[styles.subtitle, { color: theme.colors.onSurfaceVariant }]}>
         Manage your email, password, and account status
       </Text>
 
@@ -225,10 +220,14 @@ export default function AccountSettingsScreen() {
 
       {/* Update Email Section */}
       <Surface style={[styles.section, { backgroundColor: theme.colors.surface }]}>
-        <Text variant="titleMedium" style={[styles.sectionTitle, { color: theme.colors.onSurface }]}>
+        <Text
+          variant="titleMedium"
+          style={[styles.sectionTitle, { color: theme.colors.onSurface }]}>
           Update Email
         </Text>
-        <Text variant="bodySmall" style={[styles.sectionHint, { color: theme.colors.onSurfaceVariant }]}>
+        <Text
+          variant="bodySmall"
+          style={[styles.sectionHint, { color: theme.colors.onSurfaceVariant }]}>
           You will need to verify your new email address
         </Text>
 
@@ -264,8 +263,7 @@ export default function AccountSettingsScreen() {
           onPress={handleUpdateEmail}
           loading={isUpdatingEmail}
           disabled={isUpdatingEmail || !newEmail || !emailPassword}
-          style={styles.button}
-        >
+          style={styles.button}>
           Update Email
         </Button>
       </Surface>
@@ -274,10 +272,14 @@ export default function AccountSettingsScreen() {
 
       {/* Update Password Section */}
       <Surface style={[styles.section, { backgroundColor: theme.colors.surface }]}>
-        <Text variant="titleMedium" style={[styles.sectionTitle, { color: theme.colors.onSurface }]}>
+        <Text
+          variant="titleMedium"
+          style={[styles.sectionTitle, { color: theme.colors.onSurface }]}>
           Update Password
         </Text>
-        <Text variant="bodySmall" style={[styles.sectionHint, { color: theme.colors.onSurfaceVariant }]}>
+        <Text
+          variant="bodySmall"
+          style={[styles.sectionHint, { color: theme.colors.onSurfaceVariant }]}>
           Choose a strong password with at least 8 characters
         </Text>
 
@@ -324,8 +326,7 @@ export default function AccountSettingsScreen() {
           onPress={handleUpdatePassword}
           loading={isUpdatingPassword}
           disabled={isUpdatingPassword || !currentPassword || !newPassword || !confirmPassword}
-          style={styles.button}
-        >
+          style={styles.button}>
           Update Password
         </Button>
       </Surface>
@@ -333,11 +334,18 @@ export default function AccountSettingsScreen() {
       <Divider style={styles.divider} />
 
       {/* Delete Account Section */}
-      <Surface style={[styles.section, styles.dangerSection, { backgroundColor: theme.colors.errorContainer }]}>
+      <Surface
+        style={[
+          styles.section,
+          styles.dangerSection,
+          { backgroundColor: theme.colors.errorContainer },
+        ]}>
         <Text variant="titleMedium" style={[styles.sectionTitle, { color: theme.colors.error }]}>
           Delete Account
         </Text>
-        <Text variant="bodySmall" style={[styles.sectionHint, { color: theme.colors.onErrorContainer }]}>
+        <Text
+          variant="bodySmall"
+          style={[styles.sectionHint, { color: theme.colors.onErrorContainer }]}>
           This action cannot be undone. All your data will be permanently deleted.
         </Text>
 
@@ -373,13 +381,12 @@ export default function AccountSettingsScreen() {
           disabled={isDeletingAccount || !deletePassword || deleteConfirmation !== 'DELETE'}
           buttonColor={theme.colors.error}
           textColor={theme.colors.onError}
-          style={styles.button}
-        >
+          style={styles.button}>
           Delete Account Permanently
         </Button>
       </Surface>
     </ScrollView>
-  )
+  );
 }
 
 const styles = StyleSheet.create({
@@ -425,4 +432,4 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: 'rgba(255, 0, 0, 0.2)',
   },
-})
+});

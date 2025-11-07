@@ -4,8 +4,8 @@
  * Feature: 002-app-screens
  */
 
-import { createSlice, PayloadAction } from '@reduxjs/toolkit'
-import { OnboardingState, OnboardingProgress, OnboardingStep } from '../../types'
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { OnboardingState, OnboardingProgress, OnboardingStep } from '../../types';
 
 const initialState: OnboardingState = {
   progress: null,
@@ -13,32 +13,32 @@ const initialState: OnboardingState = {
   isLoading: false,
   isSaving: false,
   error: null,
-}
+};
 
 const onboardingSlice = createSlice({
   name: 'onboarding',
   initialState,
   reducers: {
     setProgress: (state, action: PayloadAction<OnboardingProgress | null>) => {
-      state.progress = action.payload
-      state.error = null
+      state.progress = action.payload;
+      state.error = null;
     },
     setCurrentStep: (state, action: PayloadAction<OnboardingStep>) => {
-      state.currentStep = action.payload
+      state.currentStep = action.payload;
     },
     setLoading: (state, action: PayloadAction<boolean>) => {
-      state.isLoading = action.payload
+      state.isLoading = action.payload;
     },
     setSaving: (state, action: PayloadAction<boolean>) => {
-      state.isSaving = action.payload
+      state.isSaving = action.payload;
     },
     setError: (state, action: PayloadAction<string>) => {
-      state.error = action.payload
-      state.isLoading = false
-      state.isSaving = false
+      state.error = action.payload;
+      state.isLoading = false;
+      state.isSaving = false;
     },
-    clearError: (state) => {
-      state.error = null
+    clearError: state => {
+      state.error = null;
     },
     completeStep: (state, action: PayloadAction<OnboardingStep>) => {
       if (state.progress) {
@@ -48,29 +48,29 @@ const onboardingSlice = createSlice({
           sponsor_profile: 'profile_form_completed',
           sponsee_profile: 'profile_form_completed',
           complete: 'onboarding_completed',
-        }
+        };
 
-        const field = stepMap[action.payload]
+        const field = stepMap[action.payload];
         if (field) {
           // Type assertion needed for dynamic field access
-          (state.progress as any)[field] = true
+          (state.progress as any)[field] = true;
         }
       }
     },
-    markOnboardingComplete: (state) => {
+    markOnboardingComplete: state => {
       if (state.progress) {
-        state.progress.onboarding_completed = true
+        state.progress.onboarding_completed = true;
       }
     },
-    resetOnboarding: (state) => {
-      state.progress = null
-      state.currentStep = 'welcome'
-      state.isLoading = false
-      state.isSaving = false
-      state.error = null
+    resetOnboarding: state => {
+      state.progress = null;
+      state.currentStep = 'welcome';
+      state.isLoading = false;
+      state.isSaving = false;
+      state.error = null;
     },
   },
-})
+});
 
 export const {
   setProgress,
@@ -82,6 +82,6 @@ export const {
   completeStep,
   markOnboardingComplete,
   resetOnboarding,
-} = onboardingSlice.actions
+} = onboardingSlice.actions;
 
-export default onboardingSlice.reducer
+export default onboardingSlice.reducer;

@@ -111,8 +111,7 @@ export const ConnectionStatus: React.FC<ConnectionStatusProps> = ({
       style={[styles.chip, { backgroundColor: config.backgroundColor }]}
       textStyle={[sizeProps.textStyle, { color: config.textColor }]}
       compact={sizeProps.compact}
-      accessibilityLabel={`Connection status: ${config.label}`}
-    >
+      accessibilityLabel={`Connection status: ${config.label}`}>
       {config.label}
     </Chip>
   );

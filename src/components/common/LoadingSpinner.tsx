@@ -4,42 +4,42 @@
  * Feature: 002-app-screens
  */
 
-import React from 'react'
-import { View, ActivityIndicator, StyleSheet, ViewStyle } from 'react-native'
-import { Text } from 'react-native-paper'
+import React from 'react';
+import { View, ActivityIndicator, StyleSheet, ViewStyle } from 'react-native';
+import { Text } from 'react-native-paper';
 
 export interface LoadingSpinnerProps {
   /**
    * Optional loading text to display
    */
-  text?: string
+  text?: string;
 
   /**
    * Size of the spinner
    * @default 'large'
    */
-  size?: 'small' | 'large'
+  size?: 'small' | 'large';
 
   /**
    * Custom color for the spinner
    */
-  color?: string
+  color?: string;
 
   /**
    * Whether to center the spinner in its container
    * @default true
    */
-  centered?: boolean
+  centered?: boolean;
 
   /**
    * Custom container style
    */
-  style?: ViewStyle
+  style?: ViewStyle;
 
   /**
    * Test ID for testing
    */
-  testID?: string
+  testID?: string;
 }
 
 export const LoadingSpinner: React.FC<LoadingSpinnerProps> = ({
@@ -57,25 +57,20 @@ export const LoadingSpinner: React.FC<LoadingSpinnerProps> = ({
       accessible={true}
       accessibilityRole="progressbar"
       accessibilityLabel={text || 'Loading'}
-      accessibilityLiveRegion="polite"
-    >
+      accessibilityLiveRegion="polite">
       <ActivityIndicator
         size={size}
         color={color || '#6366F1'} // indigo-500
         testID={`${testID}-indicator`}
       />
       {text && (
-        <Text
-          variant="bodyMedium"
-          style={styles.text}
-          testID={`${testID}-text`}
-        >
+        <Text variant="bodyMedium" style={styles.text} testID={`${testID}-text`}>
           {text}
         </Text>
       )}
     </View>
-  )
-}
+  );
+};
 
 const styles = StyleSheet.create({
   container: {
@@ -91,4 +86,4 @@ const styles = StyleSheet.create({
     color: '#6B7280', // gray-500
     textAlign: 'center',
   },
-})
+});

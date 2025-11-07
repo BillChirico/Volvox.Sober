@@ -67,34 +67,21 @@ export const DaysCounter: React.FC<DaysCounterProps> = ({
       style={[styles.card, { backgroundColor: theme.colors.primaryContainer }]}
       elevation={3}
       accessibilityLabel={`${daysSober} days sober since ${formatStartDate(startDate)}`}
-      accessibilityRole="text"
-    >
+      accessibilityRole="text">
       <Card.Content style={styles.content}>
         <View style={styles.iconContainer}>
-          <MaterialCommunityIcons
-            name="trophy-variant"
-            size={48}
-            color={theme.colors.primary}
-          />
+          <MaterialCommunityIcons name="trophy-variant" size={48} color={theme.colors.primary} />
         </View>
 
         <View style={styles.counterContainer}>
           <Text
             variant="displayLarge"
-            style={[
-              styles.daysNumber,
-              { color: theme.colors.onPrimaryContainer },
-            ]}
-          >
+            style={[styles.daysNumber, { color: theme.colors.onPrimaryContainer }]}>
             {daysSober}
           </Text>
           <Text
             variant="headlineMedium"
-            style={[
-              styles.daysLabel,
-              { color: theme.colors.onPrimaryContainer },
-            ]}
-          >
+            style={[styles.daysLabel, { color: theme.colors.onPrimaryContainer }]}>
             {getDaysLabel(daysSober)}
           </Text>
         </View>
@@ -110,11 +97,7 @@ export const DaysCounter: React.FC<DaysCounterProps> = ({
           />
           <Text
             variant="bodyMedium"
-            style={[
-              styles.metadataText,
-              { color: theme.colors.onPrimaryContainer },
-            ]}
-          >
+            style={[styles.metadataText, { color: theme.colors.onPrimaryContainer }]}>
             Sober since {formatStartDate(startDate)}
           </Text>
         </View>
@@ -123,11 +106,7 @@ export const DaysCounter: React.FC<DaysCounterProps> = ({
           <View style={styles.encouragementContainer}>
             <Text
               variant="titleMedium"
-              style={[
-                styles.encouragementText,
-                { color: theme.colors.primary },
-              ]}
-            >
+              style={[styles.encouragementText, { color: theme.colors.primary }]}>
               {getEncouragementMessage(daysSober)}
             </Text>
           </View>
@@ -143,7 +122,7 @@ export const DaysCounter: React.FC<DaysCounterProps> = ({
 function getEncouragementMessage(days: number): string {
   if (days === 0) return 'Your journey begins today!';
   if (days < 7) return 'One day at a time!';
-  if (days < 30) return 'You\'re doing great!';
+  if (days < 30) return "You're doing great!";
   if (days < 90) return 'Keep up the amazing work!';
   if (days < 365) return 'Your strength is inspiring!';
   return 'Incredible dedication!';

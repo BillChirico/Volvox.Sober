@@ -4,55 +4,55 @@
  * Feature: 002-app-screens
  */
 
-import React, { Component, ErrorInfo, ReactNode } from 'react'
-import { View, StyleSheet } from 'react-native'
-import { Text, Button } from 'react-native-paper'
+import React, { Component, ErrorInfo, ReactNode } from 'react';
+import { View, StyleSheet } from 'react-native';
+import { Text, Button } from 'react-native-paper';
 
 export interface ErrorBoundaryProps {
   /**
    * Child components to render
    */
-  children: ReactNode
+  children: ReactNode;
 
   /**
    * Optional fallback UI to render on error
    */
-  fallback?: (error: Error, resetError: () => void) => ReactNode
+  fallback?: (error: Error, resetError: () => void) => ReactNode;
 
   /**
    * Optional error handler callback
    */
-  onError?: (error: Error, errorInfo: ErrorInfo) => void
+  onError?: (error: Error, errorInfo: ErrorInfo) => void;
 }
 
 interface ErrorBoundaryState {
-  hasError: boolean
-  error: Error | null
+  hasError: boolean;
+  error: Error | null;
 }
 
 export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
   constructor(props: ErrorBoundaryProps) {
-    super(props)
+    super(props);
     this.state = {
       hasError: false,
       error: null,
-    }
+    };
   }
 
   static getDerivedStateFromError(error: Error): ErrorBoundaryState {
     return {
       hasError: true,
       error,
-    }
+    };
   }
 
   componentDidCatch(error: Error, errorInfo: ErrorInfo): void {
     // Log error to error reporting service
-    console.error('ErrorBoundary caught an error:', error, errorInfo)
+    console.error('ErrorBoundary caught an error:', error, errorInfo);
 
     // Call optional error handler
     if (this.props.onError) {
-      this.props.onError(error, errorInfo)
+      this.props.onError(error, errorInfo);
     }
   }
 
@@ -60,14 +60,14 @@ export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundarySt
     this.setState({
       hasError: false,
       error: null,
-    })
-  }
+    });
+  };
 
   render(): ReactNode {
     if (this.state.hasError && this.state.error) {
       // Use custom fallback if provided
       if (this.props.fallback) {
-        return this.props.fallback(this.state.error, this.resetError)
+        return this.props.fallback(this.state.error, this.resetError);
       }
 
       // Default fallback UI
@@ -77,8 +77,7 @@ export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundarySt
           testID="error-boundary-fallback"
           accessible={true}
           accessibilityRole="alert"
-          accessibilityLabel="Error occurred"
-        >
+          accessibilityLabel="Error occurred">
           <View style={styles.content}>
             <Text variant="headlineMedium" style={styles.title}>
               Something went wrong
@@ -103,16 +102,15 @@ export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundarySt
               testID="error-boundary-reset-button"
               accessible={true}
               accessibilityLabel="Try again"
-              accessibilityHint="Resets the error and reloads the component"
-            >
+              accessibilityHint="Resets the error and reloads the component">
               Try Again
             </Button>
           </View>
         </View>
-      )
+      );
     }
 
-    return this.props.children
+    return this.props.children;
   }
 }
 
@@ -153,4 +151,4 @@ const styles = StyleSheet.create({
   button: {
     minWidth: 200,
   },
-})
+});

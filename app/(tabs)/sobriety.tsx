@@ -68,7 +68,7 @@ export default function SobrietyScreen() {
 
       try {
         const dateString = date.toISOString().split('T')[0];
-        
+
         // Check if record exists
         if (!record) {
           // Create new sobriety record
@@ -78,20 +78,16 @@ export default function SobrietyScreen() {
           await sobrietyService.updateSobrietyDate(user.id, dateString);
         }
 
-        Alert.alert('Success', 'Your sobriety start date has been set!', [
-          { text: 'OK' },
-        ]);
+        Alert.alert('Success', 'Your sobriety start date has been set!', [{ text: 'OK' }]);
 
         // Refresh data
         await refresh(user.id);
       } catch (err) {
         console.error('Error setting sobriety date:', err);
-        Alert.alert('Error', 'Failed to set start date. Please try again.', [
-          { text: 'OK' },
-        ]);
+        Alert.alert('Error', 'Failed to set start date. Please try again.', [{ text: 'OK' }]);
       }
     },
-    [user?.id, record, refresh]
+    [user?.id, record, refresh],
   );
 
   // Handle reflection submission
@@ -108,7 +104,7 @@ export default function SobrietyScreen() {
 
         // Add reflection to sobriety record
         await sobrietyService.addReflection(user.id, reflection);
-        
+
         Alert.alert('Success', 'Your reflection has been saved!', [{ text: 'OK' }]);
         setShowReflectionInput(false);
 
@@ -116,12 +112,10 @@ export default function SobrietyScreen() {
         await refresh(user.id);
       } catch (err) {
         console.error('Error saving reflection:', err);
-        Alert.alert('Error', 'Failed to save reflection. Please try again.', [
-          { text: 'OK' },
-        ]);
+        Alert.alert('Error', 'Failed to save reflection. Please try again.', [{ text: 'OK' }]);
       }
     },
-    [user?.id, record, refresh]
+    [user?.id, record, refresh],
   );
 
   // T080: Milestone detection and notification
@@ -130,23 +124,19 @@ export default function SobrietyScreen() {
       const milestone = getMilestoneForDays(daysSober);
 
       if (milestone) {
-        Alert.alert(
-          `🎉 ${milestone.name}!`,
-          milestone.description,
-          [
-            {
-              text: 'Share',
-              onPress: () => {
-                // TODO: Implement share functionality
-                console.log('Share milestone:', milestone);
-              },
+        Alert.alert(`🎉 ${milestone.name}!`, milestone.description, [
+          {
+            text: 'Share',
+            onPress: () => {
+              // TODO: Implement share functionality
+              console.log('Share milestone:', milestone);
             },
-            {
-              text: 'OK',
-              style: 'cancel',
-            },
-          ]
-        );
+          },
+          {
+            text: 'OK',
+            style: 'cancel',
+          },
+        ]);
       }
     }
   }, [daysSober]);
@@ -193,9 +183,7 @@ export default function SobrietyScreen() {
   }
 
   const reflections = record.reflections || [];
-  const sortedReflections = [...reflections].sort((a, b) =>
-    b.date.localeCompare(a.date)
-  );
+  const sortedReflections = [...reflections].sort((a, b) => b.date.localeCompare(a.date));
 
   return (
     <View style={[styles.container, { backgroundColor: theme.colors.background }]}>
@@ -210,8 +198,7 @@ export default function SobrietyScreen() {
             colors={[theme.colors.primary]}
           />
         }
-        showsVerticalScrollIndicator={false}
-      >
+        showsVerticalScrollIndicator={false}>
         {/* Days Counter */}
         <DaysCounter
           daysSober={daysSober || 0}
@@ -222,7 +209,7 @@ export default function SobrietyScreen() {
         {/* Upcoming Milestones */}
         {upcomingMilestones && upcomingMilestones.length > 0 && (
           <View style={styles.milestonesSection}>
-            {upcomingMilestones.slice(0, 3).map((milestone) => (
+            {upcomingMilestones.slice(0, 3).map(milestone => (
               <MilestoneCard
                 key={milestone.milestone.days}
                 milestone={milestone}
@@ -234,10 +221,7 @@ export default function SobrietyScreen() {
 
         {/* Reflection Input (conditional) */}
         {showReflectionInput && (
-          <ReflectionInput
-            onSubmit={handleReflectionSubmit}
-            isSubmitting={isSaving}
-          />
+          <ReflectionInput onSubmit={handleReflectionSubmit} isSubmitting={isSaving} />
         )}
 
         {/* Reflections Timeline */}

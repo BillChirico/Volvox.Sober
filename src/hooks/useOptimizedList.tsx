@@ -3,44 +3,44 @@
  * Provides optimized list rendering with performance tracking
  */
 
-import React, { useState, useCallback, useRef, useMemo } from 'react'
-import { FlatListProps, ViewToken, View, ActivityIndicator } from 'react-native'
+import React, { useState, useCallback, useRef, useMemo } from 'react';
+import { FlatListProps, ViewToken, View, ActivityIndicator } from 'react-native';
 
 export interface UseOptimizedListOptions<T> {
-  data: T[]
-  pageSize?: number
-  prefetchThreshold?: number
-  enablePerformanceTracking?: boolean
-  getItemHeight?: (item: T, index: number) => number
+  data: T[];
+  pageSize?: number;
+  prefetchThreshold?: number;
+  enablePerformanceTracking?: boolean;
+  getItemHeight?: (item: T, index: number) => number;
 }
 
 export interface UseOptimizedListResult<T> {
   // List props
-  flatListProps: Partial<FlatListProps<T>>
+  flatListProps: Partial<FlatListProps<T>>;
 
   // Pagination
-  hasMore: boolean
-  loadMore: () => void
-  isLoadingMore: boolean
+  hasMore: boolean;
+  loadMore: () => void;
+  isLoadingMore: boolean;
 
   // Refresh
-  isRefreshing: boolean
-  onRefresh: () => Promise<void>
+  isRefreshing: boolean;
+  onRefresh: () => Promise<void>;
 
   // Performance
-  averageRenderTime: number
-  totalRenders: number
+  averageRenderTime: number;
+  totalRenders: number;
 
   // Visible items
-  visibleItems: T[]
-  onViewableItemsChanged: (info: { viewableItems: ViewToken[]; changed: ViewToken[] }) => void
+  visibleItems: T[];
+  onViewableItemsChanged: (info: { viewableItems: ViewToken[]; changed: ViewToken[] }) => void;
 }
 
 /**
  * Hook for optimized list rendering
  */
 export const useOptimizedList = <T extends { id: string | number }>(
-  options: UseOptimizedListOptions<T>
+  options: UseOptimizedListOptions<T>,
 ): UseOptimizedListResult<T> => {
   const {
     data,
@@ -48,97 +48,95 @@ export const useOptimizedList = <T extends { id: string | number }>(
     prefetchThreshold = 0.5,
     enablePerformanceTracking = __DEV__,
     getItemHeight,
-  } = options
+  } = options;
 
   // Pagination state
-  const [displayedCount, setDisplayedCount] = useState(pageSize)
-  const [isLoadingMore, setIsLoadingMore] = useState(false)
-  const [isRefreshing, setIsRefreshing] = useState(false)
+  const [displayedCount, setDisplayedCount] = useState(pageSize);
+  const [isLoadingMore, setIsLoadingMore] = useState(false);
+  const [isRefreshing, setIsRefreshing] = useState(false);
 
   // Performance tracking
-  const renderTimes = useRef<number[]>([])
-  const renderCount = useRef(0)
+  const renderTimes = useRef<number[]>([]);
+  const renderCount = useRef(0);
 
   // Visible items tracking
-  const [visibleItems, setVisibleItems] = useState<T[]>([])
+  const [visibleItems, setVisibleItems] = useState<T[]>([]);
 
   // Displayed data (paginated)
   const displayedData = useMemo(() => {
-    return data.slice(0, displayedCount)
-  }, [data, displayedCount])
+    return data.slice(0, displayedCount);
+  }, [data, displayedCount]);
 
   // Has more items to load
-  const hasMore = displayedCount < data.length
+  const hasMore = displayedCount < data.length;
 
   // Load more items
   const loadMore = useCallback(() => {
-    if (isLoadingMore || !hasMore) return
+    if (isLoadingMore || !hasMore) return;
 
-    setIsLoadingMore(true)
+    setIsLoadingMore(true);
 
     // Simulate async loading (or integrate with actual data fetching)
     setTimeout(() => {
-      setDisplayedCount(prev => Math.min(prev + pageSize, data.length))
-      setIsLoadingMore(false)
-    }, 300)
-  }, [isLoadingMore, hasMore, pageSize, data.length])
+      setDisplayedCount(prev => Math.min(prev + pageSize, data.length));
+      setIsLoadingMore(false);
+    }, 300);
+  }, [isLoadingMore, hasMore, pageSize, data.length]);
 
   // Refresh list
   const onRefresh = useCallback(async () => {
-    setIsRefreshing(true)
+    setIsRefreshing(true);
 
     // Reset to initial page
-    setDisplayedCount(pageSize)
+    setDisplayedCount(pageSize);
 
     // Simulate refresh (or integrate with actual data fetching)
-    await new Promise(resolve => setTimeout(resolve, 500))
+    await new Promise(resolve => setTimeout(resolve, 500));
 
-    setIsRefreshing(false)
-  }, [pageSize])
+    setIsRefreshing(false);
+  }, [pageSize]);
 
   // Track render performance
   const trackRender = useCallback(() => {
-    if (!enablePerformanceTracking) return
+    if (!enablePerformanceTracking) return;
 
-    const now = performance.now()
+    const now = performance.now();
 
     if (renderCount.current > 0) {
-      const renderTime = now - (renderTimes.current[renderTimes.current.length - 1] || now)
-      renderTimes.current.push(renderTime)
+      const renderTime = now - (renderTimes.current[renderTimes.current.length - 1] || now);
+      renderTimes.current.push(renderTime);
 
       // Keep only last 100 render times
       if (renderTimes.current.length > 100) {
-        renderTimes.current.shift()
+        renderTimes.current.shift();
       }
     }
 
-    renderCount.current++
-  }, [enablePerformanceTracking])
+    renderCount.current++;
+  }, [enablePerformanceTracking]);
 
   // Calculate average render time
   const averageRenderTime = useMemo(() => {
-    if (renderTimes.current.length === 0) return 0
-    const sum = renderTimes.current.reduce((a, b) => a + b, 0)
-    return sum / renderTimes.current.length
-  }, [renderTimes.current.length])
+    if (renderTimes.current.length === 0) return 0;
+    const sum = renderTimes.current.reduce((a, b) => a + b, 0);
+    return sum / renderTimes.current.length;
+  }, [renderTimes.current.length]);
 
   // Handle viewable items changed
   const handleViewableItemsChanged = useCallback(
     ({ viewableItems }: { viewableItems: ViewToken[] }) => {
-      const items = viewableItems
-        .map(token => token.item as T)
-        .filter(Boolean)
+      const items = viewableItems.map(token => token.item as T).filter(Boolean);
 
-      setVisibleItems(items)
+      setVisibleItems(items);
     },
-    []
-  )
+    [],
+  );
 
   // Viewable items changed config
   const viewabilityConfig = useRef({
     itemVisiblePercentThreshold: 50,
     minimumViewTime: 100,
-  })
+  });
 
   // FlatList props
   const flatListProps: Partial<FlatListProps<T>> = useMemo(
@@ -189,8 +187,8 @@ export const useOptimizedList = <T extends { id: string | number }>(
       onRefresh,
       handleViewableItemsChanged,
       trackRender,
-    ]
-  )
+    ],
+  );
 
   return {
     flatListProps,
@@ -203,8 +201,8 @@ export const useOptimizedList = <T extends { id: string | number }>(
     totalRenders: renderCount.current,
     visibleItems,
     onViewableItemsChanged: handleViewableItemsChanged,
-  }
-}
+  };
+};
 
 /**
  * Loading footer component
@@ -214,5 +212,5 @@ const LoadingFooter = () => {
     <View style={{ padding: 16, alignItems: 'center' }}>
       <ActivityIndicator size="small" />
     </View>
-  )
-}
+  );
+};

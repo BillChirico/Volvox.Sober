@@ -1,6 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import { View, StyleSheet, ScrollView } from 'react-native';
-import { Text, Surface, Avatar, Button, Divider, Chip, useTheme, MD3Theme } from 'react-native-paper';
+import {
+  Text,
+  Surface,
+  Avatar,
+  Button,
+  Divider,
+  Chip,
+  useTheme,
+  MD3Theme,
+} from 'react-native-paper';
 import { useRouter } from 'expo-router';
 import supabaseClient from '../../../src/services/supabase';
 

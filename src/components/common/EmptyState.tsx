@@ -4,45 +4,45 @@
  * Feature: 002-app-screens
  */
 
-import React from 'react'
-import { View, StyleSheet, ViewStyle } from 'react-native'
-import { Text, Button } from 'react-native-paper'
+import React from 'react';
+import { View, StyleSheet, ViewStyle } from 'react-native';
+import { Text, Button } from 'react-native-paper';
 
 export interface EmptyStateProps {
   /**
    * Title text
    */
-  title: string
+  title: string;
 
   /**
    * Optional description text
    */
-  description?: string
+  description?: string;
 
   /**
    * Optional icon/emoji to display
    */
-  icon?: string
+  icon?: string;
 
   /**
    * Optional action button text
    */
-  actionText?: string
+  actionText?: string;
 
   /**
    * Optional action button handler
    */
-  onAction?: () => void
+  onAction?: () => void;
 
   /**
    * Custom container style
    */
-  style?: ViewStyle
+  style?: ViewStyle;
 
   /**
    * Test ID for testing
    */
-  testID?: string
+  testID?: string;
 }
 
 export const EmptyState: React.FC<EmptyStateProps> = ({
@@ -60,32 +60,19 @@ export const EmptyState: React.FC<EmptyStateProps> = ({
       testID={testID}
       accessible={true}
       accessibilityRole="text"
-      accessibilityLabel={`${title}${description ? `. ${description}` : ''}`}
-    >
+      accessibilityLabel={`${title}${description ? `. ${description}` : ''}`}>
       {icon && (
-        <Text
-          variant="displayLarge"
-          style={styles.icon}
-          testID={`${testID}-icon`}
-        >
+        <Text variant="displayLarge" style={styles.icon} testID={`${testID}-icon`}>
           {icon}
         </Text>
       )}
 
-      <Text
-        variant="headlineSmall"
-        style={styles.title}
-        testID={`${testID}-title`}
-      >
+      <Text variant="headlineSmall" style={styles.title} testID={`${testID}-title`}>
         {title}
       </Text>
 
       {description && (
-        <Text
-          variant="bodyMedium"
-          style={styles.description}
-          testID={`${testID}-description`}
-        >
+        <Text variant="bodyMedium" style={styles.description} testID={`${testID}-description`}>
           {description}
         </Text>
       )}
@@ -98,14 +85,13 @@ export const EmptyState: React.FC<EmptyStateProps> = ({
           testID={`${testID}-action-button`}
           accessible={true}
           accessibilityLabel={actionText}
-          accessibilityHint="Performs an action to address this empty state"
-        >
+          accessibilityHint="Performs an action to address this empty state">
           {actionText}
         </Button>
       )}
     </View>
-  )
-}
+  );
+};
 
 const styles = StyleSheet.create({
   container: {
@@ -134,4 +120,4 @@ const styles = StyleSheet.create({
   button: {
     minWidth: 200,
   },
-})
+});

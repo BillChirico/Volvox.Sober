@@ -49,40 +49,31 @@ const ROLE_OPTIONS: RoleOption[] = [
 /**
  * Role selector component for onboarding
  */
-export const RoleSelector: React.FC<RoleSelectorProps> = ({
-  selectedRole,
-  onRoleSelect,
-}) => {
+export const RoleSelector: React.FC<RoleSelectorProps> = ({ selectedRole, onRoleSelect }) => {
   const { theme } = useAppTheme();
 
   return (
     <View style={styles.container}>
-      <Text
-        variant="headlineSmall"
-        style={[styles.title, { color: theme.colors.onSurface }]}
-      >
+      <Text variant="headlineSmall" style={[styles.title, { color: theme.colors.onSurface }]}>
         Choose Your Role
       </Text>
       <Text
         variant="bodyMedium"
-        style={[styles.subtitle, { color: theme.colors.onSurfaceVariant }]}
-      >
+        style={[styles.subtitle, { color: theme.colors.onSurfaceVariant }]}>
         How would you like to participate in the recovery community?
       </Text>
 
       <RadioButton.Group
-        onValueChange={(value) => onRoleSelect(value as UserRole)}
-        value={selectedRole || ''}
-      >
-        {ROLE_OPTIONS.map((option) => (
+        onValueChange={value => onRoleSelect(value as UserRole)}
+        value={selectedRole || ''}>
+        {ROLE_OPTIONS.map(option => (
           <TouchableOpacity
             key={option.value}
             onPress={() => onRoleSelect(option.value)}
             accessible={true}
             accessibilityRole="radio"
             accessibilityState={{ checked: selectedRole === option.value }}
-            accessibilityLabel={`${option.title}: ${option.description}`}
-          >
+            accessibilityLabel={`${option.title}: ${option.description}`}>
             <Card
               style={[
                 styles.roleCard,
@@ -92,8 +83,7 @@ export const RoleSelector: React.FC<RoleSelectorProps> = ({
                   backgroundColor: theme.colors.primaryContainer,
                 },
               ]}
-              elevation={selectedRole === option.value ? 4 : 1}
-            >
+              elevation={selectedRole === option.value ? 4 : 1}>
               <Card.Content>
                 <View style={styles.roleHeader}>
                   <MaterialCommunityIcons
@@ -114,8 +104,7 @@ export const RoleSelector: React.FC<RoleSelectorProps> = ({
                             ? theme.colors.onPrimaryContainer
                             : theme.colors.onSurface,
                         fontWeight: '600',
-                      }}
-                    >
+                      }}>
                       {option.title}
                     </Text>
                     <Text
@@ -126,8 +115,7 @@ export const RoleSelector: React.FC<RoleSelectorProps> = ({
                             ? theme.colors.onPrimaryContainer
                             : theme.colors.onSurfaceVariant,
                         marginTop: 4,
-                      }}
-                    >
+                      }}>
                       {option.description}
                     </Text>
                   </View>

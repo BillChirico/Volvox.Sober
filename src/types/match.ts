@@ -3,20 +3,20 @@
  * Feature: 002-app-screens
  */
 
-import { Tables } from './database.types'
-import { Profile } from './profile'
+import { Tables } from './database.types';
+import { Profile } from './profile';
 
 // ============================================================
 // Base Match Types
 // ============================================================
 
-export type MatchStatus = 'suggested' | 'requested' | 'declined' | 'connected'
+export type MatchStatus = 'suggested' | 'requested' | 'declined' | 'connected';
 
 export interface Match extends Tables<'matches'> {}
 
 export interface MatchWithProfile extends Match {
-  candidate: Profile
-  declineCooldownExpiresAt?: string // Calculated from declined_at + 30 days
+  candidate: Profile;
+  declineCooldownExpiresAt?: string; // Calculated from declined_at + 30 days
 }
 
 // ============================================================
@@ -24,30 +24,30 @@ export interface MatchWithProfile extends Match {
 // ============================================================
 
 export interface MatchCriteria {
-  userId: string
-  userRole: 'sponsor' | 'sponsee' | 'both'
-  recoveryProgram: string
+  userId: string;
+  userRole: 'sponsor' | 'sponsee' | 'both';
+  recoveryProgram: string;
   location: {
-    city?: string
-    state?: string
-    country: string
-  }
-  availability: string[]
-  preferences: Record<string, unknown>
+    city?: string;
+    state?: string;
+    country: string;
+  };
+  availability: string[];
+  preferences: Record<string, unknown>;
 }
 
 export interface CompatibilityFactors {
-  recoveryProgramMatch: number // 0-100
-  locationProximity: number // 0-100
-  availabilityOverlap: number // 0-100
-  preferenceAlignment: number // 0-100
-  experienceLevel: number // 0-100
+  recoveryProgramMatch: number; // 0-100
+  locationProximity: number; // 0-100
+  availabilityOverlap: number; // 0-100
+  preferenceAlignment: number; // 0-100
+  experienceLevel: number; // 0-100
 }
 
 export interface MatchScore {
-  totalScore: number // 0-100
-  factors: CompatibilityFactors
-  explanation: string
+  totalScore: number; // 0-100
+  factors: CompatibilityFactors;
+  explanation: string;
 }
 
 // ============================================================
@@ -55,16 +55,16 @@ export interface MatchScore {
 // ============================================================
 
 export interface MatchActionPayload {
-  matchId: string
-  userId: string
+  matchId: string;
+  userId: string;
 }
 
 export interface DeclineMatchPayload extends MatchActionPayload {
-  declinedAt: string
+  declinedAt: string;
 }
 
 export interface RequestConnectionPayload extends MatchActionPayload {
-  requestedAt: string
+  requestedAt: string;
 }
 
 // ============================================================
@@ -72,19 +72,19 @@ export interface RequestConnectionPayload extends MatchActionPayload {
 // ============================================================
 
 export interface MatchesState {
-  suggestedMatches: MatchWithProfile[]
-  requestedMatches: MatchWithProfile[]
-  declinedMatches: MatchWithProfile[]
-  isLoading: boolean
-  isRefreshing: boolean
-  error: string | null
+  suggestedMatches: MatchWithProfile[];
+  requestedMatches: MatchWithProfile[];
+  declinedMatches: MatchWithProfile[];
+  isLoading: boolean;
+  isRefreshing: boolean;
+  error: string | null;
 }
 
 export interface MatchCardData extends MatchWithProfile {
-  isLoading?: boolean // For action button states
+  isLoading?: boolean; // For action button states
 }
 
 export interface MatchSwipeResult {
-  matchId: string
-  direction: 'left' | 'right' // left = decline, right = request
+  matchId: string;
+  direction: 'left' | 'right'; // left = decline, right = request
 }

@@ -100,7 +100,8 @@ class AuthService {
   async resetPasswordRequest(email: string): Promise<{ error: AuthError | null }> {
     // Use Supabase hosted page for password reset
     // User will reset password in browser, then return to app to login
-    const supabaseUrl = Constants.expoConfig?.extra?.EXPO_PUBLIC_SUPABASE_URL || process.env.EXPO_PUBLIC_SUPABASE_URL;
+    const supabaseUrl =
+      Constants.expoConfig?.extra?.EXPO_PUBLIC_SUPABASE_URL || process.env.EXPO_PUBLIC_SUPABASE_URL;
 
     const { error } = await getSupabase().auth.resetPasswordForEmail(email, {
       redirectTo: `${supabaseUrl}/auth/v1/verify?type=recovery`,
@@ -151,7 +152,10 @@ class AuthService {
   async deleteAccount(): Promise<{ error: AuthError | Error | null }> {
     try {
       // Get current user ID
-      const { data: { user }, error: userError } = await getSupabase().auth.getUser();
+      const {
+        data: { user },
+        error: userError,
+      } = await getSupabase().auth.getUser();
 
       if (userError || !user) {
         return { error: userError || new Error('User not authenticated') };

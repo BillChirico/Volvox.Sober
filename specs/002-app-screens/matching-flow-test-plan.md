@@ -22,11 +22,13 @@ This test plan validates the complete matching flow from viewing matches to send
 **Objective**: Verify matches display correctly with all information
 
 **Steps**:
+
 1. Navigate to Matches tab
 2. Observe loading state appears
 3. Wait for matches to load
 
 **Expected Results**:
+
 - ✅ Loading spinner shows "Finding your matches..."
 - ✅ Matches list displays with profile cards
 - ✅ Each card shows:
@@ -50,11 +52,13 @@ This test plan validates the complete matching flow from viewing matches to send
 **Objective**: Verify empty state with profile completion tips
 
 **Steps**:
+
 1. Test with user who has no matches
 2. Navigate to Matches tab
 3. Observe empty state display
 
 **Expected Results**:
+
 - ✅ Empty state icon (account-search) displays
 - ✅ "No Matches Yet" title shows
 - ✅ Profile completion card shows:
@@ -74,12 +78,14 @@ This test plan validates the complete matching flow from viewing matches to send
 **Objective**: Verify recovery program filtering works correctly
 
 **Steps**:
+
 1. View matches list with multiple recovery programs
 2. Tap "Recovery Program" filter chip
 3. Select one or more programs (e.g., "AA", "NA")
 4. Observe filter application
 
 **Expected Results**:
+
 - ✅ Filter menu opens with all recovery programs listed
 - ✅ Selected programs show checkbox-marked icon
 - ✅ Filter chip updates with count: "Recovery Program (2)"
@@ -96,12 +102,14 @@ This test plan validates the complete matching flow from viewing matches to send
 **Objective**: Verify availability filtering works correctly
 
 **Steps**:
+
 1. View matches list
 2. Tap "Availability" filter chip
 3. Select one or more availability slots (e.g., "Weekday Evenings")
 4. Observe filter application
 
 **Expected Results**:
+
 - ✅ Filter menu opens with all availability options
 - ✅ Selected options show checkbox-marked icon
 - ✅ Filter chip updates with count: "Availability (1)"
@@ -118,10 +126,12 @@ This test plan validates the complete matching flow from viewing matches to send
 **Objective**: Verify multiple filters work together
 
 **Steps**:
+
 1. Apply both recovery program AND availability filters
 2. Observe results
 
 **Expected Results**:
+
 - ✅ Both filter types apply simultaneously (AND logic)
 - ✅ Multiple active chips display for each filter type
 - ✅ Matches must match ALL filter criteria
@@ -136,11 +146,13 @@ This test plan validates the complete matching flow from viewing matches to send
 **Objective**: Verify filter clearing works correctly
 
 **Steps**:
+
 1. Apply multiple filters
 2. Click "Clear All" button OR
 3. Click X on individual active filter chips
 
 **Expected Results**:
+
 - ✅ "Clear All" removes all filters at once
 - ✅ Individual chip X removes only that filter
 - ✅ Matches list updates immediately
@@ -156,10 +168,12 @@ This test plan validates the complete matching flow from viewing matches to send
 **Objective**: Verify empty state when no matches pass filters
 
 **Steps**:
+
 1. Apply very specific filters with no matches
 2. Observe empty state
 
 **Expected Results**:
+
 - ✅ Filter-off icon displays
 - ✅ "No Matches Found" title
 - ✅ "Try adjusting your filters" message
@@ -175,11 +189,13 @@ This test plan validates the complete matching flow from viewing matches to send
 **Objective**: Verify refresh functionality works
 
 **Steps**:
+
 1. View matches list
 2. Pull down from top of list
 3. Release to trigger refresh
 
 **Expected Results**:
+
 - ✅ Refresh spinner appears during pull
 - ✅ Matches reload from database
 - ✅ Loading indicator shows during refresh
@@ -196,12 +212,14 @@ This test plan validates the complete matching flow from viewing matches to send
 **Objective**: Verify detail modal displays complete information
 
 **Steps**:
+
 1. Tap any match card
 2. Observe modal opens
 3. Review all displayed information
 4. Scroll through modal content
 
 **Expected Results**:
+
 - ✅ Modal opens with smooth animation
 - ✅ Close button (X) in top-right
 - ✅ Profile section shows:
@@ -228,12 +246,14 @@ This test plan validates the complete matching flow from viewing matches to send
 **Objective**: Verify connection request from match card
 
 **Steps**:
+
 1. View matches list
 2. Click "Send Connection Request" on any card
 3. Observe confirmation dialog
 4. Click "Send"
 
 **Expected Results**:
+
 - ✅ Confirmation dialog appears: "Send a connection request to [Name]?"
 - ✅ Dialog has "Cancel" and "Send" buttons
 - ✅ Button shows loading state during request
@@ -250,11 +270,13 @@ This test plan validates the complete matching flow from viewing matches to send
 **Objective**: Verify connection request from detail view
 
 **Steps**:
+
 1. Open match detail modal
 2. Click "Connect" button
 3. Observe request processing
 
 **Expected Results**:
+
 - ✅ "Connect" button shows loading spinner
 - ✅ Modal closes after success
 - ✅ Success alert: "Connection request sent!"
@@ -270,11 +292,13 @@ This test plan validates the complete matching flow from viewing matches to send
 **Objective**: Verify rate limit counter tracks correctly
 
 **Steps**:
+
 1. Send 4 connection requests (under limit)
 2. Attempt to send 5th request
 3. Observe success
 
 **Expected Results**:
+
 - ✅ All 5 requests succeed (within daily limit)
 - ✅ No rate limit error message
 - ✅ Each request counts toward daily limit
@@ -288,11 +312,13 @@ This test plan validates the complete matching flow from viewing matches to send
 **Objective**: Verify rate limit enforcement
 
 **Steps**:
+
 1. Send 5 connection requests (reach limit)
 2. Attempt to send 6th request
 3. Observe rate limit error
 
 **Expected Results**:
+
 - ✅ 6th request fails immediately
 - ✅ Error alert displays: "Daily connection request limit reached (5/5). Please try again tomorrow."
 - ✅ Button returns to normal state (not loading)
@@ -308,12 +334,14 @@ This test plan validates the complete matching flow from viewing matches to send
 **Objective**: Verify decline confirmation dialog
 
 **Steps**:
+
 1. Open match detail modal
 2. Click "Decline" button
 3. Observe confirmation dialog
 4. Click "Cancel"
 
 **Expected Results**:
+
 - ✅ Confirmation dialog appears with warning text
 - ✅ Dialog states 30-day cooldown period
 - ✅ "Cancel" and "Decline" buttons present
@@ -331,11 +359,13 @@ This test plan validates the complete matching flow from viewing matches to send
 **Objective**: Verify decline action works correctly
 
 **Steps**:
+
 1. Open match detail modal
 2. Click "Decline" button
 3. Confirm decline in dialog
 
 **Expected Results**:
+
 - ✅ "Decline" button shows loading state
 - ✅ Modal closes after processing
 - ✅ Alert: "Match Declined. You will not see this match for 30 days."
@@ -352,11 +382,13 @@ This test plan validates the complete matching flow from viewing matches to send
 **Objective**: Verify screen reader compatibility
 
 **Steps**:
+
 1. Enable screen reader (iOS VoiceOver or Android TalkBack)
 2. Navigate through matches screen
 3. Test all interactive elements
 
 **Expected Results**:
+
 - ✅ All elements have proper accessibility labels
 - ✅ Match cards announce: "Match with [Name]"
 - ✅ Compatibility badges announce: "Compatibility score: X out of 100, [Quality] match"
@@ -374,11 +406,13 @@ This test plan validates the complete matching flow from viewing matches to send
 **Objective**: Verify graceful error handling
 
 **Steps**:
+
 1. Disable network connection
 2. Try to send connection request
 3. Observe error handling
 
 **Expected Results**:
+
 - ✅ Error alert displays: "Failed to send connection request. Please try again."
 - ✅ Button returns to normal state
 - ✅ No UI crashes or hangs
@@ -394,12 +428,14 @@ This test plan validates the complete matching flow from viewing matches to send
 **Objective**: Verify performance with many matches
 
 **Steps**:
+
 1. Load matches list with 20+ matches
 2. Scroll through entire list
 3. Apply filters
 4. Open multiple detail modals
 
 **Expected Results**:
+
 - ✅ List renders smoothly without lag
 - ✅ Scrolling is smooth (60 FPS)
 - ✅ Images load progressively
@@ -416,6 +452,7 @@ This test plan validates the complete matching flow from viewing matches to send
 ### Sample Matches
 
 **Match 1 - High Compatibility**:
+
 - Name: "John D."
 - Location: "Boston, MA"
 - Recovery Program: "Alcoholics Anonymous (AA)"
@@ -425,6 +462,7 @@ This test plan validates the complete matching flow from viewing matches to send
 - Role: sponsor
 
 **Match 2 - Medium Compatibility**:
+
 - Name: "Sarah M."
 - Location: "Boston, MA"
 - Recovery Program: "SMART Recovery"
@@ -434,6 +472,7 @@ This test plan validates the complete matching flow from viewing matches to send
 - Role: sponsee
 
 **Match 3 - Low Compatibility**:
+
 - Name: "Mike T."
 - Location: "Cambridge, MA"
 - Recovery Program: "Narcotics Anonymous (NA)"
@@ -445,6 +484,7 @@ This test plan validates the complete matching flow from viewing matches to send
 ## Defect Reporting
 
 If a test fails, document:
+
 1. Test scenario number
 2. Expected vs actual behavior
 3. Screenshots (if applicable)
@@ -454,16 +494,17 @@ If a test fails, document:
 
 ## Sign-Off
 
-**Tester**: _________________
-**Date**: _________________
+**Tester**: **\*\*\*\***\_**\*\*\*\***
+**Date**: **\*\*\*\***\_**\*\*\*\***
 **Result**: ☐ Pass ☐ Fail ☐ Partial
-**Notes**: _________________
+**Notes**: **\*\*\*\***\_**\*\*\*\***
 
 ---
 
 ## Automation Notes (Future)
 
 Tests suitable for automation:
+
 - T091.1: View matches list rendering
 - T091.3-7: Filter functionality
 - T091.8: Pull to refresh
@@ -471,6 +512,7 @@ Tests suitable for automation:
 - T091.15: Decline action
 
 Tests requiring manual verification:
+
 - T091.2: Empty state visual design
 - T091.9: Detail modal scrolling experience
 - T091.16: Screen reader navigation

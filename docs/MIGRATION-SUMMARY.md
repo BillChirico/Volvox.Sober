@@ -51,6 +51,7 @@ app/(tabs)/
 ## Key Conversions Made
 
 ### Navigation Hooks
+
 ```typescript
 // Before (React Navigation)
 import { useNavigation, useRoute } from '@react-navigation/native';
@@ -64,19 +65,21 @@ const params = useLocalSearchParams();
 ```
 
 ### Navigation Methods
+
 ```typescript
 // Before
-navigation.goBack()
-navigation.navigate('ScreenName', { params })
-route.params.paramName
+navigation.goBack();
+navigation.navigate('ScreenName', { params });
+route.params.paramName;
 
 // After
-router.back()
-router.push('/(tabs)/screen-name')
-params.paramName
+router.back();
+router.push('/(tabs)/screen-name');
+params.paramName;
 ```
 
 ### Import Paths
+
 ```typescript
 // Before
 import { Something } from '../../store/someFile';
@@ -90,21 +93,25 @@ import { Component } from '../../../src/components/Component';
 ## Screens Migrated by Category
 
 ### ✅ Connections (4 screens)
+
 1. `ConnectionDetailScreen` → `app/(tabs)/connections/[id].tsx`
 2. `PendingRequestsScreen` → `app/(tabs)/connections/pending.tsx`
 3. `SendRequestScreen` → `app/(tabs)/connections/send.tsx`
 4. `SentRequestsScreen` → `app/(tabs)/connections/sent.tsx`
 
 ### ✅ Messages (1 screen)
+
 1. `ConversationScreen` → `app/(tabs)/messages/[id].tsx`
 
 **Note**: `ConversationListScreen` and `ConversationsListScreen` were duplicates of existing `app/(tabs)/messages.tsx` - not migrated.
 
 ### ✅ Profile (2 screens)
+
 1. `EditProfileScreen` → `app/(tabs)/profile/edit.tsx`
 2. `ViewProfileScreen` → `app/(tabs)/profile/view.tsx`
 
 ### ✅ Sobriety (3 screens)
+
 1. `LogRelapseScreen` → `app/(tabs)/sobriety/log-relapse.tsx`
 2. `RelapseHistoryScreen` → `app/(tabs)/sobriety/history.tsx`
 3. `SetSobrietyDateScreen` → `app/(tabs)/sobriety/set-date.tsx`
@@ -112,15 +119,18 @@ import { Component } from '../../../src/components/Component';
 **Note**: `SobrietyDashboardScreen` was duplicate of existing `app/(tabs)/sobriety.tsx` - not migrated.
 
 ### ✅ Steps (3 screens)
+
 1. `StepListScreen` → `app/(tabs)/steps/index.tsx`
 2. `StepWorkScreen` → `app/(tabs)/steps/work/[id].tsx`
 3. `StepWorkHistoryScreen` → `app/(tabs)/steps/history.tsx`
 
 ### ✅ Check-Ins (2 screens)
+
 1. `CheckInResponseScreen` → `app/(tabs)/check-ins/response.tsx`
 2. `CheckInSchedulingScreen` → `app/(tabs)/check-ins/schedule.tsx`
 
 ### ✅ Settings & Reviews (3 screens)
+
 1. `NotificationSettingsScreen` → `app/(tabs)/settings/notifications.tsx`
 2. `ThemeSettingsScreen` → `app/(tabs)/settings/theme.tsx`
 3. `SponsorReviewScreen` → `app/(tabs)/reviews/sponsor.tsx`
@@ -128,17 +138,20 @@ import { Component } from '../../../src/components/Component';
 ## Known Issues & Follow-Up Tasks
 
 ### TypeScript Errors (Non-Blocking)
-- Most errors are in test files (__tests__/), not production code
+
+- Most errors are in test files (**tests**/), not production code
 - Production screen errors are minor (unused variables from conversion)
 - No critical type errors in migrated screens
 
 ### Manual Review Needed
+
 1. **Complex Navigation Patterns**: Some screens may have nested navigation that needs testing
 2. **Route Parameters**: Screens with complex params may need adjustment
 3. **Realtime Subscriptions**: `ConversationScreen` has realtime logic that should be tested
 4. **Theme Hooks**: Some screens converted `createStyles` to use `useTheme()` - verify functionality
 
 ### Testing Required
+
 - [ ] Test all screen routes manually
 - [ ] Verify dynamic routes ([id]) work correctly
 - [ ] Test navigation between screens
@@ -146,6 +159,7 @@ import { Component } from '../../../src/components/Component';
 - [ ] Test deep linking compatibility
 
 ### Cleanup Tasks
+
 - [ ] Fix unused variable warnings (lint)
 - [ ] Fix TypeScript errors in test files
 - [ ] Update test files to use Expo Router test utilities
@@ -154,6 +168,7 @@ import { Component } from '../../../src/components/Component';
 ## Migration Script
 
 The bulk conversion was performed using `migrate-screens.sh`:
+
 - Automated sed replacements for common patterns
 - Batch processed 13 screens
 - Created proper directory structure
@@ -164,18 +179,21 @@ The bulk conversion was performed using `migrate-screens.sh`:
 ## Quality Checks Performed
 
 ### ✅ Lint
+
 ```bash
 pnpm lint:fix
 # Result: Successful with warnings (unused vars)
 ```
 
 ### ✅ TypeScript
+
 ```bash
 pnpm typecheck
 # Result: Errors found (mostly in tests, non-blocking)
 ```
 
 ### ⚠️ Tests
+
 ```bash
 # Not run yet - requires updating test utilities for Expo Router
 ```
@@ -190,6 +208,7 @@ pnpm typecheck
 ## Before & After
 
 ### Before
+
 ```
 src/screens/
 ├── connections/
@@ -210,6 +229,7 @@ src/screens/
 ```
 
 ### After
+
 ```
 app/(tabs)/
 ├── connections/
@@ -257,6 +277,7 @@ Total: 18 screens in organized sub-routes
 All screens successfully migrated from React Navigation to Expo Router. The `src/screens/` directory has been deleted, and all functionality is now in the `app/` directory with proper file-based routing structure.
 
 **Next Steps**:
+
 1. Test all screens manually to ensure routing works
 2. Fix minor TypeScript warnings
 3. Update test files for Expo Router

@@ -17,9 +17,7 @@ import {
   selectIsProcessing,
   SyncOperation,
 } from '../store/syncQueueSlice';
-import {
-  StepWorkResponse,
-} from '../services/stepsApi';
+import { StepWorkResponse } from '../services/stepsApi';
 
 const MAX_RETRY_COUNT = 3;
 const RETRY_DELAY_MS = 2000; // 2 seconds

@@ -91,14 +91,10 @@ export const MessageThread: React.FC<MessageThreadProps> = ({
 
   return (
     <Card
-      style={[
-        styles.card,
-        hasUnread && { backgroundColor: theme.colors.surfaceVariant },
-      ]}
+      style={[styles.card, hasUnread && { backgroundColor: theme.colors.surfaceVariant }]}
       onPress={onPress}
       accessibilityLabel={`Conversation with ${otherPerson.name}`}
-      accessibilityHint={`${conversation.unreadCount} unread messages. Tap to open conversation.`}
-    >
+      accessibilityHint={`${conversation.unreadCount} unread messages. Tap to open conversation.`}>
       <Card.Content>
         <View style={styles.content}>
           {/* Avatar */}
@@ -125,8 +121,7 @@ export const MessageThread: React.FC<MessageThreadProps> = ({
                     fontWeight: hasUnread ? '700' : '600',
                   },
                 ]}
-                numberOfLines={1}
-              >
+                numberOfLines={1}>
                 {otherPerson.name}
               </Text>
 
@@ -139,8 +134,7 @@ export const MessageThread: React.FC<MessageThreadProps> = ({
                       color: hasUnread ? theme.colors.primary : theme.colors.onSurfaceVariant,
                       fontWeight: hasUnread ? '600' : '400',
                     },
-                  ]}
-                >
+                  ]}>
                   {timestamp}
                 </Text>
               )}
@@ -174,23 +168,17 @@ export const MessageThread: React.FC<MessageThreadProps> = ({
                 style={[
                   styles.preview,
                   {
-                    color: hasUnread
-                      ? theme.colors.onSurface
-                      : theme.colors.onSurfaceVariant,
+                    color: hasUnread ? theme.colors.onSurface : theme.colors.onSurfaceVariant,
                     fontWeight: hasUnread ? '600' : '400',
                   },
                 ]}
-                numberOfLines={2}
-              >
+                numberOfLines={2}>
                 {messagePreview}
               </Text>
 
               {/* Unread badge */}
               {hasUnread && (
-                <Badge
-                  size={20}
-                  style={[styles.badge, { backgroundColor: theme.colors.primary }]}
-                >
+                <Badge size={20} style={[styles.badge, { backgroundColor: theme.colors.primary }]}>
                   {conversation.unreadCount > 99 ? '99+' : conversation.unreadCount}
                 </Badge>
               )}

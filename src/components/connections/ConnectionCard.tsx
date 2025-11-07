@@ -91,16 +91,12 @@ export const ConnectionCard: React.FC<ConnectionCardProps> = ({
       onPress={onPress}
       disabled={isLoading}
       accessibilityLabel={`Connection with ${otherPerson.name}`}
-      accessibilityHint="Tap to view full connection profile"
-    >
+      accessibilityHint="Tap to view full connection profile">
       <Card.Content>
         <View style={styles.header}>
           {/* Avatar */}
           {otherPerson.profile_photo_url ? (
-            <Avatar.Image
-              size={56}
-              source={{ uri: otherPerson.profile_photo_url }}
-            />
+            <Avatar.Image size={56} source={{ uri: otherPerson.profile_photo_url }} />
           ) : (
             <Avatar.Icon
               size={56}
@@ -115,23 +111,15 @@ export const ConnectionCard: React.FC<ConnectionCardProps> = ({
               <Text
                 variant="titleMedium"
                 style={[styles.name, { color: theme.colors.onSurface }]}
-                numberOfLines={1}
-              >
+                numberOfLines={1}>
                 {otherPerson.name}
               </Text>
               {unreadCount > 0 && (
                 <Chip
                   mode="flat"
                   compact
-                  style={[
-                    styles.unreadBadge,
-                    { backgroundColor: theme.colors.primary },
-                  ]}
-                  textStyle={[
-                    styles.unreadText,
-                    { color: theme.colors.onPrimary },
-                  ]}
-                >
+                  style={[styles.unreadBadge, { backgroundColor: theme.colors.primary }]}
+                  textStyle={[styles.unreadText, { color: theme.colors.onPrimary }]}>
                   {unreadCount > 9 ? '9+' : unreadCount}
                 </Chip>
               )}
@@ -140,16 +128,11 @@ export const ConnectionCard: React.FC<ConnectionCardProps> = ({
             {/* Role */}
             <View style={styles.roleRow}>
               <MaterialCommunityIcons
-                name={
-                  isSponsor ? 'account-star-outline' : 'account-supervisor-outline'
-                }
+                name={isSponsor ? 'account-star-outline' : 'account-supervisor-outline'}
                 size={16}
                 color={theme.colors.primary}
               />
-              <Text
-                variant="bodySmall"
-                style={[styles.role, { color: theme.colors.primary }]}
-              >
+              <Text variant="bodySmall" style={[styles.role, { color: theme.colors.primary }]}>
                 {userRole}
               </Text>
             </View>
@@ -163,8 +146,7 @@ export const ConnectionCard: React.FC<ConnectionCardProps> = ({
               />
               <Text
                 variant="bodySmall"
-                style={[styles.metaText, { color: theme.colors.onSurfaceVariant }]}
-              >
+                style={[styles.metaText, { color: theme.colors.onSurfaceVariant }]}>
                 Connected for {formatDuration()}
               </Text>
             </View>
@@ -178,8 +160,7 @@ export const ConnectionCard: React.FC<ConnectionCardProps> = ({
               />
               <Text
                 variant="bodySmall"
-                style={[styles.metaText, { color: theme.colors.onSurfaceVariant }]}
-              >
+                style={[styles.metaText, { color: theme.colors.onSurfaceVariant }]}>
                 {formatLastInteraction()}
               </Text>
             </View>

@@ -3,21 +3,21 @@
  * User-friendly error displays with retry actions
  */
 
-import React from 'react'
-import { View, StyleSheet, ViewStyle } from 'react-native'
-import { Button, Text, Card, useTheme } from 'react-native-paper'
-import { MaterialCommunityIcons } from '@expo/vector-icons'
+import React from 'react';
+import { View, StyleSheet, ViewStyle } from 'react-native';
+import { Button, Text, Card, useTheme } from 'react-native-paper';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 export interface ErrorMessageProps {
-  title?: string
-  message: string
-  icon?: keyof typeof MaterialCommunityIcons.glyphMap
-  onRetry?: () => void | Promise<void>
-  onDismiss?: () => void
-  retryLabel?: string
-  dismissLabel?: string
-  style?: ViewStyle
-  variant?: 'inline' | 'card' | 'full'
+  title?: string;
+  message: string;
+  icon?: keyof typeof MaterialCommunityIcons.glyphMap;
+  onRetry?: () => void | Promise<void>;
+  onDismiss?: () => void;
+  retryLabel?: string;
+  dismissLabel?: string;
+  style?: ViewStyle;
+  variant?: 'inline' | 'card' | 'full';
 }
 
 /**
@@ -34,19 +34,19 @@ export const ErrorMessage: React.FC<ErrorMessageProps> = ({
   style,
   variant = 'card',
 }) => {
-  const theme = useTheme()
-  const [isRetrying, setIsRetrying] = React.useState(false)
+  const theme = useTheme();
+  const [isRetrying, setIsRetrying] = React.useState(false);
 
   const handleRetry = async () => {
-    if (!onRetry) return
+    if (!onRetry) return;
 
-    setIsRetrying(true)
+    setIsRetrying(true);
     try {
-      await onRetry()
+      await onRetry();
     } finally {
-      setIsRetrying(false)
+      setIsRetrying(false);
     }
-  }
+  };
 
   if (variant === 'inline') {
     return (
@@ -61,26 +61,26 @@ export const ErrorMessage: React.FC<ErrorMessageProps> = ({
             onPress={handleRetry}
             loading={isRetrying}
             compact
-            textColor={theme.colors.error}
-          >
+            textColor={theme.colors.error}>
             {retryLabel}
           </Button>
         )}
       </View>
-    )
+    );
   }
 
   if (variant === 'full') {
     return (
       <View style={[styles.fullContainer, { backgroundColor: theme.colors.background }, style]}>
         <MaterialCommunityIcons name={icon} size={64} color={theme.colors.error} />
-        <Text variant="headlineSmall" style={[styles.fullTitle, { color: theme.colors.onBackground }]}>
+        <Text
+          variant="headlineSmall"
+          style={[styles.fullTitle, { color: theme.colors.onBackground }]}>
           {title}
         </Text>
         <Text
           variant="bodyLarge"
-          style={[styles.fullMessage, { color: theme.colors.onSurfaceVariant }]}
-        >
+          style={[styles.fullMessage, { color: theme.colors.onSurfaceVariant }]}>
           {message}
         </Text>
         <View style={styles.fullActions}>
@@ -90,8 +90,7 @@ export const ErrorMessage: React.FC<ErrorMessageProps> = ({
               onPress={handleRetry}
               loading={isRetrying}
               icon="refresh"
-              style={styles.fullButton}
-            >
+              style={styles.fullButton}>
               {retryLabel}
             </Button>
           )}
@@ -102,7 +101,7 @@ export const ErrorMessage: React.FC<ErrorMessageProps> = ({
           )}
         </View>
       </View>
-    )
+    );
   }
 
   // Card variant (default)
@@ -126,8 +125,7 @@ export const ErrorMessage: React.FC<ErrorMessageProps> = ({
                 onPress={handleRetry}
                 loading={isRetrying}
                 compact
-                style={styles.cardButton}
-              >
+                style={styles.cardButton}>
                 {retryLabel}
               </Button>
             )}
@@ -140,88 +138,94 @@ export const ErrorMessage: React.FC<ErrorMessageProps> = ({
         )}
       </Card.Content>
     </Card>
-  )
-}
+  );
+};
 
 /**
  * Network Error Message
  */
-export const NetworkError: React.FC<Omit<ErrorMessageProps, 'title' | 'message' | 'icon'>> = (props) => (
+export const NetworkError: React.FC<
+  Omit<ErrorMessageProps, 'title' | 'message' | 'icon'>
+> = props => (
   <ErrorMessage
     title="No Internet Connection"
     message="Please check your connection and try again. Some features may not be available offline."
     icon="wifi-off"
     {...props}
   />
-)
+);
 
 /**
  * Server Error Message
  */
-export const ServerError: React.FC<Omit<ErrorMessageProps, 'title' | 'message' | 'icon'>> = (props) => (
+export const ServerError: React.FC<
+  Omit<ErrorMessageProps, 'title' | 'message' | 'icon'>
+> = props => (
   <ErrorMessage
     title="Server Error"
     message="We're having trouble connecting to our servers. Please try again in a moment."
     icon="server-off"
     {...props}
   />
-)
+);
 
 /**
  * Not Found Error Message
  */
-export const NotFoundError: React.FC<Omit<ErrorMessageProps, 'title' | 'message' | 'icon'>> = (props) => (
+export const NotFoundError: React.FC<
+  Omit<ErrorMessageProps, 'title' | 'message' | 'icon'>
+> = props => (
   <ErrorMessage
     title="Not Found"
     message="The content you're looking for could not be found. It may have been removed or is no longer available."
     icon="file-question-outline"
     {...props}
   />
-)
+);
 
 /**
  * Permission Error Message
  */
-export const PermissionError: React.FC<Omit<ErrorMessageProps, 'title' | 'message' | 'icon'>> = (props) => (
+export const PermissionError: React.FC<
+  Omit<ErrorMessageProps, 'title' | 'message' | 'icon'>
+> = props => (
   <ErrorMessage
     title="Permission Denied"
     message="You don't have permission to access this content. Please contact support if you believe this is an error."
     icon="lock-outline"
     {...props}
   />
-)
+);
 
 /**
  * Timeout Error Message
  */
-export const TimeoutError: React.FC<Omit<ErrorMessageProps, 'title' | 'message' | 'icon'>> = (props) => (
+export const TimeoutError: React.FC<
+  Omit<ErrorMessageProps, 'title' | 'message' | 'icon'>
+> = props => (
   <ErrorMessage
     title="Request Timeout"
     message="The request took too long to complete. Please check your connection and try again."
     icon="clock-alert-outline"
     {...props}
   />
-)
+);
 
 /**
  * Validation Error Message
  */
 export const ValidationError: React.FC<{
-  errors: string[]
-  onDismiss?: () => void
-  style?: ViewStyle
+  errors: string[];
+  onDismiss?: () => void;
+  style?: ViewStyle;
 }> = ({ errors, onDismiss, style }) => {
-  const theme = useTheme()
+  const theme = useTheme();
 
   return (
     <Card style={[styles.card, { backgroundColor: theme.colors.errorContainer }, style]}>
       <Card.Content>
         <View style={styles.cardHeader}>
-          <MaterialCommunityIcons
-            name="alert-outline"
-            size={24}
-            color={theme.colors.error}
-          />
+          <MaterialCommunityIcons name="alert-outline" size={24} color={theme.colors.error} />
           <Text variant="titleMedium" style={[styles.cardTitle, { color: theme.colors.error }]}>
             Please fix the following errors:
           </Text>
@@ -242,39 +246,36 @@ export const ValidationError: React.FC<{
         )}
       </Card.Content>
     </Card>
-  )
-}
+  );
+};
 
 /**
  * Error Toast (for brief notifications)
  */
 export const useErrorToast = () => {
-  const [visible, setVisible] = React.useState(false)
+  const [visible, setVisible] = React.useState(false);
   const [error, setError] = React.useState<{
-    message: string
-    onRetry?: () => void
-  } | null>(null)
+    message: string;
+    onRetry?: () => void;
+  } | null>(null);
 
-  const showError = React.useCallback(
-    (message: string, onRetry?: () => void) => {
-      setError({ message, onRetry })
-      setVisible(true)
+  const showError = React.useCallback((message: string, onRetry?: () => void) => {
+    setError({ message, onRetry });
+    setVisible(true);
 
-      // Auto-dismiss after 5 seconds
-      setTimeout(() => {
-        setVisible(false)
-      }, 5000)
-    },
-    []
-  )
+    // Auto-dismiss after 5 seconds
+    setTimeout(() => {
+      setVisible(false);
+    }, 5000);
+  }, []);
 
   const hideError = React.useCallback(() => {
-    setVisible(false)
-    setTimeout(() => setError(null), 300) // Clear after animation
-  }, [])
+    setVisible(false);
+    setTimeout(() => setError(null), 300); // Clear after animation
+  }, []);
 
   const ErrorToast = React.useCallback(() => {
-    if (!visible || !error) return null
+    if (!visible || !error) return null;
 
     return (
       <View style={styles.toastContainer}>
@@ -286,15 +287,15 @@ export const useErrorToast = () => {
           dismissLabel="✕"
         />
       </View>
-    )
-  }, [visible, error, hideError])
+    );
+  }, [visible, error, hideError]);
 
   return {
     showError,
     hideError,
     ErrorToast,
-  }
-}
+  };
+};
 
 const styles = StyleSheet.create({
   // Inline variant
@@ -374,4 +375,4 @@ const styles = StyleSheet.create({
     right: 16,
     zIndex: 1000,
   },
-})
+});

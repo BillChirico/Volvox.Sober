@@ -4,12 +4,8 @@
  * Feature: 002-app-screens
  */
 
-import { createSlice, PayloadAction } from '@reduxjs/toolkit'
-import {
-  SobrietyRecordWithCalculations,
-  SobrietyState,
-  MilestoneStatus,
-} from '../../types'
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { SobrietyRecordWithCalculations, SobrietyState, MilestoneStatus } from '../../types';
 
 const initialState: SobrietyState = {
   record: null,
@@ -17,50 +13,47 @@ const initialState: SobrietyState = {
   isLoading: false,
   isSaving: false,
   error: null,
-}
+};
 
 const sobrietySlice = createSlice({
   name: 'sobriety',
   initialState,
   reducers: {
-    setRecord: (
-      state,
-      action: PayloadAction<SobrietyRecordWithCalculations | null>
-    ) => {
-      state.record = action.payload
-      state.error = null
+    setRecord: (state, action: PayloadAction<SobrietyRecordWithCalculations | null>) => {
+      state.record = action.payload;
+      state.error = null;
     },
     setMilestones: (state, action: PayloadAction<MilestoneStatus[]>) => {
-      state.milestones = action.payload
+      state.milestones = action.payload;
     },
     setLoading: (state, action: PayloadAction<boolean>) => {
-      state.isLoading = action.payload
+      state.isLoading = action.payload;
     },
     setSaving: (state, action: PayloadAction<boolean>) => {
-      state.isSaving = action.payload
+      state.isSaving = action.payload;
     },
     setError: (state, action: PayloadAction<string>) => {
-      state.error = action.payload
-      state.isLoading = false
-      state.isSaving = false
+      state.error = action.payload;
+      state.isLoading = false;
+      state.isSaving = false;
     },
-    clearError: (state) => {
-      state.error = null
+    clearError: state => {
+      state.error = null;
     },
     updateDaysSober: (state, action: PayloadAction<number>) => {
       if (state.record) {
-        state.record.daysSober = action.payload
+        state.record.daysSober = action.payload;
       }
     },
-    clearSobriety: (state) => {
-      state.record = null
-      state.milestones = []
-      state.isLoading = false
-      state.isSaving = false
-      state.error = null
+    clearSobriety: state => {
+      state.record = null;
+      state.milestones = [];
+      state.isLoading = false;
+      state.isSaving = false;
+      state.error = null;
     },
   },
-})
+});
 
 export const {
   setRecord,
@@ -71,6 +64,6 @@ export const {
   clearError,
   updateDaysSober,
   clearSobriety,
-} = sobrietySlice.actions
+} = sobrietySlice.actions;
 
-export default sobrietySlice.reducer
+export default sobrietySlice.reducer;

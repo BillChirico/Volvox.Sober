@@ -18,6 +18,7 @@ Manual testing guide for iOS VoiceOver accessibility on critical user flows.
 ## Critical Flow 1: Authentication (Login)
 
 ### Test Steps:
+
 - [ ] Open app to login screen
 - [ ] Enable VoiceOver
 - [ ] Navigate to email input field
@@ -36,6 +37,7 @@ Manual testing guide for iOS VoiceOver accessibility on critical user flows.
   - **Expected**: Validation errors read aloud immediately
 
 ### Pass Criteria:
+
 - All form fields have clear, descriptive labels
 - Buttons announce their purpose
 - Error messages are announced via VoiceOver
@@ -44,6 +46,7 @@ Manual testing guide for iOS VoiceOver accessibility on critical user flows.
 ## Critical Flow 2: Registration & Onboarding
 
 ### Test Steps:
+
 - [ ] Navigate to "Sign Up" link
   - **Expected**: Announces "Sign up, link" or "Sign up, button"
 - [ ] Complete registration form
@@ -60,6 +63,7 @@ Manual testing guide for iOS VoiceOver accessibility on critical user flows.
   - **Expected**: All fields and instructions announced
 
 ### Pass Criteria:
+
 - Multi-step process progress is announced
 - Radio buttons/checkboxes announce selection state
 - File upload (photos) is accessible
@@ -68,6 +72,7 @@ Manual testing guide for iOS VoiceOver accessibility on critical user flows.
 ## Critical Flow 3: Matches Discovery
 
 ### Test Steps:
+
 - [ ] Navigate to Matches tab
   - **Expected**: Tab announces "Matches, tab, 1 of 5"
 - [ ] Navigate through match cards
@@ -80,6 +85,7 @@ Manual testing guide for iOS VoiceOver accessibility on critical user flows.
   - **Expected**: Button purpose and action announced
 
 ### Pass Criteria:
+
 - Match cards are navigable as distinct items
 - Compatibility scores are announced with context
 - Profile information read in logical order
@@ -88,6 +94,7 @@ Manual testing guide for iOS VoiceOver accessibility on critical user flows.
 ## Critical Flow 4: Connections Management
 
 ### Test Steps:
+
 - [ ] Navigate to Connections tab
   - **Expected**: Tab announces "Connections, tab, 2 of 5"
 - [ ] Navigate connection list
@@ -98,6 +105,7 @@ Manual testing guide for iOS VoiceOver accessibility on critical user flows.
   - **Expected**: Profile details announced logically
 
 ### Pass Criteria:
+
 - Connection status (active, pending) is announced
 - Action buttons are clearly labeled
 - List navigation is smooth and logical
@@ -105,6 +113,7 @@ Manual testing guide for iOS VoiceOver accessibility on critical user flows.
 ## Critical Flow 5: Messaging
 
 ### Test Steps:
+
 - [ ] Navigate to Messages tab
   - **Expected**: Tab announces "Messages, tab, 3 of 5"
 - [ ] Navigate conversation list
@@ -119,6 +128,7 @@ Manual testing guide for iOS VoiceOver accessibility on critical user flows.
   - **Expected**: "Sending", "Sent", "Delivered" states announced
 
 ### Pass Criteria:
+
 - Message history is navigable
 - Sent vs received messages are distinguishable
 - Message input is clearly labeled
@@ -127,6 +137,7 @@ Manual testing guide for iOS VoiceOver accessibility on critical user flows.
 ## Critical Flow 6: Sobriety Tracking
 
 ### Test Steps:
+
 - [ ] Navigate to Sobriety tab
   - **Expected**: Tab announces "Sobriety, tab, 4 of 5"
 - [ ] Navigate sobriety counter
@@ -137,6 +148,7 @@ Manual testing guide for iOS VoiceOver accessibility on critical user flows.
   - **Expected**: Milestones announced with context
 
 ### Pass Criteria:
+
 - Time counters are announced with units (days, months, years)
 - Buttons for logging events are clearly labeled
 - Milestone notifications are accessible
@@ -144,6 +156,7 @@ Manual testing guide for iOS VoiceOver accessibility on critical user flows.
 ## Critical Flow 7: Profile Management
 
 ### Test Steps:
+
 - [ ] Navigate to Profile tab
   - **Expected**: Tab announces "Profile, tab, 5 of 5"
 - [ ] Navigate profile information
@@ -158,6 +171,7 @@ Manual testing guide for iOS VoiceOver accessibility on critical user flows.
   - **Expected**: Save action and result announced
 
 ### Pass Criteria:
+
 - All profile fields have clear labels
 - Edit mode is clearly announced
 - Photo selection is accessible
@@ -166,6 +180,7 @@ Manual testing guide for iOS VoiceOver accessibility on critical user flows.
 ## Critical Flow 8: Navigation
 
 ### Test Steps:
+
 - [ ] Test bottom tab bar navigation
   - **Expected**: Each tab announces name and position (1 of 5, etc.)
 - [ ] Test back navigation
@@ -176,6 +191,7 @@ Manual testing guide for iOS VoiceOver accessibility on critical user flows.
   - **Expected**: All settings options announced
 
 ### Pass Criteria:
+
 - Tab bar navigation is smooth and clear
 - Current tab is indicated
 - Back navigation announces destination
@@ -184,23 +200,27 @@ Manual testing guide for iOS VoiceOver accessibility on critical user flows.
 ## General Accessibility Checks
 
 ### Headings & Structure:
+
 - [ ] Screen titles are announced as headings
 - [ ] Content sections have logical hierarchy
 - [ ] Lists are announced as lists with item counts
 
 ### Dynamic Content:
+
 - [ ] Loading states are announced
 - [ ] Error messages appear as alerts
 - [ ] Success confirmations are announced
 - [ ] Modal dialogs announce properly
 
 ### Interactive Elements:
+
 - [ ] All buttons have descriptive labels
 - [ ] Links indicate destination
 - [ ] Form fields have labels and types
 - [ ] Checkboxes/radio buttons announce state
 
 ### Images & Icons:
+
 - [ ] Profile photos have meaningful alt text
 - [ ] Decorative images are hidden from VoiceOver
 - [ ] Icon buttons have text labels
@@ -221,8 +241,8 @@ For any issues found, document:
 
 - [ ] All critical flows tested
 - [ ] All issues documented
-- [ ] Testing completed by: _____________
-- [ ] Date: _____________
-- [ ] Device: _____________
-- [ ] iOS Version: _____________
-- [ ] App Version: _____________
+- [ ] Testing completed by: **\*\***\_**\*\***
+- [ ] Date: **\*\***\_**\*\***
+- [ ] Device: **\*\***\_**\*\***
+- [ ] iOS Version: **\*\***\_**\*\***
+- [ ] App Version: **\*\***\_**\*\***

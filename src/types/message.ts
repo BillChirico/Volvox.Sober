@@ -3,20 +3,20 @@
  * Feature: 002-app-screens
  */
 
-import { Tables } from './database.types'
-import { ConnectionWithUsers } from './connection'
-import { Profile } from './profile'
+import { Tables } from './database.types';
+import { ConnectionWithUsers } from './connection';
+import { Profile } from './profile';
 
 // ============================================================
 // Base Message Types
 // ============================================================
 
-export type MessageStatus = 'sending' | 'sent' | 'delivered' | 'read'
+export type MessageStatus = 'sending' | 'sent' | 'delivered' | 'read';
 
 export interface Message extends Tables<'messages'> {}
 
 export interface MessageWithSender extends Message {
-  sender: Profile
+  sender: Profile;
 }
 
 // ============================================================
@@ -24,16 +24,16 @@ export interface MessageWithSender extends Message {
 // ============================================================
 
 export interface Conversation {
-  connection: ConnectionWithUsers
-  messages: MessageWithSender[]
-  unreadCount: number
+  connection: ConnectionWithUsers;
+  messages: MessageWithSender[];
+  unreadCount: number;
 }
 
 export interface ConversationPreview {
-  connection: ConnectionWithUsers
-  lastMessage: Message | null
-  unreadCount: number
-  lastMessageAt: string | null
+  connection: ConnectionWithUsers;
+  lastMessage: Message | null;
+  unreadCount: number;
+  lastMessageAt: string | null;
 }
 
 // ============================================================
@@ -41,19 +41,19 @@ export interface ConversationPreview {
 // ============================================================
 
 export interface SendMessageData {
-  connectionId: string
-  senderId: string
-  text: string
+  connectionId: string;
+  senderId: string;
+  text: string;
 }
 
 export interface MarkMessageReadData {
-  messageId: string
-  readAt: string
+  messageId: string;
+  readAt: string;
 }
 
 export interface MarkMessagesDeliveredData {
-  messageIds: string[]
-  deliveredAt: string
+  messageIds: string[];
+  deliveredAt: string;
 }
 
 // ============================================================
@@ -61,20 +61,20 @@ export interface MarkMessagesDeliveredData {
 // ============================================================
 
 export interface NewMessageEvent {
-  message: Message
-  sender: Profile
+  message: Message;
+  sender: Profile;
 }
 
 export interface MessageStatusUpdateEvent {
-  messageId: string
-  status: MessageStatus
-  timestamp: string
+  messageId: string;
+  status: MessageStatus;
+  timestamp: string;
 }
 
 export interface TypingIndicatorEvent {
-  connectionId: string
-  userId: string
-  isTyping: boolean
+  connectionId: string;
+  userId: string;
+  isTyping: boolean;
 }
 
 // ============================================================
@@ -82,47 +82,47 @@ export interface TypingIndicatorEvent {
 // ============================================================
 
 export interface MessageValidation {
-  isValid: boolean
-  error?: string
+  isValid: boolean;
+  error?: string;
 }
 
 export const MESSAGE_CONSTRAINTS = {
   MIN_LENGTH: 1,
   MAX_LENGTH: 5000,
-} as const
+} as const;
 
 // ============================================================
 // UI State Types
 // ============================================================
 
 export interface MessagesState {
-  conversations: ConversationPreview[]
-  currentConversation: Conversation | null
-  isLoading: boolean
-  isSending: boolean
-  isLoadingMore: boolean
-  error: string | null
-  offlineQueue: QueuedMessage[]
-  isSyncing: boolean
+  conversations: ConversationPreview[];
+  currentConversation: Conversation | null;
+  isLoading: boolean;
+  isSending: boolean;
+  isLoadingMore: boolean;
+  error: string | null;
+  offlineQueue: QueuedMessage[];
+  isSyncing: boolean;
 }
 
 export interface MessageInputState {
-  text: string
-  isSending: boolean
-  validationError: string | null
+  text: string;
+  isSending: boolean;
+  validationError: string | null;
 }
 
 export interface ConversationState {
-  messages: MessageWithSender[]
-  hasMore: boolean
-  isLoadingMore: boolean
-  error: string | null
+  messages: MessageWithSender[];
+  hasMore: boolean;
+  isLoadingMore: boolean;
+  error: string | null;
 }
 
 export interface TypingState {
   [connectionId: string]: {
-    [userId: string]: boolean
-  }
+    [userId: string]: boolean;
+  };
 }
 
 // ============================================================
@@ -130,11 +130,11 @@ export interface TypingState {
 // ============================================================
 
 export interface QueuedMessage {
-  tempId: string
-  connectionId: string
-  senderId: string
-  text: string
-  senderProfile: { id: string; name: string; profile_photo_url?: string }
-  createdAt: string
-  retryCount: number
+  tempId: string;
+  connectionId: string;
+  senderId: string;
+  text: string;
+  senderProfile: { id: string; name: string; profile_photo_url?: string };
+  createdAt: string;
+  retryCount: number;
 }

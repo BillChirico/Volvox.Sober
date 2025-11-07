@@ -15,14 +15,14 @@ This directory contains OpenAPI-style contract specifications for all APIs used 
 
 ## Contract Files
 
-| File | Purpose | Endpoints |
-|------|---------|-----------|
-| `profiles.yaml` | User profile CRUD | 3 endpoints |
-| `onboarding.yaml` | Onboarding flow | 4 endpoints |
-| `sobriety.yaml` | Sobriety tracking | 4 endpoints |
-| `matches.yaml` | Matching algorithm | 4 endpoints |
-| `connections.yaml` | Connection management | 5 endpoints |
-| `messages.yaml` | Real-time messaging | 5 endpoints + WebSocket |
+| File               | Purpose               | Endpoints               |
+| ------------------ | --------------------- | ----------------------- |
+| `profiles.yaml`    | User profile CRUD     | 3 endpoints             |
+| `onboarding.yaml`  | Onboarding flow       | 4 endpoints             |
+| `sobriety.yaml`    | Sobriety tracking     | 4 endpoints             |
+| `matches.yaml`     | Matching algorithm    | 4 endpoints             |
+| `connections.yaml` | Connection management | 5 endpoints             |
+| `messages.yaml`    | Real-time messaging   | 5 endpoints + WebSocket |
 
 ## Authentication
 
@@ -30,11 +30,7 @@ All endpoints require authentication via Supabase Auth:
 
 ```typescript
 // Client automatically includes JWT
-const { data, error } = await supabase
-  .from('profiles')
-  .select('*')
-  .eq('id', userId)
-  .single();
+const { data, error } = await supabase.from('profiles').select('*').eq('id', userId).single();
 ```
 
 ## Error Handling
@@ -43,10 +39,10 @@ Standard Supabase error format:
 
 ```typescript
 {
-  message: string;  // Human-readable error message
-  code: string;     // Error code (e.g., 'PGRST116', '23505')
-  details: string;  // Additional details
-  hint: string;     // Suggestion for resolution
+  message: string; // Human-readable error message
+  code: string; // Error code (e.g., 'PGRST116', '23505')
+  details: string; // Additional details
+  hint: string; // Suggestion for resolution
 }
 ```
 
@@ -67,6 +63,7 @@ supabase gen types typescript --local > src/types/database.ts
 ## Testing
 
 Contract tests validate:
+
 - Request/response schemas
 - Authentication requirements
 - RLS policy enforcement

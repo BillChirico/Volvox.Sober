@@ -65,19 +65,9 @@ const TimelineItem: React.FC<TimelineItemProps> = ({ reflection, isLast }) => {
   return (
     <View style={styles.timelineItem}>
       <View style={styles.timelineMarker}>
-        <View
-          style={[
-            styles.markerDot,
-            { backgroundColor: theme.colors.primary },
-          ]}
-        />
+        <View style={[styles.markerDot, { backgroundColor: theme.colors.primary }]} />
         {!isLast && (
-          <View
-            style={[
-              styles.markerLine,
-              { backgroundColor: theme.colors.outlineVariant },
-            ]}
-          />
+          <View style={[styles.markerLine, { backgroundColor: theme.colors.outlineVariant }]} />
         )}
       </View>
 
@@ -86,8 +76,7 @@ const TimelineItem: React.FC<TimelineItemProps> = ({ reflection, isLast }) => {
           <View style={styles.reflectionHeader}>
             <Text
               variant="titleSmall"
-              style={[styles.reflectionDate, { color: theme.colors.primary }]}
-            >
+              style={[styles.reflectionDate, { color: theme.colors.primary }]}>
               {formatReflectionDate(reflection.date)}
             </Text>
             <MaterialCommunityIcons
@@ -98,11 +87,7 @@ const TimelineItem: React.FC<TimelineItemProps> = ({ reflection, isLast }) => {
           </View>
           <Text
             variant="bodyMedium"
-            style={[
-              styles.reflectionText,
-              { color: theme.colors.onSurface },
-            ]}
-          >
+            style={[styles.reflectionText, { color: theme.colors.onSurface }]}>
             {reflection.text}
           </Text>
         </Card.Content>
@@ -124,10 +109,7 @@ export const Timeline: React.FC<TimelineProps> = ({
   if (isLoading) {
     return (
       <View style={styles.centerContainer}>
-        <Text
-          variant="bodyLarge"
-          style={{ color: theme.colors.onSurfaceVariant }}
-        >
+        <Text variant="bodyLarge" style={{ color: theme.colors.onSurfaceVariant }}>
           Loading reflections...
         </Text>
       </View>
@@ -143,22 +125,12 @@ export const Timeline: React.FC<TimelineProps> = ({
           color={theme.colors.onSurfaceVariant}
           style={styles.emptyIcon}
         />
-        <Text
-          variant="titleMedium"
-          style={[
-            styles.emptyTitle,
-            { color: theme.colors.onSurface },
-          ]}
-        >
+        <Text variant="titleMedium" style={[styles.emptyTitle, { color: theme.colors.onSurface }]}>
           No Reflections Yet
         </Text>
         <Text
           variant="bodyMedium"
-          style={[
-            styles.emptyMessage,
-            { color: theme.colors.onSurfaceVariant },
-          ]}
-        >
+          style={[styles.emptyMessage, { color: theme.colors.onSurfaceVariant }]}>
           {emptyMessage}
         </Text>
       </View>
@@ -168,15 +140,10 @@ export const Timeline: React.FC<TimelineProps> = ({
   return (
     <View style={styles.container}>
       <View style={styles.timelineHeader}>
-        <MaterialCommunityIcons
-          name="timeline-clock"
-          size={24}
-          color={theme.colors.primary}
-        />
+        <MaterialCommunityIcons name="timeline-clock" size={24} color={theme.colors.primary} />
         <Text
           variant="titleMedium"
-          style={[styles.timelineTitle, { color: theme.colors.onSurface }]}
-        >
+          style={[styles.timelineTitle, { color: theme.colors.onSurface }]}>
           Your Journey
         </Text>
       </View>
@@ -184,10 +151,7 @@ export const Timeline: React.FC<TimelineProps> = ({
       <FlatList
         data={reflections}
         renderItem={({ item, index }) => (
-          <TimelineItem
-            reflection={item}
-            isLast={index === reflections.length - 1}
-          />
+          <TimelineItem reflection={item} isLast={index === reflections.length - 1} />
         )}
         keyExtractor={(item, index) => `reflection-${item.date}-${index}`}
         contentContainerStyle={styles.listContent}

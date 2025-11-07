@@ -4,36 +4,36 @@
  * Feature: 002-app-screens (T118)
  */
 
-import React, { useState, useEffect } from 'react'
-import { View, StyleSheet, Alert } from 'react-native'
-import { Text, ActivityIndicator } from 'react-native-paper'
-import { SettingsSection, type SettingsItem } from './SettingsSection'
-import { useAppTheme } from '../../theme/ThemeContext'
-import supabaseClient from '../../services/supabase'
+import React, { useState, useEffect } from 'react';
+import { View, StyleSheet, Alert } from 'react-native';
+import { Text, ActivityIndicator } from 'react-native-paper';
+import { SettingsSection, type SettingsItem } from './SettingsSection';
+import { useAppTheme } from '../../theme/ThemeContext';
+import supabaseClient from '../../services/supabase';
 
 interface NotificationPreferences {
-  id?: string
-  user_id: string
-  email_notifications: boolean
-  push_notifications: boolean
-  message_notifications: boolean
-  connection_request_notifications: boolean
-  milestone_notifications: boolean
-  check_in_reminders: boolean
-  created_at?: string
-  updated_at?: string
+  id?: string;
+  user_id: string;
+  email_notifications: boolean;
+  push_notifications: boolean;
+  message_notifications: boolean;
+  connection_request_notifications: boolean;
+  milestone_notifications: boolean;
+  check_in_reminders: boolean;
+  created_at?: string;
+  updated_at?: string;
 }
 
 interface NotificationSettingsProps {
-  userId: string
-  onPreferencesChange?: (preferences: NotificationPreferences) => void
+  userId: string;
+  onPreferencesChange?: (preferences: NotificationPreferences) => void;
 }
 
 export const NotificationSettings: React.FC<NotificationSettingsProps> = ({
   userId,
   onPreferencesChange,
 }) => {
-  const { theme } = useAppTheme()
+  const { theme } = useAppTheme();
   const [preferences, setPreferences] = useState<NotificationPreferences>({
     user_id: userId,
     email_notifications: true,
@@ -42,52 +42,49 @@ export const NotificationSettings: React.FC<NotificationSettingsProps> = ({
     connection_request_notifications: true,
     milestone_notifications: true,
     check_in_reminders: true,
-  })
-  const [isLoading, setIsLoading] = useState(true)
-  const [isSaving, setIsSaving] = useState(false)
+  });
+  const [isLoading, setIsLoading] = useState(true);
+  const [isSaving, setIsSaving] = useState(false);
 
   // Fetch preferences on mount
   useEffect(() => {
-    fetchPreferences()
-  }, [userId])
+    fetchPreferences();
+  }, [userId]);
 
   const fetchPreferences = async () => {
     try {
-      setIsLoading(true)
+      setIsLoading(true);
 
       const { data, error } = await supabaseClient
         .from('notification_preferences')
         .select('*')
         .eq('user_id', userId)
-        .single()
+        .single();
 
       if (error && error.code !== 'PGRST116') {
         // PGRST116 = no rows returned
-        throw error
+        throw error;
       }
 
       if (data) {
-        setPreferences(data)
+        setPreferences(data);
       }
     } catch (error) {
-      console.error('Error fetching notification preferences:', error)
-      Alert.alert('Error', 'Failed to load notification preferences')
+      console.error('Error fetching notification preferences:', error);
+      Alert.alert('Error', 'Failed to load notification preferences');
     } finally {
-      setIsLoading(false)
+      setIsLoading(false);
     }
-  }
+  };
 
-  const updatePreference = async (
-    key: keyof NotificationPreferences,
-    value: boolean
-  ) => {
+  const updatePreference = async (key: keyof NotificationPreferences, value: boolean) => {
     try {
-      setIsSaving(true)
+      setIsSaving(true);
 
       const updatedPreferences = {
         ...preferences,
         [key]: value,
-      }
+      };
 
       // Upsert preferences (insert or update)
       const { data, error } = await supabaseClient
@@ -100,32 +97,32 @@ export const NotificationSettings: React.FC<NotificationSettingsProps> = ({
           },
           {
             onConflict: 'user_id',
-          }
+          },
         )
         .select()
-        .single()
+        .single();
 
       if (error) {
-        throw error
+        throw error;
       }
 
-      setPreferences(data)
+      setPreferences(data);
 
       if (onPreferencesChange) {
-        onPreferencesChange(data)
+        onPreferencesChange(data);
       }
     } catch (error) {
-      console.error('Error updating notification preference:', error)
-      Alert.alert('Error', 'Failed to update notification preference')
+      console.error('Error updating notification preference:', error);
+      Alert.alert('Error', 'Failed to update notification preference');
       // Revert on error
-      setPreferences((prev) => ({
+      setPreferences(prev => ({
         ...prev,
         [key]: !value,
-      }))
+      }));
     } finally {
-      setIsSaving(false)
+      setIsSaving(false);
     }
-  }
+  };
 
   if (isLoading) {
     return (
@@ -135,7 +132,7 @@ export const NotificationSettings: React.FC<NotificationSettingsProps> = ({
           Loading notification settings...
         </Text>
       </View>
-    )
+    );
   }
 
   const generalNotifications: SettingsItem[] = [
@@ -146,7 +143,7 @@ export const NotificationSettings: React.FC<NotificationSettingsProps> = ({
       description: 'Receive important updates via email',
       icon: 'email-outline',
       value: preferences.email_notifications,
-      onValueChange: (value) => updatePreference('email_notifications', value),
+      onValueChange: value => updatePreference('email_notifications', value),
       disabled: isSaving,
     },
     {
@@ -156,10 +153,10 @@ export const NotificationSettings: React.FC<NotificationSettingsProps> = ({
       description: 'Receive push notifications on your device',
       icon: 'cellphone',
       value: preferences.push_notifications,
-      onValueChange: (value) => updatePreference('push_notifications', value),
+      onValueChange: value => updatePreference('push_notifications', value),
       disabled: isSaving,
     },
-  ]
+  ];
 
   const activityNotifications: SettingsItem[] = [
     {
@@ -169,7 +166,7 @@ export const NotificationSettings: React.FC<NotificationSettingsProps> = ({
       description: 'Get notified when you receive new messages',
       icon: 'message-text-outline',
       value: preferences.message_notifications,
-      onValueChange: (value) => updatePreference('message_notifications', value),
+      onValueChange: value => updatePreference('message_notifications', value),
       disabled: isSaving || !preferences.push_notifications,
     },
     {
@@ -179,11 +176,10 @@ export const NotificationSettings: React.FC<NotificationSettingsProps> = ({
       description: 'Get notified about new connection requests',
       icon: 'account-multiple-plus-outline',
       value: preferences.connection_request_notifications,
-      onValueChange: (value) =>
-        updatePreference('connection_request_notifications', value),
+      onValueChange: value => updatePreference('connection_request_notifications', value),
       disabled: isSaving || !preferences.push_notifications,
     },
-  ]
+  ];
 
   const recoveryNotifications: SettingsItem[] = [
     {
@@ -193,7 +189,7 @@ export const NotificationSettings: React.FC<NotificationSettingsProps> = ({
       description: 'Celebrate sobriety milestones (30, 60, 90 days, etc.)',
       icon: 'trophy-outline',
       value: preferences.milestone_notifications,
-      onValueChange: (value) => updatePreference('milestone_notifications', value),
+      onValueChange: value => updatePreference('milestone_notifications', value),
       disabled: isSaving || !preferences.push_notifications,
     },
     {
@@ -203,10 +199,10 @@ export const NotificationSettings: React.FC<NotificationSettingsProps> = ({
       description: 'Reminders for daily check-ins with connections',
       icon: 'bell-check-outline',
       value: preferences.check_in_reminders,
-      onValueChange: (value) => updatePreference('check_in_reminders', value),
+      onValueChange: value => updatePreference('check_in_reminders', value),
       disabled: isSaving || !preferences.push_notifications,
     },
-  ]
+  ];
 
   return (
     <View style={styles.container}>
@@ -219,14 +215,13 @@ export const NotificationSettings: React.FC<NotificationSettingsProps> = ({
       {!preferences.push_notifications && (
         <Text
           variant="bodySmall"
-          style={[styles.disclaimer, { color: theme.colors.onSurfaceVariant }]}
-        >
+          style={[styles.disclaimer, { color: theme.colors.onSurfaceVariant }]}>
           💡 Enable push notifications to receive activity and recovery alerts
         </Text>
       )}
     </View>
-  )
-}
+  );
+};
 
 const styles = StyleSheet.create({
   container: {
@@ -243,4 +238,4 @@ const styles = StyleSheet.create({
     padding: 16,
     marginTop: 8,
   },
-})
+});

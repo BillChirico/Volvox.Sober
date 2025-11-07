@@ -76,9 +76,7 @@ export const profileSchema = Yup.object().shape({
     .required('Name is required')
     .min(2, 'Name must be at least 2 characters')
     .max(100, 'Name must be less than 100 characters'),
-  bio: Yup.string()
-    .max(500, 'Bio must be less than 500 characters')
-    .nullable(),
+  bio: Yup.string().max(500, 'Bio must be less than 500 characters').nullable(),
   role: Yup.string()
     .required('Role is required')
     .oneOf(['sponsor', 'sponsee', 'both'], 'Invalid role selected'),
@@ -88,15 +86,9 @@ export const profileSchema = Yup.object().shape({
   sobriety_start_date: Yup.date()
     .max(new Date(), 'Sobriety date cannot be in the future')
     .nullable(),
-  city: Yup.string()
-    .max(100, 'City must be less than 100 characters')
-    .nullable(),
-  state: Yup.string()
-    .max(50, 'State must be less than 50 characters')
-    .nullable(),
-  country: Yup.string()
-    .max(50, 'Country must be less than 50 characters')
-    .nullable(),
+  city: Yup.string().max(100, 'City must be less than 100 characters').nullable(),
+  state: Yup.string().max(50, 'State must be less than 50 characters').nullable(),
+  country: Yup.string().max(50, 'Country must be less than 50 characters').nullable(),
   availability: Yup.array()
     .of(Yup.string())
     .min(1, 'Please select at least one availability option')
@@ -108,9 +100,7 @@ export const profileSchema = Yup.object().shape({
  * Extends base profile with sponsor-specific fields
  */
 export const sponsorProfileSchema = profileSchema.shape({
-  role: Yup.string()
-    .required('Role is required')
-    .oneOf(['sponsor', 'both'], 'Must be a sponsor'),
+  role: Yup.string().required('Role is required').oneOf(['sponsor', 'both'], 'Must be a sponsor'),
   sobriety_start_date: Yup.date()
     .required('Sobriety start date is required for sponsors')
     .max(new Date(), 'Sobriety date cannot be in the future'),
@@ -121,9 +111,7 @@ export const sponsorProfileSchema = profileSchema.shape({
  * Extends base profile with sponsee-specific requirements
  */
 export const sponseeProfileSchema = profileSchema.shape({
-  role: Yup.string()
-    .required('Role is required')
-    .oneOf(['sponsee', 'both'], 'Must be a sponsee'),
+  role: Yup.string().required('Role is required').oneOf(['sponsee', 'both'], 'Must be a sponsee'),
 });
 
 /**
@@ -156,9 +144,7 @@ export const reflectionSchema = Yup.object().shape({
     .required('Reflection text is required')
     .min(1, 'Reflection cannot be empty')
     .max(1000, 'Reflection must be less than 1000 characters'),
-  date: Yup.date()
-    .max(new Date(), 'Reflection date cannot be in the future')
-    .nullable(),
+  date: Yup.date().max(new Date(), 'Reflection date cannot be in the future').nullable(),
 });
 
 /**
@@ -178,7 +164,5 @@ export const messageSchema = Yup.object().shape({
  * Fields: end_feedback
  */
 export const connectionEndFeedbackSchema = Yup.object().shape({
-  end_feedback: Yup.string()
-    .max(500, 'Feedback must be less than 500 characters')
-    .nullable(),
+  end_feedback: Yup.string().max(500, 'Feedback must be less than 500 characters').nullable(),
 });

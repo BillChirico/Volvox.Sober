@@ -43,7 +43,7 @@ export default function MessagesScreen() {
   } = useMessages();
 
   const [selectedConversation, setSelectedConversation] = useState<ConversationPreview | null>(
-    null
+    null,
   );
   const [isRefreshing, setIsRefreshing] = useState(false);
 
@@ -105,7 +105,7 @@ export default function MessagesScreen() {
         Alert.alert('Error', 'Failed to open conversation. Please try again.');
       }
     },
-    [openConversation]
+    [openConversation],
   );
 
   // Handle close conversation modal
@@ -130,7 +130,7 @@ export default function MessagesScreen() {
         throw err; // Let MessageInput handle error display
       }
     },
-    [selectedConversation, user?.id, profile, send]
+    [selectedConversation, user?.id, profile, send],
   );
 
   // Show error alert if error exists
@@ -185,7 +185,7 @@ export default function MessagesScreen() {
       {/* Thread list */}
       <FlatList
         data={sortedConversations}
-        keyExtractor={(item) => item.connection.id}
+        keyExtractor={item => item.connection.id}
         renderItem={renderThreadItem}
         ItemSeparatorComponent={renderThreadSeparator}
         contentContainerStyle={styles.listContent}
@@ -217,16 +217,10 @@ export default function MessagesScreen() {
           visible={true}
           animationType="slide"
           onRequestClose={handleCloseConversation}
-          presentationStyle="pageSheet"
-        >
-          <View
-            style={[styles.modalContainer, { backgroundColor: theme.colors.background }]}
-          >
+          presentationStyle="pageSheet">
+          <View style={[styles.modalContainer, { backgroundColor: theme.colors.background }]}>
             {/* Header */}
-            <Appbar.Header
-              style={{ backgroundColor: theme.colors.surface }}
-              elevated
-            >
+            <Appbar.Header style={{ backgroundColor: theme.colors.surface }} elevated>
               <Appbar.BackAction onPress={handleCloseConversation} />
               <Appbar.Content
                 title={
@@ -240,12 +234,9 @@ export default function MessagesScreen() {
             {/* Messages list */}
             <FlatList
               data={currentMessages}
-              keyExtractor={(item) => item.id}
+              keyExtractor={item => item.id}
               renderItem={({ item }) => (
-                <MessageBubble
-                  message={item}
-                  currentUserId={user?.id || ''}
-                />
+                <MessageBubble message={item} currentUserId={user?.id || ''} />
               )}
               contentContainerStyle={styles.messagesList}
               inverted // Newest messages at bottom

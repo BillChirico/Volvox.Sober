@@ -20,6 +20,7 @@ Manual testing guide for Android TalkBack accessibility on critical user flows.
 ## Critical Flow 1: Authentication (Login)
 
 ### Test Steps:
+
 - [ ] Open app to login screen
 - [ ] Enable TalkBack
 - [ ] Navigate to email input field
@@ -38,6 +39,7 @@ Manual testing guide for Android TalkBack accessibility on critical user flows.
   - **Expected**: Validation errors read aloud immediately with alert sound
 
 ### Pass Criteria:
+
 - All EditText fields have contentDescription or hint
 - Buttons announce their purpose and type
 - Error messages trigger announcements
@@ -47,6 +49,7 @@ Manual testing guide for Android TalkBack accessibility on critical user flows.
 ## Critical Flow 2: Registration & Onboarding
 
 ### Test Steps:
+
 - [ ] Navigate to "Sign Up" link/button
   - **Expected**: Announces "Sign up, button" or similar
 - [ ] Complete registration form
@@ -63,6 +66,7 @@ Manual testing guide for Android TalkBack accessibility on critical user flows.
   - **Expected**: All fields and instructions announced clearly
 
 ### Pass Criteria:
+
 - Form validation errors are announced immediately
 - Required field indicators are announced
 - Progress through steps is announced
@@ -72,6 +76,7 @@ Manual testing guide for Android TalkBack accessibility on critical user flows.
 ## Critical Flow 3: Matches Discovery
 
 ### Test Steps:
+
 - [ ] Navigate to Matches tab
   - **Expected**: Tab announces "Matches, tab, 1 of 5, selected"
 - [ ] Navigate through match cards using swipe gestures
@@ -86,6 +91,7 @@ Manual testing guide for Android TalkBack accessibility on critical user flows.
   - **Expected**: "Connect, button" with current state
 
 ### Pass Criteria:
+
 - RecyclerView items are distinct
 - Card structure is announced logically
 - Images have contentDescription
@@ -95,6 +101,7 @@ Manual testing guide for Android TalkBack accessibility on critical user flows.
 ## Critical Flow 4: Connections Management
 
 ### Test Steps:
+
 - [ ] Navigate to Connections tab
   - **Expected**: "Connections, tab, 2 of 5, selected"
 - [ ] Navigate connection list
@@ -105,6 +112,7 @@ Manual testing guide for Android TalkBack accessibility on critical user flows.
   - **Expected**: Profile information announced in order
 
 ### Pass Criteria:
+
 - List items have proper contentDescription
 - Action buttons are clearly labeled
 - Connection status is announced
@@ -113,6 +121,7 @@ Manual testing guide for Android TalkBack accessibility on critical user flows.
 ## Critical Flow 5: Messaging
 
 ### Test Steps:
+
 - [ ] Navigate to Messages tab
   - **Expected**: "Messages, tab, 3 of 5, selected"
 - [ ] Navigate conversation list
@@ -129,6 +138,7 @@ Manual testing guide for Android TalkBack accessibility on critical user flows.
   - **Expected**: Sending/sent/delivered states announced
 
 ### Pass Criteria:
+
 - Message bubbles have speaker identification
 - Sent vs received messages distinguishable
 - Input field is clearly labeled
@@ -138,6 +148,7 @@ Manual testing guide for Android TalkBack accessibility on critical user flows.
 ## Critical Flow 6: Sobriety Tracking
 
 ### Test Steps:
+
 - [ ] Navigate to Sobriety tab
   - **Expected**: "Sobriety, tab, 4 of 5, selected"
 - [ ] Navigate sobriety counter
@@ -150,6 +161,7 @@ Manual testing guide for Android TalkBack accessibility on critical user flows.
   - **Expected**: Milestone info announced completely
 
 ### Pass Criteria:
+
 - Counters announce with units and context
 - Date pickers are accessible
 - Action buttons have clear labels
@@ -159,6 +171,7 @@ Manual testing guide for Android TalkBack accessibility on critical user flows.
 ## Critical Flow 7: Profile Management
 
 ### Test Steps:
+
 - [ ] Navigate to Profile tab
   - **Expected**: "Profile, tab, 5 of 5, selected"
 - [ ] Navigate profile information
@@ -173,6 +186,7 @@ Manual testing guide for Android TalkBack accessibility on critical user flows.
   - **Expected**: "Save, button" and action result announced
 
 ### Pass Criteria:
+
 - All TextViews have text or contentDescription
 - Edit mode change is announced
 - Image selection is accessible
@@ -182,6 +196,7 @@ Manual testing guide for Android TalkBack accessibility on critical user flows.
 ## Critical Flow 8: Navigation
 
 ### Test Steps:
+
 - [ ] Test bottom navigation bar
   - **Expected**: Each tab announces name, position, and selection state
 - [ ] Test "Up" button (back navigation)
@@ -194,6 +209,7 @@ Manual testing guide for Android TalkBack accessibility on critical user flows.
   - **Expected**: Screen transitions announced
 
 ### Pass Criteria:
+
 - Navigation bar has proper accessibility
 - Back button is announced
 - Current location is indicated
@@ -203,6 +219,7 @@ Manual testing guide for Android TalkBack accessibility on critical user flows.
 ## Android-Specific Checks
 
 ### Material Design Components:
+
 - [ ] FloatingActionButtons have contentDescription
 - [ ] Chips announce label and dismiss action
 - [ ] Snackbars are announced as alerts
@@ -210,6 +227,7 @@ Manual testing guide for Android TalkBack accessibility on critical user flows.
 - [ ] Dialogs announce title and content
 
 ### Input Controls:
+
 - [ ] Switches announce state (on/off)
 - [ ] Sliders announce value and range
 - [ ] CheckBoxes announce checked/unchecked
@@ -217,6 +235,7 @@ Manual testing guide for Android TalkBack accessibility on critical user flows.
 - [ ] Spinners announce current selection
 
 ### Scrolling & Lists:
+
 - [ ] RecyclerView scrolling is smooth
 - [ ] List position is announced ("Item 1 of 10")
 - [ ] Pull-to-refresh is announced
@@ -224,6 +243,7 @@ Manual testing guide for Android TalkBack accessibility on critical user flows.
 - [ ] Empty states are announced
 
 ### Dynamic Content:
+
 - [ ] Loading spinners announce status
 - [ ] Progress bars announce progress
 - [ ] Toasts are announced
@@ -248,18 +268,21 @@ Manual testing guide for Android TalkBack accessibility on critical user flows.
 ## General Accessibility Checks
 
 ### Content Grouping:
+
 - [ ] Related items grouped logically
 - [ ] Headings announce as headings
 - [ ] Lists announce item counts
 - [ ] Cards announce as containers
 
 ### Focus Management:
+
 - [ ] Focus moves logically
 - [ ] Focus doesn't get trapped
 - [ ] Focus visible on keyboard navigation
 - [ ] Focus restored after dialogs
 
 ### Touch Target Sizes:
+
 - [ ] All targets at least 48dp × 48dp
 - [ ] Adequate spacing between targets
 - [ ] Touch feedback is provided
@@ -282,12 +305,12 @@ For any issues found, document:
 
 - [ ] All critical flows tested
 - [ ] All issues documented
-- [ ] Testing completed by: _____________
-- [ ] Date: _____________
-- [ ] Device: _____________
-- [ ] Android Version: _____________
-- [ ] TalkBack Version: _____________
-- [ ] App Version: _____________
+- [ ] Testing completed by: **\*\***\_**\*\***
+- [ ] Date: **\*\***\_**\*\***
+- [ ] Device: **\*\***\_**\*\***
+- [ ] Android Version: **\*\***\_**\*\***
+- [ ] TalkBack Version: **\*\***\_**\*\***
+- [ ] App Version: **\*\***\_**\*\***
 
 ## Additional Resources
 

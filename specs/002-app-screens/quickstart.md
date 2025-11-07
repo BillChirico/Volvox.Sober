@@ -21,6 +21,7 @@ adb --version           # Android Studio + SDK 33+ (Android)
 ```
 
 **Install missing tools**:
+
 ```bash
 # Node.js (via nvm recommended)
 curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.0/install.sh | bash
@@ -61,6 +62,7 @@ cp .env.example .env
 ```
 
 **Required environment variables**:
+
 ```env
 # Supabase Configuration
 EXPO_PUBLIC_SUPABASE_URL=https://your-project.supabase.co
@@ -102,11 +104,13 @@ supabase db seed
 ### 4. Run the Application
 
 **Start Expo Development Server**:
+
 ```bash
 pnpm start
 ```
 
 **Platform-Specific Launch**:
+
 ```bash
 # iOS (macOS only)
 pnpm ios
@@ -119,6 +123,7 @@ pnpm web
 ```
 
 **Development Tips**:
+
 - Press `i` in terminal to open iOS simulator
 - Press `a` in terminal to open Android emulator
 - Press `w` in terminal to open web browser

@@ -52,8 +52,7 @@ export const MatchCard: React.FC<MatchCardProps> = ({
     <CardWrapper
       onPress={onPress}
       accessibilityLabel={`Match with ${candidate.name}`}
-      accessibilityRole={onPress ? 'button' : undefined}
-    >
+      accessibilityRole={onPress ? 'button' : undefined}>
       <Card style={styles.card} elevation={2}>
         <Card.Content>
           {/* Header: Photo + Name + Score */}
@@ -69,10 +68,7 @@ export const MatchCard: React.FC<MatchCardProps> = ({
                 />
               )}
               <View style={styles.profileInfo}>
-                <Text
-                  variant="titleLarge"
-                  style={[styles.name, { color: theme.colors.onSurface }]}
-                >
+                <Text variant="titleLarge" style={[styles.name, { color: theme.colors.onSurface }]}>
                   {candidate.name}
                 </Text>
                 <View style={styles.infoRow}>
@@ -83,8 +79,7 @@ export const MatchCard: React.FC<MatchCardProps> = ({
                   />
                   <Text
                     variant="bodyMedium"
-                    style={[styles.infoText, { color: theme.colors.onSurfaceVariant }]}
-                  >
+                    style={[styles.infoText, { color: theme.colors.onSurfaceVariant }]}>
                     {formatLocation()}
                   </Text>
                 </View>
@@ -96,8 +91,7 @@ export const MatchCard: React.FC<MatchCardProps> = ({
                   />
                   <Text
                     variant="bodyMedium"
-                    style={[styles.infoText, { color: theme.colors.onSurfaceVariant }]}
-                  >
+                    style={[styles.infoText, { color: theme.colors.onSurfaceVariant }]}>
                     {formatRecoveryProgram()}
                   </Text>
                 </View>
@@ -114,8 +108,7 @@ export const MatchCard: React.FC<MatchCardProps> = ({
               <Text
                 variant="bodyMedium"
                 numberOfLines={3}
-                style={[styles.bio, { color: theme.colors.onSurfaceVariant }]}
-              >
+                style={[styles.bio, { color: theme.colors.onSurfaceVariant }]}>
                 {candidate.bio}
               </Text>
             </View>
@@ -126,18 +119,16 @@ export const MatchCard: React.FC<MatchCardProps> = ({
             <View style={styles.availabilitySection}>
               <Text
                 variant="labelMedium"
-                style={[styles.sectionLabel, { color: theme.colors.onSurface }]}
-              >
+                style={[styles.sectionLabel, { color: theme.colors.onSurface }]}>
                 Availability
               </Text>
               <View style={styles.chipContainer}>
-                {candidate.availability.slice(0, 3).map((availability) => (
+                {candidate.availability.slice(0, 3).map(availability => (
                   <Chip
                     key={availability}
                     mode="outlined"
                     style={styles.chip}
-                    textStyle={styles.chipText}
-                  >
+                    textStyle={styles.chipText}>
                     {availability}
                   </Chip>
                 ))}
@@ -159,8 +150,7 @@ export const MatchCard: React.FC<MatchCardProps> = ({
             style={styles.connectButton}
             icon="account-plus"
             accessibilityLabel="Send connection request"
-            accessibilityHint={`Send a connection request to ${candidate.name}`}
-          >
+            accessibilityHint={`Send a connection request to ${candidate.name}`}>
             {isConnecting ? 'Sending...' : 'Send Connection Request'}
           </Button>
         </Card.Content>

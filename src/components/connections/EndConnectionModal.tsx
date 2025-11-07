@@ -64,7 +64,7 @@ export function EndConnectionModal({
     }
 
     try {
-      const reasonLabel = END_REASONS.find((r) => r.value === selectedReason)?.label;
+      const reasonLabel = END_REASONS.find(r => r.value === selectedReason)?.label;
       const finalFeedback = feedback.trim()
         ? `${reasonLabel ? reasonLabel + ': ' : ''}${feedback.trim()}`
         : reasonLabel || '';
@@ -87,8 +87,7 @@ export function EndConnectionModal({
             backgroundColor: theme.colors.surface,
             maxHeight: Platform.OS === 'web' ? '90vh' : undefined,
           },
-        ]}
-      >
+        ]}>
         {/* Close Button */}
         <IconButton
           icon="close"
@@ -103,7 +102,9 @@ export function EndConnectionModal({
           <Text variant="headlineSmall" style={styles.title}>
             End Connection
           </Text>
-          <Text variant="bodyMedium" style={[styles.subtitle, { color: theme.colors.onSurfaceVariant }]}>
+          <Text
+            variant="bodyMedium"
+            style={[styles.subtitle, { color: theme.colors.onSurfaceVariant }]}>
             Are you sure you want to end your connection with {connectionName}?
           </Text>
         </View>
@@ -115,12 +116,14 @@ export function EndConnectionModal({
           <Text variant="titleMedium" style={styles.sectionTitle}>
             Reason (Optional)
           </Text>
-          <Text variant="bodySmall" style={[styles.helperText, { color: theme.colors.onSurfaceVariant }]}>
+          <Text
+            variant="bodySmall"
+            style={[styles.helperText, { color: theme.colors.onSurfaceVariant }]}>
             This information helps us improve the matching experience
           </Text>
 
           <RadioButton.Group onValueChange={setSelectedReason} value={selectedReason}>
-            {END_REASONS.map((reason) => (
+            {END_REASONS.map(reason => (
               <View key={reason.value} style={styles.radioItem}>
                 <RadioButton.Item
                   label={reason.label}
@@ -143,7 +146,7 @@ export function EndConnectionModal({
             mode="outlined"
             placeholder="Share any additional thoughts or feedback..."
             value={feedback}
-            onChangeText={(text) => {
+            onChangeText={text => {
               setFeedback(text);
               setError(''); // Clear error when user types
             }}
@@ -160,7 +163,9 @@ export function EndConnectionModal({
               {error}
             </Text>
           ) : (
-            <Text variant="bodySmall" style={[styles.helperText, { color: theme.colors.onSurfaceVariant }]}>
+            <Text
+              variant="bodySmall"
+              style={[styles.helperText, { color: theme.colors.onSurfaceVariant }]}>
               {feedback.length}/500 characters
             </Text>
           )}
@@ -169,8 +174,8 @@ export function EndConnectionModal({
         {/* Warning Notice */}
         <Surface style={[styles.warningBox, { backgroundColor: theme.colors.errorContainer }]}>
           <Text variant="bodySmall" style={{ color: theme.colors.onErrorContainer }}>
-            ⚠️ This action cannot be undone. Your connection will be moved to "Past Connections" and you
-            will no longer be able to send messages.
+            ⚠️ This action cannot be undone. Your connection will be moved to "Past Connections" and
+            you will no longer be able to send messages.
           </Text>
         </Surface>
 
@@ -181,8 +186,7 @@ export function EndConnectionModal({
             onPress={handleDismiss}
             style={styles.button}
             disabled={isLoading}
-            accessibilityLabel="Cancel"
-          >
+            accessibilityLabel="Cancel">
             Cancel
           </Button>
           <Button
@@ -192,8 +196,7 @@ export function EndConnectionModal({
             buttonColor={theme.colors.error}
             loading={isLoading}
             disabled={isLoading}
-            accessibilityLabel="Confirm end connection"
-          >
+            accessibilityLabel="Confirm end connection">
             End Connection
           </Button>
         </View>

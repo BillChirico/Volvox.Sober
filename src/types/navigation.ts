@@ -3,7 +3,7 @@
  * Feature: 002-app-screens
  */
 
-import { OnboardingStep } from './onboarding'
+import { OnboardingStep } from './onboarding';
 
 // ============================================================
 // Route Definitions
@@ -14,36 +14,36 @@ export type AuthRoute =
   | '/signup'
   | '/forgot-password'
   | '/reset-password'
-  | '/verify-email'
+  | '/verify-email';
 
 export type OnboardingRoute =
   | '/onboarding/welcome'
   | '/onboarding/email-verification'
   | '/onboarding/role-selection'
   | '/onboarding/sponsor-profile'
-  | '/onboarding/sponsee-profile'
+  | '/onboarding/sponsee-profile';
 
 export type TabRoute =
   | '/tabs/sobriety'
   | '/tabs/matches'
   | '/tabs/connections'
   | '/tabs/messages'
-  | '/tabs/profile'
+  | '/tabs/profile';
 
-export type AppRoute = AuthRoute | OnboardingRoute | TabRoute
+export type AppRoute = AuthRoute | OnboardingRoute | TabRoute;
 
 // ============================================================
 // Tab Navigation
 // ============================================================
 
-export type TabName = 'sobriety' | 'matches' | 'connections' | 'messages' | 'profile'
+export type TabName = 'sobriety' | 'matches' | 'connections' | 'messages' | 'profile';
 
 export interface TabDefinition {
-  name: TabName
-  route: TabRoute
-  icon: string
-  label: string
-  badge?: number // Unread count
+  name: TabName;
+  route: TabRoute;
+  icon: string;
+  label: string;
+  badge?: number; // Unread count
 }
 
 // ============================================================
@@ -51,14 +51,14 @@ export interface TabDefinition {
 // ============================================================
 
 export interface NavigationState {
-  currentRoute: AppRoute
-  previousRoute?: AppRoute
-  isNavigating: boolean
+  currentRoute: AppRoute;
+  previousRoute?: AppRoute;
+  isNavigating: boolean;
 }
 
 export interface TabNavigationState {
-  activeTab: TabName
-  tabBadges: Record<TabName, number>
+  activeTab: TabName;
+  tabBadges: Record<TabName, number>;
 }
 
 // ============================================================
@@ -67,10 +67,10 @@ export interface TabNavigationState {
 
 export interface OnboardingNavigationMap {
   [key in OnboardingStep]: {
-    route: OnboardingRoute
-    nextStep?: OnboardingStep
-    previousStep?: OnboardingStep
-  }
+    route: OnboardingRoute;
+    nextStep?: OnboardingStep;
+    previousStep?: OnboardingStep;
+  };
 }
 
 export const ONBOARDING_ROUTES: OnboardingNavigationMap = {
@@ -102,23 +102,23 @@ export const ONBOARDING_ROUTES: OnboardingNavigationMap = {
     route: '/tabs/sobriety' as OnboardingRoute, // Redirect to app
     previousStep: 'sponsor_profile', // or sponsee_profile
   },
-}
+};
 
 // ============================================================
 // Navigation Guards
 // ============================================================
 
 export interface NavigationGuard {
-  canAccess: boolean
-  redirectTo?: AppRoute
-  reason?: string
+  canAccess: boolean;
+  redirectTo?: AppRoute;
+  reason?: string;
 }
 
 export interface RouteGuardContext {
-  isAuthenticated: boolean
-  isOnboardingComplete: boolean
-  isEmailVerified: boolean
-  currentRoute: AppRoute
+  isAuthenticated: boolean;
+  isOnboardingComplete: boolean;
+  isEmailVerified: boolean;
+  currentRoute: AppRoute;
 }
 
 // ============================================================
@@ -126,33 +126,33 @@ export interface RouteGuardContext {
 // ============================================================
 
 export interface DeepLinkParams {
-  route: AppRoute
-  params?: Record<string, string>
+  route: AppRoute;
+  params?: Record<string, string>;
 }
 
-export type DeepLinkHandler = (params: DeepLinkParams) => void
+export type DeepLinkHandler = (params: DeepLinkParams) => void;
 
 // ============================================================
 // Navigation Actions
 // ============================================================
 
 export interface NavigateAction {
-  type: 'navigate'
+  type: 'navigate';
   payload: {
-    route: AppRoute
-    params?: Record<string, unknown>
-  }
+    route: AppRoute;
+    params?: Record<string, unknown>;
+  };
 }
 
 export interface GoBackAction {
-  type: 'go_back'
+  type: 'go_back';
 }
 
 export interface ResetNavigationAction {
-  type: 'reset'
+  type: 'reset';
   payload: {
-    route: AppRoute
-  }
+    route: AppRoute;
+  };
 }
 
-export type NavigationAction = NavigateAction | GoBackAction | ResetNavigationAction
+export type NavigationAction = NavigateAction | GoBackAction | ResetNavigationAction;

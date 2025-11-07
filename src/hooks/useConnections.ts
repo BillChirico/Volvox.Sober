@@ -4,8 +4,8 @@
  * Feature: 002-app-screens
  */
 
-import { useCallback } from 'react'
-import { useAppDispatch, useAppSelector } from './useAppDispatch'
+import { useCallback } from 'react';
+import { useAppDispatch, useAppSelector } from './useAppDispatch';
 import {
   fetchActiveConnections,
   fetchPendingRequests,
@@ -17,7 +17,7 @@ import {
   declineConnectionRequest,
   cancelConnectionRequest,
   endActiveConnection,
-} from '../store/connections/connectionsThunks'
+} from '../store/connections/connectionsThunks';
 import {
   selectActiveConnections,
   selectPendingRequests,
@@ -35,117 +35,117 @@ import {
   selectConnectionsStatistics,
   selectIsConnectionsOperationInProgress,
   selectActiveConnectionsSortedByActivity,
-} from '../store/connections/connectionsSelectors'
-import { clearError } from '../store/connections/connectionsSlice'
-import type { CreateConnectionData } from '../types'
+} from '../store/connections/connectionsSelectors';
+import { clearError } from '../store/connections/connectionsSlice';
+import type { CreateConnectionData } from '../types';
 
 /**
  * Hook for managing connections
  */
 export const useConnections = () => {
-  const dispatch = useAppDispatch()
+  const dispatch = useAppDispatch();
 
   // Selectors
-  const activeConnections = useAppSelector(selectActiveConnections)
-  const pendingRequests = useAppSelector(selectPendingRequests)
-  const sentRequests = useAppSelector(selectSentRequests)
-  const endedConnections = useAppSelector(selectEndedConnections)
-  const isLoading = useAppSelector(selectConnectionsLoading)
-  const isRefreshing = useAppSelector(selectConnectionsRefreshing)
-  const error = useAppSelector(selectConnectionsError)
-  const activeCount = useAppSelector(selectActiveConnectionsCount)
-  const pendingCount = useAppSelector(selectPendingRequestsCount)
-  const hasActiveConnections = useAppSelector(selectHasActiveConnections)
-  const hasPendingRequests = useAppSelector(selectHasPendingRequests)
-  const totalUnreadCount = useAppSelector(selectTotalUnreadMessageCount)
-  const statistics = useAppSelector(selectConnectionsStatistics)
-  const isOperationInProgress = useAppSelector(selectIsConnectionsOperationInProgress)
-  const sortedByActivity = useAppSelector(selectActiveConnectionsSortedByActivity)
+  const activeConnections = useAppSelector(selectActiveConnections);
+  const pendingRequests = useAppSelector(selectPendingRequests);
+  const sentRequests = useAppSelector(selectSentRequests);
+  const endedConnections = useAppSelector(selectEndedConnections);
+  const isLoading = useAppSelector(selectConnectionsLoading);
+  const isRefreshing = useAppSelector(selectConnectionsRefreshing);
+  const error = useAppSelector(selectConnectionsError);
+  const activeCount = useAppSelector(selectActiveConnectionsCount);
+  const pendingCount = useAppSelector(selectPendingRequestsCount);
+  const hasActiveConnections = useAppSelector(selectHasActiveConnections);
+  const hasPendingRequests = useAppSelector(selectHasPendingRequests);
+  const totalUnreadCount = useAppSelector(selectTotalUnreadMessageCount);
+  const statistics = useAppSelector(selectConnectionsStatistics);
+  const isOperationInProgress = useAppSelector(selectIsConnectionsOperationInProgress);
+  const sortedByActivity = useAppSelector(selectActiveConnectionsSortedByActivity);
 
   // Actions
   const fetchActive = useCallback(
     (userId: string) => {
-      return dispatch(fetchActiveConnections(userId))
+      return dispatch(fetchActiveConnections(userId));
     },
-    [dispatch]
-  )
+    [dispatch],
+  );
 
   const fetchPending = useCallback(
     (userId: string) => {
-      return dispatch(fetchPendingRequests(userId))
+      return dispatch(fetchPendingRequests(userId));
     },
-    [dispatch]
-  )
+    [dispatch],
+  );
 
   const fetchSent = useCallback(
     (userId: string) => {
-      return dispatch(fetchSentRequests(userId))
+      return dispatch(fetchSentRequests(userId));
     },
-    [dispatch]
-  )
+    [dispatch],
+  );
 
   const fetchAll = useCallback(
     (userId: string) => {
-      return dispatch(fetchAllConnections(userId))
+      return dispatch(fetchAllConnections(userId));
     },
-    [dispatch]
-  )
+    [dispatch],
+  );
 
   const refresh = useCallback(
     (userId: string) => {
-      return dispatch(refreshAllConnections(userId))
+      return dispatch(refreshAllConnections(userId));
     },
-    [dispatch]
-  )
+    [dispatch],
+  );
 
   const createRequest = useCallback(
     (data: CreateConnectionData) => {
-      return dispatch(createConnectionRequest(data))
+      return dispatch(createConnectionRequest(data));
     },
-    [dispatch]
-  )
+    [dispatch],
+  );
 
   const acceptRequest = useCallback(
     (requestId: string) => {
-      return dispatch(acceptConnectionRequest(requestId))
+      return dispatch(acceptConnectionRequest(requestId));
     },
-    [dispatch]
-  )
+    [dispatch],
+  );
 
   const declineRequest = useCallback(
     (requestId: string) => {
-      return dispatch(declineConnectionRequest(requestId))
+      return dispatch(declineConnectionRequest(requestId));
     },
-    [dispatch]
-  )
+    [dispatch],
+  );
 
   const cancelRequest = useCallback(
     (requestId: string) => {
-      return dispatch(cancelConnectionRequest(requestId))
+      return dispatch(cancelConnectionRequest(requestId));
     },
-    [dispatch]
-  )
+    [dispatch],
+  );
 
   const endConnection = useCallback(
     (connectionId: string) => {
-      return dispatch(endActiveConnection(connectionId))
+      return dispatch(endActiveConnection(connectionId));
     },
-    [dispatch]
-  )
+    [dispatch],
+  );
 
   const getConnectionById = useCallback(
     (connectionId: string) => {
       return selectConnectionById(
         { connections: { activeConnections, endedConnections } } as any,
-        connectionId
-      )
+        connectionId,
+      );
     },
-    [activeConnections, endedConnections]
-  )
+    [activeConnections, endedConnections],
+  );
 
   const dismissError = useCallback(() => {
-    dispatch(clearError())
-  }, [dispatch])
+    dispatch(clearError());
+  }, [dispatch]);
 
   return {
     // State
@@ -178,5 +178,5 @@ export const useConnections = () => {
     endConnection,
     getConnectionById,
     dismissError,
-  }
-}
+  };
+};

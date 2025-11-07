@@ -13,6 +13,7 @@ Implement all main application screens for Volvox.Sober including onboarding flo
 
 **Language/Version**: TypeScript 5.x (strict mode enabled)
 **Primary Dependencies**:
+
 - React Native 0.81+
 - Expo 54.x (universal app platform)
 - Expo Router 4.x (file-based routing)
@@ -22,29 +23,34 @@ Implement all main application screens for Volvox.Sober including onboarding flo
 - Supabase JS SDK (@supabase/supabase-js) for Auth and Realtime
 
 **Storage**:
+
 - PostgreSQL 15+ via Supabase (user profiles, connections, messages, matches, sobriety records)
 - Redux Persist (local cache for offline support)
 - AsyncStorage (React Native local storage)
 
 **Testing**:
+
 - Jest + React Native Testing Library (unit/integration tests)
 - Playwright (E2E tests for critical user journeys)
 
 **Target Platform**: iOS 15+, Android 8.0+, Web (modern browsers)
 **Project Type**: Mobile (universal Expo app with web support)
 **Performance Goals**:
+
 - App startup < 3 seconds on mid-range devices
 - Screen transitions @ 60 FPS
 - Real-time message delivery < 500ms
 - Screen loads < 2 seconds
 
 **Constraints**:
+
 - Bundle size: iOS/Android < 50MB, Web < 500KB (gzipped)
 - Accessibility: WCAG 2.1 AA compliance mandatory
 - Cross-platform consistency: UI must render identically on iOS, Android, Web
 - Offline support: 80% of screens must be viewable with cached data
 
 **Scale/Scope**:
+
 - 19 screen files across 3 route groups (tabs, onboarding, auth)
 - 7 user stories with 42 acceptance scenarios
 - 60 functional requirements
@@ -52,21 +58,24 @@ Implement all main application screens for Volvox.Sober including onboarding flo
 
 ## Constitution Check
 
-*GATE: Must pass before Phase 0 research. Re-check after Phase 1 design.*
+_GATE: Must pass before Phase 0 research. Re-check after Phase 1 design._
 
 **I. Type Safety & Code Quality**
+
 - [x] TypeScript strict mode enabled (`strict: true` in tsconfig.json)
 - [x] No `any` types - use `unknown` or proper types
 - [x] All exported functions have explicit return types
 - [x] File naming conventions followed (PascalCase components, camelCase services/hooks)
 
 **II. Test-Driven Development**
+
 - [x] TDD workflow planned: Write tests → Verify failure → Implement → Verify pass → Refactor
 - [x] 80% code coverage target for business logic
 - [x] Testing pyramid: Unit tests → Integration tests → E2E tests
 - [x] Tests co-located in `__tests__/` directories
 
 **III. Cross-Platform UX Consistency**
+
 - [x] UI components render consistently on iOS, Android, Web
 - [x] Platform-specific overrides justified and documented
 - [x] React Native Paper theme system used
@@ -74,6 +83,7 @@ Implement all main application screens for Volvox.Sober including onboarding flo
 - [x] Dark mode supported via theme provider
 
 **IV. Performance Standards**
+
 - [x] App startup < 3 seconds on mid-range devices
 - [x] Screen transitions maintain 60 FPS
 - [x] Real-time messaging latency < 500ms
@@ -82,6 +92,7 @@ Implement all main application screens for Volvox.Sober including onboarding flo
 - [x] Database queries optimized (indexes, pagination, caching)
 
 **V. Component Architecture**
+
 - [x] Functional components only (no class components)
 - [x] Consistent hooks order: useState → useEffect → custom hooks → handlers
 - [x] Named exports preferred over default exports
@@ -89,6 +100,7 @@ Implement all main application screens for Volvox.Sober including onboarding flo
 - [x] State management hierarchy followed (local → Redux → Supabase)
 
 **VI. Security & Privacy**
+
 - [x] Row Level Security (RLS) enabled for all Supabase tables
 - [x] Supabase Auth used (no custom auth logic)
 - [x] Sensitive data access properly restricted
@@ -307,7 +319,7 @@ __tests__/                    # E2E tests (Playwright)
 
 ## Phase 0: Research & Technical Decisions
 
-*Research tasks to resolve unknowns and establish technical patterns*
+_Research tasks to resolve unknowns and establish technical patterns_
 
 ### Research Tasks
 
@@ -349,6 +361,7 @@ __tests__/                    # E2E tests (Playwright)
 ### Expected Output
 
 `research.md` with decisions for:
+
 - Navigation architecture (Expo Router patterns, route guards, deep linking)
 - Messaging architecture (Supabase Realtime integration, offline queue, delivery status)
 - Matching algorithm (compatibility scoring, filtering, spam prevention)
@@ -359,11 +372,12 @@ __tests__/                    # E2E tests (Playwright)
 
 ## Phase 1: Design & Contracts
 
-*Design artifacts before implementation*
+_Design artifacts before implementation_
 
 ### Database Schema (data-model.md)
 
 **Entities to model**:
+
 1. User Profile (extends auth.users from 001-auth-screens)
 2. Onboarding Progress
 3. Sobriety Record
@@ -373,6 +387,7 @@ __tests__/                    # E2E tests (Playwright)
 7. Notification Preferences
 
 **Requirements**:
+
 - All tables MUST have Row Level Security (RLS) policies
 - Foreign keys MUST reference auth.users table from Supabase Auth
 - Indexes MUST be created for frequent query patterns
@@ -423,6 +438,7 @@ __tests__/                    # E2E tests (Playwright)
 ### Local Development Guide (quickstart.md)
 
 **Include**:
+
 - Prerequisites (Node 18+, pnpm 8+, Expo CLI, Supabase CLI)
 - Environment setup (.env configuration)
 - Database setup (migrations, seed data)
@@ -433,6 +449,7 @@ __tests__/                    # E2E tests (Playwright)
 ### Agent Context Update
 
 Run `.specify/scripts/bash/update-agent-context.sh claude` to:
+
 - Add new Redux slices to context (profile, onboarding, sobriety, matches, connections, messages)
 - Add new service layers to context
 - Add new hook patterns to context
@@ -440,9 +457,10 @@ Run `.specify/scripts/bash/update-agent-context.sh claude` to:
 
 ## Phase 2: Work Breakdown (Not in this command)
 
-*Generated by `/speckit.tasks` command*
+_Generated by `/speckit.tasks` command_
 
 The `/speckit.tasks` command will generate `tasks.md` with:
+
 - Grouped work packages aligned with user story priorities
 - Parallel execution opportunities identified
 - Each task with specific prompts for implementation

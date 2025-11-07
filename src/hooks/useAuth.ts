@@ -45,14 +45,14 @@ export const useAuth = () => {
     (email: string, password: string) => {
       return dispatch(signupThunk({ email, password }));
     },
-    [dispatch]
+    [dispatch],
   );
 
   const login = useCallback(
     (email: string, password: string) => {
       return dispatch(loginThunk({ email, password }));
     },
-    [dispatch]
+    [dispatch],
   );
 
   const logout = useCallback(() => {
@@ -63,28 +63,28 @@ export const useAuth = () => {
     (email: string) => {
       return dispatch(resetPasswordRequestThunk({ email }));
     },
-    [dispatch]
+    [dispatch],
   );
 
   const updateEmail = useCallback(
     (newEmail: string, password: string) => {
       return dispatch(updateEmailThunk({ newEmail, password }));
     },
-    [dispatch]
+    [dispatch],
   );
 
   const updatePassword = useCallback(
     (currentPassword: string, newPassword: string) => {
       return dispatch(updatePasswordThunk({ currentPassword, newPassword }));
     },
-    [dispatch]
+    [dispatch],
   );
 
   const deleteAccount = useCallback(
     (password: string) => {
       return dispatch(deleteAccountThunk({ password }));
     },
-    [dispatch]
+    [dispatch],
   );
 
   const dismissError = useCallback(() => {

@@ -101,10 +101,10 @@ export default function ConnectionsScreen() {
               }
             },
           },
-        ]
+        ],
       );
     },
-    [user?.id, acceptRequest]
+    [user?.id, acceptRequest],
   );
 
   // Handle decline request
@@ -140,20 +140,17 @@ export default function ConnectionsScreen() {
               }
             },
           },
-        ]
+        ],
       );
     },
-    [user?.id, declineRequest]
+    [user?.id, declineRequest],
   );
 
   // Handle view connection profile
-  const handleViewConnection = useCallback(
-    (connection: ConnectionWithUsers) => {
-      setSelectedConnection(connection);
-      setShowProfileModal(true);
-    },
-    []
-  );
+  const handleViewConnection = useCallback((connection: ConnectionWithUsers) => {
+    setSelectedConnection(connection);
+    setShowProfileModal(true);
+  }, []);
 
   // Handle message connection
   const handleMessageConnection = useCallback(
@@ -161,17 +158,14 @@ export default function ConnectionsScreen() {
       // Navigate to messages tab with this connection
       router.push(`/messages/${connection.id}`);
     },
-    [router]
+    [router],
   );
 
   // Handle view request profile
-  const handleViewRequest = useCallback(
-    (connection: ConnectionWithUsers) => {
-      setSelectedConnection(connection);
-      setShowProfileModal(true);
-    },
-    []
-  );
+  const handleViewRequest = useCallback((connection: ConnectionWithUsers) => {
+    setSelectedConnection(connection);
+    setShowProfileModal(true);
+  }, []);
 
   // Handle confirm end connection
   const handleConfirmEndConnection = useCallback(
@@ -180,7 +174,7 @@ export default function ConnectionsScreen() {
 
       try {
         setIsEndingConnection(true);
-        
+
         await connectionService.endConnection({
           connectionId: selectedConnection.id,
           endedAt: new Date().toISOString(),
@@ -194,21 +188,19 @@ export default function ConnectionsScreen() {
 
         // Refresh connections list
         await refresh(user.id);
-        
+
         // Close modals
         setShowEndModal(false);
         setShowProfileModal(false);
         setSelectedConnection(null);
       } catch (err) {
         console.error('Error ending connection:', err);
-        Alert.alert('Error', 'Failed to end connection. Please try again.', [
-          { text: 'OK' },
-        ]);
+        Alert.alert('Error', 'Failed to end connection. Please try again.', [{ text: 'OK' }]);
       } finally {
         setIsEndingConnection(false);
       }
     },
-    [user?.id, selectedConnection, refresh]
+    [user?.id, selectedConnection, refresh],
   );
 
   // Show error alert if error exists
@@ -276,23 +268,23 @@ export default function ConnectionsScreen() {
 
   // Render section header
   const renderSectionHeader = ({ section }: { section: Section }) => (
-    <View
-      style={[
-        styles.sectionHeader,
-        { backgroundColor: theme.colors.surfaceVariant },
-      ]}
-    >
+    <View style={[styles.sectionHeader, { backgroundColor: theme.colors.surfaceVariant }]}>
       <Text
         variant="titleMedium"
-        style={[styles.sectionTitle, { color: theme.colors.onSurfaceVariant }]}
-      >
+        style={[styles.sectionTitle, { color: theme.colors.onSurfaceVariant }]}>
         {section.title}
       </Text>
     </View>
   );
 
   // Render item based on section type
-  const renderItem = ({ item, section }: { item: ConnectionWithUsers | ConnectionRequest; section: Section }) => {
+  const renderItem = ({
+    item,
+    section,
+  }: {
+    item: ConnectionWithUsers | ConnectionRequest;
+    section: Section;
+  }) => {
     if (!user?.id) return null;
 
     if (section.type === 'pending') {
@@ -321,7 +313,7 @@ export default function ConnectionsScreen() {
             connectionItem.accepted_at
               ? Math.floor(
                   (Date.now() - new Date(connectionItem.accepted_at).getTime()) /
-                    (1000 * 60 * 60 * 24)
+                    (1000 * 60 * 60 * 24),
                 )
               : 0
           }
@@ -343,7 +335,7 @@ export default function ConnectionsScreen() {
           connectionItem.accepted_at
             ? Math.floor(
                 (Date.now() - new Date(connectionItem.accepted_at).getTime()) /
-                  (1000 * 60 * 60 * 24)
+                  (1000 * 60 * 60 * 24),
               )
             : 0
         }
@@ -357,9 +349,7 @@ export default function ConnectionsScreen() {
   };
 
   // Render section separator
-  const renderSectionSeparator = () => (
-    <Divider style={styles.sectionSeparator} />
-  );
+  const renderSectionSeparator = () => <Divider style={styles.sectionSeparator} />;
 
   return (
     <View style={[styles.container, { backgroundColor: theme.colors.background }]}>
@@ -397,7 +387,7 @@ export default function ConnectionsScreen() {
               `You have ${pendingCount} pending connection ${
                 pendingCount === 1 ? 'request' : 'requests'
               }`,
-              [{ text: 'OK' }]
+              [{ text: 'OK' }],
             );
           }}
           accessibilityLabel={`${pendingCount} pending connection ${

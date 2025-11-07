@@ -37,7 +37,7 @@ export const SponsorReviewScreen: React.FC = () => {
 
   const [commentInputs, setCommentInputs] = useState<Record<number, string>>({});
 
-  const step = steps?.find((s) => s.id === stepWork?.step_id);
+  const step = steps?.find(s => s.id === stepWork?.step_id);
 
   const handleAddComment = async (questionId: number) => {
     const commentText = commentInputs[questionId]?.trim();
@@ -53,7 +53,7 @@ export const SponsorReviewScreen: React.FC = () => {
       }).unwrap();
 
       // Clear input after successful comment
-      setCommentInputs((prev) => ({ ...prev, [questionId]: '' }));
+      setCommentInputs(prev => ({ ...prev, [questionId]: '' }));
 
       Alert.alert('Comment Added', 'Your comment has been saved.', [{ text: 'OK' }]);
     } catch (_error) {
@@ -81,7 +81,7 @@ export const SponsorReviewScreen: React.FC = () => {
                     text: 'OK',
                     onPress: () => router.back(),
                   },
-                ]
+                ],
               );
             } catch (_error) {
               Alert.alert('Failed to Mark as Reviewed', 'Please try again later.', [
@@ -90,7 +90,7 @@ export const SponsorReviewScreen: React.FC = () => {
             }
           },
         },
-      ]
+      ],
     );
   };
 
@@ -98,7 +98,7 @@ export const SponsorReviewScreen: React.FC = () => {
     if (!stepWork?.sponsor_comments) {
       return [];
     }
-    return stepWork.sponsor_comments.filter((c) => c.question_id === questionId);
+    return stepWork.sponsor_comments.filter(c => c.question_id === questionId);
   };
 
   if (workLoading || !stepWork || !step) {
@@ -120,9 +120,7 @@ export const SponsorReviewScreen: React.FC = () => {
         </Text>
         <Text variant="bodySmall" style={styles.metadata}>
           Submitted:{' '}
-          {stepWork.submitted_at
-            ? new Date(stepWork.submitted_at).toLocaleDateString()
-            : 'N/A'}
+          {stepWork.submitted_at ? new Date(stepWork.submitted_at).toLocaleDateString() : 'N/A'}
         </Text>
         {stepWork.reviewed_at && (
           <Text variant="bodySmall" style={styles.metadata}>
@@ -181,8 +179,8 @@ export const SponsorReviewScreen: React.FC = () => {
                       multiline
                       numberOfLines={3}
                       value={commentInputs[response.question_id] || ''}
-                      onChangeText={(text) =>
-                        setCommentInputs((prev) => ({
+                      onChangeText={text =>
+                        setCommentInputs(prev => ({
                           ...prev,
                           [response.question_id]: text,
                         }))
@@ -194,11 +192,8 @@ export const SponsorReviewScreen: React.FC = () => {
                       mode="contained"
                       onPress={() => handleAddComment(response.question_id)}
                       loading={isAddingComment}
-                      disabled={
-                        isAddingComment || !commentInputs[response.question_id]?.trim()
-                      }
-                      style={styles.commentButton}
-                    >
+                      disabled={isAddingComment || !commentInputs[response.question_id]?.trim()}
+                      style={styles.commentButton}>
                       Add Comment
                     </Button>
                   </View>
@@ -217,8 +212,7 @@ export const SponsorReviewScreen: React.FC = () => {
             onPress={handleMarkAsReviewed}
             loading={isMarking}
             disabled={isAddingComment || isMarking}
-            style={styles.actionButton}
-          >
+            style={styles.actionButton}>
             Mark as Reviewed
           </Button>
         </View>
@@ -226,111 +220,114 @@ export const SponsorReviewScreen: React.FC = () => {
 
       {isReviewed && (
         <View style={styles.reviewedBanner}>
-          <Text style={styles.reviewedText}>✓ Reviewed on {new Date(stepWork.reviewed_at!).toLocaleDateString()}</Text>
+          <Text style={styles.reviewedText}>
+            ✓ Reviewed on {new Date(stepWork.reviewed_at!).toLocaleDateString()}
+          </Text>
         </View>
       )}
     </View>
   );
 };
 
-const createStyles = (theme: any) => StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: theme.colors.background,
-  },
-  centerContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  header: {
-    padding: 20,
-    backgroundColor: theme.colors.surface,
-    borderBottomWidth: 1,
-    borderBottomColor: '#E0E0E0',
-  },
-  title: {
-    fontWeight: 'bold',
-    marginBottom: 8,
-  },
-  metadata: {
-    color: theme.colors.onSurfaceVariant,
-    marginTop: 4,
-  },
-  scrollContent: {
-    flex: 1,
-  },
-  scrollContainer: {
-    padding: 16,
-  },
-  questionCard: {
-    marginBottom: 16,
-    elevation: 2,
-  },
-  questionText: {
-    fontWeight: '600',
-    marginBottom: 12,
-    lineHeight: 22,
-  },
-  answerContainer: {
-    backgroundColor: theme.colors.background,
-    padding: 12,
-    borderRadius: 8,
-    marginBottom: 12,
-  },
-  answerText: {
-    lineHeight: 20,
-  },
-  divider: {
-    marginVertical: 12,
-  },
-  commentsSection: {
-    marginBottom: 12,
-  },
-  commentsLabel: {
-    marginBottom: 8,
-    color: theme.colors.onSurfaceVariant,
-  },
-  commentItem: {
-    marginBottom: 12,
-    paddingLeft: 12,
-    borderLeftWidth: 3,
-    borderLeftColor: '#2196F3',
-  },
-  commentTimestamp: {
-    color: '#999',
-    marginBottom: 4,
-  },
-  commentText: {
-    lineHeight: 20,
-  },
-  commentInputContainer: {
-    marginTop: 8,
-  },
-  commentInput: {
-    marginBottom: 8,
-  },
-  commentButton: {
-    alignSelf: 'flex-end',
-  },
-  actions: {
-    padding: 16,
-    backgroundColor: theme.colors.surface,
-    borderTopWidth: 1,
-    borderTopColor: '#E0E0E0',
-  },
-  actionButton: {
-    width: '100%',
-  },
-  reviewedBanner: {
-    padding: 16,
-    backgroundColor: '#E8F5E9',
-    alignItems: 'center',
-  },
-  reviewedText: {
-    color: '#2E7D32',
-    fontWeight: '600',
-  },
-});
+const createStyles = (theme: any) =>
+  StyleSheet.create({
+    container: {
+      flex: 1,
+      backgroundColor: theme.colors.background,
+    },
+    centerContainer: {
+      flex: 1,
+      justifyContent: 'center',
+      alignItems: 'center',
+    },
+    header: {
+      padding: 20,
+      backgroundColor: theme.colors.surface,
+      borderBottomWidth: 1,
+      borderBottomColor: '#E0E0E0',
+    },
+    title: {
+      fontWeight: 'bold',
+      marginBottom: 8,
+    },
+    metadata: {
+      color: theme.colors.onSurfaceVariant,
+      marginTop: 4,
+    },
+    scrollContent: {
+      flex: 1,
+    },
+    scrollContainer: {
+      padding: 16,
+    },
+    questionCard: {
+      marginBottom: 16,
+      elevation: 2,
+    },
+    questionText: {
+      fontWeight: '600',
+      marginBottom: 12,
+      lineHeight: 22,
+    },
+    answerContainer: {
+      backgroundColor: theme.colors.background,
+      padding: 12,
+      borderRadius: 8,
+      marginBottom: 12,
+    },
+    answerText: {
+      lineHeight: 20,
+    },
+    divider: {
+      marginVertical: 12,
+    },
+    commentsSection: {
+      marginBottom: 12,
+    },
+    commentsLabel: {
+      marginBottom: 8,
+      color: theme.colors.onSurfaceVariant,
+    },
+    commentItem: {
+      marginBottom: 12,
+      paddingLeft: 12,
+      borderLeftWidth: 3,
+      borderLeftColor: '#2196F3',
+    },
+    commentTimestamp: {
+      color: '#999',
+      marginBottom: 4,
+    },
+    commentText: {
+      lineHeight: 20,
+    },
+    commentInputContainer: {
+      marginTop: 8,
+    },
+    commentInput: {
+      marginBottom: 8,
+    },
+    commentButton: {
+      alignSelf: 'flex-end',
+    },
+    actions: {
+      padding: 16,
+      backgroundColor: theme.colors.surface,
+      borderTopWidth: 1,
+      borderTopColor: '#E0E0E0',
+    },
+    actionButton: {
+      width: '100%',
+    },
+    reviewedBanner: {
+      padding: 16,
+      backgroundColor: '#E8F5E9',
+      alignItems: 'center',
+    },
+    reviewedText: {
+      color: '#2E7D32',
+      fontWeight: '600',
+    },
+  });
 
 export default SponsorReviewScreen;

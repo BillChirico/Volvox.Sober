@@ -4,40 +4,40 @@
  * Feature: 002-app-screens
  */
 
-import supabaseClient from './supabase'
+import supabaseClient from './supabase';
 import {
   OnboardingProgress,
   OnboardingStep,
   OnboardingStepInfo,
   TablesInsert,
   TablesUpdate,
-} from '../types'
+} from '../types';
 
 class OnboardingService {
   /**
    * Get user's onboarding progress
    */
   async getProgress(
-    userId: string
+    userId: string,
   ): Promise<{ data: OnboardingProgress | null; error: Error | null }> {
     try {
       const { data, error } = await supabaseClient
         .from('onboarding_progress')
         .select('*')
         .eq('user_id', userId)
-        .single()
+        .single();
 
       if (error) {
         // If no record exists, create one
         if (error.code === 'PGRST116') {
-          return await this.createProgress(userId)
+          return await this.createProgress(userId);
         }
-        throw error
+        throw error;
       }
 
-      return { data, error: null }
+      return { data, error: null };
     } catch (error) {
-      return { data: null, error: error as Error }
+      return { data: null, error: error as Error };
     }
   }
 
@@ -45,7 +45,7 @@ class OnboardingService {
    * Create initial onboarding progress record
    */
   async createProgress(
-    userId: string
+    userId: string,
   ): Promise<{ data: OnboardingProgress | null; error: Error | null }> {
     try {
       const insertData: TablesInsert<'onboarding_progress'> = {
@@ -55,19 +55,19 @@ class OnboardingService {
         profile_form_completed: false,
         onboarding_completed: false,
         last_step: 'welcome',
-      }
+      };
 
       const { data, error } = await supabaseClient
         .from('onboarding_progress')
         .insert(insertData)
         .select()
-        .single()
+        .single();
 
-      if (error) throw error
+      if (error) throw error;
 
-      return { data, error: null }
+      return { data, error: null };
     } catch (error) {
-      return { data: null, error: error as Error }
+      return { data: null, error: error as Error };
     }
   }
 
@@ -76,23 +76,23 @@ class OnboardingService {
    */
   async updateProgress(
     userId: string,
-    updates: Partial<OnboardingProgress>
+    updates: Partial<OnboardingProgress>,
   ): Promise<{ data: OnboardingProgress | null; error: Error | null }> {
     try {
-      const updateData: TablesUpdate<'onboarding_progress'> = updates
+      const updateData: TablesUpdate<'onboarding_progress'> = updates;
 
       const { data, error } = await supabaseClient
         .from('onboarding_progress')
         .update(updateData)
         .eq('user_id', userId)
         .select()
-        .single()
+        .single();
 
-      if (error) throw error
+      if (error) throw error;
 
-      return { data, error: null }
+      return { data, error: null };
     } catch (error) {
-      return { data: null, error: error as Error }
+      return { data: null, error: error as Error };
     }
   }
 
@@ -101,13 +101,10 @@ class OnboardingService {
    */
   async completeStep(
     userId: string,
-    step: OnboardingStep
+    step: OnboardingStep,
   ): Promise<{ data: OnboardingProgress | null; error: Error | null }> {
     try {
-      const stepMap: Record<
-        OnboardingStep,
-        Partial<TablesUpdate<'onboarding_progress'>>
-      > = {
+      const stepMap: Record<OnboardingStep, Partial<TablesUpdate<'onboarding_progress'>>> = {
         welcome: {
           welcome_completed: true,
           last_step: 'welcome',
@@ -131,31 +128,31 @@ class OnboardingService {
           onboarding_completed: true,
           last_step: 'complete',
         },
-      }
+      };
 
-      const updates = stepMap[step]
+      const updates = stepMap[step];
 
       // Check if onboarding is being marked complete
       if (updates.onboarding_completed) {
         const updateData: TablesUpdate<'onboarding_progress'> = {
           ...updates,
-        }
+        };
 
         const { data, error } = await supabaseClient
           .from('onboarding_progress')
           .update(updateData)
           .eq('user_id', userId)
           .select()
-          .single()
+          .single();
 
-        if (error) throw error
+        if (error) throw error;
 
-        return { data, error: null }
+        return { data, error: null };
       }
 
-      return await this.updateProgress(userId, updates)
+      return await this.updateProgress(userId, updates);
     } catch (error) {
-      return { data: null, error: error as Error }
+      return { data: null, error: error as Error };
     }
   }
 
@@ -206,9 +203,9 @@ class OnboardingService {
         isCompleted: progress?.onboarding_completed || false,
         isAccessible: progress?.profile_form_completed || false,
       },
-    ]
+    ];
 
-    return steps
+    return steps;
   }
 
   /**
@@ -216,31 +213,31 @@ class OnboardingService {
    */
   getNextStep(progress: OnboardingProgress | null, role?: string): OnboardingStep {
     if (!progress || !progress.welcome_completed) {
-      return 'welcome'
+      return 'welcome';
     }
 
     // Email verification is handled by auth, check in component
     if (!progress.role_selected) {
-      return 'role_selection'
+      return 'role_selection';
     }
 
     if (!progress.profile_form_completed) {
-      return role === 'sponsor' ? 'sponsor_profile' : 'sponsee_profile'
+      return role === 'sponsor' ? 'sponsor_profile' : 'sponsee_profile';
     }
 
     if (!progress.onboarding_completed) {
-      return 'complete'
+      return 'complete';
     }
 
-    return 'complete' // Already complete
+    return 'complete'; // Already complete
   }
 
   /**
    * Check if onboarding is complete
    */
   isOnboardingComplete(progress: OnboardingProgress | null): boolean {
-    return progress?.onboarding_completed || false
+    return progress?.onboarding_completed || false;
   }
 }
 
-export default new OnboardingService()
+export default new OnboardingService();

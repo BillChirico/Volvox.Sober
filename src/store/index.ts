@@ -1,4 +1,4 @@
-import { configureStore } from '@reduxjs/toolkit'
+import { configureStore } from '@reduxjs/toolkit';
 import {
   persistStore,
   persistReducer,
@@ -8,16 +8,16 @@ import {
   PERSIST,
   PURGE,
   REGISTER,
-} from 'redux-persist'
-import AsyncStorage from '@react-native-async-storage/async-storage'
-import { combineReducers } from 'redux'
-import authReducer from './auth/authSlice'
-import profileReducer from './profile/profileSlice'
-import onboardingReducer from './onboarding/onboardingSlice'
-import sobrietyReducer from './sobriety/sobrietySlice'
-import matchesReducer from './matches/matchesSlice'
-import connectionsReducer from './connections/connectionsSlice'
-import messagesReducer from './messages/messagesSlice'
+} from 'redux-persist';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { combineReducers } from 'redux';
+import authReducer from './auth/authSlice';
+import profileReducer from './profile/profileSlice';
+import onboardingReducer from './onboarding/onboardingSlice';
+import sobrietyReducer from './sobriety/sobrietySlice';
+import matchesReducer from './matches/matchesSlice';
+import connectionsReducer from './connections/connectionsSlice';
+import messagesReducer from './messages/messagesSlice';
 
 const rootReducer = combineReducers({
   auth: authReducer,
@@ -27,7 +27,7 @@ const rootReducer = combineReducers({
   matches: matchesReducer,
   connections: connectionsReducer,
   messages: messagesReducer,
-})
+});
 
 const persistConfig = {
   key: 'root',
@@ -40,21 +40,21 @@ const persistConfig = {
   timeout: 10000,
   // Enable debug mode in development
   debug: __DEV__,
-}
+};
 
-const persistedReducer = persistReducer(persistConfig, rootReducer)
+const persistedReducer = persistReducer(persistConfig, rootReducer);
 
 export const store = configureStore({
   reducer: persistedReducer,
-  middleware: (getDefaultMiddleware) =>
+  middleware: getDefaultMiddleware =>
     getDefaultMiddleware({
       serializableCheck: {
         ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
       },
     }),
-})
+});
 
-export const persistor = persistStore(store)
+export const persistor = persistStore(store);
 
-export type RootState = ReturnType<typeof store.getState>
-export type AppDispatch = typeof store.dispatch
+export type RootState = ReturnType<typeof store.getState>;
+export type AppDispatch = typeof store.dispatch;

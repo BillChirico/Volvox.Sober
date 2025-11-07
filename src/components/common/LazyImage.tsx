@@ -4,18 +4,18 @@
  * Optimizes performance by loading images only when needed
  */
 
-import React, { useState, useCallback } from 'react'
-import { Image, View, StyleSheet, ActivityIndicator, ImageProps, ViewStyle } from 'react-native'
-import { useTheme, Text } from 'react-native-paper'
-import { MaterialCommunityIcons } from '@expo/vector-icons'
+import React, { useState, useCallback } from 'react';
+import { Image, View, StyleSheet, ActivityIndicator, ImageProps, ViewStyle } from 'react-native';
+import { useTheme, Text } from 'react-native-paper';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 interface LazyImageProps extends Omit<ImageProps, 'source'> {
-  source: { uri?: string } | number
-  placeholder?: React.ReactNode
-  fallbackIcon?: keyof typeof MaterialCommunityIcons.glyphMap
-  containerStyle?: ViewStyle
-  aspectRatio?: number
-  blurhash?: string
+  source: { uri?: string } | number;
+  placeholder?: React.ReactNode;
+  fallbackIcon?: keyof typeof MaterialCommunityIcons.glyphMap;
+  containerStyle?: ViewStyle;
+  aspectRatio?: number;
+  blurhash?: string;
 }
 
 /**
@@ -37,23 +37,23 @@ export const LazyImage: React.FC<LazyImageProps> = ({
   style,
   ...props
 }) => {
-  const theme = useTheme()
-  const [loading, setLoading] = useState(true)
-  const [error, setError] = useState(false)
+  const theme = useTheme();
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(false);
 
   const handleLoadStart = useCallback(() => {
-    setLoading(true)
-    setError(false)
-  }, [])
+    setLoading(true);
+    setError(false);
+  }, []);
 
   const handleLoadEnd = useCallback(() => {
-    setLoading(false)
-  }, [])
+    setLoading(false);
+  }, []);
 
   const handleError = useCallback(() => {
-    setLoading(false)
-    setError(true)
-  }, [])
+    setLoading(false);
+    setError(true);
+  }, []);
 
   // Render error state
   if (error) {
@@ -63,8 +63,7 @@ export const LazyImage: React.FC<LazyImageProps> = ({
           styles.container,
           { aspectRatio, backgroundColor: theme.colors.surfaceVariant },
           containerStyle,
-        ]}
-      >
+        ]}>
         <MaterialCommunityIcons
           name={fallbackIcon}
           size={48}
@@ -74,7 +73,7 @@ export const LazyImage: React.FC<LazyImageProps> = ({
           Image unavailable
         </Text>
       </View>
-    )
+    );
   }
 
   return (
@@ -91,14 +90,12 @@ export const LazyImage: React.FC<LazyImageProps> = ({
 
       {loading && (
         <View style={[styles.loadingOverlay, { backgroundColor: theme.colors.surface }]}>
-          {placeholder || (
-            <ActivityIndicator size="large" color={theme.colors.primary} />
-          )}
+          {placeholder || <ActivityIndicator size="large" color={theme.colors.primary} />}
         </View>
       )}
     </View>
-  )
-}
+  );
+};
 
 const styles = StyleSheet.create({
   container: {
@@ -112,4 +109,4 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-})
+});

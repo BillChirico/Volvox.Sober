@@ -15,11 +15,11 @@ const corsHeaders = {
 
 // Weight distribution for compatibility scoring (must sum to 1.0)
 const WEIGHTS = {
-  recoveryProgram: 0.35,    // Same program is critical
-  availability: 0.25,       // Schedule compatibility
-  location: 0.20,           // Geographic proximity
-  experienceLevel: 0.15,    // Matching experience to needs
-  preferences: 0.05,        // Optional preference match
+  recoveryProgram: 0.35, // Same program is critical
+  availability: 0.25, // Schedule compatibility
+  location: 0.2, // Geographic proximity
+  experienceLevel: 0.15, // Matching experience to needs
+  preferences: 0.05, // Optional preference match
 };
 
 interface Profile {
@@ -74,9 +74,7 @@ function scoreAvailability(user: Profile, candidate: Profile): number {
   if (!user.availability || user.availability.length === 0) return 0;
   if (!candidate.availability || candidate.availability.length === 0) return 0;
 
-  const overlap = user.availability.filter((slot) =>
-    candidate.availability.includes(slot)
-  );
+  const overlap = user.availability.filter(slot => candidate.availability.includes(slot));
 
   const maxLength = Math.max(user.availability.length, candidate.availability.length);
   return overlap.length / maxLength;
@@ -89,10 +87,7 @@ function scoreAvailability(user: Profile, candidate: Profile): number {
 function scoreLocation(user: Profile, candidate: Profile): number {
   if (!user.city || !user.state || !candidate.city || !candidate.state) return 0;
 
-  if (
-    user.city.toLowerCase() === candidate.city.toLowerCase() &&
-    user.state === candidate.state
-  ) {
+  if (user.city.toLowerCase() === candidate.city.toLowerCase() && user.state === candidate.state) {
     return 1.0;
   }
 
@@ -119,7 +114,7 @@ function scoreExperienceLevel(user: Profile, candidate: Profile): number {
   const sobrietyStartDate = new Date(candidate.sobriety_start_date);
   const now = new Date();
   const daysSober = Math.floor(
-    (now.getTime() - sobrietyStartDate.getTime()) / (1000 * 60 * 60 * 24)
+    (now.getTime() - sobrietyStartDate.getTime()) / (1000 * 60 * 60 * 24),
   );
 
   const minDaysRequired = 365; // 1 year minimum
@@ -156,7 +151,7 @@ function calculateCompatibility(user: Profile, candidate: Profile): number {
  * Main Edge Function handler
  * Calculates compatibility scores for potential matches
  */
-serve(async (req) => {
+serve(async req => {
   // Handle CORS preflight
   if (req.method === 'OPTIONS') {
     return new Response('ok', { headers: corsHeaders });
@@ -229,9 +224,7 @@ serve(async (req) => {
       .eq('status', 'declined')
       .gte('declined_at', thirtyDaysAgo.toISOString());
 
-    const declinedCandidateIds = new Set(
-      declinedMatches?.map((m) => m.candidate_id) || []
-    );
+    const declinedCandidateIds = new Set(declinedMatches?.map(m => m.candidate_id) || []);
 
     // Fetch already connected or requested matches to exclude
     const { data: existingMatches } = await supabase
@@ -240,9 +233,7 @@ serve(async (req) => {
       .eq('user_id', user_id)
       .in('status', ['requested', 'connected']);
 
-    const existingCandidateIds = new Set(
-      existingMatches?.map((m) => m.candidate_id) || []
-    );
+    const existingCandidateIds = new Set(existingMatches?.map(m => m.candidate_id) || []);
 
     // Fetch potential candidates
     let candidatesQuery = supabase
@@ -267,19 +258,18 @@ serve(async (req) => {
         {
           status: 500,
           headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-        }
+        },
       );
     }
 
     // Filter out declined and existing matches
     const eligibleCandidates = (candidates || []).filter(
-      (candidate) =>
-        !declinedCandidateIds.has(candidate.id) &&
-        !existingCandidateIds.has(candidate.id)
+      candidate =>
+        !declinedCandidateIds.has(candidate.id) && !existingCandidateIds.has(candidate.id),
     );
 
     // Calculate compatibility scores
-    const scoredMatches: ScoredMatch[] = eligibleCandidates.map((candidate) => {
+    const scoredMatches: ScoredMatch[] = eligibleCandidates.map(candidate => {
       const recoveryProgramScore = scoreRecoveryProgram(user, candidate);
       const availabilityScore = scoreAvailability(user, candidate);
       const locationScore = scoreLocation(user, candidate);
@@ -328,7 +318,7 @@ serve(async (req) => {
       {
         status: 500,
         headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-      }
+      },
     );
   }
 });

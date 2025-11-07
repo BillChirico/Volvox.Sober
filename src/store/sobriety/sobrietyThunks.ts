@@ -4,8 +4,8 @@
  * Feature: 002-app-screens
  */
 
-import { createAsyncThunk } from '@reduxjs/toolkit'
-import { sobrietyService } from '../../services/sobrietyService'
+import { createAsyncThunk } from '@reduxjs/toolkit';
+import { sobrietyService } from '../../services/sobrietyService';
 import {
   setRecord,
   setMilestones,
@@ -14,8 +14,8 @@ import {
   setError,
   clearError,
   updateDaysSober,
-} from './sobrietySlice'
-import type { SobrietyRecordFormData } from '../../types'
+} from './sobrietySlice';
+import type { SobrietyRecordFormData } from '../../types';
 
 /**
  * Fetch sobriety record for user
@@ -24,47 +24,44 @@ export const fetchSobrietyRecord = createAsyncThunk(
   'sobriety/fetchRecord',
   async (userId: string, { dispatch, rejectWithValue }) => {
     try {
-      dispatch(setLoading(true))
-      dispatch(clearError())
+      dispatch(setLoading(true));
+      dispatch(clearError());
 
-      const { data, error } = await sobrietyService.getRecord(userId)
+      const { data, error } = await sobrietyService.getRecord(userId);
 
       if (error) {
-        dispatch(setError(error.message))
-        return rejectWithValue(error.message)
+        dispatch(setError(error.message));
+        return rejectWithValue(error.message);
       }
 
       if (data) {
         // Calculate days sober
-        const daysSober = sobrietyService.calculateDaysSober(
-          data.current_sobriety_start_date
-        )
-        const recordWithCalc = { ...data, daysSober }
+        const daysSober = sobrietyService.calculateDaysSober(data.current_sobriety_start_date);
+        const recordWithCalc = { ...data, daysSober };
 
-        dispatch(setRecord(recordWithCalc))
+        dispatch(setRecord(recordWithCalc));
 
         // Fetch and set milestone status
         const milestoneStatus = sobrietyService.getMilestoneStatus(
           daysSober,
-          data.milestones || []
-        )
-        dispatch(setMilestones(milestoneStatus))
+          data.milestones || [],
+        );
+        dispatch(setMilestones(milestoneStatus));
 
-        return recordWithCalc
+        return recordWithCalc;
       }
 
-      dispatch(setRecord(null))
-      return null
+      dispatch(setRecord(null));
+      return null;
     } catch (error) {
-      const message =
-        error instanceof Error ? error.message : 'Failed to fetch sobriety record'
-      dispatch(setError(message))
-      return rejectWithValue(message)
+      const message = error instanceof Error ? error.message : 'Failed to fetch sobriety record';
+      dispatch(setError(message));
+      return rejectWithValue(message);
     } finally {
-      dispatch(setLoading(false))
+      dispatch(setLoading(false));
     }
-  }
-)
+  },
+);
 
 /**
  * Create sobriety record for new user
@@ -73,42 +70,39 @@ export const createSobrietyRecord = createAsyncThunk(
   'sobriety/createRecord',
   async (
     { userId, recordData }: { userId: string; recordData: SobrietyRecordFormData },
-    { dispatch, rejectWithValue }
+    { dispatch, rejectWithValue },
   ) => {
     try {
-      dispatch(setSaving(true))
-      dispatch(clearError())
+      dispatch(setSaving(true));
+      dispatch(clearError());
 
-      const { data, error } = await sobrietyService.createRecord(userId, recordData)
+      const { data, error } = await sobrietyService.createRecord(userId, recordData);
 
       if (error) {
-        dispatch(setError(error.message))
-        return rejectWithValue(error.message)
+        dispatch(setError(error.message));
+        return rejectWithValue(error.message);
       }
 
       // Calculate days sober
-      const daysSober = sobrietyService.calculateDaysSober(
-        data.current_sobriety_start_date
-      )
-      const recordWithCalc = { ...data, daysSober }
+      const daysSober = sobrietyService.calculateDaysSober(data.current_sobriety_start_date);
+      const recordWithCalc = { ...data, daysSober };
 
-      dispatch(setRecord(recordWithCalc))
+      dispatch(setRecord(recordWithCalc));
 
       // Initialize milestones
-      const milestoneStatus = sobrietyService.getMilestoneStatus(daysSober, [])
-      dispatch(setMilestones(milestoneStatus))
+      const milestoneStatus = sobrietyService.getMilestoneStatus(daysSober, []);
+      dispatch(setMilestones(milestoneStatus));
 
-      return recordWithCalc
+      return recordWithCalc;
     } catch (error) {
-      const message =
-        error instanceof Error ? error.message : 'Failed to create sobriety record'
-      dispatch(setError(message))
-      return rejectWithValue(message)
+      const message = error instanceof Error ? error.message : 'Failed to create sobriety record';
+      dispatch(setError(message));
+      return rejectWithValue(message);
     } finally {
-      dispatch(setSaving(false))
+      dispatch(setSaving(false));
     }
-  }
-)
+  },
+);
 
 /**
  * Update sobriety record
@@ -117,45 +111,39 @@ export const updateSobrietyRecord = createAsyncThunk(
   'sobriety/updateRecord',
   async (
     { userId, updates }: { userId: string; updates: Partial<SobrietyRecordFormData> },
-    { dispatch, rejectWithValue }
+    { dispatch, rejectWithValue },
   ) => {
     try {
-      dispatch(setSaving(true))
-      dispatch(clearError())
+      dispatch(setSaving(true));
+      dispatch(clearError());
 
-      const { data, error } = await sobrietyService.updateRecord(userId, updates)
+      const { data, error } = await sobrietyService.updateRecord(userId, updates);
 
       if (error) {
-        dispatch(setError(error.message))
-        return rejectWithValue(error.message)
+        dispatch(setError(error.message));
+        return rejectWithValue(error.message);
       }
 
       // Calculate days sober
-      const daysSober = sobrietyService.calculateDaysSober(
-        data.current_sobriety_start_date
-      )
-      const recordWithCalc = { ...data, daysSober }
+      const daysSober = sobrietyService.calculateDaysSober(data.current_sobriety_start_date);
+      const recordWithCalc = { ...data, daysSober };
 
-      dispatch(setRecord(recordWithCalc))
+      dispatch(setRecord(recordWithCalc));
 
       // Update milestones
-      const milestoneStatus = sobrietyService.getMilestoneStatus(
-        daysSober,
-        data.milestones || []
-      )
-      dispatch(setMilestones(milestoneStatus))
+      const milestoneStatus = sobrietyService.getMilestoneStatus(daysSober, data.milestones || []);
+      dispatch(setMilestones(milestoneStatus));
 
-      return recordWithCalc
+      return recordWithCalc;
     } catch (error) {
-      const message =
-        error instanceof Error ? error.message : 'Failed to update sobriety record'
-      dispatch(setError(message))
-      return rejectWithValue(message)
+      const message = error instanceof Error ? error.message : 'Failed to update sobriety record';
+      dispatch(setError(message));
+      return rejectWithValue(message);
     } finally {
-      dispatch(setSaving(false))
+      dispatch(setSaving(false));
     }
-  }
-)
+  },
+);
 
 /**
  * Record a relapse event
@@ -164,48 +152,39 @@ export const recordRelapse = createAsyncThunk(
   'sobriety/recordRelapse',
   async (
     { userId, relapseDate, notes }: { userId: string; relapseDate: string; notes?: string },
-    { dispatch, rejectWithValue }
+    { dispatch, rejectWithValue },
   ) => {
     try {
-      dispatch(setSaving(true))
-      dispatch(clearError())
+      dispatch(setSaving(true));
+      dispatch(clearError());
 
-      const { data, error } = await sobrietyService.recordRelapse(
-        userId,
-        relapseDate,
-        notes
-      )
+      const { data, error } = await sobrietyService.recordRelapse(userId, relapseDate, notes);
 
       if (error) {
-        dispatch(setError(error.message))
-        return rejectWithValue(error.message)
+        dispatch(setError(error.message));
+        return rejectWithValue(error.message);
       }
 
       // Calculate days sober from new start date
-      const daysSober = sobrietyService.calculateDaysSober(
-        data.current_sobriety_start_date
-      )
-      const recordWithCalc = { ...data, daysSober }
+      const daysSober = sobrietyService.calculateDaysSober(data.current_sobriety_start_date);
+      const recordWithCalc = { ...data, daysSober };
 
-      dispatch(setRecord(recordWithCalc))
+      dispatch(setRecord(recordWithCalc));
 
       // Reset milestones
-      const milestoneStatus = sobrietyService.getMilestoneStatus(
-        daysSober,
-        data.milestones || []
-      )
-      dispatch(setMilestones(milestoneStatus))
+      const milestoneStatus = sobrietyService.getMilestoneStatus(daysSober, data.milestones || []);
+      dispatch(setMilestones(milestoneStatus));
 
-      return recordWithCalc
+      return recordWithCalc;
     } catch (error) {
-      const message = error instanceof Error ? error.message : 'Failed to record relapse'
-      dispatch(setError(message))
-      return rejectWithValue(message)
+      const message = error instanceof Error ? error.message : 'Failed to record relapse';
+      dispatch(setError(message));
+      return rejectWithValue(message);
     } finally {
-      dispatch(setSaving(false))
+      dispatch(setSaving(false));
     }
-  }
-)
+  },
+);
 
 /**
  * Refresh days sober calculation
@@ -215,36 +194,33 @@ export const refreshDaysSober = createAsyncThunk(
   'sobriety/refreshDaysSober',
   async (userId: string, { dispatch, rejectWithValue }) => {
     try {
-      const { data, error } = await sobrietyService.getRecord(userId)
+      const { data, error } = await sobrietyService.getRecord(userId);
 
       if (error) {
-        return rejectWithValue(error.message)
+        return rejectWithValue(error.message);
       }
 
       if (data) {
-        const daysSober = sobrietyService.calculateDaysSober(
-          data.current_sobriety_start_date
-        )
-        dispatch(updateDaysSober(daysSober))
+        const daysSober = sobrietyService.calculateDaysSober(data.current_sobriety_start_date);
+        dispatch(updateDaysSober(daysSober));
 
         // Check for new milestones
         const milestoneStatus = sobrietyService.getMilestoneStatus(
           daysSober,
-          data.milestones || []
-        )
-        dispatch(setMilestones(milestoneStatus))
+          data.milestones || [],
+        );
+        dispatch(setMilestones(milestoneStatus));
 
-        return daysSober
+        return daysSober;
       }
 
-      return 0
+      return 0;
     } catch (error) {
-      const message =
-        error instanceof Error ? error.message : 'Failed to refresh days sober'
-      return rejectWithValue(message)
+      const message = error instanceof Error ? error.message : 'Failed to refresh days sober';
+      return rejectWithValue(message);
     }
-  }
-)
+  },
+);
 
 /**
  * Check for newly achieved milestones
@@ -253,29 +229,23 @@ export const checkNewMilestones = createAsyncThunk(
   'sobriety/checkNewMilestones',
   async (userId: string, { dispatch: _dispatch, rejectWithValue }) => {
     try {
-      const { data, error } = await sobrietyService.getRecord(userId)
+      const { data, error } = await sobrietyService.getRecord(userId);
 
       if (error) {
-        return rejectWithValue(error.message)
+        return rejectWithValue(error.message);
       }
 
       if (data) {
-        const daysSober = sobrietyService.calculateDaysSober(
-          data.current_sobriety_start_date
-        )
-        const newMilestones = sobrietyService.checkNewMilestones(
-          daysSober,
-          data.milestones || []
-        )
+        const daysSober = sobrietyService.calculateDaysSober(data.current_sobriety_start_date);
+        const newMilestones = sobrietyService.checkNewMilestones(daysSober, data.milestones || []);
 
-        return newMilestones
+        return newMilestones;
       }
 
-      return []
+      return [];
     } catch (error) {
-      const message =
-        error instanceof Error ? error.message : 'Failed to check new milestones'
-      return rejectWithValue(message)
+      const message = error instanceof Error ? error.message : 'Failed to check new milestones';
+      return rejectWithValue(message);
     }
-  }
-)
+  },
+);

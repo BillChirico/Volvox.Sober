@@ -29,12 +29,10 @@ export const NoMatchesEmptyState: React.FC<NoMatchesEmptyStateProps> = ({
 }) => {
   const { theme } = useAppTheme();
 
-  const defaultMissingFields = missingFields.length > 0 ? missingFields : [
-    'Recovery Program',
-    'Availability',
-    'Location',
-    'Bio',
-  ];
+  const defaultMissingFields =
+    missingFields.length > 0
+      ? missingFields
+      : ['Recovery Program', 'Availability', 'Location', 'Bio'];
 
   return (
     <View style={styles.container}>
@@ -45,17 +43,13 @@ export const NoMatchesEmptyState: React.FC<NoMatchesEmptyStateProps> = ({
         style={styles.icon}
       />
 
-      <Text
-        variant="headlineMedium"
-        style={[styles.title, { color: theme.colors.onSurface }]}
-      >
+      <Text variant="headlineMedium" style={[styles.title, { color: theme.colors.onSurface }]}>
         No Matches Yet
       </Text>
 
       <Text
         variant="bodyLarge"
-        style={[styles.description, { color: theme.colors.onSurfaceVariant }]}
-      >
+        style={[styles.description, { color: theme.colors.onSurfaceVariant }]}>
         Complete your profile to start seeing potential matches
       </Text>
 
@@ -63,27 +57,17 @@ export const NoMatchesEmptyState: React.FC<NoMatchesEmptyStateProps> = ({
       <Card style={styles.completionCard}>
         <Card.Content>
           <View style={styles.completionHeader}>
-            <MaterialCommunityIcons
-              name="account-check"
-              size={24}
-              color={theme.colors.primary}
-            />
+            <MaterialCommunityIcons name="account-check" size={24} color={theme.colors.primary} />
             <Text
               variant="titleMedium"
-              style={[styles.completionTitle, { color: theme.colors.onSurface }]}
-            >
+              style={[styles.completionTitle, { color: theme.colors.onSurface }]}>
               Profile Completion
             </Text>
           </View>
 
           {/* Progress Bar */}
           <View style={styles.progressContainer}>
-            <View
-              style={[
-                styles.progressBar,
-                { backgroundColor: theme.colors.surfaceVariant },
-              ]}
-            >
+            <View style={[styles.progressBar, { backgroundColor: theme.colors.surfaceVariant }]}>
               <View
                 style={[
                   styles.progressFill,
@@ -94,10 +78,7 @@ export const NoMatchesEmptyState: React.FC<NoMatchesEmptyStateProps> = ({
                 ]}
               />
             </View>
-            <Text
-              variant="labelLarge"
-              style={{ color: theme.colors.onSurfaceVariant }}
-            >
+            <Text variant="labelLarge" style={{ color: theme.colors.onSurfaceVariant }}>
               {completionPercentage}%
             </Text>
           </View>
@@ -105,10 +86,7 @@ export const NoMatchesEmptyState: React.FC<NoMatchesEmptyStateProps> = ({
           <Divider style={styles.divider} />
 
           {/* Missing Fields */}
-          <Text
-            variant="titleSmall"
-            style={[styles.tipsTitle, { color: theme.colors.onSurface }]}
-          >
+          <Text variant="titleSmall" style={[styles.tipsTitle, { color: theme.colors.onSurface }]}>
             To improve your matches, add:
           </Text>
 
@@ -120,10 +98,7 @@ export const NoMatchesEmptyState: React.FC<NoMatchesEmptyStateProps> = ({
                 color={theme.colors.primary}
                 style={styles.bullet}
               />
-              <Text
-                variant="bodyMedium"
-                style={{ color: theme.colors.onSurfaceVariant }}
-              >
+              <Text variant="bodyMedium" style={{ color: theme.colors.onSurfaceVariant }}>
                 {field}
               </Text>
             </View>
@@ -135,17 +110,12 @@ export const NoMatchesEmptyState: React.FC<NoMatchesEmptyStateProps> = ({
       <Card style={styles.tipsCard}>
         <Card.Content>
           <View style={styles.tipRow}>
-            <MaterialCommunityIcons
-              name="lightbulb-on"
-              size={20}
-              color={theme.colors.tertiary}
-            />
+            <MaterialCommunityIcons name="lightbulb-on" size={20} color={theme.colors.tertiary} />
             <Text
               variant="bodyMedium"
-              style={[styles.tipText, { color: theme.colors.onSurfaceVariant }]}
-            >
-              <Text style={{ fontWeight: '600' }}>Tip:</Text> A complete profile
-              increases your chances of finding compatible matches by 3x
+              style={[styles.tipText, { color: theme.colors.onSurfaceVariant }]}>
+              <Text style={{ fontWeight: '600' }}>Tip:</Text> A complete profile increases your
+              chances of finding compatible matches by 3x
             </Text>
           </View>
         </Card.Content>
@@ -158,18 +128,16 @@ export const NoMatchesEmptyState: React.FC<NoMatchesEmptyStateProps> = ({
         icon="account-edit"
         style={styles.button}
         accessibilityLabel="Improve your profile"
-        accessibilityHint="Navigate to profile screen to complete your information"
-      >
+        accessibilityHint="Navigate to profile screen to complete your information">
         Improve Profile
       </Button>
 
       {/* Additional Info */}
       <Text
         variant="bodySmall"
-        style={[styles.footerText, { color: theme.colors.onSurfaceVariant }]}
-      >
-        Once your profile is complete, we'll suggest matches based on your
-        recovery program, location, and availability
+        style={[styles.footerText, { color: theme.colors.onSurfaceVariant }]}>
+        Once your profile is complete, we'll suggest matches based on your recovery program,
+        location, and availability
       </Text>
     </View>
   );

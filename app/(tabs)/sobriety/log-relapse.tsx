@@ -17,7 +17,10 @@ import {
 } from 'react-native-paper';
 import { useRouter } from 'expo-router';
 import DateTimePicker from '@react-native-community/datetimepicker';
-import { useLogRelapseMutation, useGetSobrietyStatsQuery } from '../../../src/store/api/sobrietyApi';
+import {
+  useLogRelapseMutation,
+  useGetSobrietyStatsQuery,
+} from '../../../src/store/api/sobrietyApi';
 import { TRIGGER_CONTEXT_OPTIONS } from '@volvox-sober/shared/types/src/sobriety';
 import type { TriggerContext } from '@volvox-sober/shared/types/src/sobriety';
 
@@ -62,7 +65,7 @@ export const LogRelapseScreen = () => {
           style: 'destructive',
           onPress: handleSubmit,
         },
-      ]
+      ],
     );
   };
 
@@ -94,7 +97,7 @@ export const LogRelapseScreen = () => {
             text: 'OK',
             onPress: () => router.push('/(tabs)/sobriety'),
           },
-        ]
+        ],
       );
     } catch (err: any) {
       setError(err?.data?.message || 'Failed to log relapse');
@@ -103,7 +106,7 @@ export const LogRelapseScreen = () => {
 
   const getTriggerLabel = () => {
     if (!triggerContext) return 'Select trigger (optional)';
-    const option = TRIGGER_CONTEXT_OPTIONS.find((opt) => opt.value === triggerContext);
+    const option = TRIGGER_CONTEXT_OPTIONS.find(opt => opt.value === triggerContext);
     return option?.label || 'Select trigger (optional)';
   };
 
@@ -117,8 +120,7 @@ export const LogRelapseScreen = () => {
         <Button
           mode="contained"
           onPress={() => router.push('/(tabs)/sobriety/set-date')}
-          style={styles.actionButton}
-        >
+          style={styles.actionButton}>
           Set Sobriety Date
         </Button>
       </View>
@@ -157,8 +159,7 @@ export const LogRelapseScreen = () => {
             mode="outlined"
             onPress={() => setShowDatePicker(true)}
             style={styles.dateButton}
-            icon="calendar"
-          >
+            icon="calendar">
             {relapseDate.toLocaleDateString()}
           </Button>
 
@@ -189,13 +190,11 @@ export const LogRelapseScreen = () => {
                 onPress={() => setShowTriggerMenu(true)}
                 style={styles.menuButton}
                 icon="chevron-down"
-                contentStyle={styles.menuButtonContent}
-              >
+                contentStyle={styles.menuButtonContent}>
                 {getTriggerLabel()}
               </Button>
-            }
-          >
-            {TRIGGER_CONTEXT_OPTIONS.map((option) => (
+            }>
+            {TRIGGER_CONTEXT_OPTIONS.map(option => (
               <Menu.Item
                 key={option.value}
                 onPress={() => {
@@ -273,8 +272,7 @@ export const LogRelapseScreen = () => {
               loading={isLoading}
               disabled={isLoading}
               style={styles.submitButton}
-              buttonColor={theme.colors.error}
-            >
+              buttonColor={theme.colors.error}>
               Log Relapse
             </Button>
 
@@ -288,89 +286,90 @@ export const LogRelapseScreen = () => {
   );
 };
 
-const createStyles = (_theme: any) => StyleSheet.create({
-  container: {
-    flex: 1,
-    padding: 16,
-  },
-  centerContent: {
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  card: {
-    marginTop: 16,
-  },
-  title: {
-    marginBottom: 8,
-  },
-  description: {
-    marginBottom: 16,
-  },
-  privacyCard: {
-    marginBottom: 24,
-    backgroundColor: '#e3f2fd',
-  },
-  privacyTitle: {
-    marginBottom: 8,
-    fontWeight: 'bold',
-  },
-  privacyText: {
-    lineHeight: 20,
-  },
-  fieldLabel: {
-    marginBottom: 8,
-  },
-  dateButton: {
-    marginBottom: 4,
-  },
-  menuButton: {
-    marginBottom: 4,
-  },
-  menuButtonContent: {
-    flexDirection: 'row-reverse',
-  },
-  helperText: {
-    marginBottom: 16,
-  },
-  noteInput: {
-    marginBottom: 4,
-  },
-  warningCard: {
-    marginTop: 24,
-    marginBottom: 24,
-    backgroundColor: '#fff3e0',
-  },
-  warningTitle: {
-    marginBottom: 12,
-    fontWeight: 'bold',
-  },
-  warningText: {
-    marginBottom: 8,
-  },
-  warningBullet: {
-    marginLeft: 8,
-    marginVertical: 4,
-  },
-  actions: {
-    marginTop: 8,
-  },
-  submitButton: {
-    marginBottom: 12,
-  },
-  errorText: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    marginBottom: 8,
-  },
-  errorSubtext: {
-    fontSize: 14,
-    marginBottom: 24,
-    textAlign: 'center',
-    paddingHorizontal: 32,
-  },
-  actionButton: {
-    marginTop: 16,
-  },
-});
+const createStyles = (_theme: any) =>
+  StyleSheet.create({
+    container: {
+      flex: 1,
+      padding: 16,
+    },
+    centerContent: {
+      justifyContent: 'center',
+      alignItems: 'center',
+    },
+    card: {
+      marginTop: 16,
+    },
+    title: {
+      marginBottom: 8,
+    },
+    description: {
+      marginBottom: 16,
+    },
+    privacyCard: {
+      marginBottom: 24,
+      backgroundColor: '#e3f2fd',
+    },
+    privacyTitle: {
+      marginBottom: 8,
+      fontWeight: 'bold',
+    },
+    privacyText: {
+      lineHeight: 20,
+    },
+    fieldLabel: {
+      marginBottom: 8,
+    },
+    dateButton: {
+      marginBottom: 4,
+    },
+    menuButton: {
+      marginBottom: 4,
+    },
+    menuButtonContent: {
+      flexDirection: 'row-reverse',
+    },
+    helperText: {
+      marginBottom: 16,
+    },
+    noteInput: {
+      marginBottom: 4,
+    },
+    warningCard: {
+      marginTop: 24,
+      marginBottom: 24,
+      backgroundColor: '#fff3e0',
+    },
+    warningTitle: {
+      marginBottom: 12,
+      fontWeight: 'bold',
+    },
+    warningText: {
+      marginBottom: 8,
+    },
+    warningBullet: {
+      marginLeft: 8,
+      marginVertical: 4,
+    },
+    actions: {
+      marginTop: 8,
+    },
+    submitButton: {
+      marginBottom: 12,
+    },
+    errorText: {
+      fontSize: 18,
+      fontWeight: 'bold',
+      marginBottom: 8,
+    },
+    errorSubtext: {
+      fontSize: 14,
+      marginBottom: 24,
+      textAlign: 'center',
+      paddingHorizontal: 32,
+    },
+    actionButton: {
+      marginTop: 16,
+    },
+  });
 
 export default LogRelapseScreen;

@@ -77,33 +77,19 @@ export const MatchDetailModal: React.FC<MatchDetailModalProps> = ({
       <Modal
         visible={visible}
         onDismiss={onDismiss}
-        contentContainerStyle={[
-          styles.modalContainer,
-          { backgroundColor: theme.colors.surface },
-        ]}
-      >
+        contentContainerStyle={[styles.modalContainer, { backgroundColor: theme.colors.surface }]}>
         <View style={styles.header}>
           <Text variant="headlineSmall" style={{ color: theme.colors.onSurface }}>
             Match Profile
           </Text>
-          <IconButton
-            icon="close"
-            onPress={onDismiss}
-            accessibilityLabel="Close profile"
-          />
+          <IconButton icon="close" onPress={onDismiss} accessibilityLabel="Close profile" />
         </View>
 
-        <ScrollView
-          style={styles.content}
-          showsVerticalScrollIndicator={false}
-        >
+        <ScrollView style={styles.content} showsVerticalScrollIndicator={false}>
           {/* Profile Header */}
           <View style={styles.profileHeader}>
             {candidate.profile_photo_url ? (
-              <Avatar.Image
-                size={96}
-                source={{ uri: candidate.profile_photo_url }}
-              />
+              <Avatar.Image size={96} source={{ uri: candidate.profile_photo_url }} />
             ) : (
               <Avatar.Icon
                 size={96}
@@ -114,8 +100,7 @@ export const MatchDetailModal: React.FC<MatchDetailModalProps> = ({
             <View style={styles.headerInfo}>
               <Text
                 variant="headlineMedium"
-                style={[styles.name, { color: theme.colors.onSurface }]}
-              >
+                style={[styles.name, { color: theme.colors.onSurface }]}>
                 {candidate.name}
               </Text>
               <View style={styles.locationRow}>
@@ -126,8 +111,7 @@ export const MatchDetailModal: React.FC<MatchDetailModalProps> = ({
                 />
                 <Text
                   variant="bodyMedium"
-                  style={[styles.location, { color: theme.colors.onSurfaceVariant }]}
-                >
+                  style={[styles.location, { color: theme.colors.onSurfaceVariant }]}>
                   {formatLocation()}
                 </Text>
               </View>
@@ -147,14 +131,12 @@ export const MatchDetailModal: React.FC<MatchDetailModalProps> = ({
               <View style={styles.section}>
                 <Text
                   variant="titleMedium"
-                  style={[styles.sectionTitle, { color: theme.colors.onSurface }]}
-                >
+                  style={[styles.sectionTitle, { color: theme.colors.onSurface }]}>
                   About
                 </Text>
                 <Text
                   variant="bodyLarge"
-                  style={[styles.bioText, { color: theme.colors.onSurfaceVariant }]}
-                >
+                  style={[styles.bioText, { color: theme.colors.onSurfaceVariant }]}>
                   {candidate.bio}
                 </Text>
               </View>
@@ -165,22 +147,12 @@ export const MatchDetailModal: React.FC<MatchDetailModalProps> = ({
           {/* Recovery Program */}
           <View style={styles.section}>
             <View style={styles.infoRow}>
-              <MaterialCommunityIcons
-                name="heart-pulse"
-                size={24}
-                color={theme.colors.primary}
-              />
+              <MaterialCommunityIcons name="heart-pulse" size={24} color={theme.colors.primary} />
               <View style={styles.infoContent}>
-                <Text
-                  variant="labelLarge"
-                  style={{ color: theme.colors.onSurfaceVariant }}
-                >
+                <Text variant="labelLarge" style={{ color: theme.colors.onSurfaceVariant }}>
                   Recovery Program
                 </Text>
-                <Text
-                  variant="bodyLarge"
-                  style={{ color: theme.colors.onSurface }}
-                >
+                <Text variant="bodyLarge" style={{ color: theme.colors.onSurface }}>
                   {formatRecoveryProgram()}
                 </Text>
               </View>
@@ -196,16 +168,10 @@ export const MatchDetailModal: React.FC<MatchDetailModalProps> = ({
                 color={theme.colors.primary}
               />
               <View style={styles.infoContent}>
-                <Text
-                  variant="labelLarge"
-                  style={{ color: theme.colors.onSurfaceVariant }}
-                >
+                <Text variant="labelLarge" style={{ color: theme.colors.onSurfaceVariant }}>
                   Sobriety Journey
                 </Text>
-                <Text
-                  variant="bodyLarge"
-                  style={{ color: theme.colors.onSurface }}
-                >
+                <Text variant="bodyLarge" style={{ color: theme.colors.onSurface }}>
                   {formatSobrietyInfo()}
                 </Text>
               </View>
@@ -220,18 +186,16 @@ export const MatchDetailModal: React.FC<MatchDetailModalProps> = ({
               <View style={styles.section}>
                 <Text
                   variant="titleMedium"
-                  style={[styles.sectionTitle, { color: theme.colors.onSurface }]}
-                >
+                  style={[styles.sectionTitle, { color: theme.colors.onSurface }]}>
                   Availability
                 </Text>
                 <View style={styles.chipContainer}>
-                  {candidate.availability.map((slot) => (
+                  {candidate.availability.map(slot => (
                     <Chip
                       key={slot}
                       mode="outlined"
                       icon="clock-outline"
-                      style={styles.availabilityChip}
-                    >
+                      style={styles.availabilityChip}>
                       {slot}
                     </Chip>
                   ))}
@@ -250,16 +214,10 @@ export const MatchDetailModal: React.FC<MatchDetailModalProps> = ({
                 color={theme.colors.primary}
               />
               <View style={styles.infoContent}>
-                <Text
-                  variant="labelLarge"
-                  style={{ color: theme.colors.onSurfaceVariant }}
-                >
+                <Text variant="labelLarge" style={{ color: theme.colors.onSurfaceVariant }}>
                   Role
                 </Text>
-                <Text
-                  variant="bodyLarge"
-                  style={{ color: theme.colors.onSurface }}
-                >
+                <Text variant="bodyLarge" style={{ color: theme.colors.onSurface }}>
                   {candidate.role === 'sponsor' ? 'Sponsor' : 'Sponsee'}
                 </Text>
               </View>
@@ -276,8 +234,7 @@ export const MatchDetailModal: React.FC<MatchDetailModalProps> = ({
             disabled={isConnecting || isDeclining}
             style={styles.declineButton}
             icon="close"
-            accessibilityLabel="Decline this match"
-          >
+            accessibilityLabel="Decline this match">
             Decline
           </Button>
           <Button
@@ -287,8 +244,7 @@ export const MatchDetailModal: React.FC<MatchDetailModalProps> = ({
             disabled={isConnecting || isDeclining}
             style={styles.connectButton}
             icon="account-plus"
-            accessibilityLabel={`Send connection request to ${candidate.name}`}
-          >
+            accessibilityLabel={`Send connection request to ${candidate.name}`}>
             Connect
           </Button>
         </View>

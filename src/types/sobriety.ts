@@ -3,7 +3,7 @@
  * Feature: 002-app-screens
  */
 
-import { Tables, SobrietyMilestone, SobrietyReflection } from './database.types'
+import { Tables, SobrietyMilestone, SobrietyReflection } from './database.types';
 
 // ============================================================
 // Base Sobriety Types
@@ -12,30 +12,30 @@ import { Tables, SobrietyMilestone, SobrietyReflection } from './database.types'
 export interface SobrietyRecord extends Tables<'sobriety_records'> {}
 
 export interface SobrietyRecordWithCalculations extends SobrietyRecord {
-  daysSober: number // Calculated from current_sobriety_start_date
+  daysSober: number; // Calculated from current_sobriety_start_date
 }
 
 // Re-export JSONB types for convenience
-export type { SobrietyMilestone, SobrietyReflection }
+export type { SobrietyMilestone, SobrietyReflection };
 
 // ============================================================
 // Milestone Types
 // ============================================================
 
-export type MilestoneDay = 1 | 7 | 30 | 60 | 90 | 180 | 365 | 730 | 1825 | 3650
+export type MilestoneDay = 1 | 7 | 30 | 60 | 90 | 180 | 365 | 730 | 1825 | 3650;
 
 export interface MilestoneDefinition {
-  days: MilestoneDay
-  title: string
-  description: string
-  icon?: string
+  days: MilestoneDay;
+  title: string;
+  description: string;
+  icon?: string;
 }
 
 export interface MilestoneStatus {
-  milestone: MilestoneDefinition
-  isAchieved: boolean
-  achievedAt?: string
-  daysUntilAchievement?: number
+  milestone: MilestoneDefinition;
+  isAchieved: boolean;
+  achievedAt?: string;
+  daysUntilAchievement?: number;
 }
 
 // ============================================================
@@ -43,8 +43,8 @@ export interface MilestoneStatus {
 // ============================================================
 
 export interface ReflectionFormData {
-  text: string
-  date?: string // Defaults to today
+  text: string;
+  date?: string; // Defaults to today
 }
 
 // ============================================================
@@ -53,19 +53,19 @@ export interface ReflectionFormData {
 
 export interface SobrietyJourneyData {
   currentStreak: {
-    startDate: string
-    daysSober: number
-  }
-  totalDaysSober: number // Across all periods
+    startDate: string;
+    daysSober: number;
+  };
+  totalDaysSober: number; // Across all periods
   longestStreak: {
-    days: number
-    startDate: string
-    endDate?: string
-  }
+    days: number;
+    startDate: string;
+    endDate?: string;
+  };
   relapseHistory: {
-    date: string
-    daysBeforeRelapse: number
-  }[]
+    date: string;
+    daysBeforeRelapse: number;
+  }[];
 }
 
 // ============================================================
@@ -73,10 +73,10 @@ export interface SobrietyJourneyData {
 // ============================================================
 
 export interface RelapseData {
-  date: string
-  previousStartDate: string
-  daysSober: number
-  notes?: string
+  date: string;
+  previousStartDate: string;
+  daysSober: number;
+  notes?: string;
 }
 
 // ============================================================
@@ -84,8 +84,8 @@ export interface RelapseData {
 // ============================================================
 
 export interface SobrietyRecordFormData {
-  current_sobriety_start_date: string
-  notes?: string
+  current_sobriety_start_date: string;
+  notes?: string;
 }
 
 // ============================================================
@@ -93,22 +93,22 @@ export interface SobrietyRecordFormData {
 // ============================================================
 
 export interface SobrietyState {
-  record: SobrietyRecordWithCalculations | null
-  milestones: MilestoneStatus[]
-  isLoading: boolean
-  isSaving: boolean
-  error: string | null
+  record: SobrietyRecordWithCalculations | null;
+  milestones: MilestoneStatus[];
+  isLoading: boolean;
+  isSaving: boolean;
+  error: string | null;
 }
 
 export interface SobrietyDashboardData {
-  daysSober: number
-  nextMilestone: MilestoneStatus | null
-  recentReflections: SobrietyReflection[]
-  achievedMilestonesCount: number
+  daysSober: number;
+  nextMilestone: MilestoneStatus | null;
+  recentReflections: SobrietyReflection[];
+  achievedMilestonesCount: number;
 }
 
 export interface ReflectionFormState {
-  formData: ReflectionFormData
-  isSaving: boolean
-  validationErrors: Record<string, string>
+  formData: ReflectionFormData;
+  isSaving: boolean;
+  validationErrors: Record<string, string>;
 }

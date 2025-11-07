@@ -6,7 +6,16 @@
 
 import React from 'react';
 import { View, StyleSheet, ScrollView, Platform } from 'react-native';
-import { Modal, Portal, Text, Button, Divider, Chip, IconButton, Surface } from 'react-native-paper';
+import {
+  Modal,
+  Portal,
+  Text,
+  Button,
+  Divider,
+  Chip,
+  IconButton,
+  Surface,
+} from 'react-native-paper';
 import { ProfilePhotoUpload } from '../ProfilePhotoUpload';
 import { ConnectionStatus } from './ConnectionStatus';
 import { useAppTheme } from '../../theme/ThemeContext';
@@ -47,9 +56,7 @@ export function ConnectionProfileModal({
     : 'Not yet connected';
 
   // Parse availability if it's a JSONB array
-  const availability = Array.isArray(profile.availability)
-    ? profile.availability
-    : [];
+  const availability = Array.isArray(profile.availability) ? profile.availability : [];
 
   return (
     <Portal>
@@ -62,8 +69,7 @@ export function ConnectionProfileModal({
             backgroundColor: theme.colors.surface,
             maxHeight: Platform.OS === 'web' ? '90vh' : undefined,
           },
-        ]}
-      >
+        ]}>
         {/* Close Button */}
         <IconButton
           icon="close"
@@ -237,8 +243,7 @@ export function ConnectionProfileModal({
                   icon="message-text"
                   onPress={onMessage}
                   style={styles.actionButton}
-                  accessibilityLabel="Send message"
-                >
+                  accessibilityLabel="Send message">
                   Send Message
                 </Button>
               )}
@@ -250,8 +255,7 @@ export function ConnectionProfileModal({
                   onPress={onEndConnection}
                   style={styles.actionButton}
                   textColor={theme.colors.error}
-                  accessibilityLabel="End connection"
-                >
+                  accessibilityLabel="End connection">
                   End Connection
                 </Button>
               )}

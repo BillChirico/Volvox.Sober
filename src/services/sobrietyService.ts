@@ -4,7 +4,7 @@
  * Feature: 002-app-screens
  */
 
-import supabaseClient from './supabase'
+import supabaseClient from './supabase';
 import {
   SobrietyRecord,
   SobrietyRecordWithCalculations,
@@ -14,7 +14,7 @@ import {
   MilestoneStatus,
   TablesInsert,
   TablesUpdate,
-} from '../types'
+} from '../types';
 
 class SobrietyService {
   /**
@@ -31,40 +31,40 @@ class SobrietyService {
     { days: 730, title: '2 Years', description: 'Two years strong', icon: '🏆' },
     { days: 1825, title: '5 Years', description: 'Five years sober', icon: '👑' },
     { days: 3650, title: '10 Years', description: 'A decade of sobriety', icon: '💎' },
-  ]
+  ];
 
   /**
    * Get user's sobriety record with calculations
    */
   async getSobrietyRecord(
-    userId: string
+    userId: string,
   ): Promise<{ data: SobrietyRecordWithCalculations | null; error: Error | null }> {
     try {
       const { data, error } = await supabaseClient
         .from('sobriety_records')
         .select('*')
         .eq('user_id', userId)
-        .single()
+        .single();
 
       if (error) {
         // If no record exists, return null (not an error)
         if (error.code === 'PGRST116') {
-          return { data: null, error: null }
+          return { data: null, error: null };
         }
-        throw error
+        throw error;
       }
 
       // Calculate days sober
-      const daysSober = this.calculateDaysSober(data.current_sobriety_start_date)
+      const daysSober = this.calculateDaysSober(data.current_sobriety_start_date);
 
       const recordWithCalculations: SobrietyRecordWithCalculations = {
         ...data,
         daysSober,
-      }
+      };
 
-      return { data: recordWithCalculations, error: null }
+      return { data: recordWithCalculations, error: null };
     } catch (error) {
-      return { data: null, error: error as Error }
+      return { data: null, error: error as Error };
     }
   }
 
@@ -73,7 +73,7 @@ class SobrietyService {
    */
   async createSobrietyRecord(
     userId: string,
-    startDate: string
+    startDate: string,
   ): Promise<{ data: SobrietyRecord | null; error: Error | null }> {
     try {
       const insertData: TablesInsert<'sobriety_records'> = {
@@ -82,19 +82,19 @@ class SobrietyService {
         previous_sobriety_dates: [],
         milestones: [],
         reflections: [],
-      }
+      };
 
       const { data, error } = await supabaseClient
         .from('sobriety_records')
         .insert(insertData)
         .select()
-        .single()
+        .single();
 
-      if (error) throw error
+      if (error) throw error;
 
-      return { data, error: null }
+      return { data, error: null };
     } catch (error) {
-      return { data: null, error: error as Error }
+      return { data: null, error: error as Error };
     }
   }
 
@@ -103,42 +103,40 @@ class SobrietyService {
    */
   async updateSobrietyDate(
     userId: string,
-    newStartDate: string
+    newStartDate: string,
   ): Promise<{ data: SobrietyRecord | null; error: Error | null }> {
     try {
       // Get current record to save previous date
-      const { data: currentRecord, error: getError } = await this.getSobrietyRecord(
-        userId
-      )
+      const { data: currentRecord, error: getError } = await this.getSobrietyRecord(userId);
 
       if (getError || !currentRecord) {
-        throw getError || new Error('Sobriety record not found')
+        throw getError || new Error('Sobriety record not found');
       }
 
       // Add current start date to history
       const previousDates = [
         ...(currentRecord.previous_sobriety_dates || []),
         currentRecord.current_sobriety_start_date,
-      ]
+      ];
 
       const updateData: TablesUpdate<'sobriety_records'> = {
         current_sobriety_start_date: newStartDate,
         previous_sobriety_dates: previousDates,
         milestones: [], // Reset milestones on new sobriety date
-      }
+      };
 
       const { data, error } = await supabaseClient
         .from('sobriety_records')
         .update(updateData)
         .eq('user_id', userId)
         .select()
-        .single()
+        .single();
 
-      if (error) throw error
+      if (error) throw error;
 
-      return { data, error: null }
+      return { data, error: null };
     } catch (error) {
-      return { data: null, error: error as Error }
+      return { data: null, error: error as Error };
     }
   }
 
@@ -147,40 +145,36 @@ class SobrietyService {
    */
   async addMilestone(
     userId: string,
-    milestone: SobrietyMilestone
+    milestone: SobrietyMilestone,
   ): Promise<{ data: SobrietyRecord | null; error: Error | null }> {
     try {
-      const { data: currentRecord, error: getError } = await this.getSobrietyRecord(
-        userId
-      )
+      const { data: currentRecord, error: getError } = await this.getSobrietyRecord(userId);
 
       if (getError || !currentRecord) {
-        throw getError || new Error('Sobriety record not found')
+        throw getError || new Error('Sobriety record not found');
       }
 
       // Check if milestone already exists
-      const existingMilestone = currentRecord.milestones.find(
-        m => m.days === milestone.days
-      )
+      const existingMilestone = currentRecord.milestones.find(m => m.days === milestone.days);
 
       if (existingMilestone) {
-        return { data: currentRecord, error: null }
+        return { data: currentRecord, error: null };
       }
 
-      const updatedMilestones = [...currentRecord.milestones, milestone]
+      const updatedMilestones = [...currentRecord.milestones, milestone];
 
       const { data, error } = await supabaseClient
         .from('sobriety_records')
         .update({ milestones: updatedMilestones })
         .eq('user_id', userId)
         .select()
-        .single()
+        .single();
 
-      if (error) throw error
+      if (error) throw error;
 
-      return { data, error: null }
+      return { data, error: null };
     } catch (error) {
-      return { data: null, error: error as Error }
+      return { data: null, error: error as Error };
     }
   }
 
@@ -189,31 +183,29 @@ class SobrietyService {
    */
   async addReflection(
     userId: string,
-    reflection: SobrietyReflection
+    reflection: SobrietyReflection,
   ): Promise<{ data: SobrietyRecord | null; error: Error | null }> {
     try {
-      const { data: currentRecord, error: getError } = await this.getSobrietyRecord(
-        userId
-      )
+      const { data: currentRecord, error: getError } = await this.getSobrietyRecord(userId);
 
       if (getError || !currentRecord) {
-        throw getError || new Error('Sobriety record not found')
+        throw getError || new Error('Sobriety record not found');
       }
 
-      const updatedReflections = [...currentRecord.reflections, reflection]
+      const updatedReflections = [...currentRecord.reflections, reflection];
 
       const { data, error } = await supabaseClient
         .from('sobriety_records')
         .update({ reflections: updatedReflections })
         .eq('user_id', userId)
         .select()
-        .single()
+        .single();
 
-      if (error) throw error
+      if (error) throw error;
 
-      return { data, error: null }
+      return { data, error: null };
     } catch (error) {
-      return { data: null, error: error as Error }
+      return { data: null, error: error as Error };
     }
   }
 
@@ -221,11 +213,11 @@ class SobrietyService {
    * Calculate days sober from start date
    */
   calculateDaysSober(startDate: string): number {
-    const start = new Date(startDate)
-    const today = new Date()
-    const diffTime = Math.abs(today.getTime() - start.getTime())
-    const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24))
-    return diffDays
+    const start = new Date(startDate);
+    const today = new Date();
+    const diffTime = Math.abs(today.getTime() - start.getTime());
+    const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+    return diffDays;
   }
 
   /**
@@ -233,17 +225,17 @@ class SobrietyService {
    */
   getMilestoneStatus(
     daysSober: number,
-    achievedMilestones: SobrietyMilestone[]
+    achievedMilestones: SobrietyMilestone[],
   ): MilestoneStatus[] {
     return this.MILESTONES.map(milestone => {
-      const achieved = achievedMilestones.find(m => m.days === milestone.days)
+      const achieved = achievedMilestones.find(m => m.days === milestone.days);
 
       if (achieved) {
         return {
           milestone,
           isAchieved: true,
           achievedAt: achieved.achieved_at,
-        }
+        };
       }
 
       if (daysSober >= milestone.days) {
@@ -251,15 +243,15 @@ class SobrietyService {
           milestone,
           isAchieved: false, // Not yet recorded
           daysUntilAchievement: 0,
-        }
+        };
       }
 
       return {
         milestone,
         isAchieved: false,
         daysUntilAchievement: milestone.days - daysSober,
-      }
-    })
+      };
+    });
   }
 
   /**
@@ -267,14 +259,14 @@ class SobrietyService {
    */
   getNextMilestone(
     daysSober: number,
-    achievedMilestones: SobrietyMilestone[]
+    achievedMilestones: SobrietyMilestone[],
   ): MilestoneStatus | null {
-    const milestoneStatuses = this.getMilestoneStatus(daysSober, achievedMilestones)
-    const unachieved = milestoneStatuses.filter(m => !m.isAchieved)
+    const milestoneStatuses = this.getMilestoneStatus(daysSober, achievedMilestones);
+    const unachieved = milestoneStatuses.filter(m => !m.isAchieved);
 
-    if (unachieved.length === 0) return null
+    if (unachieved.length === 0) return null;
 
-    return unachieved[0] // First unachieved milestone
+    return unachieved[0]; // First unachieved milestone
   }
 
   /**
@@ -282,14 +274,14 @@ class SobrietyService {
    */
   checkNewMilestones(
     daysSober: number,
-    achievedMilestones: SobrietyMilestone[]
+    achievedMilestones: SobrietyMilestone[],
   ): MilestoneDefinition[] {
-    const achievedDays = achievedMilestones.map(m => m.days)
+    const achievedDays = achievedMilestones.map(m => m.days);
 
     return this.MILESTONES.filter(
-      milestone => daysSober >= milestone.days && !achievedDays.includes(milestone.days)
-    )
+      milestone => daysSober >= milestone.days && !achievedDays.includes(milestone.days),
+    );
   }
 }
 
-export default new SobrietyService()
+export default new SobrietyService();

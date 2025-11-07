@@ -11,6 +11,7 @@ This document defines the database schema for all main application screens, incl
 ## Schema Overview
 
 All tables extend the existing `auth.users` table from Supabase Auth (created in feature 001-auth-screens). Each table includes:
+
 - Row Level Security (RLS) enabled
 - Foreign keys to `auth.users`
 - Timestamps with timezone (`timestamptz`)
@@ -688,6 +689,7 @@ ORDER BY last_interaction_at DESC NULLS LAST;
 ### Row Level Security (RLS)
 
 All tables have RLS enabled with policies that:
+
 - Users can only read/update their own data
 - Connected users can read each other's profiles and sobriety records
 - Messages are only visible within active connections

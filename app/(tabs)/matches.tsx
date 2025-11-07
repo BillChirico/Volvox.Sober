@@ -70,7 +70,7 @@ export default function MatchesScreen() {
   }, []);
 
   // Filter matches based on selected filters
-  const filteredMatches = suggestedMatches.filter((match) => {
+  const filteredMatches = suggestedMatches.filter(match => {
     const { candidate } = match;
 
     // Filter by recovery program
@@ -83,8 +83,8 @@ export default function MatchesScreen() {
 
     // Filter by availability
     if (filters.availability.length > 0) {
-      const hasMatchingAvailability = candidate.availability?.some((avail) =>
-        filters.availability.includes(avail)
+      const hasMatchingAvailability = candidate.availability?.some(avail =>
+        filters.availability.includes(avail),
       );
       if (!hasMatchingAvailability) {
         return false;
@@ -116,11 +116,9 @@ export default function MatchesScreen() {
       Alert.alert('Success', 'Connection request sent!', [{ text: 'OK' }]);
     } catch (err) {
       console.error('Error sending connection request:', err);
-      Alert.alert(
-        'Error',
-        'Failed to send connection request. Please try again.',
-        [{ text: 'OK' }]
-      );
+      Alert.alert('Error', 'Failed to send connection request. Please try again.', [
+        { text: 'OK' },
+      ]);
     }
   }, [user?.id, selectedMatch, sendRequest]);
 
@@ -145,18 +143,16 @@ export default function MatchesScreen() {
                 Alert.alert('Success', 'Connection request sent!', [{ text: 'OK' }]);
               } catch (err) {
                 console.error('Error sending connection request:', err);
-                Alert.alert(
-                  'Error',
-                  'Failed to send connection request. Please try again.',
-                  [{ text: 'OK' }]
-                );
+                Alert.alert('Error', 'Failed to send connection request. Please try again.', [
+                  { text: 'OK' },
+                ]);
               }
             },
           },
-        ]
+        ],
       );
     },
-    [user?.id, sendRequest]
+    [user?.id, sendRequest],
   );
 
   // Handle decline from detail modal (placeholder for T089)
@@ -176,12 +172,14 @@ export default function MatchesScreen() {
           style: 'destructive',
           onPress: () => {
             setIsDetailModalVisible(false);
-            Alert.alert('Feature Coming Soon', 'Decline functionality will be implemented in T089.', [
-              { text: 'OK' },
-            ]);
+            Alert.alert(
+              'Feature Coming Soon',
+              'Decline functionality will be implemented in T089.',
+              [{ text: 'OK' }],
+            );
           },
         },
-      ]
+      ],
     );
   }, [selectedMatch]);
 
@@ -245,7 +243,7 @@ export default function MatchesScreen() {
             Alert.alert(
               'Improve Your Profile',
               'Complete your profile to get better matches. Add your recovery program, availability, and location.',
-              [{ text: 'OK' }]
+              [{ text: 'OK' }],
             );
           }}
         />
@@ -273,15 +271,13 @@ export default function MatchesScreen() {
             title="No Matches Found"
             description="Try adjusting your filters to see more matches."
             actionText="Clear Filters"
-            onAction={() =>
-              handleFiltersChange({ recoveryPrograms: [], availability: [] })
-            }
+            onAction={() => handleFiltersChange({ recoveryPrograms: [], availability: [] })}
           />
         </View>
       ) : (
         <FlatList
           data={filteredMatches}
-          keyExtractor={(item) => item.id}
+          keyExtractor={item => item.id}
           renderItem={({ item }) => (
             <MatchCard
               match={item}

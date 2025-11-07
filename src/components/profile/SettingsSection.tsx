@@ -4,46 +4,46 @@
  * Feature: 002-app-screens (T117)
  */
 
-import React from 'react'
-import { View, StyleSheet, TouchableOpacity } from 'react-native'
-import { Text, Divider, Switch, Icon } from 'react-native-paper'
-import { useAppTheme } from '../../theme/ThemeContext'
+import React from 'react';
+import { View, StyleSheet, TouchableOpacity } from 'react-native';
+import { Text, Divider, Switch, Icon } from 'react-native-paper';
+import { useAppTheme } from '../../theme/ThemeContext';
 
 interface SettingsItemBase {
-  key: string
-  label: string
-  description?: string
-  icon?: string
-  disabled?: boolean
+  key: string;
+  label: string;
+  description?: string;
+  icon?: string;
+  disabled?: boolean;
 }
 
 interface SettingsItemWithAction extends SettingsItemBase {
-  type: 'action'
-  onPress: () => void
-  rightLabel?: string
+  type: 'action';
+  onPress: () => void;
+  rightLabel?: string;
 }
 
 interface SettingsItemWithToggle extends SettingsItemBase {
-  type: 'toggle'
-  value: boolean
-  onValueChange: (value: boolean) => void
+  type: 'toggle';
+  value: boolean;
+  onValueChange: (value: boolean) => void;
 }
 
 interface SettingsItemWithNavigation extends SettingsItemBase {
-  type: 'navigation'
-  onPress: () => void
-  showChevron?: boolean
+  type: 'navigation';
+  onPress: () => void;
+  showChevron?: boolean;
 }
 
 export type SettingsItem =
   | SettingsItemWithAction
   | SettingsItemWithToggle
-  | SettingsItemWithNavigation
+  | SettingsItemWithNavigation;
 
 interface SettingsSectionProps {
-  title: string
-  items: SettingsItem[]
-  showDividers?: boolean
+  title: string;
+  items: SettingsItem[];
+  showDividers?: boolean;
 }
 
 export const SettingsSection: React.FC<SettingsSectionProps> = ({
@@ -51,26 +51,18 @@ export const SettingsSection: React.FC<SettingsSectionProps> = ({
   items,
   showDividers = true,
 }) => {
-  const { theme } = useAppTheme()
+  const { theme } = useAppTheme();
 
   const renderItem = (item: SettingsItem, index: number) => {
-    const isLastItem = index === items.length - 1
+    const isLastItem = index === items.length - 1;
 
     return (
       <View key={item.key}>
         <TouchableOpacity
-          style={[
-            styles.itemContainer,
-            item.disabled && styles.itemDisabled,
-          ]}
-          onPress={
-            item.type === 'action' || item.type === 'navigation'
-              ? item.onPress
-              : undefined
-          }
+          style={[styles.itemContainer, item.disabled && styles.itemDisabled]}
+          onPress={item.type === 'action' || item.type === 'navigation' ? item.onPress : undefined}
           disabled={item.disabled || item.type === 'toggle'}
-          activeOpacity={0.7}
-        >
+          activeOpacity={0.7}>
           {/* Left Side: Icon + Label */}
           <View style={styles.leftContainer}>
             {item.icon && (
@@ -86,22 +78,15 @@ export const SettingsSection: React.FC<SettingsSectionProps> = ({
                 style={[
                   styles.label,
                   {
-                    color: item.disabled
-                      ? theme.colors.onSurfaceDisabled
-                      : theme.colors.onSurface,
+                    color: item.disabled ? theme.colors.onSurfaceDisabled : theme.colors.onSurface,
                   },
-                ]}
-              >
+                ]}>
                 {item.label}
               </Text>
               {item.description && (
                 <Text
                   variant="bodySmall"
-                  style={[
-                    styles.description,
-                    { color: theme.colors.onSurfaceVariant },
-                  ]}
-                >
+                  style={[styles.description, { color: theme.colors.onSurfaceVariant }]}>
                   {item.description}
                 </Text>
               )}
@@ -111,10 +96,7 @@ export const SettingsSection: React.FC<SettingsSectionProps> = ({
           {/* Right Side: Action/Toggle/Navigation */}
           <View style={styles.rightContainer}>
             {item.type === 'action' && item.rightLabel && (
-              <Text
-                variant="bodyMedium"
-                style={{ color: theme.colors.onSurfaceVariant }}
-              >
+              <Text variant="bodyMedium" style={{ color: theme.colors.onSurfaceVariant }}>
                 {item.rightLabel}
               </Text>
             )}
@@ -129,11 +111,7 @@ export const SettingsSection: React.FC<SettingsSectionProps> = ({
             )}
 
             {item.type === 'navigation' && item.showChevron !== false && (
-              <Icon
-                source="chevron-right"
-                size={24}
-                color={theme.colors.onSurfaceVariant}
-              />
+              <Icon source="chevron-right" size={24} color={theme.colors.onSurfaceVariant} />
             )}
           </View>
         </TouchableOpacity>
@@ -142,23 +120,22 @@ export const SettingsSection: React.FC<SettingsSectionProps> = ({
           <Divider style={[styles.divider, { marginLeft: item.icon ? 56 : 16 }]} />
         )}
       </View>
-    )
-  }
+    );
+  };
 
   return (
     <View style={[styles.container, { backgroundColor: theme.colors.surface }]}>
       <Text
         variant="titleMedium"
-        style={[styles.sectionTitle, { color: theme.colors.onSurfaceVariant }]}
-      >
+        style={[styles.sectionTitle, { color: theme.colors.onSurfaceVariant }]}>
         {title}
       </Text>
       <View style={styles.itemsContainer}>
         {items.map((item, index) => renderItem(item, index))}
       </View>
     </View>
-  )
-}
+  );
+};
 
 const styles = StyleSheet.create({
   container: {
@@ -216,4 +193,4 @@ const styles = StyleSheet.create({
   divider: {
     marginVertical: 4,
   },
-})
+});

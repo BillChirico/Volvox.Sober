@@ -62,18 +62,12 @@ const TAB_ICONS: Record<
 /**
  * Custom TabBar component with notification badges
  */
-export const TabBar: React.FC<BottomTabBarProps> = ({
-  state,
-  descriptors,
-  navigation,
-}) => {
+export const TabBar: React.FC<BottomTabBarProps> = ({ state, descriptors, navigation }) => {
   const { theme } = useAppTheme();
 
   // Get notification counts from Redux
   const unreadMessagesCount = useAppSelector(selectUnreadMessagesCount);
-  const pendingConnectionsCount = useAppSelector(
-    selectPendingConnectionRequestsCount
-  );
+  const pendingConnectionsCount = useAppSelector(selectPendingConnectionRequestsCount);
 
   return (
     <View
@@ -85,8 +79,7 @@ export const TabBar: React.FC<BottomTabBarProps> = ({
           height: Platform.OS === 'ios' ? 90 : 60,
           paddingBottom: Platform.OS === 'ios' ? 30 : 10,
         },
-      ]}
-    >
+      ]}>
       {state.routes.map((route, index) => {
         const { options: _options } = descriptors[route.key];
         const isFocused = state.index === index;
@@ -134,29 +127,21 @@ export const TabBar: React.FC<BottomTabBarProps> = ({
             onPress={onPress}
             onLongPress={onLongPress}
             style={styles.tab}
-            hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
-          >
+            hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}>
             <View style={styles.iconContainer}>
               <MaterialCommunityIcons
                 name={isFocused ? iconConfig.focused : iconConfig.unfocused}
                 size={26}
-                color={
-                  isFocused
-                    ? theme.colors.primary
-                    : theme.colors.onSurfaceVariant
-                }
+                color={isFocused ? theme.colors.primary : theme.colors.onSurfaceVariant}
               />
               {badgeCount > 0 && <NotificationBadge count={badgeCount} />}
             </View>
             <Text
               variant="labelSmall"
               style={{
-                color: isFocused
-                  ? theme.colors.primary
-                  : theme.colors.onSurfaceVariant,
+                color: isFocused ? theme.colors.primary : theme.colors.onSurfaceVariant,
                 marginTop: 4,
-              }}
-            >
+              }}>
               {iconConfig.label}
             </Text>
           </TouchableOpacity>

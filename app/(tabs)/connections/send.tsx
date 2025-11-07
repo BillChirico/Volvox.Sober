@@ -13,7 +13,11 @@ import { useSendRequestMutation } from '../../../src/store/api/connectionsApi';
 const SendRequestScreen: React.FC = () => {
   const theme = useTheme();
   const router = useRouter();
-  const params = useLocalSearchParams<{ sponsorId: string; sponsorName: string; sponsorPhotoUrl?: string }>();
+  const params = useLocalSearchParams<{
+    sponsorId: string;
+    sponsorName: string;
+    sponsorPhotoUrl?: string;
+  }>();
   const { sponsorId, sponsorName, sponsorPhotoUrl } = params;
 
   const [message, setMessage] = useState('');

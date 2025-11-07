@@ -4,15 +4,15 @@
  * Feature: 002-app-screens
  */
 
-import { useCallback } from 'react'
-import { useAppDispatch, useAppSelector } from './useAppDispatch'
+import { useCallback } from 'react';
+import { useAppDispatch, useAppSelector } from './useAppDispatch';
 import {
   fetchOnboardingProgress,
   initializeOnboarding,
   completeOnboardingStep,
   completeOnboarding,
   navigateToStep,
-} from '../store/onboarding/onboardingThunks'
+} from '../store/onboarding/onboardingThunks';
 import {
   selectOnboardingProgress,
   selectCurrentStep,
@@ -23,66 +23,66 @@ import {
   selectCanProceedToNext,
   selectIsOnboardingOperationInProgress,
   selectOnboardingProgressSummary,
-} from '../store/onboarding/onboardingSelectors'
-import { clearError } from '../store/onboarding/onboardingSlice'
-import type { OnboardingStep } from '../types'
+} from '../store/onboarding/onboardingSelectors';
+import { clearError } from '../store/onboarding/onboardingSlice';
+import type { OnboardingStep } from '../types';
 
 /**
  * Hook for managing onboarding flow
  */
 export const useOnboarding = () => {
-  const dispatch = useAppDispatch()
+  const dispatch = useAppDispatch();
 
   // Selectors
-  const progress = useAppSelector(selectOnboardingProgress)
-  const currentStep = useAppSelector(selectCurrentStep)
-  const isLoading = useAppSelector(selectOnboardingLoading)
-  const isSaving = useAppSelector(selectOnboardingSaving)
-  const error = useAppSelector(selectOnboardingError)
-  const completionPercentage = useAppSelector(selectOnboardingCompletionPercentage)
-  const canProceedToNext = useAppSelector(selectCanProceedToNext)
-  const isOperationInProgress = useAppSelector(selectIsOnboardingOperationInProgress)
-  const progressSummary = useAppSelector(selectOnboardingProgressSummary)
+  const progress = useAppSelector(selectOnboardingProgress);
+  const currentStep = useAppSelector(selectCurrentStep);
+  const isLoading = useAppSelector(selectOnboardingLoading);
+  const isSaving = useAppSelector(selectOnboardingSaving);
+  const error = useAppSelector(selectOnboardingError);
+  const completionPercentage = useAppSelector(selectOnboardingCompletionPercentage);
+  const canProceedToNext = useAppSelector(selectCanProceedToNext);
+  const isOperationInProgress = useAppSelector(selectIsOnboardingOperationInProgress);
+  const progressSummary = useAppSelector(selectOnboardingProgressSummary);
 
   // Actions
   const fetchProgress = useCallback(
     (userId: string) => {
-      return dispatch(fetchOnboardingProgress(userId))
+      return dispatch(fetchOnboardingProgress(userId));
     },
-    [dispatch]
-  )
+    [dispatch],
+  );
 
   const initialize = useCallback(
     (userId: string) => {
-      return dispatch(initializeOnboarding(userId))
+      return dispatch(initializeOnboarding(userId));
     },
-    [dispatch]
-  )
+    [dispatch],
+  );
 
   const completeStep = useCallback(
     (userId: string, step: OnboardingStep) => {
-      return dispatch(completeOnboardingStep({ userId, step }))
+      return dispatch(completeOnboardingStep({ userId, step }));
     },
-    [dispatch]
-  )
+    [dispatch],
+  );
 
   const complete = useCallback(
     (userId: string) => {
-      return dispatch(completeOnboarding(userId))
+      return dispatch(completeOnboarding(userId));
     },
-    [dispatch]
-  )
+    [dispatch],
+  );
 
   const goToStep = useCallback(
     (step: OnboardingStep) => {
-      return dispatch(navigateToStep(step))
+      return dispatch(navigateToStep(step));
     },
-    [dispatch]
-  )
+    [dispatch],
+  );
 
   const dismissError = useCallback(() => {
-    dispatch(clearError())
-  }, [dispatch])
+    dispatch(clearError());
+  }, [dispatch]);
 
   return {
     // State
@@ -103,5 +103,5 @@ export const useOnboarding = () => {
     complete,
     goToStep,
     dismissError,
-  }
-}
+  };
+};

@@ -17,16 +17,16 @@ export const RECOVERY_PROGRAMS = [
   'Dharma Recovery',
   'Other',
   'None',
-] as const
+] as const;
 
-export type RecoveryProgram = (typeof RECOVERY_PROGRAMS)[number]
+export type RecoveryProgram = (typeof RECOVERY_PROGRAMS)[number];
 
 /**
  * Get display name for recovery program
  */
 export const getRecoveryProgramDisplayName = (program: string): string => {
-  return program
-}
+  return program;
+};
 
 /**
  * Check if program is 12-step based
@@ -36,9 +36,9 @@ export const isTwelveStepProgram = (program: string): boolean => {
     'Alcoholics Anonymous (AA)',
     'Narcotics Anonymous (NA)',
     'Celebrate Recovery',
-  ]
-  return twelveStepPrograms.includes(program)
-}
+  ];
+  return twelveStepPrograms.includes(program);
+};
 
 /**
  * Check if program is secular/non-religious
@@ -49,39 +49,35 @@ export const isSecularProgram = (program: string): boolean => {
     'LifeRing Secular Recovery',
     'Secular Organizations for Sobriety (SOS)',
     'Moderation Management',
-  ]
-  return secularPrograms.includes(program)
-}
+  ];
+  return secularPrograms.includes(program);
+};
 
 /**
  * Check if program is faith-based
  */
 export const isFaithBasedProgram = (program: string): boolean => {
-  const faithBasedPrograms = ['Celebrate Recovery', 'Alcoholics Anonymous (AA)']
-  return faithBasedPrograms.includes(program)
-}
+  const faithBasedPrograms = ['Celebrate Recovery', 'Alcoholics Anonymous (AA)'];
+  return faithBasedPrograms.includes(program);
+};
 
 /**
  * Get program category
  */
 export const getProgramCategory = (
-  program: string
+  program: string,
 ): '12-step' | 'secular' | 'faith-based' | 'other' => {
-  if (isTwelveStepProgram(program)) return '12-step'
-  if (isSecularProgram(program)) return 'secular'
-  if (isFaithBasedProgram(program)) return 'faith-based'
-  return 'other'
-}
+  if (isTwelveStepProgram(program)) return '12-step';
+  if (isSecularProgram(program)) return 'secular';
+  if (isFaithBasedProgram(program)) return 'faith-based';
+  return 'other';
+};
 
 /**
  * Recovery program groups for filtering/display
  */
 export const RECOVERY_PROGRAM_GROUPS = {
-  '12-step': [
-    'Alcoholics Anonymous (AA)',
-    'Narcotics Anonymous (NA)',
-    'Celebrate Recovery',
-  ],
+  '12-step': ['Alcoholics Anonymous (AA)', 'Narcotics Anonymous (NA)', 'Celebrate Recovery'],
   secular: [
     'SMART Recovery',
     'LifeRing Secular Recovery',
@@ -91,4 +87,4 @@ export const RECOVERY_PROGRAM_GROUPS = {
   'faith-based': ['Celebrate Recovery'],
   spiritual: ['Refuge Recovery', 'Dharma Recovery'],
   other: ['Women for Sobriety', 'Other', 'None'],
-} as const
+} as const;

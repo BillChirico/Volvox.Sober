@@ -3,16 +3,16 @@
  * Provides loading placeholders with shimmer animation
  */
 
-import React, { useEffect, useRef } from 'react'
-import { View, StyleSheet, Animated, ViewStyle } from 'react-native'
-import { useTheme } from 'react-native-paper'
+import React, { useEffect, useRef } from 'react';
+import { View, StyleSheet, Animated, ViewStyle } from 'react-native';
+import { useTheme } from 'react-native-paper';
 
 export interface SkeletonProps {
-  width?: number | string
-  height?: number | string
-  borderRadius?: number
-  style?: ViewStyle
-  animated?: boolean
+  width?: number | string;
+  height?: number | string;
+  borderRadius?: number;
+  style?: ViewStyle;
+  animated?: boolean;
 }
 
 /**
@@ -25,11 +25,11 @@ export const Skeleton: React.FC<SkeletonProps> = ({
   style,
   animated = true,
 }) => {
-  const theme = useTheme()
-  const shimmerValue = useRef(new Animated.Value(0)).current
+  const theme = useTheme();
+  const shimmerValue = useRef(new Animated.Value(0)).current;
 
   useEffect(() => {
-    if (!animated) return
+    if (!animated) return;
 
     const shimmerAnimation = Animated.loop(
       Animated.sequence([
@@ -43,18 +43,18 @@ export const Skeleton: React.FC<SkeletonProps> = ({
           duration: 1000,
           useNativeDriver: true,
         }),
-      ])
-    )
+      ]),
+    );
 
-    shimmerAnimation.start()
+    shimmerAnimation.start();
 
-    return () => shimmerAnimation.stop()
-  }, [animated, shimmerValue])
+    return () => shimmerAnimation.stop();
+  }, [animated, shimmerValue]);
 
   const opacity = shimmerValue.interpolate({
     inputRange: [0, 1],
     outputRange: [0.3, 0.7],
-  })
+  });
 
   return (
     <Animated.View
@@ -70,8 +70,8 @@ export const Skeleton: React.FC<SkeletonProps> = ({
         style,
       ]}
     />
-  )
-}
+  );
+};
 
 /**
  * Circle Skeleton (for avatars)
@@ -81,16 +81,8 @@ export const SkeletonCircle: React.FC<Omit<SkeletonProps, 'borderRadius'> & { si
   style,
   ...props
 }) => {
-  return (
-    <Skeleton
-      width={size}
-      height={size}
-      borderRadius={size / 2}
-      style={style}
-      {...props}
-    />
-  )
-}
+  return <Skeleton width={size} height={size} borderRadius={size / 2} style={style} {...props} />;
+};
 
 /**
  * Match Card Skeleton
@@ -116,8 +108,8 @@ export const SkeletonMatchCard: React.FC = () => {
         <Skeleton width="30%" height={14} />
       </View>
     </View>
-  )
-}
+  );
+};
 
 /**
  * Connection Card Skeleton
@@ -132,8 +124,8 @@ export const SkeletonConnectionCard: React.FC = () => {
       </View>
       <Skeleton width={32} height={32} borderRadius={16} />
     </View>
-  )
-}
+  );
+};
 
 /**
  * Message Thread Skeleton
@@ -150,20 +142,24 @@ export const SkeletonMessageThread: React.FC = () => {
         <Skeleton width="80%" height={14} style={{ marginTop: 6 }} />
       </View>
     </View>
-  )
-}
+  );
+};
 
 /**
  * Message Bubble Skeleton
  */
 export const SkeletonMessageBubble: React.FC<{ sent?: boolean }> = ({ sent = false }) => {
   return (
-    <View style={[styles.messageBubble, sent ? styles.messageBubbleSent : styles.messageBubbleReceived]}>
+    <View
+      style={[
+        styles.messageBubble,
+        sent ? styles.messageBubbleSent : styles.messageBubbleReceived,
+      ]}>
       <Skeleton width={sent ? '70%' : '60%'} height={16} style={{ marginBottom: 4 }} />
       <Skeleton width={sent ? '50%' : '80%'} height={16} />
     </View>
-  )
-}
+  );
+};
 
 /**
  * Profile Header Skeleton
@@ -190,15 +186,15 @@ export const SkeletonProfileHeader: React.FC = () => {
         </View>
       </View>
     </View>
-  )
-}
+  );
+};
 
 /**
  * List Skeleton (renders multiple skeleton items)
  */
 export const SkeletonList: React.FC<{
-  count?: number
-  ItemSkeleton: React.ComponentType
+  count?: number;
+  ItemSkeleton: React.ComponentType;
 }> = ({ count = 5, ItemSkeleton }) => {
   return (
     <View>
@@ -206,16 +202,16 @@ export const SkeletonList: React.FC<{
         <ItemSkeleton key={index} />
       ))}
     </View>
-  )
-}
+  );
+};
 
 /**
  * Screen Skeleton (full page loading)
  */
 export const SkeletonScreen: React.FC<{
-  hasHeader?: boolean
-  hasFooter?: boolean
-  contentType?: 'list' | 'profile' | 'detail'
+  hasHeader?: boolean;
+  hasFooter?: boolean;
+  contentType?: 'list' | 'profile' | 'detail';
 }> = ({ hasHeader = true, hasFooter = false, contentType = 'list' }) => {
   return (
     <View style={styles.screenSkeleton}>
@@ -247,8 +243,8 @@ export const SkeletonScreen: React.FC<{
         </View>
       )}
     </View>
-  )
-}
+  );
+};
 
 const styles = StyleSheet.create({
   skeleton: {
@@ -339,4 +335,4 @@ const styles = StyleSheet.create({
     justifyContent: 'space-around',
     padding: 16,
   },
-})
+});

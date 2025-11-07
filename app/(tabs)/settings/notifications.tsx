@@ -4,25 +4,25 @@
  * Feature: 002-app-screens (T122)
  */
 
-import React, { useEffect, useState } from 'react'
-import { View, StyleSheet, ScrollView } from 'react-native'
-import { Text, ActivityIndicator } from 'react-native-paper'
-import { useAppTheme } from '../../../src/theme/ThemeContext'
-import { NotificationSettings } from '../../../src/components/profile/NotificationSettings'
-import { useAuth } from '../../../src/hooks/useAuth'
+import React, { useEffect, useState } from 'react';
+import { View, StyleSheet, ScrollView } from 'react-native';
+import { Text, ActivityIndicator } from 'react-native-paper';
+import { useAppTheme } from '../../../src/theme/ThemeContext';
+import { NotificationSettings } from '../../../src/components/profile/NotificationSettings';
+import { useAuth } from '../../../src/hooks/useAuth';
 
 export default function NotificationSettingsScreen() {
-  const { theme } = useAppTheme()
-  const { user } = useAuth()
-  const [isLoading, setIsLoading] = useState(true)
+  const { theme } = useAppTheme();
+  const { user } = useAuth();
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     // Simulate initial load
     const timer = setTimeout(() => {
-      setIsLoading(false)
-    }, 300)
-    return () => clearTimeout(timer)
-  }, [])
+      setIsLoading(false);
+    }, 300);
+    return () => clearTimeout(timer);
+  }, []);
 
   if (isLoading || !user) {
     return (
@@ -32,20 +32,21 @@ export default function NotificationSettingsScreen() {
           Loading notification settings...
         </Text>
       </View>
-    )
+    );
   }
 
   return (
     <ScrollView
       style={[styles.container, { backgroundColor: theme.colors.background }]}
-      contentContainerStyle={styles.contentContainer}
-    >
+      contentContainerStyle={styles.contentContainer}>
       {/* Header */}
       <View style={[styles.header, { backgroundColor: theme.colors.surface }]}>
         <Text variant="headlineSmall" style={[styles.title, { color: theme.colors.onSurface }]}>
           Notification Preferences
         </Text>
-        <Text variant="bodyMedium" style={[styles.subtitle, { color: theme.colors.onSurfaceVariant }]}>
+        <Text
+          variant="bodyMedium"
+          style={[styles.subtitle, { color: theme.colors.onSurfaceVariant }]}>
           Choose which notifications you want to receive
         </Text>
       </View>
@@ -53,12 +54,12 @@ export default function NotificationSettingsScreen() {
       {/* Notification Settings Component */}
       <NotificationSettings
         userId={user.id}
-        onPreferencesChange={(preferences) => {
-          console.log('Notification preferences updated:', preferences)
+        onPreferencesChange={preferences => {
+          console.log('Notification preferences updated:', preferences);
         }}
       />
     </ScrollView>
-  )
+  );
 }
 
 const styles = StyleSheet.create({
@@ -90,4 +91,4 @@ const styles = StyleSheet.create({
   subtitle: {
     lineHeight: 20,
   },
-})
+});

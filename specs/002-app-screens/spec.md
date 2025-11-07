@@ -5,7 +5,7 @@
 **Status**: Draft
 **Input**: User description: "Create all of the apps screens"
 
-## User Scenarios & Testing *(mandatory)*
+## User Scenarios & Testing _(mandatory)_
 
 ### User Story 1 - Onboarding New Users (Priority: P1)
 
@@ -153,7 +153,7 @@ Users need a consistent, accessible navigation system to move between core app f
 - What happens when a user receives a message from a blocked connection? (Message is silently dropped, sender doesn't know they're blocked)
 - What happens when a user's profile is incomplete (<50% filled)? (Show warning banner on relevant screens: "Complete your profile for better matches")
 
-## Requirements *(mandatory)*
+## Requirements _(mandatory)_
 
 ### Functional Requirements
 
@@ -310,7 +310,7 @@ Users need a consistent, accessible navigation system to move between core app f
   - Push notification enabled (boolean)
   - Email notification enabled (boolean)
 
-## Success Criteria *(mandatory)*
+## Success Criteria _(mandatory)_
 
 ### Measurable Outcomes
 

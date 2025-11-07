@@ -120,21 +120,16 @@ export const MessageInput: React.FC<MessageInputProps> = ({
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-      keyboardVerticalOffset={Platform.OS === 'ios' ? 90 : 0}
-    >
+      keyboardVerticalOffset={Platform.OS === 'ios' ? 90 : 0}>
       <View
         style={[
           styles.container,
           { backgroundColor: theme.colors.background, borderTopColor: theme.colors.outline },
-        ]}
-      >
+        ]}>
         {/* Character count (shown above input when typing) */}
         {text.length > 0 && (
           <View style={styles.charCountContainer}>
-            <Text
-              variant="labelSmall"
-              style={[styles.charCount, { color: getCharCountColor() }]}
-            >
+            <Text variant="labelSmall" style={[styles.charCount, { color: getCharCountColor() }]}>
               {formatCharCount()}
             </Text>
           </View>

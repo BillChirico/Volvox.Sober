@@ -745,6 +745,7 @@ This is not optional - MCP servers are project infrastructure and must be used w
 ### Component Patterns (Phase 10)
 
 **Profile Components** (src/components/profile/):
+
 - `ProfileHeader.tsx`: Reusable profile header with avatar, name, role, and stats
   - Pattern: Composition with Material Design 3 Card and Surface
   - Features: Avatar display, user info, sobriety stats, action buttons
@@ -756,6 +757,7 @@ This is not optional - MCP servers are project infrastructure and must be used w
   - Features: Async state updates, loading indicators, accessibility labels
 
 **Error Handling Components** (src/components/common/):
+
 - `ErrorBoundary.tsx`: React error boundary with retry functionality
 - `ErrorMessage.tsx`: Styled error display with retry actions
 - `NetworkIndicator.tsx`: Connection status indicator with auto-hide
@@ -763,31 +765,37 @@ This is not optional - MCP servers are project infrastructure and must be used w
 ### State Management Patterns
 
 **Redux Toolkit with RTK Query**:
+
 - Pattern: Feature-based slices with colocated selectors and thunks
 - Example: `src/store/messages/` contains messagesSlice, messagesSelectors, messagesThunks
 - Thunk pattern: `createAsyncThunk` with typed responses and error handling
 - Selector pattern: Memoized selectors with `createSelector` for derived data
 
 **Real-time Subscriptions** (src/hooks/useMessages.ts):
+
 ```typescript
 // Pattern: Custom hook with Supabase Realtime
 const subscription = supabase
   .channel('messages')
-  .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'messages' },
-    (payload) => dispatch(addMessage(payload.new))
+  .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'messages' }, payload =>
+    dispatch(addMessage(payload.new)),
   )
-  .subscribe()
+  .subscribe();
 
 // Cleanup: useEffect return function
-return () => { subscription.unsubscribe() }
+return () => {
+  subscription.unsubscribe();
+};
 ```
 
 **Optimistic Updates**:
+
 - Pattern: Dispatch optimistic update → API call → Confirm/rollback
 - Example: messagesSlice uses `addMessage` before API confirmation
 - Error handling: Rollback on failure with user notification
 
 **Redux Persist**:
+
 - Pattern: Selective persistence with AsyncStorage
 - Configuration: Root store with persistConfig for specific reducers
 - Usage: Messages, profile, preferences persisted; auth session expires
@@ -795,6 +803,7 @@ return () => { subscription.unsubscribe() }
 ### Theme System (src/theme/)
 
 **Material Design 3 with Dark Mode**:
+
 - `index.ts`: Theme tokens with WCAG AA compliant colors
   - Light theme: `#007AFF` primary (iOS Blue, 4.5:1 contrast)
   - Dark theme: `#66B3FF` primary (8.5:1 contrast on dark surface)
@@ -808,6 +817,7 @@ return () => { subscription.unsubscribe() }
   - Features: Loading state during theme change, accessibility labels
 
 **Theme Usage Pattern**:
+
 ```typescript
 import { useAppTheme } from '@/theme/ThemeContext'
 
@@ -822,26 +832,29 @@ const { theme, isDark, themeMode, setThemeMode } = useAppTheme()
 ### Navigation Patterns (Expo Router)
 
 **File-based Routing**:
+
 - Directory structure defines routes automatically
 - Groups: `(tabs)`, `(auth)`, `(onboarding)` for logical organization
 - Dynamic routes: `[id].tsx` for parameterized paths
 - Layout files: `_layout.tsx` for shared UI and navigation config
 
 **Navigation Hooks**:
+
 ```typescript
-import { useRouter, useLocalSearchParams } from 'expo-router'
+import { useRouter, useLocalSearchParams } from 'expo-router';
 
 // Navigate programmatically
-const router = useRouter()
-router.push('/profile/edit')
-router.replace('/auth/login')
-router.back()
+const router = useRouter();
+router.push('/profile/edit');
+router.replace('/auth/login');
+router.back();
 
 // Access route parameters
-const { id } = useLocalSearchParams<{ id: string }>()
+const { id } = useLocalSearchParams<{ id: string }>();
 ```
 
 **Deep Linking**:
+
 - Pattern: URL scheme configured in app.json
 - Format: `volvox://app/(tabs)/profile/edit`
 - Automatic handling by Expo Router
@@ -849,17 +862,20 @@ const { id } = useLocalSearchParams<{ id: string }>()
 ### Accessibility Patterns
 
 **WCAG 2.1 AA Compliance**:
+
 - Minimum touch targets: 44x44 pixels (verified in accessibility.spec.ts)
 - Color contrast: 4.5:1 for normal text, 3:1 for large text
 - Screen reader support: aria-label, accessibilityLabel, accessibilityRole
 - Keyboard navigation: Focus indicators, tab order, keyboard shortcuts
 
 **Screen Reader Testing**:
-- iOS VoiceOver: Manual testing checklist (__tests__/voiceover-testing-checklist.md)
-- Android TalkBack: Manual testing checklist (__tests__/talkback-testing-checklist.md)
+
+- iOS VoiceOver: Manual testing checklist (**tests**/voiceover-testing-checklist.md)
+- Android TalkBack: Manual testing checklist (**tests**/talkback-testing-checklist.md)
 - Critical flows: Auth, onboarding, matches, connections, messages, sobriety, profile
 
 **Accessibility Props Pattern**:
+
 ```typescript
 <TouchableOpacity
   accessibilityLabel="Send message"
@@ -872,7 +888,8 @@ const { id } = useLocalSearchParams<{ id: string }>()
 
 ### Testing Patterns
 
-**E2E Testing with Playwright** (__tests__/*.spec.ts):
+**E2E Testing with Playwright** (**tests**/\*.spec.ts):
+
 - 9 comprehensive test suites covering all user flows
 - Patterns: Login helper, navigation helpers, element verification
 - Cross-browser: Chromium (default), Firefox, WebKit
@@ -880,6 +897,7 @@ const { id } = useLocalSearchParams<{ id: string }>()
 - Dark mode: Comprehensive theming tests in dark-mode.spec.ts
 
 **Test Organization**:
+
 ```
 __tests__/
 ├── *.spec.ts           # Playwright E2E tests (excluded from Jest)
@@ -889,37 +907,42 @@ __tests__/
 ```
 
 **E2E Test Pattern**:
+
 ```typescript
 test.describe('Feature Flow', () => {
   test.beforeEach(async ({ page }) => {
-    await login(page) // Helper function
-  })
+    await login(page); // Helper function
+  });
 
   test('User can complete action', async ({ page }) => {
-    await page.click('[data-testid="action-button"]')
-    await expect(page.locator('[data-testid="success"]')).toBeVisible()
-  })
-})
+    await page.click('[data-testid="action-button"]');
+    await expect(page.locator('[data-testid="success"]')).toBeVisible();
+  });
+});
 ```
 
 ### Performance Patterns
 
 **Image Lazy Loading**:
+
 - Pattern: React Native Paper Avatar with loading prop
 - Optimization: Only load images when components are visible
 - Fallback: Placeholder initials for missing avatars
 
 **List Virtualization**:
+
 - Pattern: FlatList with optimized props
 - Props: `removeClippedSubviews`, `maxToRenderPerBatch`, `windowSize`
 - Use case: Messages list, connections list, matches list
 
 **Redux Persist Configuration**:
+
 - Pattern: Selective persistence to reduce AsyncStorage load
 - Persist: User profile, preferences, non-sensitive cached data
 - Don't persist: Auth tokens (use Supabase session), temporary UI state
 
 **Skeleton Screens**:
+
 - Pattern: Loading placeholders that match final content structure
 - Implementation: React Native Paper Skeleton with animated wave
 - Use cases: Profile loading, list loading, card loading
@@ -927,6 +950,7 @@ test.describe('Feature Flow', () => {
 ### Known Issues
 
 **Pre-existing Test Failures** (Documented in claudedocs/pre-existing-test-issues.md):
+
 - 7 failing unit test suites (pre-existing, not related to Phase 10 work)
 - 456 TypeScript errors in old test files
 - 78 lint warnings

@@ -59,8 +59,7 @@ export default function RoleSelectionScreen() {
         style={styles.button}
         contentStyle={styles.buttonContent}
         accessibilityLabel="Continue to profile setup"
-        accessibilityHint="Proceed with selected role"
-      >
+        accessibilityHint="Proceed with selected role">
         Continue
       </Button>
     </View>

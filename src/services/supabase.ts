@@ -10,9 +10,13 @@ import Constants from 'expo-constants';
 
 // Access environment variables from Expo config (same pattern as authService.ts)
 const SUPABASE_URL =
-  Constants.expoConfig?.extra?.EXPO_PUBLIC_SUPABASE_URL || process.env.EXPO_PUBLIC_SUPABASE_URL || '';
+  Constants.expoConfig?.extra?.EXPO_PUBLIC_SUPABASE_URL ||
+  process.env.EXPO_PUBLIC_SUPABASE_URL ||
+  '';
 const SUPABASE_ANON_KEY =
-  Constants.expoConfig?.extra?.EXPO_PUBLIC_SUPABASE_ANON_KEY || process.env.EXPO_PUBLIC_SUPABASE_ANON_KEY || '';
+  Constants.expoConfig?.extra?.EXPO_PUBLIC_SUPABASE_ANON_KEY ||
+  process.env.EXPO_PUBLIC_SUPABASE_ANON_KEY ||
+  '';
 
 // Debug logging to verify env vars are loaded
 console.log('=== Supabase Client Initialization ===');

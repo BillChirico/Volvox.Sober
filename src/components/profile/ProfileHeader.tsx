@@ -4,17 +4,17 @@
  * Feature: 002-app-screens (T116)
  */
 
-import React from 'react'
-import { View, StyleSheet } from 'react-native'
-import { Avatar, Text, Chip, ProgressBar } from 'react-native-paper'
-import { useAppTheme } from '../../theme/ThemeContext'
-import type { Profile } from '../../types/profile'
+import React from 'react';
+import { View, StyleSheet } from 'react-native';
+import { Avatar, Text, Chip, ProgressBar } from 'react-native-paper';
+import { useAppTheme } from '../../theme/ThemeContext';
+import type { Profile } from '../../types/profile';
 
 interface ProfileHeaderProps {
-  profile: Profile
-  completionPercentage?: number
-  showCompletionBar?: boolean
-  onPhotoPress?: () => void
+  profile: Profile;
+  completionPercentage?: number;
+  showCompletionBar?: boolean;
+  onPhotoPress?: () => void;
 }
 
 export const ProfileHeader: React.FC<ProfileHeaderProps> = ({
@@ -23,33 +23,33 @@ export const ProfileHeader: React.FC<ProfileHeaderProps> = ({
   showCompletionBar = false,
   onPhotoPress,
 }) => {
-  const { theme } = useAppTheme()
+  const { theme } = useAppTheme();
 
   const getRoleBadgeColor = (role: string) => {
     switch (role) {
       case 'sponsor':
-        return theme.colors.primary
+        return theme.colors.primary;
       case 'sponsee':
-        return theme.colors.secondary
+        return theme.colors.secondary;
       case 'both':
-        return theme.colors.tertiary
+        return theme.colors.tertiary;
       default:
-        return theme.colors.surfaceVariant
+        return theme.colors.surfaceVariant;
     }
-  }
+  };
 
   const getRoleLabel = (role: string) => {
     switch (role) {
       case 'sponsor':
-        return 'Sponsor'
+        return 'Sponsor';
       case 'sponsee':
-        return 'Sponsee'
+        return 'Sponsee';
       case 'both':
-        return 'Sponsor & Sponsee'
+        return 'Sponsor & Sponsee';
       default:
-        return 'User'
+        return 'User';
     }
-  }
+  };
 
   return (
     <View style={[styles.container, { backgroundColor: theme.colors.surface }]}>
@@ -87,12 +87,8 @@ export const ProfileHeader: React.FC<ProfileHeaderProps> = ({
 
         <Chip
           mode="flat"
-          style={[
-            styles.roleBadge,
-            { backgroundColor: getRoleBadgeColor(profile.role) + '20' },
-          ]}
-          textStyle={{ color: getRoleBadgeColor(profile.role) }}
-        >
+          style={[styles.roleBadge, { backgroundColor: getRoleBadgeColor(profile.role) + '20' }]}
+          textStyle={{ color: getRoleBadgeColor(profile.role) }}>
           {getRoleLabel(profile.role)}
         </Chip>
 
@@ -101,8 +97,7 @@ export const ProfileHeader: React.FC<ProfileHeaderProps> = ({
           <Text
             variant="bodyMedium"
             style={[styles.bio, { color: theme.colors.onSurfaceVariant }]}
-            numberOfLines={3}
-          >
+            numberOfLines={3}>
             {profile.bio}
           </Text>
         )}
@@ -125,8 +120,7 @@ export const ProfileHeader: React.FC<ProfileHeaderProps> = ({
               </Text>
               <Text
                 variant="labelSmall"
-                style={{ color: theme.colors.primary, fontWeight: 'bold' }}
-              >
+                style={{ color: theme.colors.primary, fontWeight: 'bold' }}>
                 {completionPercentage}%
               </Text>
             </View>
@@ -135,15 +129,17 @@ export const ProfileHeader: React.FC<ProfileHeaderProps> = ({
               color={theme.colors.primary}
               style={styles.progressBar}
             />
-            <Text variant="bodySmall" style={[styles.completionHint, { color: theme.colors.onSurfaceVariant }]}>
+            <Text
+              variant="bodySmall"
+              style={[styles.completionHint, { color: theme.colors.onSurfaceVariant }]}>
               Complete your profile to improve match quality
             </Text>
           </View>
         )}
       </View>
     </View>
-  )
-}
+  );
+};
 
 const styles = StyleSheet.create({
   container: {
@@ -217,4 +213,4 @@ const styles = StyleSheet.create({
   completionHint: {
     textAlign: 'center',
   },
-})
+});

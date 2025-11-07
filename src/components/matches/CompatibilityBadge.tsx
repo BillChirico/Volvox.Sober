@@ -76,8 +76,7 @@ export const CompatibilityBadge: React.FC<CompatibilityBadgeProps> = ({
           },
         ]}
         accessibilityLabel={`Compatibility score: ${score} out of 100, ${label} match`}
-        accessibilityRole="text"
-      >
+        accessibilityRole="text">
         <Text
           style={[
             styles.scoreText,
@@ -85,8 +84,7 @@ export const CompatibilityBadge: React.FC<CompatibilityBadgeProps> = ({
               fontSize,
               color: '#FFFFFF',
             },
-          ]}
-        >
+          ]}>
           {score}
         </Text>
         <Text
@@ -96,8 +94,7 @@ export const CompatibilityBadge: React.FC<CompatibilityBadgeProps> = ({
               fontSize: labelSize,
               color: '#FFFFFF',
             },
-          ]}
-        >
+          ]}>
           / 100
         </Text>
       </View>
@@ -109,8 +106,7 @@ export const CompatibilityBadge: React.FC<CompatibilityBadgeProps> = ({
             color: theme.colors.onSurface,
             fontSize: labelSize,
           },
-        ]}
-      >
+        ]}>
         {label} Match
       </Text>
     </View>

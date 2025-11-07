@@ -9,7 +9,7 @@ export default function TabsLayout() {
 
   return (
     <Tabs
-      tabBar={(props) => <TabBar {...props} />}
+      tabBar={props => <TabBar {...props} />}
       screenOptions={{
         tabBarActiveTintColor: theme.colors.primary,
         tabBarInactiveTintColor: theme.colors.onSurfaceVariant,

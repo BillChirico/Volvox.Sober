@@ -56,39 +56,28 @@ export default function EmailVerificationScreen() {
             />
           </View>
 
-          <Text
-            variant="headlineMedium"
-            style={[styles.title, { color: theme.colors.onSurface }]}
-          >
+          <Text variant="headlineMedium" style={[styles.title, { color: theme.colors.onSurface }]}>
             Verify Your Email
           </Text>
 
           <Text
             variant="bodyLarge"
-            style={[styles.message, { color: theme.colors.onSurfaceVariant }]}
-          >
+            style={[styles.message, { color: theme.colors.onSurfaceVariant }]}>
             We've sent a verification email to:
           </Text>
 
-          <Text
-            variant="bodyLarge"
-            style={[styles.email, { color: theme.colors.onSurface }]}
-          >
+          <Text variant="bodyLarge" style={[styles.email, { color: theme.colors.onSurface }]}>
             {user?.email}
           </Text>
 
           <Text
             variant="bodyMedium"
-            style={[styles.instructions, { color: theme.colors.onSurfaceVariant }]}
-          >
+            style={[styles.instructions, { color: theme.colors.onSurfaceVariant }]}>
             Please check your inbox and click the verification link to continue.
           </Text>
 
           {emailSent && (
-            <Text
-              variant="bodyMedium"
-              style={[styles.success, { color: theme.colors.primary }]}
-            >
+            <Text variant="bodyMedium" style={[styles.success, { color: theme.colors.primary }]}>
               ✓ Verification email sent!
             </Text>
           )}
@@ -100,8 +89,7 @@ export default function EmailVerificationScreen() {
             disabled={isSending || emailSent}
             style={styles.resendButton}
             contentStyle={styles.buttonContent}
-            accessibilityLabel="Resend verification email"
-          >
+            accessibilityLabel="Resend verification email">
             Resend Email
           </Button>
 
@@ -111,15 +99,11 @@ export default function EmailVerificationScreen() {
             style={styles.continueButton}
             contentStyle={styles.buttonContent}
             accessibilityLabel="Continue to profile setup"
-            accessibilityHint="Skip email verification for now"
-          >
+            accessibilityHint="Skip email verification for now">
             Continue Anyway
           </Button>
 
-          <Text
-            variant="bodySmall"
-            style={[styles.note, { color: theme.colors.onSurfaceVariant }]}
-          >
+          <Text variant="bodySmall" style={[styles.note, { color: theme.colors.onSurfaceVariant }]}>
             You can verify your email later in settings
           </Text>
         </Card.Content>

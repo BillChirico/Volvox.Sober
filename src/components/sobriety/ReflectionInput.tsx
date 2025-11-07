@@ -56,15 +56,8 @@ export const ReflectionInput: React.FC<ReflectionInputProps> = ({
     <Card style={styles.card} elevation={2}>
       <Card.Content>
         <View style={styles.header}>
-          <MaterialCommunityIcons
-            name="pencil"
-            size={24}
-            color={theme.colors.primary}
-          />
-          <Text
-            variant="titleMedium"
-            style={[styles.title, { color: theme.colors.onSurface }]}
-          >
+          <MaterialCommunityIcons name="pencil" size={24} color={theme.colors.primary} />
+          <Text variant="titleMedium" style={[styles.title, { color: theme.colors.onSurface }]}>
             Daily Reflection
           </Text>
         </View>
@@ -95,13 +88,9 @@ export const ReflectionInput: React.FC<ReflectionInputProps> = ({
             style={[
               styles.charCounter,
               {
-                color:
-                  remainingChars < 50
-                    ? theme.colors.error
-                    : theme.colors.onSurfaceVariant,
+                color: remainingChars < 50 ? theme.colors.error : theme.colors.onSurfaceVariant,
               },
-            ]}
-          >
+            ]}>
             {remainingChars} characters remaining
           </Text>
 
@@ -113,36 +102,29 @@ export const ReflectionInput: React.FC<ReflectionInputProps> = ({
             contentStyle={styles.buttonContent}
             icon="send"
             accessibilityLabel="Save reflection"
-            accessibilityHint="Save your daily reflection"
-          >
+            accessibilityHint="Save your daily reflection">
             Save Reflection
           </Button>
         </View>
 
         {isFocused && (
           <View style={styles.tipsContainer}>
-            <Text
-              variant="bodySmall"
-              style={[styles.tipsTitle, { color: theme.colors.primary }]}
-            >
+            <Text variant="bodySmall" style={[styles.tipsTitle, { color: theme.colors.primary }]}>
               💡 Reflection Tips:
             </Text>
             <Text
               variant="bodySmall"
-              style={[styles.tipItem, { color: theme.colors.onSurfaceVariant }]}
-            >
+              style={[styles.tipItem, { color: theme.colors.onSurfaceVariant }]}>
               • What challenged you today?
             </Text>
             <Text
               variant="bodySmall"
-              style={[styles.tipItem, { color: theme.colors.onSurfaceVariant }]}
-            >
+              style={[styles.tipItem, { color: theme.colors.onSurfaceVariant }]}>
               • What are you grateful for?
             </Text>
             <Text
               variant="bodySmall"
-              style={[styles.tipItem, { color: theme.colors.onSurfaceVariant }]}
-            >
+              style={[styles.tipItem, { color: theme.colors.onSurfaceVariant }]}>
               • How did you stay strong?
             </Text>
           </View>

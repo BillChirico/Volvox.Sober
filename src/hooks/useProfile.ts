@@ -4,15 +4,15 @@
  * Feature: 002-app-screens
  */
 
-import { useCallback } from 'react'
-import { useAppDispatch, useAppSelector } from './useAppDispatch'
+import { useCallback } from 'react';
+import { useAppDispatch, useAppSelector } from './useAppDispatch';
 import {
   fetchProfile,
   createProfile,
   updateProfile,
   deleteProfile,
   updateProfilePhoto,
-} from '../store/profile/profileThunks'
+} from '../store/profile/profileThunks';
 import {
   selectProfile,
   selectProfileLoading,
@@ -30,73 +30,73 @@ import {
   selectDisplayName,
   selectIsProfileOperationInProgress,
   selectProfileSummary,
-} from '../store/profile/profileSelectors'
-import { clearError } from '../store/profile/profileSlice'
-import type { ProfileFormData } from '../types'
+} from '../store/profile/profileSelectors';
+import { clearError } from '../store/profile/profileSlice';
+import type { ProfileFormData } from '../types';
 
 /**
  * Hook for managing user profile
  */
 export const useProfile = () => {
-  const dispatch = useAppDispatch()
+  const dispatch = useAppDispatch();
 
   // Selectors
-  const profile = useAppSelector(selectProfile)
-  const isLoading = useAppSelector(selectProfileLoading)
-  const isSaving = useAppSelector(selectProfileSaving)
-  const error = useAppSelector(selectProfileError)
-  const hasProfile = useAppSelector(selectHasProfile)
-  const userRole = useAppSelector(selectUserRole)
-  const isSponsor = useAppSelector(selectIsSponsor)
-  const isSponsee = useAppSelector(selectIsSponsee)
-  const completionPercentage = useAppSelector(selectProfileCompletionPercentage)
-  const isComplete = useAppSelector(selectIsProfileComplete)
-  const recoveryProgram = useAppSelector(selectRecoveryProgram)
-  const location = useAppSelector(selectUserLocation)
-  const availability = useAppSelector(selectAvailability)
-  const displayName = useAppSelector(selectDisplayName)
-  const isOperationInProgress = useAppSelector(selectIsProfileOperationInProgress)
-  const summary = useAppSelector(selectProfileSummary)
+  const profile = useAppSelector(selectProfile);
+  const isLoading = useAppSelector(selectProfileLoading);
+  const isSaving = useAppSelector(selectProfileSaving);
+  const error = useAppSelector(selectProfileError);
+  const hasProfile = useAppSelector(selectHasProfile);
+  const userRole = useAppSelector(selectUserRole);
+  const isSponsor = useAppSelector(selectIsSponsor);
+  const isSponsee = useAppSelector(selectIsSponsee);
+  const completionPercentage = useAppSelector(selectProfileCompletionPercentage);
+  const isComplete = useAppSelector(selectIsProfileComplete);
+  const recoveryProgram = useAppSelector(selectRecoveryProgram);
+  const location = useAppSelector(selectUserLocation);
+  const availability = useAppSelector(selectAvailability);
+  const displayName = useAppSelector(selectDisplayName);
+  const isOperationInProgress = useAppSelector(selectIsProfileOperationInProgress);
+  const summary = useAppSelector(selectProfileSummary);
 
   // Actions
   const fetch = useCallback(
     (userId: string) => {
-      return dispatch(fetchProfile(userId))
+      return dispatch(fetchProfile(userId));
     },
-    [dispatch]
-  )
+    [dispatch],
+  );
 
   const create = useCallback(
     (userId: string, profileData: ProfileFormData) => {
-      return dispatch(createProfile({ userId, profileData }))
+      return dispatch(createProfile({ userId, profileData }));
     },
-    [dispatch]
-  )
+    [dispatch],
+  );
 
   const update = useCallback(
     (userId: string, updates: Partial<ProfileFormData>) => {
-      return dispatch(updateProfile({ userId, updates }))
+      return dispatch(updateProfile({ userId, updates }));
     },
-    [dispatch]
-  )
+    [dispatch],
+  );
 
   const remove = useCallback(
     (userId: string) => {
-      return dispatch(deleteProfile(userId))
+      return dispatch(deleteProfile(userId));
     },
-    [dispatch]
-  )
+    [dispatch],
+  );
 
   const updatePhoto = useCallback(
     (userId: string, photoUrl: string) => {
-      return dispatch(updateProfilePhoto({ userId, photoUrl }))
+      return dispatch(updateProfilePhoto({ userId, photoUrl }));
     },
-    [dispatch]
-  )
+    [dispatch],
+  );
 
   const dismissError = useCallback(() => {
-    dispatch(clearError())
-  }, [dispatch])
+    dispatch(clearError());
+  }, [dispatch]);
 
   return {
     // State
@@ -124,5 +124,5 @@ export const useProfile = () => {
     remove,
     updatePhoto,
     dismissError,
-  }
-}
+  };
+};

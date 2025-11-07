@@ -6,7 +6,17 @@
 
 import React, { useState, useEffect, useMemo } from 'react';
 import { View, StyleSheet, ScrollView } from 'react-native';
-import { Text, Surface, Avatar, Button, Divider, Dialog, Portal, useTheme, MD3Theme } from 'react-native-paper';
+import {
+  Text,
+  Surface,
+  Avatar,
+  Button,
+  Divider,
+  Dialog,
+  Portal,
+  useTheme,
+  MD3Theme,
+} from 'react-native-paper';
 import { useRouter, useLocalSearchParams } from 'expo-router';
 import { useDisconnectMutation } from '../../../src/store/api/connectionsApi';
 import { useSelector } from 'react-redux';
@@ -24,7 +34,7 @@ const ConnectionDetailScreen: React.FC = () => {
 
   // Fetch connection from store using ID (secure alternative to JSON parsing URL params)
   const connection = useSelector((state: RootState) =>
-    params.id ? selectConnectionById(state, params.id) : null
+    params.id ? selectConnectionById(state, params.id) : null,
   );
 
   const [disconnect, { isLoading: isDisconnecting }] = useDisconnectMutation();
@@ -60,7 +70,8 @@ const ConnectionDetailScreen: React.FC = () => {
     return null;
   }
 
-  const { otherPersonName, otherPersonPhotoUrl, roleLabel, connectedDate, connectedSince } = derivedData;
+  const { otherPersonName, otherPersonPhotoUrl, roleLabel, connectedDate, connectedSince } =
+    derivedData;
 
   const handleDisconnectConfirm = async () => {
     try {
@@ -148,8 +159,7 @@ const ConnectionDetailScreen: React.FC = () => {
             mode="contained"
             onPress={handleSendMessage}
             style={styles.messageButton}
-            icon="message"
-          >
+            icon="message">
             Send Message
           </Button>
 
@@ -158,8 +168,7 @@ const ConnectionDetailScreen: React.FC = () => {
             onPress={() => setDisconnectDialogVisible(true)}
             style={[styles.disconnectButton, { borderColor: theme.colors.error }]}
             textColor={theme.colors.error}
-            icon="link-off"
-          >
+            icon="link-off">
             Disconnect
           </Button>
         </View>
@@ -167,21 +176,25 @@ const ConnectionDetailScreen: React.FC = () => {
         {/* Info Note */}
         <Surface style={styles.infoNote} elevation={0}>
           <Text variant="bodySmall" style={styles.infoText}>
-            ℹ️ Disconnecting will end this sponsorship relationship. Messages will be archived for 90 days.
+            ℹ️ Disconnecting will end this sponsorship relationship. Messages will be archived for
+            90 days.
           </Text>
         </Surface>
       </Surface>
 
       {/* Disconnect Dialog */}
       <Portal>
-        <Dialog visible={disconnectDialogVisible} onDismiss={() => setDisconnectDialogVisible(false)}>
+        <Dialog
+          visible={disconnectDialogVisible}
+          onDismiss={() => setDisconnectDialogVisible(false)}>
           <Dialog.Title>Disconnect Connection</Dialog.Title>
           <Dialog.Content>
             <Text variant="bodyMedium">
               Are you sure you want to disconnect from {otherPersonName}?
             </Text>
             <Text variant="bodySmall" style={styles.warningText}>
-              This action will end your sponsorship relationship. Your message history will be archived for 90 days, after which it will be permanently deleted.
+              This action will end your sponsorship relationship. Your message history will be
+              archived for 90 days, after which it will be permanently deleted.
             </Text>
           </Dialog.Content>
           <Dialog.Actions>
@@ -189,8 +202,7 @@ const ConnectionDetailScreen: React.FC = () => {
             <Button
               onPress={handleDisconnectConfirm}
               loading={isDisconnecting}
-              textColor={theme.colors.error}
-            >
+              textColor={theme.colors.error}>
               Disconnect
             </Button>
           </Dialog.Actions>
@@ -200,93 +212,94 @@ const ConnectionDetailScreen: React.FC = () => {
   );
 };
 
-const createStyles = (theme: MD3Theme) => StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: theme.colors.surfaceVariant,
-  },
-  surface: {
-    margin: 16,
-    padding: 24,
-    borderRadius: 8,
-    elevation: 2,
-  },
-  header: {
-    alignItems: 'center',
-    marginBottom: 16,
-  },
-  name: {
-    marginTop: 16,
-    marginBottom: 8,
-    fontWeight: 'bold',
-    textAlign: 'center',
-  },
-  role: {
-    color: theme.colors.primary,
-    fontWeight: '600',
-  },
-  divider: {
-    marginVertical: 16,
-  },
-  section: {
-    marginBottom: 8,
-  },
-  sectionTitle: {
-    fontWeight: 'bold',
-    marginBottom: 12,
-  },
-  infoRow: {
-    flexDirection: 'row',
-    marginBottom: 8,
-    alignItems: 'center',
-  },
-  label: {
-    fontWeight: '600',
-    marginRight: 8,
-    minWidth: 140,
-  },
-  progressCard: {
-    backgroundColor: theme.colors.tertiaryContainer,
-    padding: 20,
-    borderRadius: 8,
-    alignItems: 'center',
-  },
-  progressLabel: {
-    color: theme.colors.onTertiaryContainer,
-    marginBottom: 8,
-  },
-  progressValue: {
-    color: theme.colors.tertiary,
-    fontWeight: 'bold',
-    marginBottom: 8,
-  },
-  progressHint: {
-    color: theme.colors.tertiary,
-    fontStyle: 'italic',
-  },
-  actions: {
-    gap: 12,
-  },
-  messageButton: {
-    marginBottom: 8,
-  },
-  disconnectButton: {
-    marginBottom: 16,
-  },
-  infoNote: {
-    backgroundColor: theme.colors.errorContainer,
-    padding: 12,
-    borderRadius: 8,
-  },
-  infoText: {
-    color: theme.colors.onErrorContainer,
-    textAlign: 'center',
-  },
-  warningText: {
-    marginTop: 12,
-    color: theme.colors.error,
-    fontStyle: 'italic',
-  },
-});
+const createStyles = (theme: MD3Theme) =>
+  StyleSheet.create({
+    container: {
+      flex: 1,
+      backgroundColor: theme.colors.surfaceVariant,
+    },
+    surface: {
+      margin: 16,
+      padding: 24,
+      borderRadius: 8,
+      elevation: 2,
+    },
+    header: {
+      alignItems: 'center',
+      marginBottom: 16,
+    },
+    name: {
+      marginTop: 16,
+      marginBottom: 8,
+      fontWeight: 'bold',
+      textAlign: 'center',
+    },
+    role: {
+      color: theme.colors.primary,
+      fontWeight: '600',
+    },
+    divider: {
+      marginVertical: 16,
+    },
+    section: {
+      marginBottom: 8,
+    },
+    sectionTitle: {
+      fontWeight: 'bold',
+      marginBottom: 12,
+    },
+    infoRow: {
+      flexDirection: 'row',
+      marginBottom: 8,
+      alignItems: 'center',
+    },
+    label: {
+      fontWeight: '600',
+      marginRight: 8,
+      minWidth: 140,
+    },
+    progressCard: {
+      backgroundColor: theme.colors.tertiaryContainer,
+      padding: 20,
+      borderRadius: 8,
+      alignItems: 'center',
+    },
+    progressLabel: {
+      color: theme.colors.onTertiaryContainer,
+      marginBottom: 8,
+    },
+    progressValue: {
+      color: theme.colors.tertiary,
+      fontWeight: 'bold',
+      marginBottom: 8,
+    },
+    progressHint: {
+      color: theme.colors.tertiary,
+      fontStyle: 'italic',
+    },
+    actions: {
+      gap: 12,
+    },
+    messageButton: {
+      marginBottom: 8,
+    },
+    disconnectButton: {
+      marginBottom: 16,
+    },
+    infoNote: {
+      backgroundColor: theme.colors.errorContainer,
+      padding: 12,
+      borderRadius: 8,
+    },
+    infoText: {
+      color: theme.colors.onErrorContainer,
+      textAlign: 'center',
+    },
+    warningText: {
+      marginTop: 12,
+      color: theme.colors.error,
+      fontStyle: 'italic',
+    },
+  });
 
 export default ConnectionDetailScreen;

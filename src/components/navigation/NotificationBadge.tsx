@@ -36,9 +36,7 @@ export const NotificationBadge: React.FC<NotificationBadgeProps> = ({
   const displayCount = count > maxCount ? `${maxCount}+` : count.toString();
 
   // Generate accessibility label if not provided
-  const defaultAccessibilityLabel = `${count} ${
-    count === 1 ? 'notification' : 'notifications'
-  }`;
+  const defaultAccessibilityLabel = `${count} ${count === 1 ? 'notification' : 'notifications'}`;
 
   return (
     <View
@@ -51,8 +49,7 @@ export const NotificationBadge: React.FC<NotificationBadgeProps> = ({
       ]}
       accessible={true}
       accessibilityLabel={accessibilityLabel || defaultAccessibilityLabel}
-      accessibilityRole="text"
-    >
+      accessibilityRole="text">
       <Text
         style={[
           styles.badgeText,
@@ -61,8 +58,7 @@ export const NotificationBadge: React.FC<NotificationBadgeProps> = ({
           },
         ]}
         numberOfLines={1}
-        adjustsFontSizeToFit
-      >
+        adjustsFontSizeToFit>
         {displayCount}
       </Text>
     </View>

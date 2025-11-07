@@ -56,15 +56,10 @@ function formatMilestoneDate(date: string): string {
 /**
  * Milestone card component
  */
-export const MilestoneCard: React.FC<MilestoneCardProps> = ({
-  milestone,
-  currentDays,
-}) => {
+export const MilestoneCard: React.FC<MilestoneCardProps> = ({ milestone, currentDays }) => {
   const { theme } = useAppTheme();
 
-  const progress = milestone.isAchieved
-    ? 1
-    : Math.min(currentDays / milestone.milestone.days, 1);
+  const progress = milestone.isAchieved ? 1 : Math.min(currentDays / milestone.milestone.days, 1);
 
   const daysRemaining = milestone.daysUntilAchievement || 0;
 
@@ -80,27 +75,18 @@ export const MilestoneCard: React.FC<MilestoneCardProps> = ({
       ]}
       elevation={milestone.isAchieved ? 3 : 1}
       accessibilityLabel={`${milestone.milestone.title} milestone, ${milestone.isAchieved ? 'achieved' : `${daysRemaining} days remaining`}`}
-      accessibilityRole="text"
-    >
+      accessibilityRole="text">
       <Card.Content>
         <View style={styles.header}>
           <View style={styles.iconContainer}>
             <MaterialCommunityIcons
               name={getMilestoneIcon(milestone.milestone.days)}
               size={40}
-              color={
-                milestone.isAchieved
-                  ? theme.colors.primary
-                  : theme.colors.onSurfaceVariant
-              }
+              color={milestone.isAchieved ? theme.colors.primary : theme.colors.onSurfaceVariant}
             />
             {milestone.isAchieved && (
               <View style={[styles.badge, { backgroundColor: theme.colors.primary }]}>
-                <MaterialCommunityIcons
-                  name="check"
-                  size={16}
-                  color={theme.colors.onPrimary}
-                />
+                <MaterialCommunityIcons name="check" size={16} color={theme.colors.onPrimary} />
               </View>
             )}
           </View>
@@ -115,8 +101,7 @@ export const MilestoneCard: React.FC<MilestoneCardProps> = ({
                     ? theme.colors.onPrimaryContainer
                     : theme.colors.onSurface,
                 },
-              ]}
-            >
+              ]}>
               {milestone.milestone.title}
             </Text>
             <Text
@@ -128,8 +113,7 @@ export const MilestoneCard: React.FC<MilestoneCardProps> = ({
                     ? theme.colors.onPrimaryContainer
                     : theme.colors.onSurfaceVariant,
                 },
-              ]}
-            >
+              ]}>
               {milestone.milestone.description}
             </Text>
           </View>
@@ -143,19 +127,11 @@ export const MilestoneCard: React.FC<MilestoneCardProps> = ({
               style={styles.progressBar}
             />
             <View style={styles.progressInfo}>
-              <Text
-                variant="bodySmall"
-                style={{ color: theme.colors.onSurfaceVariant }}
-              >
+              <Text variant="bodySmall" style={{ color: theme.colors.onSurfaceVariant }}>
                 {currentDays} / {milestone.milestone.days} days
               </Text>
-              <Text
-                variant="bodySmall"
-                style={{ color: theme.colors.primary, fontWeight: '600' }}
-              >
-                {daysRemaining === 1
-                  ? '1 day to go!'
-                  : `${daysRemaining} days to go`}
+              <Text variant="bodySmall" style={{ color: theme.colors.primary, fontWeight: '600' }}>
+                {daysRemaining === 1 ? '1 day to go!' : `${daysRemaining} days to go`}
               </Text>
             </View>
           </>
@@ -171,11 +147,7 @@ export const MilestoneCard: React.FC<MilestoneCardProps> = ({
             />
             <Text
               variant="bodySmall"
-              style={[
-                styles.achievementText,
-                { color: theme.colors.onPrimaryContainer },
-              ]}
-            >
+              style={[styles.achievementText, { color: theme.colors.onPrimaryContainer }]}>
               Achieved on {formatMilestoneDate(milestone.achievedAt)}
             </Text>
           </View>

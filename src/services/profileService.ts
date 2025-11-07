@@ -4,7 +4,7 @@
  * Feature: 002-app-screens
  */
 
-import supabaseClient from './supabase'
+import supabaseClient from './supabase';
 import {
   Profile,
   ProfileFormData,
@@ -12,7 +12,7 @@ import {
   MatchingPreferences,
   TablesInsert,
   TablesUpdate,
-} from '../types'
+} from '../types';
 
 class ProfileService {
   /**
@@ -25,13 +25,13 @@ class ProfileService {
         .select('*')
         .eq('id', userId)
         .is('deleted_at', null)
-        .single()
+        .single();
 
-      if (error) throw error
+      if (error) throw error;
 
-      return { data, error: null }
+      return { data, error: null };
     } catch (error) {
-      return { data: null, error: error as Error }
+      return { data: null, error: error as Error };
     }
   }
 
@@ -40,13 +40,13 @@ class ProfileService {
    */
   async createProfile(
     userId: string,
-    profileData: ProfileFormData
+    profileData: ProfileFormData,
   ): Promise<{ data: Profile | null; error: Error | null }> {
     try {
       console.log('[ProfileService] Creating profile for userId:', userId);
       console.log('[ProfileService] Profile data received:', JSON.stringify(profileData, null, 2));
 
-      const completionPercentage = this.calculateCompletionPercentage(profileData)
+      const completionPercentage = this.calculateCompletionPercentage(profileData);
 
       const insertData: TablesInsert<'profiles'> = {
         id: userId,
@@ -62,7 +62,7 @@ class ProfileService {
         availability: profileData.availability,
         preferences: (profileData.preferences as Record<string, unknown>) || {},
         profile_completion_percentage: completionPercentage,
-      }
+      };
 
       console.log('[ProfileService] Insert data:', JSON.stringify(insertData, null, 2));
 
@@ -70,7 +70,7 @@ class ProfileService {
         .from('profiles')
         .insert(insertData)
         .select()
-        .single()
+        .single();
 
       if (error) {
         console.error('[ProfileService] Supabase insert error:', error);
@@ -78,10 +78,10 @@ class ProfileService {
       }
 
       console.log('[ProfileService] Profile created successfully:', data);
-      return { data, error: null }
+      return { data, error: null };
     } catch (error) {
       console.error('[ProfileService] Caught error:', error);
-      return { data: null, error: error as Error }
+      return { data: null, error: error as Error };
     }
   }
 
@@ -90,14 +90,14 @@ class ProfileService {
    */
   async updateProfile(
     userId: string,
-    updates: Partial<ProfileFormData>
+    updates: Partial<ProfileFormData>,
   ): Promise<{ data: Profile | null; error: Error | null }> {
     try {
       // First get current profile to merge updates
-      const { data: currentProfile, error: getError } = await this.getProfile(userId)
+      const { data: currentProfile, error: getError } = await this.getProfile(userId);
 
       if (getError || !currentProfile) {
-        throw getError || new Error('Profile not found')
+        throw getError || new Error('Profile not found');
       }
 
       // Merge current profile with updates for completion calculation
@@ -115,20 +115,20 @@ class ProfileService {
         country: updates.country || currentProfile.country,
         availability: updates.availability || currentProfile.availability,
         preferences: updates.preferences || (currentProfile.preferences as MatchingPreferences),
-      }
+      };
 
-      const completionPercentage = this.calculateCompletionPercentage(mergedProfile)
+      const completionPercentage = this.calculateCompletionPercentage(mergedProfile);
 
       // Sanitize date field: convert empty string to undefined (PostgreSQL treats undefined as NULL)
-      const sanitizedUpdates = { ...updates }
+      const sanitizedUpdates = { ...updates };
       if (sanitizedUpdates.sobriety_start_date === '') {
-        sanitizedUpdates.sobriety_start_date = undefined
+        sanitizedUpdates.sobriety_start_date = undefined;
       }
 
       const updateData: TablesUpdate<'profiles'> = {
         ...sanitizedUpdates,
         profile_completion_percentage: completionPercentage,
-      }
+      };
 
       const { data, error } = await supabaseClient
         .from('profiles')
@@ -136,13 +136,13 @@ class ProfileService {
         .eq('id', userId)
         .is('deleted_at', null)
         .select()
-        .single()
+        .single();
 
-      if (error) throw error
+      if (error) throw error;
 
-      return { data, error: null }
+      return { data, error: null };
     } catch (error) {
-      return { data: null, error: error as Error }
+      return { data: null, error: error as Error };
     }
   }
 
@@ -154,34 +154,32 @@ class ProfileService {
       const { error } = await supabaseClient
         .from('profiles')
         .update({ deleted_at: new Date().toISOString() })
-        .eq('id', userId)
+        .eq('id', userId);
 
-      if (error) throw error
+      if (error) throw error;
 
-      return { error: null }
+      return { error: null };
     } catch (error) {
-      return { error: error as Error }
+      return { error: error as Error };
     }
   }
 
   /**
    * Get profiles by IDs (for matches and connections)
    */
-  async getProfilesByIds(
-    userIds: string[]
-  ): Promise<{ data: Profile[]; error: Error | null }> {
+  async getProfilesByIds(userIds: string[]): Promise<{ data: Profile[]; error: Error | null }> {
     try {
       const { data, error } = await supabaseClient
         .from('profiles')
         .select('*')
         .in('id', userIds)
-        .is('deleted_at', null)
+        .is('deleted_at', null);
 
-      if (error) throw error
+      if (error) throw error;
 
-      return { data: data || [], error: null }
+      return { data: data || [], error: null };
     } catch (error) {
-      return { data: [], error: error as Error }
+      return { data: [], error: error as Error };
     }
   }
 
@@ -198,59 +196,56 @@ class ProfileService {
       city: profile.city,
       state: profile.state,
       availability: profile.availability?.length > 0,
-    }
+    };
 
     const completedFields = Object.values(fields).filter(
-      value => value !== undefined && value !== null && value !== ''
-    ).length
+      value => value !== undefined && value !== null && value !== '',
+    ).length;
 
-    return Math.round((completedFields / Object.keys(fields).length) * 100)
+    return Math.round((completedFields / Object.keys(fields).length) * 100);
   }
 
   /**
    * Validate profile data
    */
   validateProfile(profile: Partial<ProfileFormData>): ProfileValidationResult {
-    const errors: Record<string, string> = {}
+    const errors: Record<string, string> = {};
 
     if (profile.name !== undefined && (!profile.name || profile.name.trim().length < 2)) {
-      errors.name = 'Name must be at least 2 characters'
+      errors.name = 'Name must be at least 2 characters';
     }
 
     if (profile.bio && profile.bio.length > 500) {
-      errors.bio = 'Bio must be less than 500 characters'
+      errors.bio = 'Bio must be less than 500 characters';
     }
 
-    if (
-      profile.role !== undefined &&
-      !['sponsor', 'sponsee', 'both'].includes(profile.role)
-    ) {
-      errors.role = 'Invalid role selected'
+    if (profile.role !== undefined && !['sponsor', 'sponsee', 'both'].includes(profile.role)) {
+      errors.role = 'Invalid role selected';
     }
 
     if (profile.recovery_program !== undefined && !profile.recovery_program) {
-      errors.recovery_program = 'Recovery program is required'
+      errors.recovery_program = 'Recovery program is required';
     }
 
     if (profile.sobriety_start_date) {
-      const date = new Date(profile.sobriety_start_date)
-      const today = new Date()
+      const date = new Date(profile.sobriety_start_date);
+      const today = new Date();
       if (date > today) {
-        errors.sobriety_start_date = 'Sobriety date cannot be in the future'
+        errors.sobriety_start_date = 'Sobriety date cannot be in the future';
       }
     }
 
-    const isValid = Object.keys(errors).length === 0
+    const isValid = Object.keys(errors).length === 0;
     const completionPercentage = profile.name
       ? this.calculateCompletionPercentage(profile as ProfileFormData)
-      : 0
+      : 0;
 
     return {
       isValid,
       errors,
       completionPercentage,
-    }
+    };
   }
 }
 
-export default new ProfileService()
+export default new ProfileService();

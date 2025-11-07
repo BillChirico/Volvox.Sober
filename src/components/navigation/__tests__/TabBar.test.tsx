@@ -82,7 +82,7 @@ const renderWithProviders = (component: React.ReactElement, store = createMockSt
       <ThemeProvider>
         <PaperProvider>{component}</PaperProvider>
       </ThemeProvider>
-    </Provider>
+    </Provider>,
   );
 };
 
@@ -141,10 +141,7 @@ describe('TabBar', () => {
   it('shows notification badge on Connections tab when there are pending requests', () => {
     const store = createMockStore({
       connections: {
-        pendingRequests: [
-          { id: 'req-1' } as any,
-          { id: 'req-2' } as any,
-        ],
+        pendingRequests: [{ id: 'req-1' } as any, { id: 'req-2' } as any],
       },
     });
 

@@ -15,10 +15,12 @@ During validation of the quickstart guide, pre-existing test failures and TypeSc
 ## Failing Test Suites
 
 ### 1. `__tests__/services/authService.test.ts`
+
 - **Issue**: Type errors and test failures
 - **Likely Cause**: Supabase Auth API changes or type mismatches
 
 ### 2. `__tests__/store/api/connectionsApi.test.ts`
+
 - **Issue**: Multiple TypeScript errors (Redux Toolkit Query type mismatches)
 - **Error Count**: ~20 type errors
 - **Common Errors**:
@@ -27,22 +29,27 @@ During validation of the quickstart guide, pre-existing test failures and TypeSc
   - `Property 'error' does not exist on type 'Action'`
 
 ### 3. `src/store/api/__tests__/sobrietyApi.test.ts`
+
 - **Issue**: Test failures or type errors
 - **Context**: Sobriety API testing
 
 ### 4. `supabase/functions/calculate-match-score/index.test.ts`
+
 - **Issue**: ESLint parsing error
 - **Root Cause**: Supabase functions not included in tsconfig.json
 - **Error**: `ESLint was configured to run on <tsconfigRootDir>/supabase/functions/...` but TSConfig does not include this file
 
 ### 5. `supabase/functions/matching-algorithm/index.test.ts`
+
 - **Issue**: ESLint parsing error
 - **Root Cause**: Same as above - Supabase functions not in tsconfig
 
 ### 6. `src/components/navigation/__tests__/TabBar.test.tsx`
+
 - **Issue**: Test failures or component errors
 
 ### 7. `__tests__/components/matches/MatchCard.test.tsx`
+
 - **Issue**: Import error and type issues
 - **Errors**:
   - `Module has no default export` - should use named import
@@ -53,6 +60,7 @@ During validation of the quickstart guide, pre-existing test failures and TypeSc
 ### TypeScript Errors (456 total)
 
 Pre-existing type errors in test files:
+
 - Unused variables (`@typescript-eslint/no-unused-vars`)
 - Implicit `any` types in test functions
 - Object type mismatches
@@ -67,6 +75,7 @@ Pre-existing type errors in test files:
 ### Supabase Functions ESLint Configuration
 
 The `supabase/functions/` directory is not included in the main `tsconfig.json`, causing ESLint parsing errors for all Edge Function files. This affects:
+
 - `calculate-match-score/index.ts`
 - `matching-algorithm/index.ts`
 - `send-check-ins/index.ts`
@@ -76,12 +85,13 @@ The `supabase/functions/` directory is not included in the main `tsconfig.json`,
 ## Impact on Quickstart Validation
 
 The validation script shows:
+
 - ✅ Prerequisites (node, pnpm, npx)
 - ✅ Project Setup (directories exist)
 - ✅ Environment Configuration (.env configured)
 - ✅ Database Setup (migrations found)
 - ❌ TypeScript validation (456 errors in old tests)
-- ⚠️  Linting (78 warnings)
+- ⚠️ Linting (78 warnings)
 - ❌ Tests (7 failing suites)
 - ✅ Project Structure (all directories exist)
 - ✅ Package Scripts (all available)
@@ -90,6 +100,7 @@ The validation script shows:
 ## New Code Status
 
 **All new code from Phase 10 is working correctly:**
+
 - ✅ Accessibility tests (`__tests__/accessibility.spec.ts`) - Playwright E2E tests
 - ✅ Dark mode tests (`__tests__/dark-mode.spec.ts`) - Playwright E2E tests
 - ✅ Connections flow tests (`__tests__/connections-flow.spec.ts`) - Playwright E2E tests
@@ -99,12 +110,13 @@ The validation script shows:
 - ✅ Navigation tests (`__tests__/navigation-flow.spec.ts`) - Playwright E2E tests
 - ✅ Profile flow tests (`__tests__/profile-flow.spec.ts`) - Playwright E2E tests
 - ✅ Sobriety tracking tests (`__tests__/sobriety-tracking.spec.ts`) - Playwright E2E tests
-- ✅ Dark mode implementation (src/theme/*)
+- ✅ Dark mode implementation (src/theme/\*)
 - ✅ Theme settings UI (app/(tabs)/settings/theme.tsx)
 
 ## Recommendations
 
 ### Immediate Actions
+
 1. **Fix Supabase Functions TSConfig**:
    - Create `supabase/functions/tsconfig.json` extending the root tsconfig
    - Or add `supabase/functions/**/*` to include in root tsconfig
@@ -124,6 +136,7 @@ The validation script shows:
    - Manually remove unused variables flagged by TypeScript
 
 ### Long-Term Strategy
+
 1. Consider migrating more unit tests to E2E tests with Playwright
 2. Establish pre-commit hooks to prevent new type errors
 3. Add CI/CD pipeline with strict type checking
@@ -133,6 +146,7 @@ The validation script shows:
 ## Non-Blocking for Feature Completion
 
 These pre-existing issues do NOT block the completion of the 002-app-screens feature because:
+
 1. All new Phase 10 code (accessibility, dark mode, E2E tests) is working correctly
 2. The core application functionality works (13 passing test suites)
 3. The failing tests are for older code that needs separate refactoring

@@ -38,12 +38,11 @@ export const FilterBar: React.FC<FilterBarProps> = ({
   const [programMenuVisible, setProgramMenuVisible] = useState(false);
   const [availabilityMenuVisible, setAvailabilityMenuVisible] = useState(false);
 
-  const hasActiveFilters =
-    filters.recoveryPrograms.length > 0 || filters.availability.length > 0;
+  const hasActiveFilters = filters.recoveryPrograms.length > 0 || filters.availability.length > 0;
 
   const toggleRecoveryProgram = (program: string) => {
     const updated = filters.recoveryPrograms.includes(program)
-      ? filters.recoveryPrograms.filter((p) => p !== program)
+      ? filters.recoveryPrograms.filter(p => p !== program)
       : [...filters.recoveryPrograms, program];
 
     onFiltersChange({
@@ -54,7 +53,7 @@ export const FilterBar: React.FC<FilterBarProps> = ({
 
   const toggleAvailability = (availability: string) => {
     const updated = filters.availability.includes(availability)
-      ? filters.availability.filter((a) => a !== availability)
+      ? filters.availability.filter(a => a !== availability)
       : [...filters.availability, availability];
 
     onFiltersChange({
@@ -75,8 +74,7 @@ export const FilterBar: React.FC<FilterBarProps> = ({
       <ScrollView
         horizontal
         showsHorizontalScrollIndicator={false}
-        contentContainerStyle={styles.scrollContent}
-      >
+        contentContainerStyle={styles.scrollContent}>
         {/* Recovery Program Filter */}
         <Menu
           visible={programMenuVisible}
@@ -88,15 +86,12 @@ export const FilterBar: React.FC<FilterBarProps> = ({
               onPress={() => setProgramMenuVisible(true)}
               icon="heart-pulse"
               style={styles.filterChip}
-              disabled={isApplying}
-            >
+              disabled={isApplying}>
               Recovery Program
-              {filters.recoveryPrograms.length > 0 &&
-                ` (${filters.recoveryPrograms.length})`}
+              {filters.recoveryPrograms.length > 0 && ` (${filters.recoveryPrograms.length})`}
             </Chip>
-          }
-        >
-          {RECOVERY_PROGRAMS.map((program) => (
+          }>
+          {RECOVERY_PROGRAMS.map(program => (
             <Menu.Item
               key={program}
               onPress={() => {
@@ -123,14 +118,12 @@ export const FilterBar: React.FC<FilterBarProps> = ({
               onPress={() => setAvailabilityMenuVisible(true)}
               icon="clock-outline"
               style={styles.filterChip}
-              disabled={isApplying}
-            >
+              disabled={isApplying}>
               Availability
               {filters.availability.length > 0 && ` (${filters.availability.length})`}
             </Chip>
-          }
-        >
-          {AVAILABILITY_OPTIONS.map((option) => (
+          }>
+          {AVAILABILITY_OPTIONS.map(option => (
             <Menu.Item
               key={option}
               onPress={() => {
@@ -138,9 +131,7 @@ export const FilterBar: React.FC<FilterBarProps> = ({
               }}
               title={option}
               leadingIcon={
-                filters.availability.includes(option)
-                  ? 'checkbox-marked'
-                  : 'checkbox-blank-outline'
+                filters.availability.includes(option) ? 'checkbox-marked' : 'checkbox-blank-outline'
               }
             />
           ))}
@@ -154,8 +145,7 @@ export const FilterBar: React.FC<FilterBarProps> = ({
             disabled={isApplying}
             icon="filter-remove"
             style={styles.clearButton}
-            contentStyle={styles.clearButtonContent}
-          >
+            contentStyle={styles.clearButtonContent}>
             Clear All
           </Button>
         )}
@@ -166,33 +156,38 @@ export const FilterBar: React.FC<FilterBarProps> = ({
         <ScrollView
           horizontal
           showsHorizontalScrollIndicator={false}
-          contentContainerStyle={styles.activeFiltersContent}
-        >
-          {filters.recoveryPrograms.map((program) => (
+          contentContainerStyle={styles.activeFiltersContent}>
+          {filters.recoveryPrograms.map(program => (
             <Chip
               key={program}
               mode="flat"
               onClose={() => toggleRecoveryProgram(program)}
               style={styles.activeChip}
               closeIcon={() => (
-                <MaterialCommunityIcons name="close" size={16} color={theme.colors.onSecondaryContainer} />
+                <MaterialCommunityIcons
+                  name="close"
+                  size={16}
+                  color={theme.colors.onSecondaryContainer}
+                />
               )}
-              disabled={isApplying}
-            >
+              disabled={isApplying}>
               {program}
             </Chip>
           ))}
-          {filters.availability.map((avail) => (
+          {filters.availability.map(avail => (
             <Chip
               key={avail}
               mode="flat"
               onClose={() => toggleAvailability(avail)}
               style={styles.activeChip}
               closeIcon={() => (
-                <MaterialCommunityIcons name="close" size={16} color={theme.colors.onSecondaryContainer} />
+                <MaterialCommunityIcons
+                  name="close"
+                  size={16}
+                  color={theme.colors.onSecondaryContainer}
+                />
               )}
-              disabled={isApplying}
-            >
+              disabled={isApplying}>
               {avail}
             </Chip>
           ))}

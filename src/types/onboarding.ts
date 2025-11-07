@@ -3,8 +3,8 @@
  * Feature: 002-app-screens
  */
 
-import { Tables } from './database.types'
-import { UserRole, ProfileFormData } from './profile'
+import { Tables } from './database.types';
+import { UserRole, ProfileFormData } from './profile';
 
 // ============================================================
 // Base Onboarding Types
@@ -22,14 +22,14 @@ export type OnboardingStep =
   | 'role_selection'
   | 'sponsor_profile'
   | 'sponsee_profile'
-  | 'complete'
+  | 'complete';
 
 export interface OnboardingStepInfo {
-  step: OnboardingStep
-  title: string
-  description: string
-  isCompleted: boolean
-  isAccessible: boolean
+  step: OnboardingStep;
+  title: string;
+  description: string;
+  isCompleted: boolean;
+  isAccessible: boolean;
 }
 
 // ============================================================
@@ -37,18 +37,18 @@ export interface OnboardingStepInfo {
 // ============================================================
 
 export interface RoleSelectionData {
-  role: UserRole
+  role: UserRole;
 }
 
 export interface SponsorProfileData extends ProfileFormData {
-  yearsOfSobriety?: number
-  sponseeCapacity?: number
-  specializations?: string[] // e.g., ["step work", "newcomer support"]
+  yearsOfSobriety?: number;
+  sponseeCapacity?: number;
+  specializations?: string[]; // e.g., ["step work", "newcomer support"]
 }
 
 export interface SponseeProfileData extends ProfileFormData {
-  isNewcomer?: boolean
-  seekingSpecializations?: string[]
+  isNewcomer?: boolean;
+  seekingSpecializations?: string[];
 }
 
 // ============================================================
@@ -56,10 +56,10 @@ export interface SponseeProfileData extends ProfileFormData {
 // ============================================================
 
 export interface OnboardingNavigationState {
-  currentStep: OnboardingStep
-  canGoBack: boolean
-  canGoForward: boolean
-  progress: number // 0-100 percentage
+  currentStep: OnboardingStep;
+  canGoBack: boolean;
+  canGoForward: boolean;
+  progress: number; // 0-100 percentage
 }
 
 // ============================================================
@@ -67,16 +67,16 @@ export interface OnboardingNavigationState {
 // ============================================================
 
 export interface OnboardingState {
-  progress: OnboardingProgress | null
-  currentStep: OnboardingStep
-  isLoading: boolean
-  isSaving: boolean
-  error: string | null
+  progress: OnboardingProgress | null;
+  currentStep: OnboardingStep;
+  isLoading: boolean;
+  isSaving: boolean;
+  error: string | null;
 }
 
 export interface OnboardingFormState {
-  roleData: RoleSelectionData | null
-  sponsorProfileData: Partial<SponsorProfileData> | null
-  sponseeProfileData: Partial<SponseeProfileData> | null
-  validationErrors: Record<string, string>
+  roleData: RoleSelectionData | null;
+  sponsorProfileData: Partial<SponsorProfileData> | null;
+  sponseeProfileData: Partial<SponseeProfileData> | null;
+  validationErrors: Record<string, string>;
 }

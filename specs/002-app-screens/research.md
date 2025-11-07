@@ -15,6 +15,7 @@ This document contains research findings and technical decisions for implementin
 **Chosen Approach**: Expo Router 4.x file-based routing with route groups for logical organization
 
 **Rationale**:
+
 - Expo Router provides type-safe navigation with zero configuration
 - File-based routing maps directly to URL structure (critical for web support)
 - Route groups `(tabs)`, `(onboarding)`, `(auth)` provide logical organization without affecting URLs
@@ -117,14 +118,17 @@ export default function TabLayout() {
 **Deep Linking**:
 
 Expo Router automatically handles deep links based on file structure:
+
 - `volvoxsober://sobriety` → `app/(tabs)/sobriety.tsx`
 - `volvoxsober://messages/thread-123` → `app/(tabs)/messages/[id].tsx`
 
 **Alternatives Considered**:
+
 - ❌ React Navigation manual setup: More boilerplate, no type safety
 - ❌ Custom navigation solution: Reinventing the wheel, poor web support
 
 **References**:
+
 - https://docs.expo.dev/router/introduction/
 - https://docs.expo.dev/router/advanced/tabs/
 
@@ -137,6 +141,7 @@ Expo Router automatically handles deep links based on file structure:
 **Chosen Approach**: Use Supabase Realtime Broadcast (not Postgres Changes) with private channels and RLS authorization
 
 **Rationale**:
+
 - **Broadcast over Postgres Changes**: Broadcast scales better and doesn't require WAL consumption per client
 - **Private Channels**: RLS policies on `realtime.messages` table provide row-level security
 - **Redux Integration**: Normalize messages in Redux for offline support and optimistic updates
@@ -170,10 +175,10 @@ export class MessageService {
       .channel(`connection:${connectionId}`, {
         config: { private: true }, // Enable RLS authorization
       })
-      .on('broadcast', { event: 'new_message' }, (payload) => {
+      .on('broadcast', { event: 'new_message' }, payload => {
         callback(payload.payload as Message);
       })
-      .on('broadcast', { event: 'message_read' }, (payload) => {
+      .on('broadcast', { event: 'message_read' }, payload => {
         // Update read status in Redux
       })
       .subscribe();
@@ -275,7 +280,7 @@ const messagesSlice = createSlice({
     queueMessage: (state, action) => {
       state.offlineQueue.push(action.payload);
     },
-    flushQueue: (state) => {
+    flushQueue: state => {
       // Triggered when network returns
       state.offlineQueue.forEach(msg => {
         // Send via messageService
@@ -287,11 +292,13 @@ const messagesSlice = createSlice({
 ```
 
 **Alternatives Considered**:
+
 - ❌ Postgres Changes: Doesn't scale well, consumes WAL for each client
 - ❌ WebSockets without Supabase: Custom infrastructure, no built-in auth/RLS
 - ❌ HTTP polling: High latency, poor UX, unnecessary server load
 
 **References**:
+
 - Supabase Realtime Broadcast docs (loaded via MCP)
 - https://supabase.com/docs/guides/realtime/authorization
 
@@ -304,6 +311,7 @@ const messagesSlice = createSlice({
 **Chosen Approach**: Multi-criteria weighted compatibility scoring executed in Supabase Edge Function
 
 **Rationale**:
+
 - **Server-Side Execution**: Prevents gaming the algorithm, reduces client bundle size
 - **Filtering First**: Eliminate incompatible matches before scoring (performance)
 - **Weighted Scores**: Different criteria have different importance levels
@@ -463,11 +471,13 @@ const filteredMatches = matches
 ```
 
 **Alternatives Considered**:
+
 - ❌ Client-side scoring: Exposes algorithm, can be gamed
 - ❌ Machine learning: Overkill for MVP, requires training data
 - ❌ Simple random matching: Poor user experience, low engagement
 
 **References**:
+
 - Collaborative filtering algorithms
 - Content-based recommendation systems
 
@@ -480,6 +490,7 @@ const filteredMatches = matches
 **Chosen Approach**: Three-tier offline strategy with Redux Persist, optimistic UI updates, and background sync queue
 
 **Rationale**:
+
 - **Redux Persist**: Automatic state hydration on app restart
 - **Optimistic Updates**: Immediate UI feedback, rollback on failure
 - **Background Sync**: Queue mutations while offline, sync when network returns
@@ -490,7 +501,16 @@ const filteredMatches = matches
 ```typescript
 // store/index.ts
 import { configureStore } from '@reduxjs/toolkit';
-import { persistStore, persistReducer, FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER } from 'redux-persist';
+import {
+  persistStore,
+  persistReducer,
+  FLUSH,
+  REHYDRATE,
+  PAUSE,
+  PERSIST,
+  PURGE,
+  REGISTER,
+} from 'redux-persist';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 // Persist config
@@ -500,7 +520,7 @@ const persistConfig = {
   whitelist: ['profile', 'sobriety', 'matches', 'connections', 'messages'], // Persist these
   blacklist: ['auth', 'ui'], // Don't persist ephemeral state
   version: 1,
-  migrate: (state) => {
+  migrate: state => {
     // Handle version migrations
     return Promise.resolve(state);
   },
@@ -510,7 +530,7 @@ const persistedReducer = persistReducer(persistConfig, rootReducer);
 
 export const store = configureStore({
   reducer: persistedReducer,
-  middleware: (getDefaultMiddleware) =>
+  middleware: getDefaultMiddleware =>
     getDefaultMiddleware({
       serializableCheck: {
         ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
@@ -551,10 +571,12 @@ export const sendMessage = createAsyncThunk(
       if (error) throw error;
 
       // Replace optimistic message with server-confirmed one
-      dispatch(messagesSlice.actions.replaceOptimisticMessage({
-        tempId: optimisticMessage.id,
-        message: data,
-      }));
+      dispatch(
+        messagesSlice.actions.replaceOptimisticMessage({
+          tempId: optimisticMessage.id,
+          message: data,
+        }),
+      );
 
       return data;
     } catch (error) {
@@ -562,7 +584,7 @@ export const sendMessage = createAsyncThunk(
       dispatch(messagesSlice.actions.removeOptimisticMessage(optimisticMessage.id));
       return rejectWithValue(error.message);
     }
-  }
+  },
 );
 ```
 
@@ -585,22 +607,20 @@ const syncQueueSlice = createSlice({
         timestamp: Date.now(),
       });
     },
-    processSyncQueue: (state) => {
+    processSyncQueue: state => {
       state.isSyncing = true;
     },
     completeSyncAction: (state, action) => {
-      state.pendingActions = state.pendingActions.filter(
-        a => a.id !== action.payload.id
-      );
+      state.pendingActions = state.pendingActions.filter(a => a.id !== action.payload.id);
     },
-    completeSyncQueue: (state) => {
+    completeSyncQueue: state => {
       state.isSyncing = false;
     },
   },
 });
 
 // Middleware to process queue when network returns
-export const syncMiddleware: Middleware = (store) => (next) => (action) => {
+export const syncMiddleware: Middleware = store => next => action => {
   if (action.type === 'network/online') {
     store.dispatch(processSyncQueue());
   }
@@ -657,16 +677,18 @@ export const fetchSobrietyRecord = createAsyncThunk(
       .single();
 
     return data;
-  }
+  },
 );
 ```
 
 **Alternatives Considered**:
+
 - ❌ No offline support: Poor UX in spotty networks
 - ❌ Full local database (SQLite): Complexity overkill for this app
 - ❌ Service Workers (web-only): Doesn't help native apps
 
 **References**:
+
 - https://redux-toolkit.js.org/usage/usage-guide#use-with-redux-persist
 - https://github.com/rt2zz/redux-persist
 
@@ -679,6 +701,7 @@ export const fetchSobrietyRecord = createAsyncThunk(
 **Chosen Approach**: Use Expo's `expo-image` library with WebP format, JPEG fallbacks, and lazy loading
 
 **Rationale**:
+
 - **Expo Image**: Built-in caching, placeholder blurs, lazy loading
 - **WebP Format**: 25-35% smaller than JPEG at same quality
 - **JPEG Fallback**: Older Android/iOS versions don't support WebP
@@ -745,16 +768,14 @@ const uploadProfilePhoto = async (file: File) => {
     });
 
   // Generate WebP versions via Supabase Transform API
-  const webpUrl = supabase.storage
-    .from('avatars')
-    .getPublicUrl(`${userId}/profile.jpg`, {
-      transform: {
-        width: 200,
-        height: 200,
-        format: 'webp',
-        quality: 80,
-      },
-    });
+  const webpUrl = supabase.storage.from('avatars').getPublicUrl(`${userId}/profile.jpg`, {
+    transform: {
+      width: 200,
+      height: 200,
+      format: 'webp',
+      quality: 80,
+    },
+  });
 
   return webpUrl.data.publicUrl;
 };
@@ -806,11 +827,13 @@ export async function clearImageCacheOnUpdate() {
 - JPEG fallback: Automatic via `<picture>` element on web
 
 **Alternatives Considered**:
+
 - ❌ React Native Image: No lazy loading, poor caching, no WebP support
 - ❌ react-native-fast-image: Native module complexity, web support issues
 - ❌ Custom image component: Reinventing the wheel
 
 **References**:
+
 - https://docs.expo.dev/versions/latest/sdk/image/
 - https://developers.google.com/speed/webp
 
@@ -823,6 +846,7 @@ export async function clearImageCacheOnUpdate() {
 **Chosen Approach**: Automated WCAG 2.1 AA testing with Playwright + manual VoiceOver/TalkBack testing
 
 **Rationale**:
+
 - **Playwright**: Built-in accessibility testing via `axe-core` integration
 - **Automated Coverage**: Catches 40-60% of accessibility issues automatically
 - **Manual Testing**: Required for screen reader flow validation (Playwright can't fully test)
@@ -923,6 +947,7 @@ export function AccessibleButton({ label, onPress, hint, disabled }: AccessibleB
 # Screen Reader Testing Checklist
 
 ## iOS VoiceOver
+
 - [ ] Enable VoiceOver: Settings → Accessibility → VoiceOver
 - [ ] Test navigation: Swipe right/left to move between elements
 - [ ] Test actions: Double-tap to activate, swipe up/down for actions
@@ -930,6 +955,7 @@ export function AccessibleButton({ label, onPress, hint, disabled }: AccessibleB
 - [ ] Test form input: Ensure keyboard appears and input is announced
 
 ## Android TalkBack
+
 - [ ] Enable TalkBack: Settings → Accessibility → TalkBack
 - [ ] Test navigation: Swipe right/left to move between elements
 - [ ] Test actions: Double-tap to activate
@@ -937,6 +963,7 @@ export function AccessibleButton({ label, onPress, hint, disabled }: AccessibleB
 - [ ] Test custom actions are available in local context menu
 
 ## Common Issues to Check
+
 - [ ] Images have meaningful alt text (not "image")
 - [ ] Buttons announce their action (not just "button")
 - [ ] Form errors are announced when they occur
@@ -989,7 +1016,8 @@ export function announce(message: string) {
 // Example usage
 export function useMilestoneAnnouncement(days: number) {
   useEffect(() => {
-    if (days % 30 === 0) { // Milestone reached
+    if (days % 30 === 0) {
+      // Milestone reached
       announce(`Congratulations! You've reached ${days} days sober.`);
     }
   }, [days]);
@@ -997,11 +1025,13 @@ export function useMilestoneAnnouncement(days: number) {
 ```
 
 **Alternatives Considered**:
+
 - ❌ Manual testing only: Doesn't scale, misses issues in CI
 - ❌ axe DevTools browser extension: Not automated, doesn't test native apps
 - ❌ Pa11y: Web-only, no React Native support
 
 **References**:
+
 - https://playwright.dev/docs/accessibility-testing
 - https://reactnative.dev/docs/accessibility
 - https://www.w3.org/WAI/standards-guidelines/wcag/
@@ -1015,6 +1045,7 @@ export function useMilestoneAnnouncement(days: number) {
 **Chosen Approach**: Redux Toolkit with normalized data structure, entity adapters for collections, and async thunks for API calls
 
 **Rationale**:
+
 - **Normalized State**: Avoids duplication, makes updates efficient (especially for messages/connections)
 - **Entity Adapters**: Provides CRUD operations (add/remove/update) with performance optimizations
 - **Async Thunks**: Handle loading/error states consistently across all API calls
@@ -1039,7 +1070,7 @@ export interface Message {
 
 // Entity adapter for normalized storage
 const messagesAdapter = createEntityAdapter<Message>({
-  selectId: (message) => message.id,
+  selectId: message => message.id,
   sortComparer: (a, b) => a.createdAt.localeCompare(b.createdAt),
 });
 
@@ -1078,9 +1109,7 @@ const messagesSlice = createSlice({
 });
 
 // Export selectors
-export const messagesSelectors = messagesAdapter.getSelectors(
-  (state: RootState) => state.messages
-);
+export const messagesSelectors = messagesAdapter.getSelectors((state: RootState) => state.messages);
 
 // Custom selectors
 export const selectThreadMessages = (connectionId: string) => (state: RootState) => {
@@ -1105,7 +1134,7 @@ export const fetchConnections = createAsyncThunk(
     } catch (error) {
       return rejectWithValue(error.message);
     }
-  }
+  },
 );
 
 export const acceptConnectionRequest = createAsyncThunk(
@@ -1117,13 +1146,13 @@ export const acceptConnectionRequest = createAsyncThunk(
     } catch (error) {
       return rejectWithValue(error.message);
     }
-  }
+  },
 );
 
 // Handle in slice
-extraReducers: (builder) => {
+extraReducers: builder => {
   builder
-    .addCase(fetchConnections.pending, (state) => {
+    .addCase(fetchConnections.pending, state => {
       state.loading = true;
       state.error = null;
     })
@@ -1135,7 +1164,7 @@ extraReducers: (builder) => {
       state.loading = false;
       state.error = action.payload as string;
     });
-}
+};
 ```
 
 **Memoized Selectors with Reselect**:
@@ -1149,29 +1178,20 @@ import { RootState } from '../store';
 const selectConnectionsState = (state: RootState) => state.connections;
 
 // Memoized selectors (recalculate only when inputs change)
-export const selectPendingRequests = createSelector(
-  [selectConnectionsState],
-  (connections) => {
-    return Object.values(connections.entities)
-      .filter(c => c?.status === 'pending')
-      .sort((a, b) => b!.createdAt.localeCompare(a!.createdAt));
-  }
-);
+export const selectPendingRequests = createSelector([selectConnectionsState], connections => {
+  return Object.values(connections.entities)
+    .filter(c => c?.status === 'pending')
+    .sort((a, b) => b!.createdAt.localeCompare(a!.createdAt));
+});
 
-export const selectActiveConnections = createSelector(
-  [selectConnectionsState],
-  (connections) => {
-    return Object.values(connections.entities)
-      .filter(c => c?.status === 'active')
-      .sort((a, b) => b!.lastInteractionAt.localeCompare(a!.lastInteractionAt));
-  }
-);
+export const selectActiveConnections = createSelector([selectConnectionsState], connections => {
+  return Object.values(connections.entities)
+    .filter(c => c?.status === 'active')
+    .sort((a, b) => b!.lastInteractionAt.localeCompare(a!.lastInteractionAt));
+});
 
 export const selectConnectionById = (id: string) =>
-  createSelector(
-    [selectConnectionsState],
-    (connections) => connections.entities[id]
-  );
+  createSelector([selectConnectionsState], connections => connections.entities[id]);
 ```
 
 **Redux Integration with Supabase Realtime**:
@@ -1181,12 +1201,12 @@ export const selectConnectionById = (id: string) =>
 import { Middleware } from '@reduxjs/toolkit';
 import { messageService } from '@/services/messageService';
 
-export const realtimeMiddleware: Middleware = (store) => (next) => (action) => {
+export const realtimeMiddleware: Middleware = store => next => action => {
   // Subscribe to realtime when messages screen mounts
   if (action.type === 'messages/subscribeToThread') {
     const { connectionId } = action.payload;
 
-    messageService.subscribeToThread(connectionId, (message) => {
+    messageService.subscribeToThread(connectionId, message => {
       store.dispatch({ type: 'messages/messageReceived', payload: message });
     });
   }
@@ -1222,7 +1242,7 @@ const store = configureStore({
     messages: messagesReducer,
     syncQueue: syncQueueReducer,
   },
-  middleware: (getDefaultMiddleware) =>
+  middleware: getDefaultMiddleware =>
     getDefaultMiddleware({
       serializableCheck: {
         ignoredActions: ['persist/PERSIST', 'persist/REHYDRATE'],
@@ -1265,12 +1285,14 @@ export function ConnectionsList() {
 ```
 
 **Alternatives Considered**:
+
 - ❌ Context API: Poor performance with frequent updates (messages, connections)
 - ❌ Zustand: Less ecosystem support, no DevTools, manual normalization
 - ❌ MobX: Observable-based patterns don't fit React Native's architecture well
 - ❌ Jotai/Recoil: Atomic state doesn't fit well with normalized collections
 
 **References**:
+
 - https://redux-toolkit.js.org/usage/usage-guide
 - https://redux.js.org/usage/structuring-reducers/normalizing-state-shape
 - https://redux-toolkit.js.org/api/createEntityAdapter
@@ -1279,15 +1301,15 @@ export function ConnectionsList() {
 
 ## Summary of Decisions
 
-| Area | Decision | Rationale |
-|------|----------|-----------|
-| Navigation | Expo Router 4.x with route groups | Type-safe, file-based, web support, deep linking |
-| Real-time Messaging | Supabase Broadcast + Private Channels | Scalable, RLS authorization, offline queue |
-| Matching Algorithm | Weighted scoring in Edge Function | Server-side execution, spam prevention, filtering |
-| Offline Support | Redux Persist + Optimistic Updates | Auto-hydration, immediate feedback, background sync |
-| Image Optimization | Expo Image + WebP/JPEG fallback | Built-in caching, lazy loading, responsive sizes |
-| Accessibility Testing | Playwright + Manual screen reader | Automated WCAG checks, manual flow validation |
-| State Management | Redux Toolkit + Entity Adapters | Normalized state, memoized selectors, DevTools |
+| Area                  | Decision                              | Rationale                                           |
+| --------------------- | ------------------------------------- | --------------------------------------------------- |
+| Navigation            | Expo Router 4.x with route groups     | Type-safe, file-based, web support, deep linking    |
+| Real-time Messaging   | Supabase Broadcast + Private Channels | Scalable, RLS authorization, offline queue          |
+| Matching Algorithm    | Weighted scoring in Edge Function     | Server-side execution, spam prevention, filtering   |
+| Offline Support       | Redux Persist + Optimistic Updates    | Auto-hydration, immediate feedback, background sync |
+| Image Optimization    | Expo Image + WebP/JPEG fallback       | Built-in caching, lazy loading, responsive sizes    |
+| Accessibility Testing | Playwright + Manual screen reader     | Automated WCAG checks, manual flow validation       |
+| State Management      | Redux Toolkit + Entity Adapters       | Normalized state, memoized selectors, DevTools      |
 
 All decisions align with the project constitution requirements for TypeScript strict mode, TDD, cross-platform consistency, performance standards, component architecture, and security/privacy.
 

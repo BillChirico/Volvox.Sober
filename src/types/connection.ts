@@ -3,20 +3,20 @@
  * Feature: 002-app-screens
  */
 
-import { Tables } from './database.types'
-import { Profile } from './profile'
+import { Tables } from './database.types';
+import { Profile } from './profile';
 
 // ============================================================
 // Base Connection Types
 // ============================================================
 
-export type ConnectionStatus = 'pending' | 'active' | 'ended'
+export type ConnectionStatus = 'pending' | 'active' | 'ended';
 
 export interface Connection extends Tables<'connections'> {}
 
 export interface ConnectionWithUsers extends Connection {
-  sponsor: Profile
-  sponsee: Profile
+  sponsor: Profile;
+  sponsee: Profile;
 }
 
 // ============================================================
@@ -24,30 +24,30 @@ export interface ConnectionWithUsers extends Connection {
 // ============================================================
 
 export interface ConnectionRequest extends Connection {
-  requester: Profile
-  recipient: Profile
+  requester: Profile;
+  recipient: Profile;
 }
 
 export interface CreateConnectionData {
-  sponsorId: string
-  sponseeId: string
+  sponsorId: string;
+  sponseeId: string;
 }
 
 export interface AcceptConnectionData {
-  connectionId: string
-  acceptedAt: string
+  connectionId: string;
+  acceptedAt: string;
 }
 
 export interface DeclineConnectionData {
-  connectionId: string
-  declinedAt: string
+  connectionId: string;
+  declinedAt: string;
 }
 
 export interface EndConnectionData {
-  connectionId: string
-  endedAt: string
-  endedBy: string
-  endFeedback?: string
+  connectionId: string;
+  endedAt: string;
+  endedBy: string;
+  endFeedback?: string;
 }
 
 // ============================================================
@@ -55,18 +55,18 @@ export interface EndConnectionData {
 // ============================================================
 
 export interface ConnectionDetails extends ConnectionWithUsers {
-  daysSinceConnected: number
-  totalMessages: number
-  unreadMessageCount: number
-  lastMessagePreview?: string
+  daysSinceConnected: number;
+  totalMessages: number;
+  unreadMessageCount: number;
+  lastMessagePreview?: string;
 }
 
 export interface ConnectionStatistics {
-  totalActive: number
-  totalPending: number
-  totalEnded: number
-  averageDuration: number // days
-  messageFrequency: number // messages per week
+  totalActive: number;
+  totalPending: number;
+  totalEnded: number;
+  averageDuration: number; // days
+  messageFrequency: number; // messages per week
 }
 
 // ============================================================
@@ -74,23 +74,23 @@ export interface ConnectionStatistics {
 // ============================================================
 
 export interface ConnectionsState {
-  activeConnections: ConnectionDetails[]
-  pendingRequests: ConnectionRequest[]
-  sentRequests: ConnectionRequest[]
-  endedConnections: ConnectionWithUsers[]
-  isLoading: boolean
-  isRefreshing: boolean
-  error: string | null
+  activeConnections: ConnectionDetails[];
+  pendingRequests: ConnectionRequest[];
+  sentRequests: ConnectionRequest[];
+  endedConnections: ConnectionWithUsers[];
+  isLoading: boolean;
+  isRefreshing: boolean;
+  error: string | null;
 }
 
 export interface ConnectionListFilters {
-  status?: ConnectionStatus
-  sortBy?: 'recent' | 'oldest' | 'name'
-  searchQuery?: string
+  status?: ConnectionStatus;
+  sortBy?: 'recent' | 'oldest' | 'name';
+  searchQuery?: string;
 }
 
 export interface ConnectionActionState {
-  connectionId: string
-  action: 'accepting' | 'declining' | 'ending'
-  isLoading: boolean
+  connectionId: string;
+  action: 'accepting' | 'declining' | 'ending';
+  isLoading: boolean;
 }

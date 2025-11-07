@@ -295,9 +295,7 @@ function scoreAvailability(user: Profile, candidate: Profile): number {
   if (!user.availability || user.availability.length === 0) return 0;
   if (!candidate.availability || candidate.availability.length === 0) return 0;
 
-  const overlap = user.availability.filter((slot) =>
-    candidate.availability.includes(slot)
-  );
+  const overlap = user.availability.filter(slot => candidate.availability.includes(slot));
 
   const maxLength = Math.max(user.availability.length, candidate.availability.length);
   return overlap.length / maxLength;
@@ -306,10 +304,7 @@ function scoreAvailability(user: Profile, candidate: Profile): number {
 function scoreLocation(user: Profile, candidate: Profile): number {
   if (!user.city || !user.state || !candidate.city || !candidate.state) return 0;
 
-  if (
-    user.city.toLowerCase() === candidate.city.toLowerCase() &&
-    user.state === candidate.state
-  ) {
+  if (user.city.toLowerCase() === candidate.city.toLowerCase() && user.state === candidate.state) {
     return 1.0;
   }
 
@@ -331,7 +326,7 @@ function scoreExperienceLevel(user: Profile, candidate: Profile): number {
   const sobrietyStartDate = new Date(candidate.sobriety_start_date);
   const now = new Date();
   const daysSober = Math.floor(
-    (now.getTime() - sobrietyStartDate.getTime()) / (1000 * 60 * 60 * 24)
+    (now.getTime() - sobrietyStartDate.getTime()) / (1000 * 60 * 60 * 24),
   );
 
   const minDaysRequired = 365; // 1 year minimum
@@ -346,7 +341,7 @@ function calculateCompatibility(user: Profile, candidate: Profile): number {
   const WEIGHTS = {
     recoveryProgram: 0.35,
     availability: 0.25,
-    location: 0.20,
+    location: 0.2,
     experienceLevel: 0.15,
     preferences: 0.05,
   };

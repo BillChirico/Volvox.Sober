@@ -20,34 +20,23 @@ export interface WelcomeCardProps {
 /**
  * Welcome card component for onboarding
  */
-export const WelcomeCard: React.FC<WelcomeCardProps> = ({
-  onContinue,
-  isLoading = false,
-}) => {
+export const WelcomeCard: React.FC<WelcomeCardProps> = ({ onContinue, isLoading = false }) => {
   const { theme } = useAppTheme();
 
   return (
     <Card style={styles.card} elevation={2}>
       <Card.Content>
         <View style={styles.iconContainer}>
-          <MaterialCommunityIcons
-            name="hand-wave-outline"
-            size={64}
-            color={theme.colors.primary}
-          />
+          <MaterialCommunityIcons name="hand-wave-outline" size={64} color={theme.colors.primary} />
         </View>
 
-        <Text
-          variant="headlineLarge"
-          style={[styles.title, { color: theme.colors.onSurface }]}
-        >
+        <Text variant="headlineLarge" style={[styles.title, { color: theme.colors.onSurface }]}>
           Welcome to Volvox.Sober
         </Text>
 
         <Text
           variant="bodyLarge"
-          style={[styles.subtitle, { color: theme.colors.onSurfaceVariant }]}
-        >
+          style={[styles.subtitle, { color: theme.colors.onSurfaceVariant }]}>
           Your journey to recovery starts here
         </Text>
 
@@ -77,8 +66,7 @@ export const WelcomeCard: React.FC<WelcomeCardProps> = ({
           style={styles.button}
           contentStyle={styles.buttonContent}
           accessibilityLabel="Continue to profile setup"
-          accessibilityHint="Proceed to set up your profile"
-        >
+          accessibilityHint="Proceed to set up your profile">
           Get Started
         </Button>
       </Card.Content>
@@ -92,11 +80,7 @@ interface FeatureItemProps {
   description: string;
 }
 
-const FeatureItem: React.FC<FeatureItemProps> = ({
-  icon,
-  title,
-  description,
-}) => {
+const FeatureItem: React.FC<FeatureItemProps> = ({ icon, title, description }) => {
   const { theme } = useAppTheme();
 
   return (
@@ -108,10 +92,7 @@ const FeatureItem: React.FC<FeatureItemProps> = ({
         style={styles.featureIcon}
       />
       <View style={styles.featureText}>
-        <Text
-          variant="titleMedium"
-          style={{ color: theme.colors.onSurface, marginBottom: 4 }}
-        >
+        <Text variant="titleMedium" style={{ color: theme.colors.onSurface, marginBottom: 4 }}>
           {title}
         </Text>
         <Text variant="bodySmall" style={{ color: theme.colors.onSurfaceVariant }}>

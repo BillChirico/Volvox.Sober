@@ -5,17 +5,12 @@
 
 import React from 'react';
 import { View, StyleSheet, FlatList } from 'react-native';
-import {
-  Text,
-  Card,
-  useTheme,
-  ActivityIndicator,
-  Button,
-  Chip,
-  Divider,
-} from 'react-native-paper';
+import { Text, Card, useTheme, ActivityIndicator, Button, Chip, Divider } from 'react-native-paper';
 import { useRouter } from 'expo-router';
-import { useGetSobrietyStatsQuery, useGetMyRelapsesQuery } from '../../../src/store/api/sobrietyApi';
+import {
+  useGetSobrietyStatsQuery,
+  useGetMyRelapsesQuery,
+} from '../../../src/store/api/sobrietyApi';
 import { TRIGGER_CONTEXT_OPTIONS } from '@volvox-sober/shared/types/src/sobriety';
 import type { Relapse } from '@volvox-sober/shared/types/src/sobriety';
 
@@ -24,10 +19,11 @@ export const RelapseHistoryScreen = () => {
   const styles = createStyles(theme);
   const router = useRouter();
   const { data: stats } = useGetSobrietyStatsQuery();
-  const { data: relapses, isLoading, error } = useGetMyRelapsesQuery(
-    stats?.id || '',
-    { skip: !stats?.id }
-  );
+  const {
+    data: relapses,
+    isLoading,
+    error,
+  } = useGetMyRelapsesQuery(stats?.id || '', { skip: !stats?.id });
 
   if (isLoading) {
     return (
@@ -59,8 +55,7 @@ export const RelapseHistoryScreen = () => {
         <Button
           mode="contained"
           onPress={() => router.push('/(tabs)/sobriety/set-date')}
-          style={styles.actionButton}
-        >
+          style={styles.actionButton}>
           Set Sobriety Date
         </Button>
       </View>
@@ -83,7 +78,7 @@ export const RelapseHistoryScreen = () => {
 
   const getTriggerLabel = (triggerContext?: string) => {
     if (!triggerContext) return null;
-    const option = TRIGGER_CONTEXT_OPTIONS.find((opt) => opt.value === triggerContext);
+    const option = TRIGGER_CONTEXT_OPTIONS.find(opt => opt.value === triggerContext);
     return option?.label;
   };
 
@@ -157,7 +152,7 @@ export const RelapseHistoryScreen = () => {
 
       <FlatList
         data={relapses}
-        keyExtractor={(item) => item.id}
+        keyExtractor={item => item.id}
         renderItem={renderRelapseItem}
         contentContainerStyle={styles.listContent}
         ItemSeparatorComponent={() => <View style={styles.separator} />}
@@ -166,92 +161,93 @@ export const RelapseHistoryScreen = () => {
   );
 };
 
-const createStyles = (theme: any) => StyleSheet.create({
-  container: {
-    flex: 1,
-    padding: 16,
-  },
-  centerContent: {
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  loadingText: {
-    marginTop: 16,
-  },
-  errorText: {
-    color: theme.colors.error,
-    marginBottom: 16,
-    fontSize: 16,
-  },
-  emptyTitle: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    marginBottom: 8,
-    textAlign: 'center',
-  },
-  emptySubtitle: {
-    fontSize: 16,
-    textAlign: 'center',
-    marginBottom: 24,
-    paddingHorizontal: 32,
-  },
-  actionButton: {
-    marginTop: 16,
-  },
-  summaryCard: {
-    marginBottom: 16,
-  },
-  summaryTitle: {
-    marginBottom: 12,
-  },
-  summaryRow: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginVertical: 8,
-  },
-  summaryValue: {
-    fontWeight: 'bold',
-  },
-  historyTitle: {
-    marginBottom: 12,
-  },
-  listContent: {
-    paddingBottom: 16,
-  },
-  separator: {
-    height: 12,
-  },
-  relapseCard: {
-    marginBottom: 8,
-  },
-  relapseHeader: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginBottom: 8,
-  },
-  relapseDate: {
-    flex: 1,
-    fontWeight: 'bold',
-  },
-  triggerChip: {
-    marginLeft: 8,
-  },
-  divider: {
-    marginVertical: 12,
-  },
-  noteLabel: {
-    marginBottom: 4,
-    color: theme.colors.onSurfaceVariant,
-  },
-  noteText: {
-    marginBottom: 8,
-    lineHeight: 20,
-  },
-  timestamp: {
-    marginTop: 8,
-    color: '#999',
-  },
-});
+const createStyles = (theme: any) =>
+  StyleSheet.create({
+    container: {
+      flex: 1,
+      padding: 16,
+    },
+    centerContent: {
+      justifyContent: 'center',
+      alignItems: 'center',
+    },
+    loadingText: {
+      marginTop: 16,
+    },
+    errorText: {
+      color: theme.colors.error,
+      marginBottom: 16,
+      fontSize: 16,
+    },
+    emptyTitle: {
+      fontSize: 24,
+      fontWeight: 'bold',
+      marginBottom: 8,
+      textAlign: 'center',
+    },
+    emptySubtitle: {
+      fontSize: 16,
+      textAlign: 'center',
+      marginBottom: 24,
+      paddingHorizontal: 32,
+    },
+    actionButton: {
+      marginTop: 16,
+    },
+    summaryCard: {
+      marginBottom: 16,
+    },
+    summaryTitle: {
+      marginBottom: 12,
+    },
+    summaryRow: {
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      marginVertical: 8,
+    },
+    summaryValue: {
+      fontWeight: 'bold',
+    },
+    historyTitle: {
+      marginBottom: 12,
+    },
+    listContent: {
+      paddingBottom: 16,
+    },
+    separator: {
+      height: 12,
+    },
+    relapseCard: {
+      marginBottom: 8,
+    },
+    relapseHeader: {
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+      marginBottom: 8,
+    },
+    relapseDate: {
+      flex: 1,
+      fontWeight: 'bold',
+    },
+    triggerChip: {
+      marginLeft: 8,
+    },
+    divider: {
+      marginVertical: 12,
+    },
+    noteLabel: {
+      marginBottom: 4,
+      color: theme.colors.onSurfaceVariant,
+    },
+    noteText: {
+      marginBottom: 8,
+      lineHeight: 20,
+    },
+    timestamp: {
+      marginTop: 8,
+      color: '#999',
+    },
+  });
 
 export default RelapseHistoryScreen;

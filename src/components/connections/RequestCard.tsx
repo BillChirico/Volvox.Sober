@@ -73,16 +73,12 @@ export const RequestCard: React.FC<RequestCardProps> = ({
       onPress={onPress}
       disabled={isAccepting || isDeclining}
       accessibilityLabel={`Connection request ${isIncoming ? 'from' : 'to'} ${otherPerson.name}`}
-      accessibilityHint="Tap to view full profile"
-    >
+      accessibilityHint="Tap to view full profile">
       <Card.Content>
         <View style={styles.header}>
           {/* Avatar */}
           {otherPerson.profile_photo_url ? (
-            <Avatar.Image
-              size={56}
-              source={{ uri: otherPerson.profile_photo_url }}
-            />
+            <Avatar.Image size={56} source={{ uri: otherPerson.profile_photo_url }} />
           ) : (
             <Avatar.Icon
               size={56}
@@ -96,24 +92,18 @@ export const RequestCard: React.FC<RequestCardProps> = ({
             <Text
               variant="titleMedium"
               style={[styles.name, { color: theme.colors.onSurface }]}
-              numberOfLines={1}
-            >
+              numberOfLines={1}>
               {otherPerson.name}
             </Text>
 
             {/* Role */}
             <View style={styles.roleRow}>
               <MaterialCommunityIcons
-                name={
-                  isSponsor ? 'account-star-outline' : 'account-supervisor-outline'
-                }
+                name={isSponsor ? 'account-star-outline' : 'account-supervisor-outline'}
                 size={16}
                 color={theme.colors.primary}
               />
-              <Text
-                variant="bodySmall"
-                style={[styles.role, { color: theme.colors.primary }]}
-              >
+              <Text variant="bodySmall" style={[styles.role, { color: theme.colors.primary }]}>
                 {userRole}
               </Text>
             </View>
@@ -127,8 +117,7 @@ export const RequestCard: React.FC<RequestCardProps> = ({
               />
               <Text
                 variant="bodySmall"
-                style={[styles.metaText, { color: theme.colors.onSurfaceVariant }]}
-              >
+                style={[styles.metaText, { color: theme.colors.onSurfaceVariant }]}>
                 {isIncoming ? 'Request received' : 'Request sent'} {formatRequestTime()}
               </Text>
             </View>
@@ -144,8 +133,7 @@ export const RequestCard: React.FC<RequestCardProps> = ({
                 <Text
                   variant="bodySmall"
                   style={[styles.metaText, { color: theme.colors.onSurfaceVariant }]}
-                  numberOfLines={1}
-                >
+                  numberOfLines={1}>
                   {otherPerson.city}, {otherPerson.state}
                 </Text>
               </View>
@@ -164,8 +152,7 @@ export const RequestCard: React.FC<RequestCardProps> = ({
               style={styles.declineButton}
               labelStyle={styles.buttonLabel}
               icon="close"
-              accessibilityLabel={`Decline request from ${otherPerson.name}`}
-            >
+              accessibilityLabel={`Decline request from ${otherPerson.name}`}>
               Decline
             </Button>
             <Button
@@ -176,8 +163,7 @@ export const RequestCard: React.FC<RequestCardProps> = ({
               style={styles.acceptButton}
               labelStyle={styles.buttonLabel}
               icon="check"
-              accessibilityLabel={`Accept request from ${otherPerson.name}`}
-            >
+              accessibilityLabel={`Accept request from ${otherPerson.name}`}>
               Accept
             </Button>
           </View>
@@ -193,8 +179,7 @@ export const RequestCard: React.FC<RequestCardProps> = ({
             />
             <Text
               variant="bodySmall"
-              style={[styles.sentText, { color: theme.colors.onSurfaceVariant }]}
-            >
+              style={[styles.sentText, { color: theme.colors.onSurfaceVariant }]}>
               Awaiting response...
             </Text>
           </View>

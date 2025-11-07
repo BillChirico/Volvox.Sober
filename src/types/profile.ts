@@ -3,18 +3,18 @@
  * Feature: 002-app-screens
  */
 
-import { Tables } from './database.types'
+import { Tables } from './database.types';
 
 // ============================================================
 // Base Profile Types
 // ============================================================
 
-export type UserRole = 'sponsor' | 'sponsee' | 'both'
+export type UserRole = 'sponsor' | 'sponsee' | 'both';
 
 export interface Profile extends Tables<'profiles'> {}
 
 export interface ProfileWithCalculations extends Profile {
-  daysSober?: number // Calculated from sobriety_start_date
+  daysSober?: number; // Calculated from sobriety_start_date
 }
 
 // ============================================================
@@ -27,19 +27,19 @@ export type AvailabilityOption =
   | 'mornings'
   | 'afternoons'
   | 'evenings'
-  | 'anytime'
+  | 'anytime';
 
 // ============================================================
 // Matching Preferences
 // ============================================================
 
 export interface MatchingPreferences {
-  preferredGender?: 'male' | 'female' | 'non-binary' | 'any'
-  ageRangeMin?: number
-  ageRangeMax?: number
-  maxDistance?: number // miles
-  recoveryProgramMatch?: boolean // Must match recovery program
-  availabilityMatch?: boolean // Must have overlapping availability
+  preferredGender?: 'male' | 'female' | 'non-binary' | 'any';
+  ageRangeMin?: number;
+  ageRangeMax?: number;
+  maxDistance?: number; // miles
+  recoveryProgramMatch?: boolean; // Must match recovery program
+  availabilityMatch?: boolean; // Must have overlapping availability
 }
 
 // ============================================================
@@ -47,16 +47,16 @@ export interface MatchingPreferences {
 // ============================================================
 
 export interface ProfileFormData {
-  name: string
-  bio?: string
-  role: UserRole
-  recovery_program: string
-  sobriety_start_date?: string
-  city?: string
-  state?: string
-  country?: string
-  availability: AvailabilityOption[]
-  preferences?: MatchingPreferences
+  name: string;
+  bio?: string;
+  role: UserRole;
+  recovery_program: string;
+  sobriety_start_date?: string;
+  city?: string;
+  state?: string;
+  country?: string;
+  availability: AvailabilityOption[];
+  preferences?: MatchingPreferences;
 }
 
 // ============================================================
@@ -64,9 +64,9 @@ export interface ProfileFormData {
 // ============================================================
 
 export interface ProfileValidationResult {
-  isValid: boolean
-  errors: Record<string, string>
-  completionPercentage: number
+  isValid: boolean;
+  errors: Record<string, string>;
+  completionPercentage: number;
 }
 
 // ============================================================
@@ -74,14 +74,14 @@ export interface ProfileValidationResult {
 // ============================================================
 
 export interface ProfileState {
-  profile: Profile | null
-  isLoading: boolean
-  isSaving: boolean
-  error: string | null
+  profile: Profile | null;
+  isLoading: boolean;
+  isSaving: boolean;
+  error: string | null;
 }
 
 export interface ProfileEditState {
-  formData: Partial<ProfileFormData>
-  isDirty: boolean
-  validationErrors: Record<string, string>
+  formData: Partial<ProfileFormData>;
+  isDirty: boolean;
+  validationErrors: Record<string, string>;
 }

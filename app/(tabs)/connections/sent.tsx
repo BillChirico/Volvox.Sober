@@ -6,124 +6,141 @@
 
 import React, { useState } from 'react';
 import { View, StyleSheet, FlatList, RefreshControl } from 'react-native';
-import { Text, Surface, Avatar, Button, Card, ActivityIndicator, Dialog, Portal, Chip, useTheme, MD3Theme } from 'react-native-paper';
-import { useGetSentRequestsQuery, useCancelRequestMutation, ConnectionRequest } from '../../../src/store/api/connectionsApi';
+import {
+  Text,
+  Surface,
+  Avatar,
+  Button,
+  Card,
+  ActivityIndicator,
+  Dialog,
+  Portal,
+  Chip,
+  useTheme,
+  MD3Theme,
+} from 'react-native-paper';
+import {
+  useGetSentRequestsQuery,
+  useCancelRequestMutation,
+  ConnectionRequest,
+} from '../../../src/store/api/connectionsApi';
 import { formatDistanceToNow } from 'date-fns';
 
 // ============================================================
 // Styles
 // ============================================================
 
-const createStyles = (theme: MD3Theme) => StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#f5f5f5',
-  },
-  list: {
-    paddingVertical: 8,
-  },
-  emptyList: {
-    flex: 1,
-  },
-  loadingContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  loadingText: {
-    marginTop: 16,
-    color: theme.colors.onSurfaceVariant,
-  },
-  card: {
-    marginHorizontal: 16,
-    marginVertical: 8,
-  },
-  header: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: 12,
-  },
-  requestInfo: {
-    marginLeft: 12,
-    flex: 1,
-  },
-  name: {
-    fontWeight: 'bold',
-    marginBottom: 4,
-  },
-  timestamp: {
-    color: theme.colors.onSurfaceVariant,
-  },
-  statusChip: {
-    height: 28,
-  },
-  statusText: {
-    fontSize: 12,
-    color: '#fff',
-    fontWeight: '600',
-  },
-  messageSurface: {
-    backgroundColor: '#f5f5f5',
-    padding: 12,
-    borderRadius: 8,
-    marginBottom: 12,
-  },
-  messageLabel: {
-    fontWeight: '600',
-    marginBottom: 4,
-    color: theme.colors.onSurfaceVariant,
-  },
-  message: {
-    fontStyle: 'italic',
-    color: theme.colors.onSurface,
-  },
-  declinedSurface: {
-    backgroundColor: '#ffebee',
-    padding: 12,
-    borderRadius: 8,
-    marginBottom: 12,
-  },
-  declinedLabel: {
-    fontWeight: '600',
-    marginBottom: 4,
-    color: '#c62828',
-  },
-  declinedReason: {
-    color: '#d32f2f',
-  },
-  acceptedSurface: {
-    backgroundColor: '#e8f5e9',
-    padding: 12,
-    borderRadius: 8,
-    marginBottom: 12,
-  },
-  acceptedMessage: {
-    color: '#2e7d32',
-  },
-  actions: {
-    marginTop: 8,
-  },
-  emptyContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    padding: 32,
-  },
-  emptyTitle: {
-    marginBottom: 16,
-    textAlign: 'center',
-    fontWeight: 'bold',
-  },
-  emptyMessage: {
-    textAlign: 'center',
-    color: theme.colors.onSurfaceVariant,
-  },
-  warningText: {
-    marginTop: 8,
-    color: '#f57c00',
-    fontStyle: 'italic',
-  },
-});
+const createStyles = (theme: MD3Theme) =>
+  StyleSheet.create({
+    container: {
+      flex: 1,
+      backgroundColor: '#f5f5f5',
+    },
+    list: {
+      paddingVertical: 8,
+    },
+    emptyList: {
+      flex: 1,
+    },
+    loadingContainer: {
+      flex: 1,
+      justifyContent: 'center',
+      alignItems: 'center',
+    },
+    loadingText: {
+      marginTop: 16,
+      color: theme.colors.onSurfaceVariant,
+    },
+    card: {
+      marginHorizontal: 16,
+      marginVertical: 8,
+    },
+    header: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      marginBottom: 12,
+    },
+    requestInfo: {
+      marginLeft: 12,
+      flex: 1,
+    },
+    name: {
+      fontWeight: 'bold',
+      marginBottom: 4,
+    },
+    timestamp: {
+      color: theme.colors.onSurfaceVariant,
+    },
+    statusChip: {
+      height: 28,
+    },
+    statusText: {
+      fontSize: 12,
+      color: '#fff',
+      fontWeight: '600',
+    },
+    messageSurface: {
+      backgroundColor: '#f5f5f5',
+      padding: 12,
+      borderRadius: 8,
+      marginBottom: 12,
+    },
+    messageLabel: {
+      fontWeight: '600',
+      marginBottom: 4,
+      color: theme.colors.onSurfaceVariant,
+    },
+    message: {
+      fontStyle: 'italic',
+      color: theme.colors.onSurface,
+    },
+    declinedSurface: {
+      backgroundColor: '#ffebee',
+      padding: 12,
+      borderRadius: 8,
+      marginBottom: 12,
+    },
+    declinedLabel: {
+      fontWeight: '600',
+      marginBottom: 4,
+      color: '#c62828',
+    },
+    declinedReason: {
+      color: '#d32f2f',
+    },
+    acceptedSurface: {
+      backgroundColor: '#e8f5e9',
+      padding: 12,
+      borderRadius: 8,
+      marginBottom: 12,
+    },
+    acceptedMessage: {
+      color: '#2e7d32',
+    },
+    actions: {
+      marginTop: 8,
+    },
+    emptyContainer: {
+      flex: 1,
+      justifyContent: 'center',
+      alignItems: 'center',
+      padding: 32,
+    },
+    emptyTitle: {
+      marginBottom: 16,
+      textAlign: 'center',
+      fontWeight: 'bold',
+    },
+    emptyMessage: {
+      textAlign: 'center',
+      color: theme.colors.onSurfaceVariant,
+    },
+    warningText: {
+      marginTop: 8,
+      color: '#f57c00',
+      fontStyle: 'italic',
+    },
+  });
 
 // ============================================================
 // Component
@@ -211,8 +228,7 @@ const SentRequestsScreen: React.FC = () => {
             <Chip
               mode="flat"
               style={[styles.statusChip, { backgroundColor: getStatusColor(item.status) }]}
-              textStyle={styles.statusText}
-            >
+              textStyle={styles.statusText}>
               {getStatusLabel(item.status)}
             </Chip>
           </View>
@@ -242,7 +258,8 @@ const SentRequestsScreen: React.FC = () => {
           {item.status === 'accepted' && (
             <Surface style={styles.acceptedSurface} elevation={0}>
               <Text variant="bodyMedium" style={styles.acceptedMessage}>
-                ✅ Your request was accepted! Visit the Connections tab to start your sponsorship journey.
+                ✅ Your request was accepted! Visit the Connections tab to start your sponsorship
+                journey.
               </Text>
             </Surface>
           )}
@@ -253,8 +270,7 @@ const SentRequestsScreen: React.FC = () => {
                 mode="outlined"
                 onPress={() => showCancelDialog(item.id)}
                 disabled={isCancelling}
-                icon="close"
-              >
+                icon="close">
                 Cancel Request
               </Button>
             </View>
@@ -290,15 +306,11 @@ const SentRequestsScreen: React.FC = () => {
     <View style={styles.container}>
       <FlatList
         data={requests || []}
-        keyExtractor={(item) => item.id}
+        keyExtractor={item => item.id}
         renderItem={renderRequest}
         ListEmptyComponent={renderEmpty}
-        refreshControl={
-          <RefreshControl refreshing={isFetching} onRefresh={refetch} />
-        }
-        contentContainerStyle={
-          (requests || []).length === 0 ? styles.emptyList : styles.list
-        }
+        refreshControl={<RefreshControl refreshing={isFetching} onRefresh={refetch} />}
+        contentContainerStyle={(requests || []).length === 0 ? styles.emptyList : styles.list}
       />
 
       {/* Cancel Dialog */}

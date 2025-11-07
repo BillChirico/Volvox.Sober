@@ -4,50 +4,50 @@
  * Feature: 002-app-screens (T119)
  */
 
-import React, { useEffect, useState } from 'react'
-import { View, StyleSheet, ScrollView, Alert } from 'react-native'
-import { ActivityIndicator, Button, Divider, Text } from 'react-native-paper'
-import { useRouter } from 'expo-router'
-import Constants from 'expo-constants'
-import { useAppTheme } from '../../src/theme/ThemeContext'
-import { useProfile } from '../../src/hooks/useProfile'
-import { useAuth } from '../../src/hooks/useAuth'
-import { ProfileHeader } from '../../src/components/profile/ProfileHeader'
-import { SettingsSection, type SettingsItem } from '../../src/components/profile/SettingsSection'
+import React, { useEffect, useState } from 'react';
+import { View, StyleSheet, ScrollView, Alert } from 'react-native';
+import { ActivityIndicator, Button, Divider, Text } from 'react-native-paper';
+import { useRouter } from 'expo-router';
+import Constants from 'expo-constants';
+import { useAppTheme } from '../../src/theme/ThemeContext';
+import { useProfile } from '../../src/hooks/useProfile';
+import { useAuth } from '../../src/hooks/useAuth';
+import { ProfileHeader } from '../../src/components/profile/ProfileHeader';
+import { SettingsSection, type SettingsItem } from '../../src/components/profile/SettingsSection';
 
 export default function ProfileScreen() {
-  const { theme } = useAppTheme()
-  const router = useRouter()
-  const { profile, isLoading, fetch } = useProfile()
-  const { user, logout } = useAuth()
-  const [isSigningOut, setIsSigningOut] = useState(false)
+  const { theme } = useAppTheme();
+  const router = useRouter();
+  const { profile, isLoading, fetch } = useProfile();
+  const { user, logout } = useAuth();
+  const [isSigningOut, setIsSigningOut] = useState(false);
 
   // Fetch profile on mount
   useEffect(() => {
     if (user?.id) {
-      fetch(user.id)
+      fetch(user.id);
     }
-  }, [user?.id, fetch])
+  }, [user?.id, fetch]);
 
   const handleEditProfile = (): void => {
-    router.push('/profile/edit')
-  }
+    router.push('/profile/edit');
+  };
 
   const handleViewFullProfile = (): void => {
-    router.push('/profile/view')
-  }
+    router.push('/profile/view');
+  };
 
   const handleChangeRole = (): void => {
-    router.push('/profile/change-role')
-  }
+    router.push('/profile/change-role');
+  };
 
   const handleNotificationSettings = (): void => {
-    router.push('/settings/notifications')
-  }
+    router.push('/settings/notifications');
+  };
 
   const handleThemeSettings = (): void => {
-    router.push('/settings/theme')
-  }
+    router.push('/settings/theme');
+  };
 
   const handleLogout = (): void => {
     Alert.alert(
@@ -63,29 +63,29 @@ export default function ProfileScreen() {
           style: 'destructive',
           onPress: async () => {
             try {
-              setIsSigningOut(true)
-              await logout()
+              setIsSigningOut(true);
+              await logout();
               // Navigation handled by useAuthRedirect
             } catch (error) {
-              console.error('Error signing out:', error)
-              Alert.alert('Error', 'Failed to sign out. Please try again.')
+              console.error('Error signing out:', error);
+              Alert.alert('Error', 'Failed to sign out. Please try again.');
             } finally {
-              setIsSigningOut(false)
+              setIsSigningOut(false);
             }
           },
         },
       ],
-      { cancelable: true }
-    )
-  }
+      { cancelable: true },
+    );
+  };
 
   const handleAccountSettings = (): void => {
-    router.push('/settings/account')
-  }
+    router.push('/settings/account');
+  };
 
   // Calculate profile completion percentage
   const calculateCompletionPercentage = (): number => {
-    if (!profile) return 0
+    if (!profile) return 0;
 
     const fields = [
       profile.name,
@@ -97,11 +97,11 @@ export default function ProfileScreen() {
       profile.recovery_program,
       profile.availability,
       profile.sobriety_start_date,
-    ]
+    ];
 
-    const completed = fields.filter(Boolean).length
-    return Math.round((completed / fields.length) * 100)
-  }
+    const completed = fields.filter(Boolean).length;
+    return Math.round((completed / fields.length) * 100);
+  };
 
   // Show loading spinner only while fetching
   if (isLoading) {
@@ -109,7 +109,7 @@ export default function ProfileScreen() {
       <View style={[styles.loadingContainer, { backgroundColor: theme.colors.background }]}>
         <ActivityIndicator size="large" />
       </View>
-    )
+    );
   }
 
   // Handle case where profile doesn't exist yet
@@ -119,17 +119,19 @@ export default function ProfileScreen() {
         <Text variant="headlineSmall" style={{ marginBottom: 16 }}>
           No Profile Found
         </Text>
-        <Text variant="bodyMedium" style={{ marginBottom: 24, textAlign: 'center', paddingHorizontal: 32 }}>
+        <Text
+          variant="bodyMedium"
+          style={{ marginBottom: 24, textAlign: 'center', paddingHorizontal: 32 }}>
           Complete your profile to connect with sponsors or sponsees
         </Text>
         <Button mode="contained" onPress={() => router.push('/profile/edit')}>
           Create Profile
         </Button>
       </View>
-    )
+    );
   }
 
-  const completionPercentage = calculateCompletionPercentage()
+  const completionPercentage = calculateCompletionPercentage();
 
   // Profile management section
   const profileManagementItems: SettingsItem[] = [
@@ -157,7 +159,7 @@ export default function ProfileScreen() {
       icon: 'account-switch',
       onPress: handleChangeRole,
     },
-  ]
+  ];
 
   // Preferences section
   const preferencesItems: SettingsItem[] = [
@@ -177,7 +179,7 @@ export default function ProfileScreen() {
       icon: 'theme-light-dark',
       onPress: handleThemeSettings,
     },
-  ]
+  ];
 
   // Account section
   const accountItems: SettingsItem[] = [
@@ -198,13 +200,12 @@ export default function ProfileScreen() {
       onPress: handleLogout,
       disabled: isSigningOut,
     },
-  ]
+  ];
 
   return (
     <ScrollView
       style={[styles.container, { backgroundColor: theme.colors.background }]}
-      contentContainerStyle={styles.contentContainer}
-    >
+      contentContainerStyle={styles.contentContainer}>
       {/* Profile Header */}
       <ProfileHeader
         profile={profile}
@@ -231,7 +232,7 @@ export default function ProfileScreen() {
         </Text>
       </View>
     </ScrollView>
-  )
+  );
 }
 
 const styles = StyleSheet.create({
@@ -256,4 +257,4 @@ const styles = StyleSheet.create({
   versionText: {
     fontSize: 12,
   },
-})
+});

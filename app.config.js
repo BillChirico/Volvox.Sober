@@ -16,9 +16,7 @@ module.exports = {
     ios: {
       supportsTablet: true,
       bundleIdentifier: 'com.volvox.sober',
-      associatedDomains: [
-        'applinks:volvoxsober.app',
-      ],
+      associatedDomains: ['applinks:volvoxsober.app'],
       infoPlist: {
         ITSAppUsesNonExemptEncryption: false,
       },

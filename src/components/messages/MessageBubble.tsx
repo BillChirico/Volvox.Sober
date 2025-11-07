@@ -71,9 +71,10 @@ export const MessageBubble: React.FC<MessageBubbleProps> = ({
   /**
    * Get status icon for sent messages
    */
-  const getStatusIcon = ():
-    | { name: 'check' | 'check-all' | 'clock-outline' | 'alert-circle-outline'; color: string }
-    | null => {
+  const getStatusIcon = (): {
+    name: 'check' | 'check-all' | 'clock-outline' | 'alert-circle-outline';
+    color: string;
+  } | null => {
     if (!isSent) return null;
 
     switch (message.status) {
@@ -93,21 +94,10 @@ export const MessageBubble: React.FC<MessageBubbleProps> = ({
   const statusIcon = getStatusIcon();
 
   return (
-    <View
-      style={[
-        styles.container,
-        isSent ? styles.sentContainer : styles.receivedContainer,
-      ]}
-    >
+    <View style={[styles.container, isSent ? styles.sentContainer : styles.receivedContainer]}>
       {/* Sender name (for received messages when showSenderName is true) */}
       {!isSent && showSenderName && (
-        <Text
-          variant="labelSmall"
-          style={[
-            styles.senderName,
-            { color: theme.colors.primary },
-          ]}
-        >
+        <Text variant="labelSmall" style={[styles.senderName, { color: theme.colors.primary }]}>
           {message.sender.name}
         </Text>
       )}
@@ -120,20 +110,16 @@ export const MessageBubble: React.FC<MessageBubbleProps> = ({
             ? [styles.sentBubble, { backgroundColor: theme.colors.primaryContainer }]
             : [styles.receivedBubble, { backgroundColor: theme.colors.surfaceVariant }],
         ]}
-        elevation={1}
-      >
+        elevation={1}>
         {/* Message text */}
         <Text
           variant="bodyMedium"
           style={[
             styles.messageText,
             {
-              color: isSent
-                ? theme.colors.onPrimaryContainer
-                : theme.colors.onSurfaceVariant,
+              color: isSent ? theme.colors.onPrimaryContainer : theme.colors.onSurfaceVariant,
             },
-          ]}
-        >
+          ]}>
           {message.text}
         </Text>
 
@@ -144,12 +130,9 @@ export const MessageBubble: React.FC<MessageBubbleProps> = ({
             style={[
               styles.timestamp,
               {
-                color: isSent
-                  ? theme.colors.onPrimaryContainer
-                  : theme.colors.onSurfaceVariant,
+                color: isSent ? theme.colors.onPrimaryContainer : theme.colors.onSurfaceVariant,
               },
-            ]}
-          >
+            ]}>
             {formatTimestamp()}
           </Text>
 

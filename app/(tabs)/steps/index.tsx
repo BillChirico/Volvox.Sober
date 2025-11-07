@@ -23,21 +23,31 @@ export const StepListScreen: React.FC = () => {
 
   const getStatusColor = (status: string) => {
     switch (status) {
-      case 'reviewed': return theme.colors.tertiary; // Green
-      case 'submitted': return theme.colors.primary; // Blue
-      case 'in_progress': return theme.colors.secondary; // Teal
-      case 'not_started': return theme.colors.outlineVariant; // Gray
-      default: return theme.colors.outlineVariant;
+      case 'reviewed':
+        return theme.colors.tertiary; // Green
+      case 'submitted':
+        return theme.colors.primary; // Blue
+      case 'in_progress':
+        return theme.colors.secondary; // Teal
+      case 'not_started':
+        return theme.colors.outlineVariant; // Gray
+      default:
+        return theme.colors.outlineVariant;
     }
   };
 
   const getStatusLabel = (status: string) => {
     switch (status) {
-      case 'reviewed': return 'Reviewed ✓';
-      case 'submitted': return 'Submitted';
-      case 'in_progress': return 'In Progress';
-      case 'not_started': return 'Not Started';
-      default: return 'Not Started';
+      case 'reviewed':
+        return 'Reviewed ✓';
+      case 'submitted':
+        return 'Submitted';
+      case 'in_progress':
+        return 'In Progress';
+      case 'not_started':
+        return 'Not Started';
+      default:
+        return 'Not Started';
     }
   };
 
@@ -72,28 +82,19 @@ export const StepListScreen: React.FC = () => {
       {/* Step List */}
       <FlatList
         data={steps}
-        keyExtractor={(item) => item.id}
+        keyExtractor={item => item.id}
         renderItem={({ item }) => {
           const status = getStepStatus(item.id);
           return (
-            <TouchableOpacity
-              onPress={() => router.push(`/(tabs)/steps/work/${item.id}`)}
-            >
+            <TouchableOpacity onPress={() => router.push(`/(tabs)/steps/work/${item.id}`)}>
               <Card style={styles.stepCard}>
                 <Card.Content>
                   <View style={styles.stepHeader}>
                     <Text variant="titleMedium" style={styles.stepNumber}>
                       Step {item.step_number}
                     </Text>
-                    <View
-                      style={[
-                        styles.statusBadge,
-                        { backgroundColor: getStatusColor(status) },
-                      ]}
-                    >
-                      <Text style={styles.statusText}>
-                        {getStatusLabel(status)}
-                      </Text>
+                    <View style={[styles.statusBadge, { backgroundColor: getStatusColor(status) }]}>
+                      <Text style={styles.statusText}>{getStatusLabel(status)}</Text>
                     </View>
                   </View>
                   <Text variant="bodyMedium" style={styles.stepTitle}>
@@ -113,92 +114,93 @@ export const StepListScreen: React.FC = () => {
   );
 };
 
-const createStyles = (theme: any) => StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: theme.colors.background,
-  },
-  centerContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  progressContainer: {
-    padding: 20,
-    backgroundColor: theme.colors.surface,
-    borderBottomWidth: 1,
-    borderBottomColor: theme.colors.outlineVariant,
-  },
-  title: {
-    fontWeight: 'bold',
-    marginBottom: 4,
-  },
-  subtitle: {
-    color: '#666',
-    marginBottom: 12,
-  },
-  progressBar: {
-    height: 8,
-    borderRadius: 4,
-  },
-  listContent: {
-    padding: 16,
-  },
-  stepCard: {
-    marginHorizontal: 16,
-    marginBottom: 12,
-    backgroundColor: theme.colors.surface,
-    elevation: 2,
-  },
-  stepHeader: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginBottom: 8,
-  },
-  stepNumber: {
-    fontWeight: 'bold',
-    color: theme.colors.onSurface,
-  },
-  statusBadge: {
-    paddingHorizontal: 12,
-    paddingVertical: 4,
-    borderRadius: 12,
-  },
-  statusText: {
-    color: theme.colors.onPrimary, // White on colored backgrounds
-    fontSize: 12,
-    fontWeight: '600',
-  },
-  stepTitle: {
-    marginBottom: 8,
-    lineHeight: 20,
-  },
-  stepDescription: {
-    color: theme.colors.onSurfaceVariant,
-    lineHeight: 18,
-  },
-  completedBadge: {
-    marginTop: 8,
-  },
-  completedText: {
-    color: theme.colors.onSurface,
-  },
-  checkIcon: {
-    marginLeft: 8,
-  },
-  description: {
-    marginTop: 4,
-    color: theme.colors.onSurfaceVariant,
-  },
-  emptyContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    padding: 20,
-  },
-  emptyText: {
-    color: theme.colors.onSurfaceVariant,
-  },
-});
+const createStyles = (theme: any) =>
+  StyleSheet.create({
+    container: {
+      flex: 1,
+      backgroundColor: theme.colors.background,
+    },
+    centerContainer: {
+      flex: 1,
+      justifyContent: 'center',
+      alignItems: 'center',
+    },
+    progressContainer: {
+      padding: 20,
+      backgroundColor: theme.colors.surface,
+      borderBottomWidth: 1,
+      borderBottomColor: theme.colors.outlineVariant,
+    },
+    title: {
+      fontWeight: 'bold',
+      marginBottom: 4,
+    },
+    subtitle: {
+      color: '#666',
+      marginBottom: 12,
+    },
+    progressBar: {
+      height: 8,
+      borderRadius: 4,
+    },
+    listContent: {
+      padding: 16,
+    },
+    stepCard: {
+      marginHorizontal: 16,
+      marginBottom: 12,
+      backgroundColor: theme.colors.surface,
+      elevation: 2,
+    },
+    stepHeader: {
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+      marginBottom: 8,
+    },
+    stepNumber: {
+      fontWeight: 'bold',
+      color: theme.colors.onSurface,
+    },
+    statusBadge: {
+      paddingHorizontal: 12,
+      paddingVertical: 4,
+      borderRadius: 12,
+    },
+    statusText: {
+      color: theme.colors.onPrimary, // White on colored backgrounds
+      fontSize: 12,
+      fontWeight: '600',
+    },
+    stepTitle: {
+      marginBottom: 8,
+      lineHeight: 20,
+    },
+    stepDescription: {
+      color: theme.colors.onSurfaceVariant,
+      lineHeight: 18,
+    },
+    completedBadge: {
+      marginTop: 8,
+    },
+    completedText: {
+      color: theme.colors.onSurface,
+    },
+    checkIcon: {
+      marginLeft: 8,
+    },
+    description: {
+      marginTop: 4,
+      color: theme.colors.onSurfaceVariant,
+    },
+    emptyContainer: {
+      flex: 1,
+      justifyContent: 'center',
+      alignItems: 'center',
+      padding: 20,
+    },
+    emptyText: {
+      color: theme.colors.onSurfaceVariant,
+    },
+  });
 export default StepListScreen;
