@@ -1,12 +1,15 @@
 import { Tabs } from 'expo-router';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useAppTheme } from '../../src/theme/ThemeContext';
 import { Platform } from 'react-native';
+import { TabBar } from '../../src/components/navigation/TabBar';
 
 export default function TabsLayout() {
   const { theme } = useAppTheme();
 
   return (
     <Tabs
+      tabBar={props => <TabBar {...props} />}
       screenOptions={{
         tabBarActiveTintColor: theme.colors.primary,
         tabBarInactiveTintColor: theme.colors.onSurfaceVariant,
@@ -25,10 +28,18 @@ export default function TabsLayout() {
         },
       }}>
       <Tabs.Screen
-        name="connections"
+        name="sobriety"
         options={{
-          title: 'Connections',
-          tabBarLabel: 'Connections',
+          title: 'Sobriety',
+          tabBarLabel: 'Sobriety',
+          tabBarAccessibilityLabel: 'Sobriety tracking tab',
+          tabBarIcon: ({ color, focused }) => (
+            <MaterialCommunityIcons
+              name={focused ? 'calendar-check' : 'calendar-check-outline'}
+              size={26}
+              color={color}
+            />
+          ),
         }}
       />
       <Tabs.Screen
@@ -36,6 +47,29 @@ export default function TabsLayout() {
         options={{
           title: 'Matches',
           tabBarLabel: 'Matches',
+          tabBarAccessibilityLabel: 'Match discovery tab',
+          tabBarIcon: ({ color, focused }) => (
+            <MaterialCommunityIcons
+              name={focused ? 'account-heart' : 'account-heart-outline'}
+              size={26}
+              color={color}
+            />
+          ),
+        }}
+      />
+      <Tabs.Screen
+        name="connections"
+        options={{
+          title: 'Connections',
+          tabBarLabel: 'Connections',
+          tabBarAccessibilityLabel: 'Connections management tab',
+          tabBarIcon: ({ color, focused }) => (
+            <MaterialCommunityIcons
+              name={focused ? 'account-group' : 'account-group-outline'}
+              size={26}
+              color={color}
+            />
+          ),
         }}
       />
       <Tabs.Screen
@@ -43,13 +77,14 @@ export default function TabsLayout() {
         options={{
           title: 'Messages',
           tabBarLabel: 'Messages',
-        }}
-      />
-      <Tabs.Screen
-        name="sobriety"
-        options={{
-          title: 'Sobriety',
-          tabBarLabel: 'Sobriety',
+          tabBarAccessibilityLabel: 'Messages tab',
+          tabBarIcon: ({ color, focused }) => (
+            <MaterialCommunityIcons
+              name={focused ? 'message' : 'message-outline'}
+              size={26}
+              color={color}
+            />
+          ),
         }}
       />
       <Tabs.Screen
@@ -57,6 +92,14 @@ export default function TabsLayout() {
         options={{
           title: 'Profile',
           tabBarLabel: 'Profile',
+          tabBarAccessibilityLabel: 'Profile settings tab',
+          tabBarIcon: ({ color, focused }) => (
+            <MaterialCommunityIcons
+              name={focused ? 'account' : 'account-outline'}
+              size={26}
+              color={color}
+            />
+          ),
         }}
       />
     </Tabs>

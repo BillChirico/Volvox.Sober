@@ -8,10 +8,10 @@ import { getCurrentUserId } from './supabase';
 import type { Database } from '../types/database.types';
 import type { CheckIn, CheckInResponse, PaginatedResult } from '../types';
 
-type CheckInRow = Database['public']['Tables']['check_ins']['Row'];
+type _CheckInRow = Database['public']['Tables']['check_ins']['Row'];
 type CheckInInsert = Database['public']['Tables']['check_ins']['Insert'];
 type CheckInUpdate = Database['public']['Tables']['check_ins']['Update'];
-type CheckInResponseRow = Database['public']['Tables']['check_in_responses']['Row'];
+type _CheckInResponseRow = Database['public']['Tables']['check_in_responses']['Row'];
 
 // ============================================================
 // Check-In Management (Sponsor Functions)

@@ -349,7 +349,6 @@ describe('LoginForm', () => {
       const { getByTestId } = renderComponent();
       const emailInput = getByTestId('login-email-input');
       const passwordInput = getByTestId('login-password-input');
-      const submitButton = getByTestId('login-submit-button');
 
       fireEvent.changeText(emailInput, 'test@example.com');
       fireEvent.changeText(passwordInput, 'Password123!');

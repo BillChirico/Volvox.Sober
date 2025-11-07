@@ -24,7 +24,7 @@ export default function SignupScreen() {
 
   const handleSignupSuccess = () => {
     // Navigate to login screen after successful signup
-    // User will need to verify their email before logging in
+    // User can login immediately (email verification is non-blocking)
     router.push('/(auth)/login');
   };
 

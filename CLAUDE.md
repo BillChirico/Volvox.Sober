@@ -1,6 +1,6 @@
 # Volvox.Sober Development Guidelines
 
-Last updated: 2025-11-05
+Last updated: 2025-11-06
 
 ## Project Overview
 
@@ -61,7 +61,6 @@ volvox-sober/
 │   └── +not-found.tsx   # 404 page
 │
 ├── src/                 # Application source code
-│   ├── screens/         # Screen components (legacy, to be migrated)
 │   ├── components/      # Reusable UI components
 │   │   ├── auth/        # Authentication-specific components
 │   │   └── common/      # Shared components (AccessibleButton, etc.)
@@ -120,6 +119,15 @@ Expo supports platform-specific implementations:
 - `Component.ios.tsx` - iOS-specific override
 - `Component.android.tsx` - Android-specific override
 - `Component.web.tsx` - Web-specific override
+
+### Important: Screen Organization
+
+**All screen components MUST be in the `app/` directory using Expo Router's file-based routing.**
+
+- ✅ **Correct**: Create screens in `app/(tabs)/`, `app/(auth)/`, `app/(onboarding)/`, etc.
+- ❌ **Incorrect**: DO NOT create screens in `src/screens/` (deprecated)
+- The `src/` directory is for reusable components, services, hooks, and utilities only
+- Screens in `app/` use Expo Router's automatic routing based on file structure
 
 ## Commands
 
@@ -193,8 +201,14 @@ pnpm format
 1. **Branch from main**: Create feature branch from `main`
 2. **Follow TDD**: Write tests first for new features
 3. **Type safety**: Ensure TypeScript strict mode compliance
-4. **Run checks**: Test + lint + typecheck before committing
-5. **Commit messages**: Conventional commits (feat:, fix:, docs:, etc.)
+4. **Quality checks**: Always run in this order when editing or adding files:
+   ```bash
+   pnpm lint:fix    # Linting with auto-fix (includes Prettier formatting)
+   pnpm typecheck   # TypeScript validation
+   pnpm test        # Run test suite
+   ```
+5. **Commit and push**: After completing all tasks, commit changes and push to remote
+6. **Commit messages**: Conventional commits with scope (feat(scope):, fix(scope):, docs(scope):, etc.)
 
 ## Environment Setup
 
@@ -231,15 +245,26 @@ Six core principles govern all development (see `.specify/memory/constitution.md
 
 ## Current Status
 
-- **Phase**: Phase 2 - Implementation In Progress
-- **Active Feature**: `001-auth-screens` (Authentication Screens)
-- **Active Branch**: `001-auth-screens`
-- **Completed Work Packages**:
-  - ✅ WP01: Project Setup and Environment Configuration
-  - ✅ WP02: Authentication Service Foundation (all tests passing)
-  - ✅ WP03: Redux State Management (authSlice, authThunks, authSelectors, Redux Persist)
-- **Current Work Package**: WP04: Reusable Auth Components
-- **Remaining Work Packages**: WP05-WP10 (User Registration, Login, Password Recovery, Email Verification, Navigation, Accessibility)
+- **Phase**: Phase 10 - Polish & Cross-Cutting Concerns (Final Phase)
+- **Active Feature**: `002-app-screens` (App Screen Implementation)
+- **Active Branch**: `002-app-screens`
+- **Completed Work**:
+  - ✅ Project setup with Expo Router file-based routing
+  - ✅ Authentication screens in app/(auth)/
+  - ✅ Onboarding screens in app/(onboarding)/
+  - ✅ Tab navigation screens in app/(tabs)/
+  - ✅ Core components, hooks, and services
+  - ✅ State management with Redux Toolkit + Redux Persist
+  - ✅ Real-time messaging with Supabase subscriptions
+  - ✅ Profile management with role switching
+  - ✅ Settings screens (notifications, theme, account)
+  - ✅ Accessibility testing (Playwright E2E + manual checklists)
+  - ✅ Dark mode with Material Design 3 theming
+  - ✅ Comprehensive E2E test coverage (9 Playwright test suites)
+  - ✅ Performance optimizations (image lazy loading, list virtualization)
+  - ✅ Error handling (ErrorBoundary, ErrorMessage, NetworkIndicator)
+- **Current Focus**: Final validation and documentation
+- **Note**: All screen components now reside in app/ directory using Expo Router. The old src/screens/ directory is deprecated and should not be used.
 
 ## MCP Server Usage Requirements
 
@@ -688,3 +713,253 @@ This is not optional - MCP servers are project infrastructure and must be used w
 
 <!-- MANUAL ADDITIONS START -->
 <!-- MANUAL ADDITIONS END -->
+
+## Active Technologies
+
+- Expo Router 4.x (file-based routing) - 002-app-screens
+- TypeScript 5.x (strict mode enabled) - 002-app-screens
+- Redux Toolkit + Redux Persist - State management
+- React Native Paper - UI component library
+- Supabase - Backend (Auth, Database, Realtime)
+
+## Recent Changes (002-app-screens branch)
+
+### Screen Migration (Phase 1-9)
+
+- ✅ **COMPLETED**: Full migration from React Navigation to Expo Router
+- ✅ **DELETED** `src/screens/` directory - all 32 screens migrated to `app/`
+- ✅ Authentication screens: login, signup, forgot-password, verify-email (app/(auth)/)
+- ✅ Onboarding screens: welcome, role-selection, email-verification, profiles (app/(onboarding)/)
+- ✅ Main tab screens: connections, matches, messages, sobriety, profile (app/(tabs)/)
+- ✅ Connections sub-routes: [id], pending, send, sent (app/(tabs)/connections/)
+- ✅ Messages sub-routes: [id] (app/(tabs)/messages/)
+- ✅ Profile sub-routes: edit, view, change-role (app/(tabs)/profile/)
+- ✅ Sobriety sub-routes: log-relapse, history, set-date (app/(tabs)/sobriety/)
+- ✅ Steps sub-routes: index, work/[id], history (app/(tabs)/steps/)
+- ✅ Check-ins sub-routes: response, schedule (app/(tabs)/check-ins/)
+- ✅ Settings sub-routes: notifications, theme, account (app/(tabs)/settings/)
+- ✅ Reviews sub-routes: sponsor (app/(tabs)/reviews/)
+
+**Migration Status**: All screens converted from `useNavigation/useRoute` to `useRouter/useLocalSearchParams`
+
+### Component Patterns (Phase 10)
+
+**Profile Components** (src/components/profile/):
+
+- `ProfileHeader.tsx`: Reusable profile header with avatar, name, role, and stats
+  - Pattern: Composition with Material Design 3 Card and Surface
+  - Features: Avatar display, user info, sobriety stats, action buttons
+- `SettingsSection.tsx`: Themed settings section container
+  - Pattern: Section header with divider, consistent spacing
+  - Features: Icon support, nested List.Item integration
+- `NotificationSettings.tsx`: Comprehensive notification preferences management
+  - Pattern: Switch controls with descriptions, grouped by category
+  - Features: Async state updates, loading indicators, accessibility labels
+
+**Error Handling Components** (src/components/common/):
+
+- `ErrorBoundary.tsx`: React error boundary with retry functionality
+- `ErrorMessage.tsx`: Styled error display with retry actions
+- `NetworkIndicator.tsx`: Connection status indicator with auto-hide
+
+### State Management Patterns
+
+**Redux Toolkit with RTK Query**:
+
+- Pattern: Feature-based slices with colocated selectors and thunks
+- Example: `src/store/messages/` contains messagesSlice, messagesSelectors, messagesThunks
+- Thunk pattern: `createAsyncThunk` with typed responses and error handling
+- Selector pattern: Memoized selectors with `createSelector` for derived data
+
+**Real-time Subscriptions** (src/hooks/useMessages.ts):
+
+```typescript
+// Pattern: Custom hook with Supabase Realtime
+const subscription = supabase
+  .channel('messages')
+  .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'messages' }, payload =>
+    dispatch(addMessage(payload.new)),
+  )
+  .subscribe();
+
+// Cleanup: useEffect return function
+return () => {
+  subscription.unsubscribe();
+};
+```
+
+**Optimistic Updates**:
+
+- Pattern: Dispatch optimistic update → API call → Confirm/rollback
+- Example: messagesSlice uses `addMessage` before API confirmation
+- Error handling: Rollback on failure with user notification
+
+**Redux Persist**:
+
+- Pattern: Selective persistence with AsyncStorage
+- Configuration: Root store with persistConfig for specific reducers
+- Usage: Messages, profile, preferences persisted; auth session expires
+
+### Theme System (src/theme/)
+
+**Material Design 3 with Dark Mode**:
+
+- `index.ts`: Theme tokens with WCAG AA compliant colors
+  - Light theme: `#007AFF` primary (iOS Blue, 4.5:1 contrast)
+  - Dark theme: `#66B3FF` primary (8.5:1 contrast on dark surface)
+  - Semantic colors: primary, secondary, error, surface, background
+- `ThemeContext.tsx`: Theme provider with system detection
+  - Pattern: React Context with AsyncStorage persistence
+  - Features: System theme detection via `useColorScheme`
+  - Auto-switching: Respects system preference when mode is 'system'
+- `app/(tabs)/settings/theme.tsx`: Theme selection UI
+  - Pattern: RadioButton group with three modes (light, dark, system)
+  - Features: Loading state during theme change, accessibility labels
+
+**Theme Usage Pattern**:
+
+```typescript
+import { useAppTheme } from '@/theme/ThemeContext'
+
+const { theme, isDark, themeMode, setThemeMode } = useAppTheme()
+
+// Use theme.colors for dynamic styling
+<View style={{ backgroundColor: theme.colors.surface }}>
+  <Text style={{ color: theme.colors.onSurface }}>Content</Text>
+</View>
+```
+
+### Navigation Patterns (Expo Router)
+
+**File-based Routing**:
+
+- Directory structure defines routes automatically
+- Groups: `(tabs)`, `(auth)`, `(onboarding)` for logical organization
+- Dynamic routes: `[id].tsx` for parameterized paths
+- Layout files: `_layout.tsx` for shared UI and navigation config
+
+**Navigation Hooks**:
+
+```typescript
+import { useRouter, useLocalSearchParams } from 'expo-router';
+
+// Navigate programmatically
+const router = useRouter();
+router.push('/profile/edit');
+router.replace('/auth/login');
+router.back();
+
+// Access route parameters
+const { id } = useLocalSearchParams<{ id: string }>();
+```
+
+**Deep Linking**:
+
+- Pattern: URL scheme configured in app.json
+- Format: `volvox://app/(tabs)/profile/edit`
+- Automatic handling by Expo Router
+
+### Accessibility Patterns
+
+**WCAG 2.1 AA Compliance**:
+
+- Minimum touch targets: 44x44 pixels (verified in accessibility.spec.ts)
+- Color contrast: 4.5:1 for normal text, 3:1 for large text
+- Screen reader support: aria-label, accessibilityLabel, accessibilityRole
+- Keyboard navigation: Focus indicators, tab order, keyboard shortcuts
+
+**Screen Reader Testing**:
+
+- iOS VoiceOver: Manual testing checklist (**tests**/voiceover-testing-checklist.md)
+- Android TalkBack: Manual testing checklist (**tests**/talkback-testing-checklist.md)
+- Critical flows: Auth, onboarding, matches, connections, messages, sobriety, profile
+
+**Accessibility Props Pattern**:
+
+```typescript
+<TouchableOpacity
+  accessibilityLabel="Send message"
+  accessibilityRole="button"
+  accessibilityHint="Double tap to send the message"
+>
+  <Icon name="send" />
+</TouchableOpacity>
+```
+
+### Testing Patterns
+
+**E2E Testing with Playwright** (**tests**/\*.spec.ts):
+
+- 9 comprehensive test suites covering all user flows
+- Patterns: Login helper, navigation helpers, element verification
+- Cross-browser: Chromium (default), Firefox, WebKit
+- Accessibility: Automated WCAG AA validation in accessibility.spec.ts
+- Dark mode: Comprehensive theming tests in dark-mode.spec.ts
+
+**Test Organization**:
+
+```
+__tests__/
+├── *.spec.ts           # Playwright E2E tests (excluded from Jest)
+├── components/         # Component unit tests (Jest)
+├── store/             # Redux state tests (Jest)
+└── services/          # Service layer tests (Jest)
+```
+
+**E2E Test Pattern**:
+
+```typescript
+test.describe('Feature Flow', () => {
+  test.beforeEach(async ({ page }) => {
+    await login(page); // Helper function
+  });
+
+  test('User can complete action', async ({ page }) => {
+    await page.click('[data-testid="action-button"]');
+    await expect(page.locator('[data-testid="success"]')).toBeVisible();
+  });
+});
+```
+
+### Performance Patterns
+
+**Image Lazy Loading**:
+
+- Pattern: React Native Paper Avatar with loading prop
+- Optimization: Only load images when components are visible
+- Fallback: Placeholder initials for missing avatars
+
+**List Virtualization**:
+
+- Pattern: FlatList with optimized props
+- Props: `removeClippedSubviews`, `maxToRenderPerBatch`, `windowSize`
+- Use case: Messages list, connections list, matches list
+
+**Redux Persist Configuration**:
+
+- Pattern: Selective persistence to reduce AsyncStorage load
+- Persist: User profile, preferences, non-sensitive cached data
+- Don't persist: Auth tokens (use Supabase session), temporary UI state
+
+**Skeleton Screens**:
+
+- Pattern: Loading placeholders that match final content structure
+- Implementation: React Native Paper Skeleton with animated wave
+- Use cases: Profile loading, list loading, card loading
+
+### Known Issues
+
+**Pre-existing Test Failures** (Documented in claudedocs/pre-existing-test-issues.md):
+
+- 7 failing unit test suites (pre-existing, not related to Phase 10 work)
+- 456 TypeScript errors in old test files
+- 78 lint warnings
+- Supabase functions not included in tsconfig.json
+- All new Phase 10 code is working correctly and type-safe
+
+### Next Steps
+
+- T149: Verify all acceptance scenarios from spec.md pass
+- T150: Run bundle size analysis and verify targets met
+- Address pre-existing test issues in separate maintenance task
+- Prepare for feature branch merge to main

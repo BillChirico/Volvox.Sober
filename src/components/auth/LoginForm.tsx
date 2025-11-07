@@ -143,7 +143,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ onSuccess, onForgotPassword }) =>
         setResendMessage('Verification email sent! Please check your inbox.');
         setShowResendVerification(false);
       }
-    } catch (err) {
+    } catch (_err) {
       setResendMessage('Failed to resend verification email');
     } finally {
       setResendLoading(false);

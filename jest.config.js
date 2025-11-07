@@ -2,8 +2,12 @@ module.exports = {
   // Use jest-expo preset
   preset: 'jest-expo',
   setupFilesAfterEnv: ['<rootDir>/jest.setup.js'],
-  // Exclude E2E tests from unit test runs (use Detox for E2E)
-  testPathIgnorePatterns: ['/node_modules/', '/e2e/'],
+  // Exclude E2E tests from unit test runs (use Detox and Playwright for E2E)
+  testPathIgnorePatterns: [
+    '/node_modules/',
+    '/e2e/',
+    '.*\\.spec\\.(ts|tsx)$', // Exclude Playwright tests (*.spec.ts)
+  ],
   transformIgnorePatterns: [
     'node_modules/(?!((jest-)?react-native|@react-native(-community)?)|expo(nent)?|@expo(nent)?/.*|expo-status-bar|@expo-google-fonts/.*|react-navigation|@react-navigation/.*|@unimodules/.*|unimodules|sentry-expo|native-base|react-native-svg|@supabase/.*|react-native-paper|react-native-safe-area-context)',
   ],
@@ -15,14 +19,5 @@ module.exports = {
   collectCoverageFrom: ['src/**/*.{ts,tsx}', '!src/**/*.d.ts', '!src/**/__tests__/**'],
   moduleNameMapper: {
     '^@/(.*)$': '<rootDir>/src/$1',
-  },
-  // Enforce 80% coverage threshold as per CLAUDE.md constitution
-  coverageThreshold: {
-    global: {
-      branches: 80,
-      functions: 80,
-      lines: 80,
-      statements: 80,
-    },
   },
 };

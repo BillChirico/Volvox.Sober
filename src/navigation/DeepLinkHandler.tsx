@@ -16,7 +16,7 @@ export const DeepLinkHandler: React.FC<DeepLinkHandlerProps> = ({
   onCheckInNotification,
   onMessageNotification,
 }) => {
-  const navigation = useNavigation();
+  const _navigation = useNavigation();
 
   useEffect(() => {
     // Handle deep links when app is already open
@@ -38,7 +38,7 @@ export const DeepLinkHandler: React.FC<DeepLinkHandlerProps> = ({
 
   const handleDeepLink = (url: string) => {
     try {
-      const { hostname, pathname, searchParams } = new URL(url);
+      const { hostname: _hostname, pathname, searchParams } = new URL(url);
 
       // Example URLs:
       // volvoxsober://check-in?id=uuid

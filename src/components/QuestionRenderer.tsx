@@ -18,7 +18,7 @@ export const QuestionRenderer: React.FC<QuestionRendererProps> = ({
   value,
   onChange,
 }) => {
-  const theme = useTheme();
+  const _theme = useTheme();
   const [bulletItems, setBulletItems] = useState<string[]>(() => {
     try {
       return value ? JSON.parse(value) : [];

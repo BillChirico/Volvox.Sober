@@ -5,16 +5,27 @@ node_modules/
 # Build outputs
 dist/
 build/
+web-build/
 *.tsbuildinfo
 
 # Generated files
 .expo/
 .expo-shared/
+expo-env.d.ts
+*.d.ts
+
+# Native builds
 ios/
+ios/build/
+ios/Pods/
 android/
+android/app/build/
+android/.gradle/
+android/build/
 
 # Coverage
 coverage/
+.nyc_output/
 
 # Logs
 *.log
@@ -23,6 +34,18 @@ npm-debug.log*
 # IDE
 .vscode/
 .idea/
+
+# Serena
+.serena/
+
+# Lock files
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+
+# Markdown (keep user docs formatted)
+!README.md
+!CLAUDE.md
 
 # Problematic YAML files (Prettier parser errors)
 specs/001-auth-screens/contracts/auth.yaml

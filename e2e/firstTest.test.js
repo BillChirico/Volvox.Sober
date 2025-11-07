@@ -20,7 +20,7 @@ describe('Volvox.Sober App - Initial E2E Tests', () => {
     // This will depend on whether user is authenticated
     try {
       await expect(element(by.id('welcome-screen'))).toBeVisible();
-    } catch (e) {
+    } catch (_e) {
       // If not welcome screen, should show login
       await expect(element(by.id('login-screen'))).toBeVisible();
     }
@@ -31,7 +31,7 @@ describe('Volvox.Sober App - Initial E2E Tests', () => {
     try {
       await element(by.id('login-button')).tap();
       await expect(element(by.id('login-screen'))).toBeVisible();
-    } catch (e) {
+    } catch (_e) {
       // Already on login screen or navigation not available
       console.log('Login navigation test skipped - element not found');
     }
@@ -40,7 +40,7 @@ describe('Volvox.Sober App - Initial E2E Tests', () => {
   it('should display email input field on login screen', async () => {
     try {
       await expect(element(by.id('email-input'))).toBeVisible();
-    } catch (e) {
+    } catch (_e) {
       console.log('Email input test skipped - not on login screen');
     }
   });
@@ -48,7 +48,7 @@ describe('Volvox.Sober App - Initial E2E Tests', () => {
   it('should display password input field on login screen', async () => {
     try {
       await expect(element(by.id('password-input'))).toBeVisible();
-    } catch (e) {
+    } catch (_e) {
       console.log('Password input test skipped - not on login screen');
     }
   });

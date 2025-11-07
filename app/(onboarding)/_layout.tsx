@@ -26,6 +26,13 @@ export default function OnboardingLayout() {
         }}
       />
       <Stack.Screen
+        name="role-selection"
+        options={{
+          title: 'Choose Your Role',
+          headerBackTitle: 'Back',
+        }}
+      />
+      <Stack.Screen
         name="email-verification"
         options={{
           title: 'Verify Email',

@@ -2,7 +2,7 @@ import React, { createContext, useContext, useState, useEffect, ReactNode } from
 import { useColorScheme } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { MD3Theme } from 'react-native-paper';
-import { lightTheme, darkTheme, ThemeMode, getTheme } from './index';
+import { ThemeMode, getTheme } from './index';
 
 const THEME_STORAGE_KEY = '@volvox_sober:theme_preference';
 

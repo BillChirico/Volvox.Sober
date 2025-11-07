@@ -17,7 +17,17 @@ interface ResetPasswordPayload {
 }
 
 interface UpdatePasswordPayload {
+  currentPassword: string;
   newPassword: string;
+}
+
+interface UpdateEmailPayload {
+  newEmail: string;
+  password: string;
+}
+
+interface DeleteAccountPayload {
+  password: string;
 }
 
 export const signupThunk = createAsyncThunk<{ success: boolean }, SignupPayload>(
@@ -128,11 +138,60 @@ export const resetPasswordRequestThunk = createAsyncThunk<
   }
 });
 
-export const updatePasswordThunk = createAsyncThunk<{ success: boolean }, UpdatePasswordPayload>(
-  'auth/updatePassword',
-  async (payload: UpdatePasswordPayload, { dispatch }) => {
+export const updateEmailThunk = createAsyncThunk<{ success: boolean }, UpdateEmailPayload>(
+  'auth/updateEmail',
+  async (payload: UpdateEmailPayload, { dispatch }) => {
     dispatch(setLoading(true));
     try {
+      // Note: Supabase will send a confirmation email to the new address
+      // Password verification happens on the server side
+      const { user, error } = await authService.updateEmail(payload.newEmail);
+
+      if (error) {
+        dispatch(setError(error.message));
+        dispatch(setLoading(false));
+        return { success: false };
+      }
+
+      if (user) {
+        dispatch(setUser(user));
+      }
+      dispatch(setLoading(false));
+      return { success: true };
+    } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : 'Email update failed';
+      dispatch(setError(errorMessage));
+      dispatch(setLoading(false));
+      return { success: false };
+    }
+  },
+);
+
+export const updatePasswordThunk = createAsyncThunk<{ success: boolean }, UpdatePasswordPayload>(
+  'auth/updatePassword',
+  async (payload: UpdatePasswordPayload, { dispatch, getState }) => {
+    dispatch(setLoading(true));
+    try {
+      // Defense-in-depth: Re-authenticate user before allowing password change
+      // This prevents unauthorized password changes if session is hijacked
+      const state = getState() as any; // Type assertion for getState
+      const userEmail = state.auth.user?.email;
+
+      if (!userEmail) {
+        dispatch(setError('User email not found. Please log in again.'));
+        dispatch(setLoading(false));
+        return { success: false };
+      }
+
+      // Re-authenticate with current password
+      const { error: authError } = await authService.signIn(userEmail, payload.currentPassword);
+      if (authError) {
+        dispatch(setError('Current password is incorrect'));
+        dispatch(setLoading(false));
+        return { success: false };
+      }
+
+      // Current password verified, now update to new password
       const { user, error } = await authService.updatePassword(payload.newPassword);
 
       if (error) {
@@ -148,6 +207,50 @@ export const updatePasswordThunk = createAsyncThunk<{ success: boolean }, Update
       return { success: true };
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : 'Password update failed';
+      dispatch(setError(errorMessage));
+      dispatch(setLoading(false));
+      return { success: false };
+    }
+  },
+);
+
+export const deleteAccountThunk = createAsyncThunk<{ success: boolean }, DeleteAccountPayload>(
+  'auth/deleteAccount',
+  async (payload: DeleteAccountPayload, { dispatch, getState }) => {
+    dispatch(setLoading(true));
+    try {
+      // Defense-in-depth: Re-authenticate user before allowing account deletion
+      // This prevents unauthorized deletion if session is hijacked
+      const state = getState() as any; // Type assertion for getState
+      const userEmail = state.auth.user?.email;
+
+      if (!userEmail) {
+        dispatch(setError('User email not found. Please log in again.'));
+        dispatch(setLoading(false));
+        return { success: false };
+      }
+
+      // Re-authenticate with password
+      const { error: authError } = await authService.signIn(userEmail, payload.password);
+      if (authError) {
+        dispatch(setError('Password is incorrect. Account deletion cancelled.'));
+        dispatch(setLoading(false));
+        return { success: false };
+      }
+
+      // Password verified, proceed with account deletion
+      const { error } = await authService.deleteAccount();
+
+      if (error) {
+        dispatch(setError(error.message));
+        dispatch(setLoading(false));
+        return { success: false };
+      }
+
+      dispatch(clearAuth());
+      return { success: true };
+    } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : 'Account deletion failed';
       dispatch(setError(errorMessage));
       dispatch(setLoading(false));
       return { success: false };

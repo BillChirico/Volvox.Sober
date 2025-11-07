@@ -21,7 +21,7 @@ A person in recovery wants to join Volvox.Sober to connect with sponsors or spon
 2. **Given** I am a new user on the signup screen, **When** I enter an email that's already registered, **Then** I see an error message "This email is already registered. Please login instead."
 3. **Given** I am a new user on the signup screen, **When** I enter a weak password (less than 8 characters), **Then** I see an error message explaining password requirements
 4. **Given** I am a new user on the signup screen, **When** I enter an invalid email format, **Then** I see an error "Please enter a valid email address"
-5. **Given** I have completed signup, **When** I click the verification link in my email, **Then** my account becomes active and I am redirected to the app
+5. **Given** I have completed signup, **When** I click the verification link in my email, **Then** my email is marked as verified (users can login immediately after signup without verification)
 
 ---
 
@@ -38,7 +38,7 @@ A registered user wants to access their Volvox.Sober account to view connections
 1. **Given** I am a registered user with verified email, **When** I enter correct email and password on login screen, **Then** I am authenticated and redirected to the main app dashboard
 2. **Given** I am a registered user on the login screen, **When** I enter correct email but wrong password, **Then** I see an error message "Incorrect email or password"
 3. **Given** I am a registered user on the login screen, **When** I enter an unregistered email, **Then** I see an error message "No account found with this email"
-4. **Given** I am a registered user with unverified email, **When** I try to login, **Then** I see a message "Please verify your email address before logging in" with option to resend verification email
+4. **Given** I am a registered user with unverified email, **When** I try to login, **Then** I can successfully login and access the app (email verification is non-blocking for better UX)
 5. **Given** I have successfully logged in, **When** I close and reopen the app, **Then** I remain logged in (session persistence)
 
 ---
@@ -96,7 +96,7 @@ Users need to easily move between login, signup, and password recovery screens b
 - **FR-002**: System MUST validate email addresses are in proper format (user@domain.com)
 - **FR-003**: System MUST enforce password requirements: minimum 8 characters, at least one letter and one number
 - **FR-004**: System MUST send verification emails to newly registered users
-- **FR-005**: System MUST prevent unverified users from accessing the main application
+- **FR-005**: System MUST send verification emails to users but MUST allow immediate login without email confirmation (non-blocking verification for better UX)
 - **FR-006**: System MUST authenticate users with correct email and password credentials
 - **FR-007**: System MUST maintain user sessions across app restarts (persistent authentication)
 - **FR-008**: System MUST provide password reset functionality via email

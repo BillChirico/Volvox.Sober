@@ -86,7 +86,7 @@ npx expo prebuild
 
 1. Go to [Firebase Console](https://console.firebase.google.com)
 2. Click "Add Project"
-3. Enter project name: `Volvox Sober Recovery`
+3. Enter project name: `Volvox.Sober`
 4. Accept terms and click "Create Project"
 
 ### 2. Register iOS App
