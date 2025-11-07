@@ -46,6 +46,44 @@ class ProfileService {
       console.log('[ProfileService] Creating profile for userId:', userId);
       console.log('[ProfileService] Profile data received:', JSON.stringify(profileData, null, 2));
 
+      // CRITICAL: Verify auth session before attempting RLS-protected operation
+      // Try multiple times with delays to handle session persistence timing
+      let session = null;
+      let sessionError = null;
+      const maxRetries = 3;
+
+      for (let attempt = 0; attempt < maxRetries; attempt++) {
+        const result = await supabaseClient.auth.getSession();
+        session = result.data.session;
+        sessionError = result.error;
+
+        console.log(`[ProfileService] Auth session check (attempt ${attempt + 1}/${maxRetries}):`, {
+          hasSession: !!session,
+          sessionUserId: session?.user?.id,
+          matchesUserId: session?.user?.id === userId,
+          error: sessionError,
+        });
+
+        if (session && session.user.id === userId) {
+          break; // Session found and valid
+        }
+
+        if (attempt < maxRetries - 1) {
+          // Wait before retrying (session might be persisting to SecureStore)
+          await new Promise(resolve => setTimeout(resolve, 500));
+        }
+      }
+
+      if (!session || session.user.id !== userId) {
+        const errorMsg = !session
+          ? 'No active auth session after ' +
+            maxRetries +
+            ' attempts - user must be logged in to create profile'
+          : `Session user ID (${session.user.id}) does not match profile user ID (${userId})`;
+        console.error('[ProfileService] Session validation failed:', errorMsg);
+        throw new Error(errorMsg);
+      }
+
       const completionPercentage = this.calculateCompletionPercentage(profileData);
 
       const insertData: TablesInsert<'profiles'> = {
