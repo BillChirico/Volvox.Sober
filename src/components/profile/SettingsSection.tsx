@@ -59,6 +59,7 @@ export const SettingsSection: React.FC<SettingsSectionProps> = ({
     return (
       <View key={item.key}>
         <TouchableOpacity
+          testID={`${item.key}-button`}
           style={[styles.itemContainer, item.disabled && styles.itemDisabled]}
           onPress={item.type === 'action' || item.type === 'navigation' ? item.onPress : undefined}
           disabled={item.disabled || item.type === 'toggle'}

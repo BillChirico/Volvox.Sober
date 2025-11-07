@@ -374,7 +374,11 @@ test.describe('Navigation Flow', () => {
   test('T146.13: Tab bar hidden in auth and onboarding flows', async ({ page }) => {
     // Logout
     await page.click('[data-testid="tab-profile"]');
-    await page.click('[data-testid="profile-menu"]');
+    await page.waitForURL(/.*\/profile/);
+
+    // Scroll to bottom to ensure logout button is visible
+    await page.evaluate(() => window.scrollTo(0, document.body.scrollHeight));
+
     await page.click('[data-testid="logout-button"]');
     await page.waitForURL(/.*\/login/);
 
