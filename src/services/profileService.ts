@@ -43,6 +43,9 @@ class ProfileService {
     profileData: ProfileFormData
   ): Promise<{ data: Profile | null; error: Error | null }> {
     try {
+      console.log('[ProfileService] Creating profile for userId:', userId);
+      console.log('[ProfileService] Profile data received:', JSON.stringify(profileData, null, 2));
+
       const completionPercentage = this.calculateCompletionPercentage(profileData)
 
       const insertData: TablesInsert<'profiles'> = {
@@ -51,7 +54,8 @@ class ProfileService {
         bio: profileData.bio,
         role: profileData.role,
         recovery_program: profileData.recovery_program,
-        sobriety_start_date: profileData.sobriety_start_date,
+        // Convert empty string to undefined for date field (PostgreSQL treats undefined as NULL)
+        sobriety_start_date: profileData.sobriety_start_date || undefined,
         city: profileData.city,
         state: profileData.state,
         country: profileData.country || 'United States',
@@ -60,16 +64,23 @@ class ProfileService {
         profile_completion_percentage: completionPercentage,
       }
 
+      console.log('[ProfileService] Insert data:', JSON.stringify(insertData, null, 2));
+
       const { data, error } = await supabaseClient
         .from('profiles')
         .insert(insertData)
         .select()
         .single()
 
-      if (error) throw error
+      if (error) {
+        console.error('[ProfileService] Supabase insert error:', error);
+        throw error;
+      }
 
+      console.log('[ProfileService] Profile created successfully:', data);
       return { data, error: null }
     } catch (error) {
+      console.error('[ProfileService] Caught error:', error);
       return { data: null, error: error as Error }
     }
   }
@@ -108,8 +119,14 @@ class ProfileService {
 
       const completionPercentage = this.calculateCompletionPercentage(mergedProfile)
 
+      // Sanitize date field: convert empty string to undefined (PostgreSQL treats undefined as NULL)
+      const sanitizedUpdates = { ...updates }
+      if (sanitizedUpdates.sobriety_start_date === '') {
+        sanitizedUpdates.sobriety_start_date = undefined
+      }
+
       const updateData: TablesUpdate<'profiles'> = {
-        ...updates,
+        ...sanitizedUpdates,
         profile_completion_percentage: completionPercentage,
       }
 
