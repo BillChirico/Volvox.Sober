@@ -11,7 +11,8 @@ export const selectAuthError = (state: RootState) => state.auth?.error ?? null;
 export const selectIsAuthenticated = (state: RootState) => {
   const session = state.auth?.session;
   const user = state.auth?.user;
-  return !!session && !!user && !!user.email_confirmed_at;
+  // Email verification is non-blocking - users can be authenticated without verification
+  return !!session && !!user;
 };
 
 export const selectIsEmailVerified = (state: RootState) => {

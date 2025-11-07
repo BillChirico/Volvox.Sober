@@ -22,9 +22,9 @@ export default function LoginScreen() {
   const router = useRouter();
 
   const handleLoginSuccess = () => {
-    // Navigate to main app - replace navigation stack
+    // Navigate to index route which handles onboarding/profile checks
     // Email verification is non-blocking (users can access app without verification)
-    router.replace('/(tabs)/sobriety');
+    router.replace('/');
   };
 
   const handleForgotPassword = () => {
