@@ -1,45 +1,16 @@
-import { createClient, AuthError, Session, User, SupabaseClient } from '@supabase/supabase-js';
+import { AuthError, Session, User, SupabaseClient } from '@supabase/supabase-js';
 import Constants from 'expo-constants';
+import supabaseClient from './supabase';
 
-// Initialize Supabase client lazily to support testing
-let supabaseInstance: SupabaseClient | null = null;
-
+// Use the shared Supabase client instance from ./supabase
+// This ensures auth session is shared across all services
 function getSupabase(): SupabaseClient {
-  if (supabaseInstance) {
-    return supabaseInstance;
-  }
-
-  const supabaseUrl =
-    Constants.expoConfig?.extra?.EXPO_PUBLIC_SUPABASE_URL || process.env.EXPO_PUBLIC_SUPABASE_URL;
-  const supabaseAnonKey =
-    Constants.expoConfig?.extra?.EXPO_PUBLIC_SUPABASE_ANON_KEY ||
-    process.env.EXPO_PUBLIC_SUPABASE_ANON_KEY;
-
-  // Validate existence
-  if (!supabaseUrl || !supabaseAnonKey) {
-    throw new Error('Missing Supabase environment variables. Please check your .env file.');
-  }
-
-  // Validate URL format
-  try {
-    new URL(supabaseUrl);
-  } catch {
-    throw new Error('Invalid SUPABASE_URL format - must be a valid URL');
-  }
-
-  // Validate anon key format (should be JWT-like)
-  const jwtPattern = /^[A-Za-z0-9-_=]+\.[A-Za-z0-9-_=]+\.?[A-Za-z0-9-_.+/=]*$/;
-  if (!jwtPattern.test(supabaseAnonKey)) {
-    throw new Error('Invalid SUPABASE_ANON_KEY format - must be a valid JWT token');
-  }
-
-  supabaseInstance = createClient(supabaseUrl, supabaseAnonKey);
-  return supabaseInstance;
+  return supabaseClient;
 }
 
-// For testing: allow setting a mock Supabase instance
-export function __setSupabaseInstance(instance: SupabaseClient | null): void {
-  supabaseInstance = instance;
+// For testing: allow setting a mock Supabase instance (not implemented with shared client)
+export function __setSupabaseInstance(_instance: SupabaseClient | null): void {
+  console.warn('__setSupabaseInstance is deprecated - use shared supabase client for testing');
 }
 
 export interface SignUpParams {

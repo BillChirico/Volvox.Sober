@@ -55,14 +55,14 @@ export const ProfileForm: React.FC<ProfileFormProps> = ({
   const [showDatePicker, setShowDatePicker] = useState(false);
 
   const updateField = (field: keyof ProfileFormData, value: any) => {
-    setFormData((prev) => ({ ...prev, [field]: value }));
+    setFormData(prev => ({ ...prev, [field]: value }));
   };
 
   const toggleAvailability = (option: AvailabilityOption) => {
-    setFormData((prev) => {
+    setFormData(prev => {
       const current = prev.availability || [];
       const updated = current.includes(option)
-        ? current.filter((a) => a !== option)
+        ? current.filter(a => a !== option)
         : [...current, option];
       return { ...prev, availability: updated };
     });
@@ -114,30 +114,25 @@ export const ProfileForm: React.FC<ProfileFormProps> = ({
     <ScrollView
       style={[styles.container, { backgroundColor: theme.colors.background }]}
       contentContainerStyle={styles.contentContainer}
-      keyboardShouldPersistTaps="handled"
-    >
-      <Text
-        variant="headlineSmall"
-        style={[styles.title, { color: theme.colors.onSurface }]}
-      >
+      keyboardShouldPersistTaps="handled">
+      <Text variant="headlineSmall" style={[styles.title, { color: theme.colors.onSurface }]}>
         Complete Your Profile
       </Text>
       <Text
         variant="bodyMedium"
-        style={[styles.subtitle, { color: theme.colors.onSurfaceVariant }]}
-      >
+        style={[styles.subtitle, { color: theme.colors.onSurfaceVariant }]}>
         {role === 'sponsor'
           ? 'Help others find you by sharing your experience'
           : role === 'sponsee'
-          ? 'Tell potential sponsors about your recovery journey'
-          : 'Share your story to connect with the right people'}
+            ? 'Tell potential sponsors about your recovery journey'
+            : 'Share your story to connect with the right people'}
       </Text>
 
       {/* Name - Required */}
       <TextInput
         label="Name *"
         value={formData.name}
-        onChangeText={(text) => updateField('name', text)}
+        onChangeText={text => updateField('name', text)}
         mode="outlined"
         error={!!errors.name}
         disabled={isSubmitting}
@@ -154,7 +149,7 @@ export const ProfileForm: React.FC<ProfileFormProps> = ({
       <TextInput
         label="Bio (Optional)"
         value={formData.bio}
-        onChangeText={(text) => updateField('bio', text)}
+        onChangeText={text => updateField('bio', text)}
         mode="outlined"
         multiline
         numberOfLines={4}
@@ -171,14 +166,11 @@ export const ProfileForm: React.FC<ProfileFormProps> = ({
       />
 
       {/* Recovery Program - Required */}
-      <Text
-        variant="titleMedium"
-        style={[styles.sectionTitle, { color: theme.colors.onSurface }]}
-      >
+      <Text variant="titleMedium" style={[styles.sectionTitle, { color: theme.colors.onSurface }]}>
         Recovery Program *
       </Text>
       <View style={styles.chipContainer}>
-        {RECOVERY_PROGRAMS.map((program) => (
+        {RECOVERY_PROGRAMS.map(program => (
           <Chip
             key={program}
             selected={formData.recovery_program === program}
@@ -188,23 +180,17 @@ export const ProfileForm: React.FC<ProfileFormProps> = ({
             accessibilityLabel={`Select ${program}`}
             accessibilityState={{
               selected: formData.recovery_program === program,
-            }}
-          >
+            }}>
             {program}
           </Chip>
         ))}
       </View>
-      {errors.recovery_program && (
-        <HelperText type="error">{errors.recovery_program}</HelperText>
-      )}
+      {errors.recovery_program && <HelperText type="error">{errors.recovery_program}</HelperText>}
 
       {/* Sobriety Start Date - Optional for sponsors, encouraged for sponsees */}
       {(role === 'sponsee' || role === 'both') && (
         <>
-          <Text
-            variant="labelLarge"
-            style={[styles.dateLabel, { color: theme.colors.onSurface }]}
-          >
+          <Text variant="labelLarge" style={[styles.dateLabel, { color: theme.colors.onSurface }]}>
             {role === 'sponsee' ? 'Sobriety Start Date *' : 'Sobriety Start Date (Optional)'}
           </Text>
           <Button
@@ -215,8 +201,7 @@ export const ProfileForm: React.FC<ProfileFormProps> = ({
             contentStyle={styles.dateButtonContent}
             icon="calendar"
             accessibilityLabel="Select your sobriety start date"
-            accessibilityHint="Opens a date picker calendar"
-          >
+            accessibilityHint="Opens a date picker calendar">
             {formatDateForDisplay(formData.sobriety_start_date || '')}
           </Button>
           {errors.sobriety_start_date && (
@@ -226,17 +211,14 @@ export const ProfileForm: React.FC<ProfileFormProps> = ({
       )}
 
       {/* Location - Optional */}
-      <Text
-        variant="titleMedium"
-        style={[styles.sectionTitle, { color: theme.colors.onSurface }]}
-      >
+      <Text variant="titleMedium" style={[styles.sectionTitle, { color: theme.colors.onSurface }]}>
         Location (Optional)
       </Text>
       <View style={styles.row}>
         <TextInput
           label="City"
           value={formData.city}
-          onChangeText={(text) => updateField('city', text)}
+          onChangeText={text => updateField('city', text)}
           mode="outlined"
           error={!!errors.city}
           disabled={isSubmitting}
@@ -247,7 +229,7 @@ export const ProfileForm: React.FC<ProfileFormProps> = ({
         <TextInput
           label="State"
           value={formData.state}
-          onChangeText={(text) => updateField('state', text)}
+          onChangeText={text => updateField('state', text)}
           mode="outlined"
           error={!!errors.state}
           disabled={isSubmitting}
@@ -258,20 +240,14 @@ export const ProfileForm: React.FC<ProfileFormProps> = ({
       </View>
 
       {/* Availability - Required */}
-      <Text
-        variant="titleMedium"
-        style={[styles.sectionTitle, { color: theme.colors.onSurface }]}
-      >
+      <Text variant="titleMedium" style={[styles.sectionTitle, { color: theme.colors.onSurface }]}>
         Availability *
       </Text>
-      <Text
-        variant="bodySmall"
-        style={[styles.hint, { color: theme.colors.onSurfaceVariant }]}
-      >
+      <Text variant="bodySmall" style={[styles.hint, { color: theme.colors.onSurfaceVariant }]}>
         When are you typically available?
       </Text>
       <View style={styles.chipContainer}>
-        {AVAILABILITY_OPTIONS.map((option) => (
+        {AVAILABILITY_OPTIONS.map(option => (
           <Chip
             key={option}
             selected={formData.availability?.includes(option as AvailabilityOption) || false}
@@ -281,15 +257,12 @@ export const ProfileForm: React.FC<ProfileFormProps> = ({
             accessibilityLabel={`Toggle ${option} availability`}
             accessibilityState={{
               selected: formData.availability?.includes(option as AvailabilityOption) || false,
-            }}
-          >
+            }}>
             {option}
           </Chip>
         ))}
       </View>
-      {errors.availability && (
-        <HelperText type="error">{errors.availability}</HelperText>
-      )}
+      {errors.availability && <HelperText type="error">{errors.availability}</HelperText>}
 
       {/* Submit Button */}
       <Button
@@ -300,15 +273,13 @@ export const ProfileForm: React.FC<ProfileFormProps> = ({
         style={styles.submitButton}
         contentStyle={styles.submitButtonContent}
         accessibilityLabel="Complete profile setup"
-        accessibilityHint="Submit your profile information"
-      >
+        accessibilityHint="Submit your profile information">
         Complete Profile
       </Button>
 
       <Text
         variant="bodySmall"
-        style={[styles.requiredNote, { color: theme.colors.onSurfaceVariant }]}
-      >
+        style={[styles.requiredNote, { color: theme.colors.onSurfaceVariant }]}>
         * Required fields
       </Text>
 
@@ -317,7 +288,9 @@ export const ProfileForm: React.FC<ProfileFormProps> = ({
         visible={showDatePicker}
         onDismiss={() => setShowDatePicker(false)}
         onConfirm={handleDateConfirm}
-        initialDate={formData.sobriety_start_date ? new Date(formData.sobriety_start_date) : undefined}
+        initialDate={
+          formData.sobriety_start_date ? new Date(formData.sobriety_start_date) : undefined
+        }
       />
     </ScrollView>
   );

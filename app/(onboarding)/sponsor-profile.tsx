@@ -39,13 +39,9 @@ export default function SponsorProfileScreen() {
 
       // Check if the async thunk was rejected
       if (result.type && result.type.endsWith('/rejected')) {
-        const errorMessage = result.payload as string || profileError || 'Unknown error';
+        const errorMessage = (result.payload as string) || profileError || 'Unknown error';
         console.error('Profile creation error:', errorMessage);
-        Alert.alert(
-          'Profile Creation Failed',
-          `Error: ${errorMessage}`,
-          [{ text: 'OK' }]
-        );
+        Alert.alert('Profile Creation Failed', `Error: ${errorMessage}`, [{ text: 'OK' }]);
         return;
       }
 
@@ -65,11 +61,7 @@ export default function SponsorProfileScreen() {
     } catch (error) {
       console.error('Error saving sponsor profile:', error);
       const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred';
-      Alert.alert(
-        'Error',
-        `Failed to save your profile: ${errorMessage}`,
-        [{ text: 'OK' }]
-      );
+      Alert.alert('Error', `Failed to save your profile: ${errorMessage}`, [{ text: 'OK' }]);
     }
   };
 
