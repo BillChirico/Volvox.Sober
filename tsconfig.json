@@ -11,7 +11,13 @@
     "noUnusedParameters": true,
     "noImplicitReturns": true,
     "noFallthroughCasesInSwitch": true,
+    "baseUrl": ".",
     "paths": {
+      "@/*": ["*"],
+      "@/features/*": ["src/features/*"],
+      "@/shared/*": ["src/shared/*"],
+      "@/core/*": ["src/core/*"],
+      "@/lib/*": ["src/lib/*"],
       "@volvox-sober/shared": ["./packages/shared"],
       "@volvox-sober/shared/*": ["./packages/shared/*"]
     }
