@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, StyleSheet, Pressable, PressableProps } from 'react-native';
+import { Pressable, PressableProps } from 'react-native';
 import { useTheme } from 'react-native-paper';
 
 interface FocusIndicatorProps extends PressableProps {
@@ -81,8 +81,7 @@ export const FocusIndicator: React.FC<FocusIndicatorProps> = ({
       ]}
       // Enhanced accessibility for keyboard navigation
       accessibilityState={{ focused: isFocused }}
-      focusable={true}
-    >
+      focusable={true}>
       {children}
     </Pressable>
   );

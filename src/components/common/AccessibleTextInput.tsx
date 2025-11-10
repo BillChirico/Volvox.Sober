@@ -65,8 +65,7 @@ export const AccessibleTextInput: React.FC<AccessibleTextInputProps> = ({
           type="error"
           visible={true}
           accessibilityRole="alert"
-          accessibilityLiveRegion="assertive"
-        >
+          accessibilityLiveRegion="assertive">
           {errorText}
         </HelperText>
       )}

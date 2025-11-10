@@ -3,12 +3,12 @@
  * Shows real-time connection status with visual feedback
  */
 
-import React from 'react'
-import { View, Text, StyleSheet } from 'react-native'
+import React from 'react';
+import { View, Text, StyleSheet } from 'react-native';
 
 interface ConnectionStatusIndicatorProps {
-  isConnected: boolean
-  style?: any
+  isConnected: boolean;
+  style?: any;
 }
 
 export const ConnectionStatusIndicator: React.FC<ConnectionStatusIndicatorProps> = ({
@@ -16,7 +16,7 @@ export const ConnectionStatusIndicator: React.FC<ConnectionStatusIndicatorProps>
   style,
 }) => {
   if (isConnected) {
-    return null // Hide when connected - only show when disconnected
+    return null; // Hide when connected - only show when disconnected
   }
 
   return (
@@ -24,8 +24,8 @@ export const ConnectionStatusIndicator: React.FC<ConnectionStatusIndicatorProps>
       <View style={styles.dot} />
       <Text style={styles.text}>Connecting...</Text>
     </View>
-  )
-}
+  );
+};
 
 // ============================================================
 // Styles
@@ -52,4 +52,4 @@ const styles = StyleSheet.create({
     color: '#000000',
     fontWeight: '500',
   },
-})
+});

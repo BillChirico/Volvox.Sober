@@ -144,11 +144,11 @@ jest.mock('react-native-paper', () => {
   const RN = require('react-native');
 
   // Mock Icon component that preserves the icon prop for testing
-  const MockIconElement = (iconProps) => {
+  const MockIconElement = iconProps => {
     return React.createElement(RN.View, { ...iconProps, testID: 'icon-element' });
   };
 
-  const MockTextInputIcon = (props) => {
+  const MockTextInputIcon = props => {
     return React.createElement(RN.TouchableOpacity, {
       testID: props.testID,
       accessibilityLabel: props.accessibilityLabel,
@@ -165,7 +165,7 @@ jest.mock('react-native-paper', () => {
       RN.View,
       {},
       React.createElement(RN.TextInput, { ...props, ref }),
-      props.right
+      props.right,
     );
   });
 
@@ -174,24 +174,24 @@ jest.mock('react-native-paper', () => {
   return {
     Provider: ({ children }) => children,
     TextInput: MockTextInput,
-    Text: (props) =>
+    Text: props =>
       React.createElement(RN.Text, {
         ...props,
         children: props.children,
       }),
-    Button: (props) =>
+    Button: props =>
       React.createElement(RN.TouchableOpacity, {
         ...props,
         testID: props.testID,
         disabled: props.disabled,
       }),
-    IconButton: (props) =>
+    IconButton: props =>
       React.createElement(RN.TouchableOpacity, {
         ...props,
         testID: props.testID,
         onPress: props.onPress,
       }),
-    HelperText: (props) =>
+    HelperText: props =>
       React.createElement(RN.Text, {
         ...props,
         children: props.children,

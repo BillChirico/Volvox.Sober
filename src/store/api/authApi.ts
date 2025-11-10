@@ -32,7 +32,7 @@ export const authApi = createApi({
   reducerPath: 'authApi',
   baseQuery: fakeBaseQuery(),
   tagTypes: ['Auth'],
-  endpoints: (builder) => ({
+  endpoints: builder => ({
     signUp: builder.mutation<AuthResponse, SignUpRequest>({
       queryFn: async ({ email, password, name, age, role }) => {
         try {

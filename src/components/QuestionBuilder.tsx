@@ -3,21 +3,14 @@
  * Dynamic form for adding/editing/removing check-in questions
  */
 
-import React from 'react'
-import {
-  View,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  StyleSheet,
-  ScrollView,
-} from 'react-native'
+import React from 'react';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
 
 interface QuestionBuilderProps {
-  questions: string[]
-  onChange: (questions: string[]) => void
-  maxQuestions?: number
-  minQuestions?: number
+  questions: string[];
+  onChange: (questions: string[]) => void;
+  maxQuestions?: number;
+  minQuestions?: number;
 }
 
 export const QuestionBuilder: React.FC<QuestionBuilderProps> = ({
@@ -28,25 +21,25 @@ export const QuestionBuilder: React.FC<QuestionBuilderProps> = ({
 }) => {
   const handleAddQuestion = () => {
     if (questions.length < maxQuestions) {
-      onChange([...questions, ''])
+      onChange([...questions, '']);
     }
-  }
+  };
 
   const handleRemoveQuestion = (index: number) => {
     if (questions.length > minQuestions) {
-      const newQuestions = questions.filter((_, i) => i !== index)
-      onChange(newQuestions)
+      const newQuestions = questions.filter((_, i) => i !== index);
+      onChange(newQuestions);
     }
-  }
+  };
 
   const handleUpdateQuestion = (index: number, value: string) => {
-    const newQuestions = [...questions]
-    newQuestions[index] = value
-    onChange(newQuestions)
-  }
+    const newQuestions = [...questions];
+    newQuestions[index] = value;
+    onChange(newQuestions);
+  };
 
-  const canAddMore = questions.length < maxQuestions
-  const canRemove = questions.length > minQuestions
+  const canAddMore = questions.length < maxQuestions;
+  const canRemove = questions.length > minQuestions;
 
   return (
     <View style={styles.container}>
@@ -57,9 +50,7 @@ export const QuestionBuilder: React.FC<QuestionBuilderProps> = ({
         </Text>
       </View>
 
-      <Text style={styles.description}>
-        These questions will be asked during each check-in
-      </Text>
+      <Text style={styles.description}>These questions will be asked during each check-in</Text>
 
       <View style={styles.questionsContainer}>
         {questions.map((question, index) => (
@@ -71,7 +62,7 @@ export const QuestionBuilder: React.FC<QuestionBuilderProps> = ({
             <TextInput
               style={styles.questionInput}
               value={question}
-              onChangeText={(text) => handleUpdateQuestion(index, text)}
+              onChangeText={text => handleUpdateQuestion(index, text)}
               placeholder={`Question ${index + 1}`}
               placeholderTextColor="#8E8E93"
               multiline
@@ -81,8 +72,7 @@ export const QuestionBuilder: React.FC<QuestionBuilderProps> = ({
             {canRemove && (
               <TouchableOpacity
                 style={styles.removeButton}
-                onPress={() => handleRemoveQuestion(index)}
-              >
+                onPress={() => handleRemoveQuestion(index)}>
                 <Text style={styles.removeButtonText}>×</Text>
               </TouchableOpacity>
             )}
@@ -91,22 +81,17 @@ export const QuestionBuilder: React.FC<QuestionBuilderProps> = ({
       </View>
 
       {canAddMore && (
-        <TouchableOpacity
-          style={styles.addButton}
-          onPress={handleAddQuestion}
-        >
+        <TouchableOpacity style={styles.addButton} onPress={handleAddQuestion}>
           <Text style={styles.addButtonText}>+ Add Question</Text>
         </TouchableOpacity>
       )}
 
       {!canAddMore && (
-        <Text style={styles.maxQuestionsText}>
-          Maximum {maxQuestions} questions reached
-        </Text>
+        <Text style={styles.maxQuestionsText}>Maximum {maxQuestions} questions reached</Text>
       )}
     </View>
-  )
-}
+  );
+};
 
 // ============================================================
 // Styles
@@ -209,4 +194,4 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     fontStyle: 'italic',
   },
-})
+});

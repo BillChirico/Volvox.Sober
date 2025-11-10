@@ -3,7 +3,7 @@
  * Text input with send button for composing messages
  */
 
-import React, { useState } from 'react'
+import React, { useState } from 'react';
 import {
   View,
   TextInput,
@@ -12,12 +12,12 @@ import {
   ActivityIndicator,
   KeyboardAvoidingView,
   Platform,
-} from 'react-native'
+} from 'react-native';
 
 interface MessageInputProps {
-  onSend: (text: string) => Promise<void>
-  placeholder?: string
-  maxLength?: number
+  onSend: (text: string) => Promise<void>;
+  placeholder?: string;
+  maxLength?: number;
 }
 
 export const MessageInput: React.FC<MessageInputProps> = ({
@@ -25,32 +25,31 @@ export const MessageInput: React.FC<MessageInputProps> = ({
   placeholder = 'Type a message...',
   maxLength = 2000,
 }) => {
-  const [text, setText] = useState('')
-  const [isSending, setIsSending] = useState(false)
+  const [text, setText] = useState('');
+  const [isSending, setIsSending] = useState(false);
 
   const handleSend = async () => {
-    const trimmedText = text.trim()
-    if (!trimmedText || isSending) return
+    const trimmedText = text.trim();
+    if (!trimmedText || isSending) return;
 
     try {
-      setIsSending(true)
-      await onSend(trimmedText)
-      setText('') // Clear input after successful send
+      setIsSending(true);
+      await onSend(trimmedText);
+      setText(''); // Clear input after successful send
     } catch (error) {
-      console.error('Failed to send message:', error)
+      console.error('Failed to send message:', error);
       // Don't clear text on error so user can retry
     } finally {
-      setIsSending(false)
+      setIsSending(false);
     }
-  }
+  };
 
-  const canSend = text.trim().length > 0 && !isSending
+  const canSend = text.trim().length > 0 && !isSending;
 
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-      keyboardVerticalOffset={Platform.OS === 'ios' ? 90 : 0}
-    >
+      keyboardVerticalOffset={Platform.OS === 'ios' ? 90 : 0}>
       <View style={styles.container}>
         <View style={styles.inputContainer}>
           <TextInput
@@ -70,18 +69,13 @@ export const MessageInput: React.FC<MessageInputProps> = ({
         <TouchableOpacity
           style={[styles.sendButton, canSend && styles.sendButtonActive]}
           onPress={handleSend}
-          disabled={!canSend}
-        >
-          {isSending ? (
-            <ActivityIndicator size="small" color="#FFFFFF" />
-          ) : (
-            <SendIcon />
-          )}
+          disabled={!canSend}>
+          {isSending ? <ActivityIndicator size="small" color="#FFFFFF" /> : <SendIcon />}
         </TouchableOpacity>
       </View>
     </KeyboardAvoidingView>
-  )
-}
+  );
+};
 
 // ============================================================
 // Send Icon Component
@@ -91,7 +85,7 @@ const SendIcon: React.FC = () => (
   <View style={styles.sendIcon}>
     <View style={styles.sendIconArrow} />
   </View>
-)
+);
 
 // ============================================================
 // Styles
@@ -151,4 +145,4 @@ const styles = StyleSheet.create({
     borderBottomColor: '#FFFFFF',
     transform: [{ rotate: '90deg' }],
   },
-})
+});

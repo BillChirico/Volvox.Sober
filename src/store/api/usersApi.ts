@@ -31,7 +31,7 @@ export const usersApi = createApi({
   reducerPath: 'usersApi',
   baseQuery: fakeBaseQuery(),
   tagTypes: ['Profile'],
-  endpoints: (builder) => ({
+  endpoints: builder => ({
     // Get current user profile
     getProfile: builder.query<User, string>({
       async queryFn(userId) {
@@ -82,7 +82,7 @@ export const usersApi = createApi({
       async queryFn({ userId, file, fileName }) {
         try {
           // Upload to Supabase Storage
-          const { data, error } = await supabaseClient.storage
+          const { error } = await supabaseClient.storage
             .from('profile-photos')
             .upload(`${userId}/${fileName}`, file, {
               contentType: 'image/jpeg',

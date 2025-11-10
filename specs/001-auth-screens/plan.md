@@ -13,6 +13,7 @@ Implement email/password authentication screens (login, signup, forgot password)
 
 **Language/Version**: TypeScript 5.x (strict mode enabled)
 **Primary Dependencies**:
+
 - Expo 54.x (universal app platform)
 - React Native 0.81+
 - Expo Router 4.x (file-based routing)
@@ -23,10 +24,12 @@ Implement email/password authentication screens (login, signup, forgot password)
 - Yup (client-side form validation)
 
 **Storage**:
+
 - Supabase PostgreSQL 15+ (user accounts, auth tokens managed by Supabase Auth)
 - AsyncStorage via Redux Persist (session token persistence on device)
 
 **Testing**:
+
 - Jest + React Native Testing Library (unit and component tests)
 - Playwright (E2E tests for critical auth flows)
 - Target: 80% code coverage for business logic
@@ -36,12 +39,14 @@ Implement email/password authentication screens (login, signup, forgot password)
 **Project Type**: Universal mobile app (Expo) with file-based routing
 
 **Performance Goals**:
+
 - Screen load time: < 2 seconds on mid-range devices
 - Screen transitions: 60 FPS (16.67ms per frame)
 - Authentication response: < 3 seconds for login/signup
 - Email delivery: < 1 minute for verification/reset emails
 
 **Constraints**:
+
 - Bundle size: iOS/Android < 50MB, Web < 500KB (gzipped)
 - Network dependency: Requires internet connectivity for auth operations (no offline mode)
 - Supabase Auth service availability required
@@ -49,6 +54,7 @@ Implement email/password authentication screens (login, signup, forgot password)
 - Session persistence required across app restarts
 
 **Scale/Scope**:
+
 - 3 authentication screens (Login, Signup, Forgot Password)
 - 4 user stories (P1: Registration, P1: Login, P2: Password Recovery, P3: Navigation)
 - ~15-20 components (screens, forms, inputs, buttons, error displays)
@@ -57,21 +63,24 @@ Implement email/password authentication screens (login, signup, forgot password)
 
 ## Constitution Check
 
-*GATE: Must pass before Phase 0 research. Re-check after Phase 1 design.*
+_GATE: Must pass before Phase 0 research. Re-check after Phase 1 design._
 
 **I. Type Safety & Code Quality**
+
 - [x] TypeScript strict mode enabled (`strict: true` in tsconfig.json) - Project already configured
 - [x] No `any` types - use `unknown` or proper types - Planned for all auth code
 - [x] All exported functions have explicit return types - Planned for all services and hooks
 - [x] File naming conventions followed (PascalCase components, camelCase services/hooks) - Will follow existing patterns
 
 **II. Test-Driven Development**
+
 - [x] TDD workflow planned: Write tests → Verify failure → Implement → Verify pass → Refactor - Documented in tasks.md
 - [x] 80% code coverage target for business logic - Auth services will be tested thoroughly
 - [x] Testing pyramid: Unit tests → Integration tests → E2E tests - Planned for all auth flows
 - [x] Tests co-located in `__tests__/` directories - Following project structure
 
 **III. Cross-Platform UX Consistency**
+
 - [x] UI components render consistently on iOS, Android, Web - Using Expo universal components
 - [x] Platform-specific overrides justified and documented - None needed for auth screens (universal)
 - [x] React Native Paper theme system used - All auth components will use Paper
@@ -79,6 +88,7 @@ Implement email/password authentication screens (login, signup, forgot password)
 - [x] Dark mode supported via theme provider - Using existing theme context
 
 **IV. Performance Standards**
+
 - [x] App startup < 3 seconds on mid-range devices - Auth screens are lightweight
 - [x] Screen transitions maintain 60 FPS - Simple form-based screens, no heavy animations
 - [x] Real-time messaging latency < 500ms - N/A for auth screens (applies to messaging feature)
@@ -87,6 +97,7 @@ Implement email/password authentication screens (login, signup, forgot password)
 - [x] Database queries optimized (indexes, pagination, caching) - Supabase Auth handles optimization
 
 **V. Component Architecture**
+
 - [x] Functional components only (no class components) - All React Native components will be functional
 - [x] Consistent hooks order: useState → useEffect → custom hooks → handlers - Will follow pattern
 - [x] Named exports preferred over default exports - Will use named exports
@@ -94,6 +105,7 @@ Implement email/password authentication screens (login, signup, forgot password)
 - [x] State management hierarchy followed (local → Redux → Supabase) - Auth state in Redux, server state from Supabase
 
 **VI. Security & Privacy**
+
 - [x] Row Level Security (RLS) enabled for all Supabase tables - Supabase Auth manages user table with RLS
 - [x] Supabase Auth used (no custom auth logic) - FR-016 mandates Supabase Auth only
 - [x] Sensitive data access properly restricted - Email verification required before app access (FR-005)

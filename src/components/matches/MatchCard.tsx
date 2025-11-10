@@ -1,174 +1,168 @@
+/**
+ * MatchCard Component
+ * Displays match profile with compatibility score and breakdown
+ * Feature: 002-app-screens
+ */
+
 import React from 'react';
 import { View, StyleSheet, TouchableOpacity } from 'react-native';
-import { Card, Avatar, Text, Button, ProgressBar, Chip } from 'react-native-paper';
-import { Match } from '../../store/api/matchingApi';
+import { Card, Avatar, Text, Button, Chip } from 'react-native-paper';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { useAppTheme } from '../../theme/ThemeContext';
+import { CompatibilityBadge } from './CompatibilityBadge';
+import type { MatchWithProfile } from '../../types/match';
 
-interface MatchCardProps {
-  match: Match;
-  onPress: () => void;
+export interface MatchCardProps {
+  /** Match data with candidate profile */
+  match: MatchWithProfile;
+  /** Callback when card is pressed */
+  onPress?: () => void;
+  /** Callback when connect button is pressed */
   onConnect: () => void;
+  /** Whether connect action is loading */
+  isConnecting?: boolean;
 }
 
-const MatchCard: React.FC<MatchCardProps> = ({ match, onPress, onConnect }) => {
-  const getCompatibilityColor = (score: number): string => {
-    if (score >= 80) return '#4CAF50'; // Green
-    if (score >= 60) return '#FFC107'; // Amber
-    return '#FF9800'; // Orange
+/**
+ * Match card component
+ */
+export const MatchCard: React.FC<MatchCardProps> = ({
+  match,
+  onPress,
+  onConnect,
+  isConnecting = false,
+}) => {
+  const { theme } = useAppTheme();
+  const { candidate } = match;
+
+  const formatLocation = (): string => {
+    const parts = [];
+    if (candidate.city) parts.push(candidate.city);
+    if (candidate.state) parts.push(candidate.state);
+    return parts.length > 0 ? parts.join(', ') : 'Location not specified';
   };
 
-  const getCompatibilityLabel = (score: number): string => {
-    if (score >= 80) return 'Excellent Match';
-    if (score >= 60) return 'Good Match';
-    return 'Potential Match';
+  const formatRecoveryProgram = (): string => {
+    return candidate.recovery_program || 'Recovery program not specified';
   };
+
+  const CardWrapper = onPress ? TouchableOpacity : View;
 
   return (
-    <TouchableOpacity onPress={onPress} accessibilityLabel={`Match with ${match.sponsor_name}`}>
-      <Card style={styles.card} mode="elevated">
+    <CardWrapper
+      onPress={onPress}
+      accessibilityLabel={`Match with ${candidate.name}`}
+      accessibilityRole={onPress ? 'button' : undefined}>
+      <Card style={styles.card} elevation={2}>
         <Card.Content>
           {/* Header: Photo + Name + Score */}
           <View style={styles.header}>
             <View style={styles.profileSection}>
-              {match.sponsor_photo_url ? (
-                <Avatar.Image size={60} source={{ uri: match.sponsor_photo_url }} />
+              {candidate.profile_photo_url ? (
+                <Avatar.Image size={64} source={{ uri: candidate.profile_photo_url }} />
               ) : (
-                <Avatar.Icon size={60} icon="account" />
+                <Avatar.Icon
+                  size={64}
+                  icon="account"
+                  style={{ backgroundColor: theme.colors.primaryContainer }}
+                />
               )}
               <View style={styles.profileInfo}>
-                <Text variant="titleMedium" style={styles.name}>
-                  {match.sponsor_name}
+                <Text variant="titleLarge" style={[styles.name, { color: theme.colors.onSurface }]}>
+                  {candidate.name}
                 </Text>
-                <Text variant="bodySmall" style={styles.location}>
-                  📍 {match.location.city}, {match.location.state}
-                </Text>
-                <Text variant="bodySmall" style={styles.experience}>
-                  🎯 {match.years_sober} years sober
-                </Text>
+                <View style={styles.infoRow}>
+                  <MaterialCommunityIcons
+                    name="map-marker"
+                    size={16}
+                    color={theme.colors.onSurfaceVariant}
+                  />
+                  <Text
+                    variant="bodyMedium"
+                    style={[styles.infoText, { color: theme.colors.onSurfaceVariant }]}>
+                    {formatLocation()}
+                  </Text>
+                </View>
+                <View style={styles.infoRow}>
+                  <MaterialCommunityIcons
+                    name="heart-pulse"
+                    size={16}
+                    color={theme.colors.onSurfaceVariant}
+                  />
+                  <Text
+                    variant="bodyMedium"
+                    style={[styles.infoText, { color: theme.colors.onSurfaceVariant }]}>
+                    {formatRecoveryProgram()}
+                  </Text>
+                </View>
               </View>
             </View>
 
             {/* Compatibility Score Badge */}
-            <View style={styles.scoreSection}>
-              <View
-                style={[
-                  styles.scoreBadge,
-                  { backgroundColor: getCompatibilityColor(match.compatibility_score) },
-                ]}
-                accessibilityLabel={`Compatibility score: ${match.compatibility_score} out of 100`}
-              >
-                <Text variant="headlineSmall" style={styles.scoreText}>
-                  {match.compatibility_score}
-                </Text>
-                <Text variant="labelSmall" style={styles.scoreLabel}>
-                  / 100
-                </Text>
-              </View>
-              <Chip
-                mode="flat"
-                textStyle={styles.chipText}
-                style={[styles.chip, { backgroundColor: getCompatibilityColor(match.compatibility_score) }]}
-              >
-                {getCompatibilityLabel(match.compatibility_score)}
-              </Chip>
-            </View>
+            <CompatibilityBadge score={match.compatibility_score} />
           </View>
 
-          {/* Compatibility Breakdown */}
-          <View style={styles.breakdown}>
-            <Text variant="labelMedium" style={styles.breakdownTitle}>
-              Compatibility Breakdown
-            </Text>
-
-            <View style={styles.breakdownItem}>
-              <View style={styles.breakdownLabel}>
-                <Text variant="bodySmall">Location</Text>
-                <Text variant="bodySmall" style={styles.breakdownScore}>
-                  {match.score_breakdown.location}/25
-                </Text>
-              </View>
-              <ProgressBar
-                progress={match.score_breakdown.location / 25}
-                color="#4CAF50"
-                style={styles.progressBar}
-              />
+          {/* Bio Preview */}
+          {candidate.bio && (
+            <View style={styles.bioSection}>
+              <Text
+                variant="bodyMedium"
+                numberOfLines={3}
+                style={[styles.bio, { color: theme.colors.onSurfaceVariant }]}>
+                {candidate.bio}
+              </Text>
             </View>
+          )}
 
-            <View style={styles.breakdownItem}>
-              <View style={styles.breakdownLabel}>
-                <Text variant="bodySmall">Program Type</Text>
-                <Text variant="bodySmall" style={styles.breakdownScore}>
-                  {match.score_breakdown.program_type}/25
-                </Text>
+          {/* Availability Chips */}
+          {candidate.availability && candidate.availability.length > 0 && (
+            <View style={styles.availabilitySection}>
+              <Text
+                variant="labelMedium"
+                style={[styles.sectionLabel, { color: theme.colors.onSurface }]}>
+                Availability
+              </Text>
+              <View style={styles.chipContainer}>
+                {candidate.availability.slice(0, 3).map(availability => (
+                  <Chip
+                    key={availability}
+                    mode="outlined"
+                    style={styles.chip}
+                    textStyle={styles.chipText}>
+                    {availability}
+                  </Chip>
+                ))}
+                {candidate.availability.length > 3 && (
+                  <Chip mode="outlined" style={styles.chip} textStyle={styles.chipText}>
+                    +{candidate.availability.length - 3} more
+                  </Chip>
+                )}
               </View>
-              <ProgressBar
-                progress={match.score_breakdown.program_type / 25}
-                color="#2196F3"
-                style={styles.progressBar}
-              />
             </View>
-
-            <View style={styles.breakdownItem}>
-              <View style={styles.breakdownLabel}>
-                <Text variant="bodySmall">Availability</Text>
-                <Text variant="bodySmall" style={styles.breakdownScore}>
-                  {match.score_breakdown.availability}/20
-                </Text>
-              </View>
-              <ProgressBar
-                progress={match.score_breakdown.availability / 20}
-                color="#FF9800"
-                style={styles.progressBar}
-              />
-            </View>
-
-            <View style={styles.breakdownItem}>
-              <View style={styles.breakdownLabel}>
-                <Text variant="bodySmall">Approach</Text>
-                <Text variant="bodySmall" style={styles.breakdownScore}>
-                  {match.score_breakdown.approach}/15
-                </Text>
-              </View>
-              <ProgressBar
-                progress={match.score_breakdown.approach / 15}
-                color="#9C27B0"
-                style={styles.progressBar}
-              />
-            </View>
-
-            <View style={styles.breakdownItem}>
-              <View style={styles.breakdownLabel}>
-                <Text variant="bodySmall">Experience</Text>
-                <Text variant="bodySmall" style={styles.breakdownScore}>
-                  {match.score_breakdown.experience}/15
-                </Text>
-              </View>
-              <ProgressBar
-                progress={match.score_breakdown.experience / 15}
-                color="#FFC107"
-                style={styles.progressBar}
-              />
-            </View>
-          </View>
+          )}
 
           {/* Connect Button */}
           <Button
             mode="contained"
             onPress={onConnect}
+            loading={isConnecting}
+            disabled={isConnecting}
             style={styles.connectButton}
-            icon="hand-wave"
-          >
-            Send Connection Request
+            icon="account-plus"
+            accessibilityLabel="Send connection request"
+            accessibilityHint={`Send a connection request to ${candidate.name}`}>
+            {isConnecting ? 'Sending...' : 'Send Connection Request'}
           </Button>
         </Card.Content>
       </Card>
-    </TouchableOpacity>
+    </CardWrapper>
   );
 };
 
 const styles = StyleSheet.create({
   card: {
     marginHorizontal: 16,
-    marginVertical: 8,
+    marginBottom: 16,
   },
   header: {
     flexDirection: 'row',
@@ -179,73 +173,51 @@ const styles = StyleSheet.create({
   profileSection: {
     flexDirection: 'row',
     flex: 1,
+    marginRight: 12,
   },
   profileInfo: {
     marginLeft: 12,
     flex: 1,
+    justifyContent: 'center',
   },
   name: {
-    fontWeight: 'bold',
-    marginBottom: 4,
-  },
-  location: {
-    color: '#666',
-    marginBottom: 2,
-  },
-  experience: {
-    color: '#666',
-  },
-  scoreSection: {
-    alignItems: 'center',
-  },
-  scoreBadge: {
-    width: 70,
-    height: 70,
-    borderRadius: 35,
-    justifyContent: 'center',
-    alignItems: 'center',
+    fontWeight: '600',
     marginBottom: 8,
   },
-  scoreText: {
-    color: '#fff',
-    fontWeight: 'bold',
-  },
-  scoreLabel: {
-    color: '#fff',
-    marginTop: -4,
-  },
-  chip: {
-    height: 24,
-  },
-  chipText: {
-    fontSize: 10,
-    color: '#fff',
-  },
-  breakdown: {
-    marginVertical: 16,
-  },
-  breakdownTitle: {
-    marginBottom: 12,
-    fontWeight: '600',
-  },
-  breakdownItem: {
-    marginBottom: 12,
-  },
-  breakdownLabel: {
+  infoRow: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
+    alignItems: 'center',
     marginBottom: 4,
   },
-  breakdownScore: {
+  infoText: {
+    marginLeft: 6,
+    flex: 1,
+  },
+  bioSection: {
+    marginBottom: 16,
+  },
+  bio: {
+    lineHeight: 20,
+  },
+  availabilitySection: {
+    marginBottom: 16,
+  },
+  sectionLabel: {
+    marginBottom: 8,
     fontWeight: '600',
   },
-  progressBar: {
-    height: 6,
-    borderRadius: 3,
+  chipContainer: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: 8,
+  },
+  chip: {
+    height: 28,
+  },
+  chipText: {
+    fontSize: 12,
   },
   connectButton: {
     marginTop: 8,
   },
 });
-
-export default MatchCard;

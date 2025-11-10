@@ -1,28 +1,16 @@
-import { createClient, AuthError, Session, User, SupabaseClient } from '@supabase/supabase-js';
+import { AuthError, Session, User, SupabaseClient } from '@supabase/supabase-js';
 import Constants from 'expo-constants';
+import supabaseClient from './supabase';
 
-// Initialize Supabase client lazily to support testing
-let supabaseInstance: SupabaseClient | null = null;
-
+// Use the shared Supabase client instance from ./supabase
+// This ensures auth session is shared across all services
 function getSupabase(): SupabaseClient {
-  if (supabaseInstance) {
-    return supabaseInstance;
-  }
-
-  const supabaseUrl = Constants.expoConfig?.extra?.EXPO_PUBLIC_SUPABASE_URL || process.env.EXPO_PUBLIC_SUPABASE_URL;
-  const supabaseAnonKey = Constants.expoConfig?.extra?.EXPO_PUBLIC_SUPABASE_ANON_KEY || process.env.EXPO_PUBLIC_SUPABASE_ANON_KEY;
-
-  if (!supabaseUrl || !supabaseAnonKey) {
-    throw new Error('Missing Supabase environment variables. Please check your .env file.');
-  }
-
-  supabaseInstance = createClient(supabaseUrl, supabaseAnonKey);
-  return supabaseInstance;
+  return supabaseClient;
 }
 
-// For testing: allow setting a mock Supabase instance
-export function __setSupabaseInstance(instance: SupabaseClient | null): void {
-  supabaseInstance = instance;
+// For testing: allow setting a mock Supabase instance (not implemented with shared client)
+export function __setSupabaseInstance(_instance: SupabaseClient | null): void {
+  console.warn('__setSupabaseInstance is deprecated - use shared supabase client for testing');
 }
 
 export interface SignUpParams {
@@ -110,11 +98,32 @@ class AuthService {
    * @returns Promise with error information if any
    */
   async resetPasswordRequest(email: string): Promise<{ error: AuthError | null }> {
+    // Use Supabase hosted page for password reset
+    // User will reset password in browser, then return to app to login
+    const supabaseUrl =
+      Constants.expoConfig?.extra?.EXPO_PUBLIC_SUPABASE_URL || process.env.EXPO_PUBLIC_SUPABASE_URL;
+
     const { error } = await getSupabase().auth.resetPasswordForEmail(email, {
-      redirectTo: 'volvoxsober://auth/forgot-password',
+      redirectTo: `${supabaseUrl}/auth/v1/verify?type=recovery`,
     });
 
     return { error };
+  }
+
+  /**
+   * Update the user's email (must be authenticated)
+   * @param newEmail - New email address for the user
+   * @returns Promise with user and error information
+   */
+  async updateEmail(newEmail: string): Promise<{ user: User | null; error: AuthError | null }> {
+    const { data, error } = await getSupabase().auth.updateUser({
+      email: newEmail,
+    });
+
+    return {
+      user: data.user,
+      error: error,
+    };
   }
 
   /**
@@ -122,7 +131,9 @@ class AuthService {
    * @param newPassword - New password for the user
    * @returns Promise with user and error information
    */
-  async updatePassword(newPassword: string): Promise<{ user: User | null; error: AuthError | null }> {
+  async updatePassword(
+    newPassword: string,
+  ): Promise<{ user: User | null; error: AuthError | null }> {
     const { data, error } = await getSupabase().auth.updateUser({
       password: newPassword,
     });
@@ -131,6 +142,46 @@ class AuthService {
       user: data.user,
       error: error,
     };
+  }
+
+  /**
+   * Delete the current user's account (must be authenticated)
+   * WARNING: This action is irreversible and will delete all user data
+   * @returns Promise with error information if any
+   */
+  async deleteAccount(): Promise<{ error: AuthError | Error | null }> {
+    try {
+      // Get current user ID
+      const {
+        data: { user },
+        error: userError,
+      } = await getSupabase().auth.getUser();
+
+      if (userError || !user) {
+        return { error: userError || new Error('User not authenticated') };
+      }
+
+      // Call Supabase admin API to delete user
+      // Note: This requires RLS policies and/or Edge Function implementation
+      // For now, we'll use the auth.admin.deleteUser which requires service role
+      // In production, this should be handled via an Edge Function with proper authorization
+      const { error } = await getSupabase().rpc('delete_user_account', {
+        user_id: user.id,
+      });
+
+      if (error) {
+        return { error };
+      }
+
+      // Sign out after successful deletion
+      await this.signOut();
+
+      return { error: null };
+    } catch (error) {
+      return {
+        error: error instanceof Error ? error : new Error('Failed to delete account'),
+      };
+    }
   }
 
   /**
@@ -159,9 +210,9 @@ class AuthService {
    * @param callback - Function to call when auth state changes
    * @returns Unsubscribe function
    */
-  onAuthStateChange(
-    callback: (event: string, session: Session | null) => void
-  ): { unsubscribe: () => void } {
+  onAuthStateChange(callback: (event: string, session: Session | null) => void): {
+    unsubscribe: () => void;
+  } {
     const { data } = getSupabase().auth.onAuthStateChange((event, session) => {
       callback(event, session);
     });

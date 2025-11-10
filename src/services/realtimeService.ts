@@ -3,29 +3,28 @@
  * Manages Supabase Realtime subscriptions for live message delivery and read receipts
  */
 
-import { RealtimeChannel, RealtimePostgresChangesPayload } from '@supabase/supabase-js'
-import { supabase } from './supabase'
-import { getCurrentUserId } from './supabase'
-import type { Database } from '../types/database.types'
-import type { Message } from '../types'
+import { RealtimeChannel, RealtimePostgresChangesPayload } from '@supabase/supabase-js';
+import { supabase } from './supabase';
+import { getCurrentUserId } from './supabase';
+import type { Database } from '../types/database.types';
 
-type MessageRow = Database['public']['Tables']['messages']['Row']
+type MessageRow = Database['public']['Tables']['messages']['Row'];
 
 // ============================================================
 // Types
 // ============================================================
 
 export interface RealtimeSubscriptionCallbacks {
-  onMessage?: (message: MessageRow) => void
-  onReadReceipt?: (messageId: string, readAt: string) => void
-  onError?: (error: Error) => void
-  onConnected?: () => void
-  onDisconnected?: () => void
+  onMessage?: (message: MessageRow) => void;
+  onReadReceipt?: (messageId: string, readAt: string) => void;
+  onError?: (error: Error) => void;
+  onConnected?: () => void;
+  onDisconnected?: () => void;
 }
 
 export interface RealtimeSubscription {
-  channel: RealtimeChannel
-  unsubscribe: () => Promise<void>
+  channel: RealtimeChannel;
+  unsubscribe: () => Promise<void>;
 }
 
 // ============================================================
@@ -38,9 +37,9 @@ export interface RealtimeSubscription {
  */
 export const subscribeToMessages = async (
   connectionId: string,
-  callbacks: RealtimeSubscriptionCallbacks
+  callbacks: RealtimeSubscriptionCallbacks,
 ): Promise<RealtimeSubscription> => {
-  const currentUserId = await getCurrentUserId()
+  const currentUserId = await getCurrentUserId();
 
   const channel = supabase
     .channel(`messages:${connectionId}`)
@@ -54,33 +53,33 @@ export const subscribeToMessages = async (
       },
       (payload: RealtimePostgresChangesPayload<MessageRow>) => {
         try {
-          const newMessage = payload.new as MessageRow
+          const newMessage = payload.new as MessageRow;
 
           // Only trigger callback if message is from someone else
           if (newMessage.sender_id !== currentUserId && callbacks.onMessage) {
-            callbacks.onMessage(newMessage)
+            callbacks.onMessage(newMessage);
           }
         } catch (error) {
-          console.error('Error processing new message:', error)
-          callbacks.onError?.(error instanceof Error ? error : new Error('Unknown error'))
+          console.error('Error processing new message:', error);
+          callbacks.onError?.(error instanceof Error ? error : new Error('Unknown error'));
         }
-      }
+      },
     )
-    .subscribe((status) => {
+    .subscribe(status => {
       if (status === 'SUBSCRIBED') {
-        callbacks.onConnected?.()
+        callbacks.onConnected?.();
       } else if (status === 'CLOSED') {
-        callbacks.onDisconnected?.()
+        callbacks.onDisconnected?.();
       }
-    })
+    });
 
   return {
     channel,
     unsubscribe: async () => {
-      await supabase.removeChannel(channel)
+      await supabase.removeChannel(channel);
     },
-  }
-}
+  };
+};
 
 /**
  * Subscribe to read receipt updates in a specific connection
@@ -88,9 +87,9 @@ export const subscribeToMessages = async (
  */
 export const subscribeToReadReceipts = async (
   connectionId: string,
-  callbacks: RealtimeSubscriptionCallbacks
+  callbacks: RealtimeSubscriptionCallbacks,
 ): Promise<RealtimeSubscription> => {
-  const currentUserId = await getCurrentUserId()
+  const currentUserId = await getCurrentUserId();
 
   const channel = supabase
     .channel(`read-receipts:${connectionId}`)
@@ -104,8 +103,8 @@ export const subscribeToReadReceipts = async (
       },
       (payload: RealtimePostgresChangesPayload<MessageRow>) => {
         try {
-          const updatedMessage = payload.new as MessageRow
-          const oldMessage = payload.old as MessageRow
+          const updatedMessage = payload.new as MessageRow;
+          const oldMessage = payload.old as MessageRow;
 
           // Only trigger callback if read_at changed and message is from current user
           if (
@@ -114,29 +113,29 @@ export const subscribeToReadReceipts = async (
             !oldMessage.read_at &&
             callbacks.onReadReceipt
           ) {
-            callbacks.onReadReceipt(updatedMessage.id, updatedMessage.read_at)
+            callbacks.onReadReceipt(updatedMessage.id, updatedMessage.read_at);
           }
         } catch (error) {
-          console.error('Error processing read receipt:', error)
-          callbacks.onError?.(error instanceof Error ? error : new Error('Unknown error'))
+          console.error('Error processing read receipt:', error);
+          callbacks.onError?.(error instanceof Error ? error : new Error('Unknown error'));
         }
-      }
+      },
     )
-    .subscribe((status) => {
+    .subscribe(status => {
       if (status === 'SUBSCRIBED') {
-        callbacks.onConnected?.()
+        callbacks.onConnected?.();
       } else if (status === 'CLOSED') {
-        callbacks.onDisconnected?.()
+        callbacks.onDisconnected?.();
       }
-    })
+    });
 
   return {
     channel,
     unsubscribe: async () => {
-      await supabase.removeChannel(channel)
+      await supabase.removeChannel(channel);
     },
-  }
-}
+  };
+};
 
 /**
  * Subscribe to both messages and read receipts in a single call
@@ -144,24 +143,24 @@ export const subscribeToReadReceipts = async (
  */
 export const subscribeToConversation = async (
   connectionId: string,
-  callbacks: RealtimeSubscriptionCallbacks
+  callbacks: RealtimeSubscriptionCallbacks,
 ): Promise<{
-  messageSubscription: RealtimeSubscription
-  readReceiptSubscription: RealtimeSubscription
-  unsubscribeAll: () => Promise<void>
+  messageSubscription: RealtimeSubscription;
+  readReceiptSubscription: RealtimeSubscription;
+  unsubscribeAll: () => Promise<void>;
 }> => {
-  const messageSubscription = await subscribeToMessages(connectionId, callbacks)
-  const readReceiptSubscription = await subscribeToReadReceipts(connectionId, callbacks)
+  const messageSubscription = await subscribeToMessages(connectionId, callbacks);
+  const readReceiptSubscription = await subscribeToReadReceipts(connectionId, callbacks);
 
   return {
     messageSubscription,
     readReceiptSubscription,
     unsubscribeAll: async () => {
-      await messageSubscription.unsubscribe()
-      await readReceiptSubscription.unsubscribe()
+      await messageSubscription.unsubscribe();
+      await readReceiptSubscription.unsubscribe();
     },
-  }
-}
+  };
+};
 
 // ============================================================
 // Connection State Management
@@ -174,19 +173,19 @@ export const getRealtimeConnectionState = () => {
   return {
     status: supabase.realtime.connection.status,
     isConnected: supabase.realtime.connection.status === 'connected',
-  }
-}
+  };
+};
 
 /**
  * Manually reconnect to realtime if disconnected
  */
 export const reconnectRealtime = () => {
-  supabase.realtime.connect()
-}
+  supabase.realtime.connect();
+};
 
 /**
  * Manually disconnect from realtime
  */
 export const disconnectRealtime = () => {
-  supabase.realtime.disconnect()
-}
+  supabase.realtime.disconnect();
+};

@@ -38,8 +38,8 @@ Required environment variables (set in Supabase Dashboard > Edge Functions):
 ## Configuration Constants
 
 ```typescript
-GRACE_PERIOD_HOURS = 24        // Time before marking check-in as missed
-ALERT_THRESHOLD_MISSES = 3     // Consecutive misses before alerting sponsor
+GRACE_PERIOD_HOURS = 24; // Time before marking check-in as missed
+ALERT_THRESHOLD_MISSES = 3; // Consecutive misses before alerting sponsor
 ```
 
 ## Setup Instructions
@@ -67,6 +67,7 @@ supabase db push
 ```
 
 This sets up:
+
 - FCM token columns in users table
 - `invoke_send_check_ins()` function
 - pg_cron job running every 5 minutes

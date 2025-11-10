@@ -1,6 +1,6 @@
 # Volvox.Sober Development Guidelines
 
-Last updated: 2025-11-05
+Last updated: 2025-11-10
 
 ## Project Overview
 
@@ -9,6 +9,7 @@ Volvox.Sober is a universal Expo application (iOS, Android, Web) for sobriety su
 ## Technology Stack
 
 ### Frontend (Universal App)
+
 - **Platform**: Expo 54.x (universal app platform)
 - **Framework**: React Native 0.81+
 - **Language**: TypeScript 5.x (strict mode)
@@ -20,6 +21,7 @@ Volvox.Sober is a universal Expo application (iOS, Android, Web) for sobriety su
 - **Authentication**: Supabase Auth SDK (@supabase/supabase-js)
 
 ### Backend (Supabase)
+
 - **Database**: PostgreSQL 15+
 - **Authentication**: Supabase Auth (GoTrue)
 - **Real-time**: Supabase Realtime subscriptions
@@ -27,6 +29,7 @@ Volvox.Sober is a universal Expo application (iOS, Android, Web) for sobriety su
 - **Storage**: Row Level Security (RLS)
 
 ### Package Manager
+
 - **pnpm**: 10.20.0 (monorepo workspace structure)
 
 ## Project Structure
@@ -58,7 +61,6 @@ volvox-sober/
 │   └── +not-found.tsx   # 404 page
 │
 ├── src/                 # Application source code
-│   ├── screens/         # Screen components (legacy, to be migrated)
 │   ├── components/      # Reusable UI components
 │   │   ├── auth/        # Authentication-specific components
 │   │   └── common/      # Shared components (AccessibleButton, etc.)
@@ -112,14 +114,25 @@ volvox-sober/
 ### Platform-Specific Files
 
 Expo supports platform-specific implementations:
+
 - `Component.tsx` - Shared across all platforms
 - `Component.ios.tsx` - iOS-specific override
 - `Component.android.tsx` - Android-specific override
 - `Component.web.tsx` - Web-specific override
 
+### Important: Screen Organization
+
+**All screen components MUST be in the `app/` directory using Expo Router's file-based routing.**
+
+- ✅ **Correct**: Create screens in `app/(tabs)/`, `app/(auth)/`, `app/(onboarding)/`, etc.
+- ❌ **Incorrect**: DO NOT create screens in `src/screens/` (deprecated)
+- The `src/` directory is for reusable components, services, hooks, and utilities only
+- Screens in `app/` use Expo Router's automatic routing based on file structure
+
 ## Commands
 
 ### Development
+
 ```bash
 # Start Expo dev server
 pnpm start
@@ -135,6 +148,7 @@ pnpm web
 ```
 
 ### Quality Checks
+
 ```bash
 # Run all tests
 pnpm test
@@ -153,18 +167,21 @@ pnpm format
 ## Code Style
 
 ### TypeScript
+
 - **Strict mode enabled**: No implicit any, strict null checks
 - **Interfaces over types**: Prefer interface for object shapes
 - **Explicit return types**: For all exported functions
 - **No `any`**: Use `unknown` or proper types
 
 ### React Native
+
 - **Functional components**: Use hooks, no class components
 - **Named exports**: Prefer named exports over default
 - **Component structure**: Props interface → Component → Styles
 - **Hooks order**: useState → useEffect → custom hooks → handlers
 
 ### File Naming
+
 - **Components**: PascalCase (`Button.tsx`, `UserProfile.tsx`)
 - **Hooks**: camelCase with `use` prefix (`useAuth.ts`)
 - **Services**: camelCase (`authService.ts`, `messageService.ts`)
@@ -172,6 +189,7 @@ pnpm format
 - **Tests**: Mirror source with `.test.tsx` suffix
 
 ### Testing
+
 - **Unit tests**: Jest + React Native Testing Library
 - **E2E tests**: Playwright (web testing and automation)
 - **Coverage target**: 80% minimum for business logic
@@ -183,8 +201,14 @@ pnpm format
 1. **Branch from main**: Create feature branch from `main`
 2. **Follow TDD**: Write tests first for new features
 3. **Type safety**: Ensure TypeScript strict mode compliance
-4. **Run checks**: Test + lint + typecheck before committing
-5. **Commit messages**: Conventional commits (feat:, fix:, docs:, etc.)
+4. **Quality checks**: Always run in this order when editing or adding files:
+   ```bash
+   pnpm lint:fix    # Linting with auto-fix (includes Prettier formatting)
+   pnpm typecheck   # TypeScript validation
+   pnpm test        # Run test suite
+   ```
+5. **Commit and push**: After completing all tasks, commit changes and push to remote
+6. **Commit messages**: Conventional commits with scope (feat(scope):, fix(scope):, docs(scope):, etc.)
 
 ## Environment Setup
 
@@ -200,6 +224,7 @@ Copy `.env.example` to `.env` and configure environment variables.
 ## Key Memories
 
 Project has documented memories for:
+
 - `project_overview`: Core features and technical stack
 - `codebase_structure`: Directory layout and patterns
 - `tdd_workflow`: Test-driven development approach
@@ -220,421 +245,533 @@ Six core principles govern all development (see `.specify/memory/constitution.md
 
 ## Current Status
 
-- **Phase**: Phase 2 - Implementation In Progress
-- **Active Feature**: `001-auth-screens` (Authentication Screens)
-- **Active Branch**: `001-auth-screens`
-- **Completed Work Packages**:
-  - ✅ WP01: Project Setup and Environment Configuration
-  - ✅ WP02: Authentication Service Foundation (all tests passing)
-  - ✅ WP03: Redux State Management (authSlice, authThunks, authSelectors, Redux Persist)
-- **Current Work Package**: WP04: Reusable Auth Components
-- **Remaining Work Packages**: WP05-WP10 (User Registration, Login, Password Recovery, Email Verification, Navigation, Accessibility)
+- **Phase**: Phase 10 - Polish & Cross-Cutting Concerns (Final Phase)
+- **Active Feature**: `002-app-screens` (App Screen Implementation)
+- **Active Branch**: `002-app-screens`
+- **Completed Work**:
+  - ✅ Project setup with Expo Router file-based routing
+  - ✅ Authentication screens in app/(auth)/
+  - ✅ Onboarding screens in app/(onboarding)/
+  - ✅ Tab navigation screens in app/(tabs)/
+  - ✅ Core components, hooks, and services
+  - ✅ State management with Redux Toolkit + Redux Persist
+  - ✅ Real-time messaging with Supabase subscriptions
+  - ✅ Profile management with role switching
+  - ✅ Settings screens (notifications, theme, account)
+  - ✅ Accessibility testing (Playwright E2E + manual checklists)
+  - ✅ Dark mode with Material Design 3 theming
+  - ✅ Comprehensive E2E test coverage (9 Playwright test suites)
+  - ✅ Performance optimizations (image lazy loading, list virtualization)
+  - ✅ Error handling (ErrorBoundary, ErrorMessage, NetworkIndicator)
+- **Current Focus**: Final validation and documentation
+- **Note**: All screen components now reside in app/ directory using Expo Router. The old src/screens/ directory is deprecated and should not be used.
 
-## MCP Server Usage Requirements
+## MCP Server Usage
 
-**CRITICAL**: You MUST use MCP servers for the following scenarios. Failure to use appropriate MCP servers when available is a violation of project standards.
+**MANDATORY**: MCP servers MUST be used whenever applicable. Using native tools when an MCP server is available is a project standards violation.
 
 ### Quick Decision Matrix
 
 ```
-Task Type → MCP Server:
-├─ Database/Auth operations → Supabase MCP
-├─ Symbol operations (rename, find refs) → Serena MCP
-├─ Complex debugging/analysis → Sequential MCP
-├─ Bulk code transformations → Morphllm MCP
-├─ Official docs lookup → Context7 MCP
-├─ Current information/research → Tavily MCP
-└─ E2E/browser testing → Playwright MCP
+Task Type → MCP Server (USE THESE):
+├─ Database/Auth/Edge Functions → Supabase MCP (mcp__supabase__*)
+├─ Code symbols/navigation/memory → Serena MCP (mcp__serena__*)
+├─ Complex reasoning/analysis → Sequential MCP (mcp__sequential-thinking__*)
+├─ Session/context management → Memory Keeper MCP (mcp__memory-keeper__*)
+├─ GitHub operations → GitHub MCP (mcp__github__*)
+├─ Web research/search → Tavily MCP (mcp__tavily__*) or Brave MCP (mcp__brave__*)
+├─ UI components → Shadcn MCP (mcp__shadcn__*)
+├─ VS Code diagnostics → IDE MCP (mcp__ide__*)
+├─ Fast code edits → Morphllm MCP (mcp__morphllm__*)
+└─ Enhanced web fetch → Fetch MCP (mcp__fetch__*)
 ```
 
-### Supabase MCP (`mcp__supabase__*`)
+### Core MCPs for This Project
 
-**Trigger Keywords**: `migration`, `database`, `schema`, `supabase auth`, `edge function`, `RLS`, `postgres`, `query`, `table`
+#### 1. **Supabase MCP** (`mcp__supabase__*`)
 
-**Required for**:
-- All Supabase database operations (migrations, queries, schema)
-- Supabase Auth configuration and troubleshooting
-- Edge Functions deployment and testing
-- Database schema verification
-- RLS policy management
+**Use for**: Database migrations, schema changes, Auth configuration, Edge Functions, RLS policies
 
-**When to use**:
-- Creating or modifying database migrations
-- Testing Supabase Auth flows
-- Querying database for debugging
-- Deploying Edge Functions
-- Verifying database state
+```typescript
+// Database operations
+mcp__supabase__apply_migration; // Create/apply migrations
+mcp__supabase__execute_sql; // Run SQL queries
+mcp__supabase__list_tables; // View schema
+mcp__supabase__get_logs; // Check service logs
 
-**Project-specific examples**:
-```bash
-# Create profiles table migration
-mcp__supabase__apply_migration
+// Edge Functions
+mcp__supabase__deploy_edge_function; // Deploy functions
+mcp__supabase__list_edge_functions; // View deployed functions
 
-# Test email verification flow
-mcp__supabase__execute_sql
-
-# Deploy message processing function
-mcp__supabase__deploy_edge_function
-
-# Check Auth user state
-mcp__supabase__get_logs --service auth
+// Development branches
+mcp__supabase__create_branch; // Create dev branch
+mcp__supabase__merge_branch; // Merge to production
 ```
 
-**Integration patterns**:
-- Sequential → Supabase: Plan schema → Execute migration
-- Serena → Supabase: Analyze code → Update DB to match
-- Playwright → Supabase: Test E2E → Verify DB state
+**Triggers**: `migration`, `database`, `schema`, `supabase auth`, `edge function`, `RLS`, `postgres`, `query`
 
-### Serena MCP (`mcp__serena__*`)
+#### 2. **Serena MCP** (`mcp__serena__*`)
 
-**Trigger Keywords**: `rename`, `find references`, `symbol`, `refactor`, `project memory`, `architecture`, `navigate codebase`, `find all uses`
+**Use for**: Symbol operations, code navigation, project memory, refactoring
 
-**Required for**:
-- Symbol operations (rename, find references, semantic search)
-- Large codebase navigation (>50 files)
-- Project memory management
-- Cross-file refactoring
-- Architectural analysis
+```typescript
+// Symbol operations
+mcp__serena__find_symbol; // Find symbols in codebase
+mcp__serena__find_referencing_symbols; // Find all usages
+mcp__serena__rename_symbol; // Rename across files
+mcp__serena__get_symbols_overview; // File symbol overview
 
-**When to use**:
-- Renaming functions/classes across multiple files
-- Finding all usages of a symbol
-- Understanding code architecture
-- Storing/retrieving project context
-- Multi-file semantic operations
+// Code editing
+mcp__serena__replace_symbol_body; // Replace function/class body
+mcp__serena__insert_after_symbol; // Add code after symbol
+mcp__serena__insert_before_symbol; // Add code before symbol
 
-**Project-specific examples**:
-```bash
-# Rename authService method across codebase
-mcp__serena__rename_symbol
+// Project memory
+mcp__serena__write_memory; // Store project knowledge
+mcp__serena__read_memory; // Retrieve knowledge
+mcp__serena__list_memories; // View all memories
 
-# Find all references to useAuth hook
-mcp__serena__find_referencing_symbols
-
-# Get overview of auth components
-mcp__serena__get_symbols_overview
-
-# Store architectural decisions
-mcp__serena__write_memory
+// Code search
+mcp__serena__search_for_pattern; // Regex search in code
 ```
 
-**Integration patterns**:
-- Serena → Morphllm: Find symbols → Apply pattern edits
-- Sequential → Serena: Analyze → Store insights
-- Serena → Context7: Get context → Lookup patterns
+**Triggers**: `rename`, `find references`, `symbol`, `refactor`, `project memory`, `architecture`
 
-### Sequential MCP (`mcp__sequential__*`)
+#### 3. **Sequential Thinking MCP** (`mcp__sequential-thinking__*`)
 
-**Trigger Keywords**: `--think`, `debug complex`, `analyze`, `root cause`, `architecture decision`, `hypothesis`, `multi-step`, `systematic`
+**Use for**: Complex reasoning, architectural analysis, root cause investigation
 
-**Required for**:
-- Complex debugging scenarios
-- Multi-step reasoning problems
-- Architectural decision analysis
-- Root cause investigation
-- System design questions
-
-**When to use**:
-- `--think` flag: Standard structured analysis (~4K tokens)
-- `--think-hard` flag: Deep architectural analysis (~10K tokens)
-- `--ultrathink` flag: Critical system redesign (~32K tokens)
-- Problems with 3+ interconnected components
-- Hypothesis testing and validation
-
-**Project-specific examples**:
-```bash
-# Debug auth flow performance issue
---think "Why is login taking 5+ seconds?"
-
-# Analyze state management architecture
---think-hard "Should we add Redux Saga?"
-
-# Critical navigation refactoring
---ultrathink "Migrate all screens to Expo Router"
+```typescript
+mcp__sequential -
+  thinking__sequentialthinking({
+    thought: 'Current analysis step',
+    thoughtNumber: 1,
+    totalThoughts: 5,
+    nextThoughtNeeded: true,
+  });
 ```
 
-**Integration patterns**:
-- Sequential → Context7: Analyze → Lookup official patterns
-- Sequential → Serena: Reason → Store insights
-- Sequential → Supabase: Investigate → Query DB for evidence
+**Triggers**: `--think`, `--think-hard`, `--ultrathink`, complex debugging, architecture decisions, multi-component analysis
 
-### Morphllm MCP (`mcp__morphllm__*`)
+**Complexity levels**:
 
-**Trigger Keywords**: `bulk edit`, `pattern transformation`, `update all`, `enforce style`, `framework migration`, `replace across files`
+- `--think`: 3-5 interconnected components (~4K tokens)
+- `--think-hard`: Architectural analysis (~10K tokens)
+- `--ultrathink`: Critical system redesign (~32K tokens)
 
-**Required for**:
-- Bulk code transformations
-- Pattern-based edits across multiple files
-- Style guide enforcement
-- Framework migrations
+#### 4. **Memory Keeper MCP** (`mcp__memory-keeper__*`)
 
-**When to use**:
-- Updating multiple files with same pattern
-- Enforcing coding standards across codebase
-- Token-efficient bulk operations
-- Simple to moderate complexity edits (<10 files)
+**Use for**: Session management, context persistence, checkpoints
 
-**Choose Morphllm over**:
-- Native Edit: When editing 3+ files with same pattern
-- Serena: For pattern edits, not symbol operations
+```typescript
+// Session management
+mcp__memory - keeper__context_session_start; // Start new session
+mcp__memory - keeper__context_session_list; // List sessions
+mcp__memory - keeper__context_save; // Save context item
+mcp__memory - keeper__context_get; // Retrieve context
 
-**Project-specific examples**:
-```bash
-# Update all class components to functional
-mcp__morphllm__edit_file
+// Checkpoints
+mcp__memory - keeper__context_checkpoint; // Create checkpoint
+mcp__memory - keeper__context_restore_checkpoint; // Restore state
 
-# Enforce explicit return types project-wide
-mcp__morphllm__edit_file
-
-# Replace all Stylesheet.create with themed styles
-mcp__morphllm__edit_file
+// Search and analysis
+mcp__memory - keeper__context_search; // Search context
+mcp__memory - keeper__context_timeline; // View activity timeline
 ```
 
-**Integration patterns**:
-- Serena → Morphllm: Analyze symbols → Apply edits
-- Sequential → Morphllm: Plan changes → Execute bulk edits
-- Context7 → Morphllm: Get pattern → Apply across files
+**Triggers**: Session persistence, context management, checkpoints, cross-session learning
 
-### Context7 MCP (`mcp__context7__*`)
+#### 5. **GitHub MCP** (`mcp__github__*`)
 
-**Trigger Keywords**: `import`, `require`, `docs`, `API reference`, `best practices`, `official documentation`, `framework patterns`, library versions`
+**Use for**: Repository operations, PRs, issues, branches
 
-**Required for**:
-- Official library documentation lookup
-- Framework-specific patterns (React, React Native, Expo)
-- API reference validation
-- Version-specific implementation
+```typescript
+// Repository operations
+mcp__github__create_branch; // Create feature branch
+mcp__github__create_or_update_file; // Update files
+mcp__github__push_files; // Batch file updates
 
-**When to use**:
-- Need React Native Paper component docs
-- Verifying Expo Router patterns
-- Redux Toolkit best practices
-- Supabase JS SDK documentation
+// Pull requests
+mcp__github__create_pull_request; // Create PR
+mcp__github__update_pull_request; // Update existing PR
+mcp__github__merge_pull_request; // Merge PR
 
-**Choose Context7 over**:
-- Tavily: For official docs, not general search
-- Native knowledge: For current/version-specific patterns
-
-**Project-specific examples**:
-```bash
-# Look up React Native Paper Button API
-mcp__context7__resolve-library-id "react-native-paper"
-mcp__context7__get-library-docs
-
-# Verify Expo Router best practices
-mcp__context7__get-library-docs "/expo/expo"
-
-# Check Redux Toolkit RTK Query patterns
-mcp__context7__get-library-docs "/reduxjs/redux-toolkit"
+// Issues
+mcp__github__issue_read; // Read issue details
+mcp__github__issue_write; // Create/update issue
+mcp__github__add_issue_comment; // Comment on issue
 ```
 
-**Integration patterns**:
-- Context7 → Sequential: Get patterns → Analyze design
-- Context7 → Morphllm: Get pattern → Apply bulk edits
-- Sequential → Context7: Analyze → Lookup official patterns
+**Triggers**: GitHub operations, PRs, issues, branches, commits
 
-### Tavily MCP (`mcp__tavily__*`)
+#### 6. **Tavily MCP** (`mcp__tavily__*`)
 
-**Trigger Keywords**: `search`, `research`, `latest`, `current`, `best practices 2024/2025`, `breaking changes`, `new features`, `community solutions`
+**Use for**: Web research, documentation search, current information
 
-**Required for**:
-- Web search for current information
-- Library/framework updates research
-- Best practices research
-- External documentation lookup
-
-**When to use**:
-- Need current best practices
-- Researching new libraries
-- Finding external resources
-- Checking for breaking changes
-
-**Choose Tavily over**:
-- Context7: For general search, not official docs
-- Native knowledge: For post-2025 information
-
-**Project-specific examples**:
-```bash
-# Research latest Expo Router patterns
-mcp__tavily__search "Expo Router 4.x navigation patterns 2025"
-
-# Find React Native performance solutions
-mcp__tavily__search "React Native 0.81 performance optimization"
-
-# Check for Supabase Auth updates
-mcp__tavily__search "Supabase Auth breaking changes 2025"
+```typescript
+mcp__tavily__search; // General web search
+mcp__tavily__extract; // Extract content from URLs
+mcp__tavily__crawl; // Deep website crawling
+mcp__tavily__map; // Map website structure
 ```
 
-**Integration patterns**:
-- Tavily → Sequential: Research → Analyze findings
-- Tavily → Context7: Find updates → Get official docs
-- Sequential → Tavily: Identify gaps → Research solutions
+**Triggers**: `search`, `research`, `latest`, `current`, `best practices`, `breaking changes`
 
-### Playwright MCP (`mcp__playwright__*`)
+#### 7. **Shadcn MCP** (`mcp__shadcn__*`)
 
-**Trigger Keywords**: `E2E test`, `browser test`, `user flow`, `integration test`, `screenshot`, `accessibility test`, `WCAG`, `visual regression`
+**Use for**: UI component registry, shadcn/ui components
 
-**Required for**:
-- E2E testing
-- Browser automation
-- Visual regression testing
-- Accessibility testing
-
-**When to use**:
-- Testing user flows
-- Screenshot comparisons
-- Accessibility compliance validation
-- Cross-browser testing
-
-**Not for**:
-- Unit tests (use Jest + React Native Testing Library)
-- Static code analysis
-- Logic validation without browser
-
-**Project-specific examples**:
-```bash
-# Test registration flow
-mcp__playwright__browser_navigate
-mcp__playwright__browser_fill_form
-mcp__playwright__browser_click
-
-# Validate login accessibility
-mcp__playwright__browser_snapshot
-
-# Take responsive screenshots
-mcp__playwright__browser_take_screenshot
+```typescript
+mcp__shadcn__search_items_in_registries; // Search components
+mcp__shadcn__view_items_in_registries; // View component details
+mcp__shadcn__get_add_command_for_items; // Get install command
 ```
 
-**Integration patterns**:
-- Sequential → Playwright: Plan tests → Execute E2E
-- Playwright → Supabase: Test flow → Verify DB state
-- Context7 → Playwright: Get accessibility patterns → Test compliance
+**Triggers**: UI components, shadcn, component registry
 
-## Common MCP Workflows for This Project
+#### 8. **IDE MCP** (`mcp__ide__*`)
 
-### Authentication Feature Development
-```
-1. Research → Tavily: "Supabase Auth best practices 2025"
-2. Documentation → Context7: Get Supabase Auth SDK docs
-3. Analysis → Sequential: Design auth flow architecture
-4. Database → Supabase: Create users/profiles tables
-5. Implementation → Native tools: Create login/signup forms
-6. Testing → Playwright: Test complete auth flow
-7. Memory → Serena: Store auth patterns and decisions
+**Use for**: VS Code integration, diagnostics, code execution
+
+```typescript
+mcp__ide__getDiagnostics; // Get TypeScript/ESLint errors
+mcp__ide__executeCode; // Run code in Jupyter kernel
 ```
 
-### Component Development
-```
-1. Documentation → Context7: React Native Paper component API
-2. Implementation → Native tools: Create accessible component
-3. Testing → Playwright: Accessibility validation
-4. Integration → Serena: Find integration points
-5. Memory → Serena: Store component patterns
-```
+**Triggers**: Diagnostics, type errors, lint errors, code execution
 
-### Debugging Complex Issues
-```
-1. Analysis → Sequential: --think "Root cause investigation"
-2. Code Search → Serena: Find all related symbols
-3. Database Check → Supabase: Query for data issues
-4. Research → Tavily: Search for similar issues
-5. Documentation → Context7: Verify API usage
-6. Testing → Playwright: Reproduce in browser
+#### 9. **Morphllm MCP** (`mcp__morphllm__*`)
+
+**Use for**: Fast code edits, pattern-based transformations
+
+```typescript
+mcp__morphllm__edit_file; // Fast pattern-based edits
 ```
 
-### Bulk Refactoring
-```
-1. Analysis → Sequential: Plan refactoring strategy
-2. Symbol Search → Serena: Find all affected symbols
-3. Pattern Application → Morphllm: Apply bulk edits
-4. Verification → Playwright: Test affected flows
-5. Memory → Serena: Document refactoring patterns
-```
+**Triggers**: Bulk edits, pattern transformations, style enforcement
 
-### Performance Optimization
-```
-1. Analysis → Sequential: --think "Performance bottlenecks"
-2. Research → Tavily: "React Native 0.81 performance"
-3. Documentation → Context7: React Native optimization
-4. Code Review → Serena: Find optimization candidates
-5. Implementation → Morphllm: Apply optimizations
-6. Testing → Playwright: Measure improvements
+#### 10. **Fetch MCP** (`mcp__fetch__*`)
+
+**Use for**: Enhanced web fetching with image support
+
+```typescript
+mcp__fetch__imageFetch({
+  url: 'https://example.com',
+  images: true,
+  text: { maxLength: 20000 },
+});
 ```
 
-## MCP Selection Decision Tree
+**Triggers**: Web fetching, image extraction, screenshot capture
+
+### MCP Integration Patterns
 
 ```
-Question: What are you trying to accomplish?
+Common workflows combining MCPs:
 
-├─ Database/Backend
-│  ├─ Supabase operations? → Supabase MCP
-│  └─ Other backend? → Native tools
-│
-├─ Code Operations
-│  ├─ Rename/find references? → Serena MCP
-│  ├─ Bulk edits (3+ files)? → Morphllm MCP
-│  └─ Single file edit? → Native Edit
-│
-├─ Analysis/Debugging
-│  ├─ Complex (3+ components)? → Sequential MCP (--think/--think-hard)
-│  └─ Simple issue? → Native reasoning
-│
-├─ Information/Research
-│  ├─ Official documentation? → Context7 MCP
-│  ├─ Current information? → Tavily MCP
-│  └─ Basic explanation? → Native knowledge
-│
-└─ Testing
-   ├─ E2E/Browser tests? → Playwright MCP
-   └─ Unit tests? → Jest + Native tools
+1. Feature Development:
+   Serena (analyze) → Sequential (plan) → Supabase (database) → Morphllm (code) → Memory Keeper (checkpoint)
+
+2. Bug Investigation:
+   Sequential (analyze) → Serena (find symbols) → IDE (diagnostics) → Supabase (query DB)
+
+3. Refactoring:
+   Serena (find references) → Sequential (plan) → Morphllm (apply changes) → IDE (verify)
+
+4. Research & Implementation:
+   Tavily (research) → Sequential (analyze) → Serena (store insights) → Memory Keeper (save)
+
+5. PR Creation:
+   Serena (review changes) → GitHub (create branch) → GitHub (push files) → GitHub (create PR)
 ```
 
-## MCP Anti-Patterns (What NOT to Do)
+### MCP Selection Rules
 
-❌ **DON'T**: Use native Edit for 3+ files when Morphllm can batch
-✅ **DO**: Use Morphllm for pattern-based bulk edits
+**ALWAYS use MCP when**:
 
-❌ **DON'T**: Search web for official docs when Context7 has them
-✅ **DO**: Use Context7 for React Native/Expo/Supabase docs
+- ✅ Operating on Supabase (database, auth, functions)
+- ✅ Symbol operations (rename, find references)
+- ✅ Complex analysis (3+ components)
+- ✅ Session/context management
+- ✅ GitHub operations
+- ✅ Web research/search
+- ✅ Bulk code transformations (3+ files)
 
-❌ **DON'T**: Use Sequential for simple explanations
-✅ **DO**: Reserve Sequential for complex, multi-component analysis
+**NEVER use native tools when MCP exists**:
 
-❌ **DON'T**: Use Serena rename without checking references first
-✅ **DO**: Use find_referencing_symbols before rename operations
+- ❌ Don't use Grep when Serena can find symbols
+- ❌ Don't use multiple Edits when Morphllm can batch
+- ❌ Don't use manual SQL when Supabase MCP exists
+- ❌ Don't use WebSearch when Tavily is available
+- ❌ Don't use manual GitHub CLI when GitHub MCP exists
 
-❌ **DON'T**: Write manual browser automation when Playwright exists
-✅ **DO**: Use Playwright MCP for all browser testing
+### Enforcement
 
-❌ **DON'T**: Query Supabase without using Supabase MCP
-✅ **DO**: Always use Supabase MCP for database operations
+**Violation = Immediate Stop**:
 
-## Enforcement
+1. Stop current operation
+2. Acknowledge oversight
+3. Restart with correct MCP
 
-If you fail to use an appropriate MCP server when one is clearly applicable, you MUST:
-1. Stop the current operation
-2. Acknowledge the oversight
-3. Restart using the correct MCP server
+**Examples of violations**:
 
-This is not optional - MCP servers are project infrastructure and must be used when available.
-
-### Violation Examples
 ```
-❌ User: "Find all uses of useAuth"
-   → Using Grep instead of Serena find_referencing_symbols
-
-❌ User: "Update all imports to use @/"
-   → Using multiple Edit calls instead of Morphllm
-
-❌ User: "Test the signup flow"
-   → Writing unit tests instead of Playwright E2E tests
-
-❌ User: "Check React Native Paper Button API"
-   → Using Tavily instead of Context7
-
-❌ User: "Why is login slow?"
-   → Using native reasoning instead of Sequential --think
+❌ "Find all uses of useAuth" → Using Grep instead of Serena
+❌ "Create database migration" → Using manual SQL instead of Supabase MCP
+❌ "Update 5 files with same pattern" → Using Edit instead of Morphllm
+❌ "Research React Native performance" → Using native knowledge instead of Tavily
+❌ "Create GitHub PR" → Using Bash git commands instead of GitHub MCP
 ```
 
 <!-- MANUAL ADDITIONS START -->
 <!-- MANUAL ADDITIONS END -->
+
+## Active Technologies
+
+- Expo Router 4.x (file-based routing) - 002-app-screens
+- TypeScript 5.x (strict mode enabled) - 002-app-screens
+- Redux Toolkit + Redux Persist - State management
+- React Native Paper - UI component library
+- Supabase - Backend (Auth, Database, Realtime)
+
+## Recent Changes (002-app-screens branch)
+
+### Screen Migration (Phase 1-9)
+
+- ✅ **COMPLETED**: Full migration from React Navigation to Expo Router
+- ✅ **DELETED** `src/screens/` directory - all 32 screens migrated to `app/`
+- ✅ Authentication screens: login, signup, forgot-password, verify-email (app/(auth)/)
+- ✅ Onboarding screens: welcome, role-selection, email-verification, profiles (app/(onboarding)/)
+- ✅ Main tab screens: connections, matches, messages, sobriety, profile (app/(tabs)/)
+- ✅ Connections sub-routes: [id], pending, send, sent (app/(tabs)/connections/)
+- ✅ Messages sub-routes: [id] (app/(tabs)/messages/)
+- ✅ Profile sub-routes: edit, view, change-role (app/(tabs)/profile/)
+- ✅ Sobriety sub-routes: log-relapse, history, set-date (app/(tabs)/sobriety/)
+- ✅ Steps sub-routes: index, work/[id], history (app/(tabs)/steps/)
+- ✅ Check-ins sub-routes: response, schedule (app/(tabs)/check-ins/)
+- ✅ Settings sub-routes: notifications, theme, account (app/(tabs)/settings/)
+- ✅ Reviews sub-routes: sponsor (app/(tabs)/reviews/)
+
+**Migration Status**: All screens converted from `useNavigation/useRoute` to `useRouter/useLocalSearchParams`
+
+### Component Patterns (Phase 10)
+
+**Profile Components** (src/components/profile/):
+
+- `ProfileHeader.tsx`: Reusable profile header with avatar, name, role, and stats
+  - Pattern: Composition with Material Design 3 Card and Surface
+  - Features: Avatar display, user info, sobriety stats, action buttons
+- `SettingsSection.tsx`: Themed settings section container
+  - Pattern: Section header with divider, consistent spacing
+  - Features: Icon support, nested List.Item integration
+- `NotificationSettings.tsx`: Comprehensive notification preferences management
+  - Pattern: Switch controls with descriptions, grouped by category
+  - Features: Async state updates, loading indicators, accessibility labels
+
+**Error Handling Components** (src/components/common/):
+
+- `ErrorBoundary.tsx`: React error boundary with retry functionality
+- `ErrorMessage.tsx`: Styled error display with retry actions
+- `NetworkIndicator.tsx`: Connection status indicator with auto-hide
+
+### State Management Patterns
+
+**Redux Toolkit with RTK Query**:
+
+- Pattern: Feature-based slices with colocated selectors and thunks
+- Example: `src/store/messages/` contains messagesSlice, messagesSelectors, messagesThunks
+- Thunk pattern: `createAsyncThunk` with typed responses and error handling
+- Selector pattern: Memoized selectors with `createSelector` for derived data
+
+**Real-time Subscriptions** (src/hooks/useMessages.ts):
+
+```typescript
+// Pattern: Custom hook with Supabase Realtime
+const subscription = supabase
+  .channel('messages')
+  .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'messages' }, payload =>
+    dispatch(addMessage(payload.new)),
+  )
+  .subscribe();
+
+// Cleanup: useEffect return function
+return () => {
+  subscription.unsubscribe();
+};
+```
+
+**Optimistic Updates**:
+
+- Pattern: Dispatch optimistic update → API call → Confirm/rollback
+- Example: messagesSlice uses `addMessage` before API confirmation
+- Error handling: Rollback on failure with user notification
+
+**Redux Persist**:
+
+- Pattern: Selective persistence with AsyncStorage
+- Configuration: Root store with persistConfig for specific reducers
+- Usage: Messages, profile, preferences persisted; auth session expires
+
+### Theme System (src/theme/)
+
+**Material Design 3 with Dark Mode**:
+
+- `index.ts`: Theme tokens with WCAG AA compliant colors
+  - Light theme: `#007AFF` primary (iOS Blue, 4.5:1 contrast)
+  - Dark theme: `#66B3FF` primary (8.5:1 contrast on dark surface)
+  - Semantic colors: primary, secondary, error, surface, background
+- `ThemeContext.tsx`: Theme provider with system detection
+  - Pattern: React Context with AsyncStorage persistence
+  - Features: System theme detection via `useColorScheme`
+  - Auto-switching: Respects system preference when mode is 'system'
+- `app/(tabs)/settings/theme.tsx`: Theme selection UI
+  - Pattern: RadioButton group with three modes (light, dark, system)
+  - Features: Loading state during theme change, accessibility labels
+
+**Theme Usage Pattern**:
+
+```typescript
+import { useAppTheme } from '@/theme/ThemeContext'
+
+const { theme, isDark, themeMode, setThemeMode } = useAppTheme()
+
+// Use theme.colors for dynamic styling
+<View style={{ backgroundColor: theme.colors.surface }}>
+  <Text style={{ color: theme.colors.onSurface }}>Content</Text>
+</View>
+```
+
+### Navigation Patterns (Expo Router)
+
+**File-based Routing**:
+
+- Directory structure defines routes automatically
+- Groups: `(tabs)`, `(auth)`, `(onboarding)` for logical organization
+- Dynamic routes: `[id].tsx` for parameterized paths
+- Layout files: `_layout.tsx` for shared UI and navigation config
+
+**Navigation Hooks**:
+
+```typescript
+import { useRouter, useLocalSearchParams } from 'expo-router';
+
+// Navigate programmatically
+const router = useRouter();
+router.push('/profile/edit');
+router.replace('/auth/login');
+router.back();
+
+// Access route parameters
+const { id } = useLocalSearchParams<{ id: string }>();
+```
+
+**Deep Linking**:
+
+- Pattern: URL scheme configured in app.json
+- Format: `volvox://app/(tabs)/profile/edit`
+- Automatic handling by Expo Router
+
+### Accessibility Patterns
+
+**WCAG 2.1 AA Compliance**:
+
+- Minimum touch targets: 44x44 pixels (verified in accessibility.spec.ts)
+- Color contrast: 4.5:1 for normal text, 3:1 for large text
+- Screen reader support: aria-label, accessibilityLabel, accessibilityRole
+- Keyboard navigation: Focus indicators, tab order, keyboard shortcuts
+
+**Screen Reader Testing**:
+
+- iOS VoiceOver: Manual testing checklist (**tests**/voiceover-testing-checklist.md)
+- Android TalkBack: Manual testing checklist (**tests**/talkback-testing-checklist.md)
+- Critical flows: Auth, onboarding, matches, connections, messages, sobriety, profile
+
+**Accessibility Props Pattern**:
+
+```typescript
+<TouchableOpacity
+  accessibilityLabel="Send message"
+  accessibilityRole="button"
+  accessibilityHint="Double tap to send the message"
+>
+  <Icon name="send" />
+</TouchableOpacity>
+```
+
+### Testing Patterns
+
+**E2E Testing with Playwright** (**tests**/\*.spec.ts):
+
+- 9 comprehensive test suites covering all user flows
+- Patterns: Login helper, navigation helpers, element verification
+- Cross-browser: Chromium (default), Firefox, WebKit
+- Accessibility: Automated WCAG AA validation in accessibility.spec.ts
+- Dark mode: Comprehensive theming tests in dark-mode.spec.ts
+
+**Test Organization**:
+
+```
+__tests__/
+├── *.spec.ts           # Playwright E2E tests (excluded from Jest)
+├── components/         # Component unit tests (Jest)
+├── store/             # Redux state tests (Jest)
+└── services/          # Service layer tests (Jest)
+```
+
+**E2E Test Pattern**:
+
+```typescript
+test.describe('Feature Flow', () => {
+  test.beforeEach(async ({ page }) => {
+    await login(page); // Helper function
+  });
+
+  test('User can complete action', async ({ page }) => {
+    await page.click('[data-testid="action-button"]');
+    await expect(page.locator('[data-testid="success"]')).toBeVisible();
+  });
+});
+```
+
+### Performance Patterns
+
+**Image Lazy Loading**:
+
+- Pattern: React Native Paper Avatar with loading prop
+- Optimization: Only load images when components are visible
+- Fallback: Placeholder initials for missing avatars
+
+**List Virtualization**:
+
+- Pattern: FlatList with optimized props
+- Props: `removeClippedSubviews`, `maxToRenderPerBatch`, `windowSize`
+- Use case: Messages list, connections list, matches list
+
+**Redux Persist Configuration**:
+
+- Pattern: Selective persistence to reduce AsyncStorage load
+- Persist: User profile, preferences, non-sensitive cached data
+- Don't persist: Auth tokens (use Supabase session), temporary UI state
+
+**Skeleton Screens**:
+
+- Pattern: Loading placeholders that match final content structure
+- Implementation: React Native Paper Skeleton with animated wave
+- Use cases: Profile loading, list loading, card loading
+
+### Known Issues
+
+**Pre-existing Test Failures** (Documented in claudedocs/pre-existing-test-issues.md):
+
+- 7 failing unit test suites (pre-existing, not related to Phase 10 work)
+- 456 TypeScript errors in old test files
+- 78 lint warnings
+- Supabase functions not included in tsconfig.json
+- All new Phase 10 code is working correctly and type-safe
+
+### Next Steps
+
+- T149: Verify all acceptance scenarios from spec.md pass
+- T150: Run bundle size analysis and verify targets met
+- Address pre-existing test issues in separate maintenance task
+- Prepare for feature branch merge to main

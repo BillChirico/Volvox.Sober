@@ -15,10 +15,7 @@ interface AutoSaveIndicatorProps {
   lastSavedAt?: string | null;
 }
 
-export const AutoSaveIndicator: React.FC<AutoSaveIndicatorProps> = ({
-  status,
-  lastSavedAt,
-}) => {
+export const AutoSaveIndicator: React.FC<AutoSaveIndicatorProps> = ({ status, lastSavedAt }) => {
   const isOnline = useSelector(selectIsOnline);
   const hasPendingOps = useSelector(selectHasPendingOperations);
 
@@ -108,9 +105,7 @@ export const AutoSaveIndicator: React.FC<AutoSaveIndicatorProps> = ({
       )}
 
       {effectiveStatus === 'offline' && hasPendingOps && (
-        <Text style={styles.warningText}>
-          Changes will sync when connection restored
-        </Text>
+        <Text style={styles.warningText}>Changes will sync when connection restored</Text>
       )}
     </View>
   );

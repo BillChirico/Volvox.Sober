@@ -41,12 +41,7 @@ interface MatchResponse {
  * Calculate distance in miles between two lat/lng coordinates
  * Uses Haversine formula
  */
-function calculateDistance(
-  lat1: number,
-  lng1: number,
-  lat2: number,
-  lng2: number
-): number {
+function calculateDistance(lat1: number, lng1: number, lat2: number, lng2: number): number {
   const R = 3959; // Earth's radius in miles
   const dLat = (lat2 - lat1) * (Math.PI / 180);
   const dLng = (lng2 - lng1) * (Math.PI / 180);
@@ -75,7 +70,7 @@ function scoreLocation(
   sponsorCity: string,
   sponsorState: string,
   sponsorLat: number,
-  sponsorLng: number
+  sponsorLng: number,
 ): number {
   const distance = calculateDistance(sponseeLat, sponseeLng, sponsorLat, sponsorLng);
 
@@ -122,7 +117,7 @@ function scoreApproach(sponseePreferences: string, sponsorApproach: string): num
       .toLowerCase()
       .replace(/[^\w\s]/g, '')
       .split(/\s+/)
-      .filter((word) => word.length > 2); // Remove short words
+      .filter(word => word.length > 2); // Remove short words
   };
 
   const sponseeTokens = tokenize(sponseePreferences);
@@ -130,12 +125,8 @@ function scoreApproach(sponseePreferences: string, sponsorApproach: string): num
 
   // Create vocabulary and vectors
   const vocabulary = Array.from(new Set([...sponseeTokens, ...sponsorTokens]));
-  const sponseeVector = vocabulary.map((word) =>
-    sponseeTokens.filter((t) => t === word).length
-  );
-  const sponsorVector = vocabulary.map((word) =>
-    sponsorTokens.filter((t) => t === word).length
-  );
+  const sponseeVector = vocabulary.map(word => sponseeTokens.filter(t => t === word).length);
+  const sponsorVector = vocabulary.map(word => sponsorTokens.filter(t => t === word).length);
 
   // Calculate cosine similarity
   const dotProduct = sponseeVector.reduce((sum, val, i) => sum + val * sponsorVector[i], 0);
@@ -162,7 +153,7 @@ function scoreExperience(sponseeSobrietyMonths: number, sponsorYearsSober: numbe
   return (sponsorYearsSober / requiredYears) * 15;
 }
 
-serve(async (req) => {
+serve(async req => {
   // Handle CORS preflight
   if (req.method === 'OPTIONS') {
     return new Response('ok', { headers: corsHeaders });
@@ -202,7 +193,7 @@ serve(async (req) => {
         `
         *,
         sponsee_profiles (*)
-      `
+      `,
       )
       .eq('id', user_id)
       .single();
@@ -236,7 +227,7 @@ serve(async (req) => {
         `
         *,
         sponsor_profiles (*)
-      `
+      `,
       )
       .eq('program_type', sponsee.program_type)
       .eq('role', 'sponsor')
@@ -255,20 +246,19 @@ serve(async (req) => {
       .select('sponsor_id')
       .eq('sponsee_id', user_id);
 
-    const connectedSponsorIds = new Set(connections?.map((c) => c.sponsor_id) || []);
+    const connectedSponsorIds = new Set(connections?.map(c => c.sponsor_id) || []);
 
-    const eligibleSponsors = (sponsors || []).filter((sponsor) => {
+    const eligibleSponsors = (sponsors || []).filter(sponsor => {
       if (!sponsor.sponsor_profiles || !sponsor.sponsor_profiles.length) return false;
       const profile = sponsor.sponsor_profiles[0];
       return (
-        !connectedSponsorIds.has(sponsor.id) &&
-        profile.current_sponsees < profile.max_sponsees
+        !connectedSponsorIds.has(sponsor.id) && profile.current_sponsees < profile.max_sponsees
       );
     });
 
     // Score each sponsor and create matches
     const matches: Match[] = eligibleSponsors
-      .map((sponsor) => {
+      .map(sponsor => {
         const sponsorProfile = sponsor.sponsor_profiles[0];
 
         // Calculate individual scores
@@ -280,19 +270,19 @@ serve(async (req) => {
           sponsor.location.city,
           sponsor.location.state,
           sponsor.location.latitude || 0,
-          sponsor.location.longitude || 0
+          sponsor.location.longitude || 0,
         );
 
         const programTypeScore = sponsor.program_type === sponsee.program_type ? 25 : 0;
 
         const availabilityScore = scoreAvailability(
           sponseeProfile.availability_needs || '3-5 days',
-          sponsorProfile.availability || 'Daily'
+          sponsorProfile.availability || 'Daily',
         );
 
         const approachScore = scoreApproach(
           sponseeProfile.approach_preferences || '',
-          sponsorProfile.approach || ''
+          sponsorProfile.approach || '',
         );
 
         // Calculate sobriety months for sponsee

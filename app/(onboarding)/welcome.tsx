@@ -1,33 +1,44 @@
+/**
+ * Welcome Screen
+ * Initial onboarding screen with welcome message and features
+ * Feature: 002-app-screens
+ */
+
+import React, { useState } from 'react';
 import { View, StyleSheet } from 'react-native';
-import { Text, Button } from 'react-native-paper';
 import { useRouter } from 'expo-router';
+import { WelcomeCard } from '../../src/components/onboarding/WelcomeCard';
+import { useOnboarding } from '../../src/hooks/useOnboarding';
+import { useAuth } from '../../src/hooks/useAuth';
 import { useAppTheme } from '../../src/theme/ThemeContext';
 
 export default function WelcomeScreen() {
   const { theme } = useAppTheme();
   const router = useRouter();
+  const { user } = useAuth();
+  const { completeStep, isSaving } = useOnboarding();
+  const [isLoading, setIsLoading] = useState(false);
 
-  const handleGetStarted = () => {
-    // Direct users to signup screen to create an account
-    router.push('/(auth)/signup');
+  const handleGetStarted = async () => {
+    if (!user?.id) return;
+
+    setIsLoading(true);
+    try {
+      // Mark welcome step as complete
+      await completeStep(user.id, 'welcome');
+
+      // Navigate to role selection
+      router.push('/(onboarding)/role-selection');
+    } catch (error) {
+      console.error('Error completing welcome step:', error);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
     <View style={[styles.container, { backgroundColor: theme.colors.background }]}>
-      <Text variant="headlineLarge" style={{ color: theme.colors.onBackground, marginBottom: 16 }}>
-        Welcome to Volvox.Sober
-      </Text>
-      <Text variant="bodyLarge" style={{ color: theme.colors.onBackground, marginBottom: 32, textAlign: 'center' }}>
-        Your journey to sobriety starts here
-      </Text>
-
-      <Button
-        mode="contained"
-        onPress={handleGetStarted}
-        style={{ marginBottom: 16 }}
-      >
-        Get Started
-      </Button>
+      <WelcomeCard onContinue={handleGetStarted} isLoading={isLoading || isSaving} />
     </View>
   );
 }
@@ -35,8 +46,6 @@ export default function WelcomeScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: 'center',
     justifyContent: 'center',
-    padding: 20,
   },
 });

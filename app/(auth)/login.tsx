@@ -22,9 +22,9 @@ export default function LoginScreen() {
   const router = useRouter();
 
   const handleLoginSuccess = () => {
-    // Navigate to main app - replace navigation stack
+    // Navigate to index route which handles onboarding/profile checks
     // Email verification is non-blocking (users can access app without verification)
-    router.replace('/(tabs)/sobriety');
+    router.replace('/');
   };
 
   const handleForgotPassword = () => {
@@ -33,10 +33,7 @@ export default function LoginScreen() {
 
   return (
     <View style={styles.container}>
-      <LoginForm
-        onSuccess={handleLoginSuccess}
-        onForgotPassword={handleForgotPassword}
-      />
+      <LoginForm onSuccess={handleLoginSuccess} onForgotPassword={handleForgotPassword} />
 
       <View style={styles.footer}>
         <Link href="/(auth)/signup" asChild>
@@ -44,8 +41,7 @@ export default function LoginScreen() {
             mode="text"
             testID="signup-link"
             accessibilityRole="link"
-            accessibilityLabel="Don't have an account? Sign up"
-          >
+            accessibilityLabel="Don't have an account? Sign up">
             Don't have an account? Sign up
           </Button>
         </Link>

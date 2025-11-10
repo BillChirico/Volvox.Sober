@@ -6,8 +6,8 @@
 import React from 'react';
 import { View, StyleSheet } from 'react-native';
 import { Modal, Portal, Text, Button, Card, useTheme } from 'react-native-paper';
-import { MILESTONE_DISPLAY_TEXT, MILESTONE_THRESHOLDS } from '@volvox-sober/types/sobriety';
-import type { MilestoneType } from '@volvox-sober/types/sobriety';
+import { MILESTONE_DISPLAY_TEXT } from '@volvox-sober/shared/types/src/sobriety';
+import type { MilestoneType } from '@volvox-sober/shared/types/src/sobriety';
 
 interface MilestoneCelebrationModalProps {
   visible: boolean;
@@ -24,7 +24,7 @@ export const MilestoneCelebrationModal: React.FC<MilestoneCelebrationModalProps>
   onDismiss,
   onShare,
 }) => {
-  const theme = useTheme();
+  const _theme = useTheme();
 
   const getMilestoneEmoji = (milestoneType: MilestoneType): string => {
     switch (milestoneType) {
@@ -60,18 +60,13 @@ export const MilestoneCelebrationModal: React.FC<MilestoneCelebrationModalProps>
     }
   };
 
-  const milestoneThreshold = MILESTONE_THRESHOLDS[milestone];
   const displayText = MILESTONE_DISPLAY_TEXT[milestone];
   const emoji = getMilestoneEmoji(milestone);
   const message = getMilestoneMessage(milestone);
 
   return (
     <Portal>
-      <Modal
-        visible={visible}
-        onDismiss={onDismiss}
-        contentContainerStyle={styles.modalContainer}
-      >
+      <Modal visible={visible} onDismiss={onDismiss} contentContainerStyle={styles.modalContainer}>
         <Card style={styles.card}>
           <Card.Content>
             <View style={styles.emojiContainer}>
@@ -102,8 +97,8 @@ export const MilestoneCelebrationModal: React.FC<MilestoneCelebrationModalProps>
             <Card style={styles.encouragementCard}>
               <Card.Content>
                 <Text variant="bodyMedium" style={styles.encouragement}>
-                  "Recovery is not a race. You don't have to feel guilty if it takes you longer
-                  than you thought it would. Keep going, you're doing great."
+                  "Recovery is not a race. You don't have to feel guilty if it takes you longer than
+                  you thought it would. Keep going, you're doing great."
                 </Text>
               </Card.Content>
             </Card>
@@ -114,8 +109,7 @@ export const MilestoneCelebrationModal: React.FC<MilestoneCelebrationModalProps>
                   mode="contained"
                   onPress={onShare}
                   style={styles.shareButton}
-                  icon="share-variant"
-                >
+                  icon="share-variant">
                   Share with Sponsor
                 </Button>
               )}

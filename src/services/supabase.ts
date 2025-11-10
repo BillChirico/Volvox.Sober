@@ -6,9 +6,29 @@
 import { createClient, SupabaseClient, Session } from '@supabase/supabase-js';
 import * as SecureStore from 'expo-secure-store';
 import { Platform } from 'react-native';
+import Constants from 'expo-constants';
 
-const SUPABASE_URL = process.env.EXPO_PUBLIC_SUPABASE_URL || '';
-const SUPABASE_ANON_KEY = process.env.EXPO_PUBLIC_SUPABASE_ANON_KEY || '';
+// Access environment variables from Expo config (same pattern as authService.ts)
+const SUPABASE_URL =
+  Constants.expoConfig?.extra?.EXPO_PUBLIC_SUPABASE_URL ||
+  process.env.EXPO_PUBLIC_SUPABASE_URL ||
+  '';
+const SUPABASE_ANON_KEY =
+  Constants.expoConfig?.extra?.EXPO_PUBLIC_SUPABASE_ANON_KEY ||
+  process.env.EXPO_PUBLIC_SUPABASE_ANON_KEY ||
+  '';
+
+// Debug logging to verify env vars are loaded
+console.log('=== Supabase Client Initialization ===');
+console.log('URL:', SUPABASE_URL);
+console.log('Key (first 20 chars):', SUPABASE_ANON_KEY.substring(0, 20) + '...');
+console.log('URL empty?', SUPABASE_URL === '');
+console.log('Key empty?', SUPABASE_ANON_KEY === '');
+
+if (!SUPABASE_URL || !SUPABASE_ANON_KEY) {
+  console.error('❌ CRITICAL: Supabase environment variables not loaded!');
+  console.error('Make sure .env file exists and Expo is restarted with --clear flag');
+}
 
 /**
  * Secure storage adapter for Supabase auth tokens
@@ -88,9 +108,24 @@ export const getUser = async () => {
 };
 
 /**
+ * Get current user ID
+ */
+export const getCurrentUserId = async (): Promise<string> => {
+  const user = await getUser();
+  if (!user) {
+    throw new Error('No authenticated user');
+  }
+  return user.id;
+};
+
+/**
  * Sign up with email and password
  */
-export const signUp = async (email: string, password: string, metadata?: Record<string, unknown>) => {
+export const signUp = async (
+  email: string,
+  password: string,
+  metadata?: Record<string, unknown>,
+) => {
   return await supabaseClient.auth.signUp({
     email,
     password,

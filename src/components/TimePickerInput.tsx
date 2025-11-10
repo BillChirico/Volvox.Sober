@@ -3,21 +3,15 @@
  * Time selection with timezone display and next scheduled preview
  */
 
-import React, { useState } from 'react'
-import {
-  View,
-  Text,
-  TouchableOpacity,
-  StyleSheet,
-  Platform,
-} from 'react-native'
-import DateTimePicker from '@react-native-community/datetimepicker'
+import React, { useState } from 'react';
+import { View, Text, TouchableOpacity, StyleSheet, Platform } from 'react-native';
+import DateTimePicker from '@react-native-community/datetimepicker';
 
 interface TimePickerInputProps {
-  time: string // HH:MM format (24-hour)
-  timezone: string // IANA timezone
-  onChange: (time: string) => void
-  label?: string
+  time: string; // HH:MM format (24-hour)
+  timezone: string; // IANA timezone
+  onChange: (time: string) => void;
+  label?: string;
 }
 
 export const TimePickerInput: React.FC<TimePickerInputProps> = ({
@@ -26,58 +20,55 @@ export const TimePickerInput: React.FC<TimePickerInputProps> = ({
   onChange,
   label = 'Check-In Time',
 }) => {
-  const [showPicker, setShowPicker] = useState(false)
+  const [showPicker, setShowPicker] = useState(false);
 
   // Convert time string to Date object
   const getDateFromTime = (timeStr: string): Date => {
-    const [hours, minutes] = timeStr.split(':').map(Number)
-    const date = new Date()
-    date.setHours(hours, minutes, 0, 0)
-    return date
-  }
+    const [hours, minutes] = timeStr.split(':').map(Number);
+    const date = new Date();
+    date.setHours(hours, minutes, 0, 0);
+    return date;
+  };
 
   // Format time for display (12-hour format)
   const formatTime12Hour = (timeStr: string): string => {
-    const [hours, minutes] = timeStr.split(':').map(Number)
-    const period = hours >= 12 ? 'PM' : 'AM'
-    const displayHours = hours % 12 || 12
-    return `${displayHours}:${minutes.toString().padStart(2, '0')} ${period}`
-  }
+    const [hours, minutes] = timeStr.split(':').map(Number);
+    const period = hours >= 12 ? 'PM' : 'AM';
+    const displayHours = hours % 12 || 12;
+    return `${displayHours}:${minutes.toString().padStart(2, '0')} ${period}`;
+  };
 
   // Calculate next scheduled time
   const getNextScheduledTime = (): string => {
-    const [hours, minutes] = time.split(':').map(Number)
-    const now = new Date()
-    const nextScheduled = new Date(now)
-    nextScheduled.setHours(hours, minutes, 0, 0)
+    const [hours, minutes] = time.split(':').map(Number);
+    const now = new Date();
+    const nextScheduled = new Date(now);
+    nextScheduled.setHours(hours, minutes, 0, 0);
 
     // If time has passed today, show tomorrow
     if (nextScheduled <= now) {
-      nextScheduled.setDate(nextScheduled.getDate() + 1)
-      return `Tomorrow at ${formatTime12Hour(time)}`
+      nextScheduled.setDate(nextScheduled.getDate() + 1);
+      return `Tomorrow at ${formatTime12Hour(time)}`;
     }
 
-    return `Today at ${formatTime12Hour(time)}`
-  }
+    return `Today at ${formatTime12Hour(time)}`;
+  };
 
   const handleTimeChange = (event: any, selectedDate?: Date) => {
-    setShowPicker(Platform.OS === 'ios') // Keep open on iOS
+    setShowPicker(Platform.OS === 'ios'); // Keep open on iOS
 
     if (selectedDate) {
-      const hours = selectedDate.getHours().toString().padStart(2, '0')
-      const minutes = selectedDate.getMinutes().toString().padStart(2, '0')
-      onChange(`${hours}:${minutes}`)
+      const hours = selectedDate.getHours().toString().padStart(2, '0');
+      const minutes = selectedDate.getMinutes().toString().padStart(2, '0');
+      onChange(`${hours}:${minutes}`);
     }
-  }
+  };
 
   return (
     <View style={styles.container}>
       <Text style={styles.label}>{label}</Text>
 
-      <TouchableOpacity
-        style={styles.timeButton}
-        onPress={() => setShowPicker(true)}
-      >
+      <TouchableOpacity style={styles.timeButton} onPress={() => setShowPicker(true)}>
         <View style={styles.timeContent}>
           <Text style={styles.timeText}>{formatTime12Hour(time)}</Text>
           <Text style={styles.timezoneText}>{timezone}</Text>
@@ -100,8 +91,8 @@ export const TimePickerInput: React.FC<TimePickerInputProps> = ({
         />
       )}
     </View>
-  )
-}
+  );
+};
 
 // ============================================================
 // Styles
@@ -158,4 +149,4 @@ const styles = StyleSheet.create({
     fontWeight: '500',
     color: '#007AFF',
   },
-})
+});

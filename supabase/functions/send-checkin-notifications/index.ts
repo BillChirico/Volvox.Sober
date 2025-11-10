@@ -28,7 +28,7 @@ interface Checkin {
   };
 }
 
-serve(async (req) => {
+serve(async req => {
   try {
     // Initialize Supabase client
     const supabase = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY);
@@ -37,7 +37,8 @@ serve(async (req) => {
     const now = new Date().toISOString();
     const { data: checkins, error: checkinsError } = await supabase
       .from('checkins')
-      .select(`
+      .select(
+        `
         id,
         connection_id,
         questions,
@@ -49,51 +50,49 @@ serve(async (req) => {
           sponsee_id,
           users!connections_sponsee_id_fkey(id, full_name)
         )
-      `)
+      `,
+      )
       .eq('active', true)
       .lte('next_scheduled_at', now);
 
     if (checkinsError) {
       console.error('Error fetching checkins:', checkinsError);
-      return new Response(
-        JSON.stringify({ error: checkinsError.message }),
-        { status: 500, headers: { 'Content-Type': 'application/json' } }
-      );
+      return new Response(JSON.stringify({ error: checkinsError.message }), {
+        status: 500,
+        headers: { 'Content-Type': 'application/json' },
+      });
     }
 
     if (!checkins || checkins.length === 0) {
-      return new Response(
-        JSON.stringify({ message: 'No check-ins due', processed: 0 }),
-        { status: 200, headers: { 'Content-Type': 'application/json' } }
-      );
+      return new Response(JSON.stringify({ message: 'No check-ins due', processed: 0 }), {
+        status: 200,
+        headers: { 'Content-Type': 'application/json' },
+      });
     }
 
     // Send notifications for each due check-in
     const results = await Promise.allSettled(
-      (checkins as unknown as Checkin[]).map(async (checkin) => {
+      (checkins as unknown as Checkin[]).map(async checkin => {
         // Get first question as prompt text
         const promptText = checkin.questions[0]?.question_text || 'Time for your check-in';
 
         // Send notification via send-notification Edge Function
-        const notificationResponse = await fetch(
-          `${SUPABASE_URL}/functions/v1/send-notification`,
-          {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-              'Authorization': `Bearer ${SUPABASE_SERVICE_ROLE_KEY}`,
+        const notificationResponse = await fetch(`${SUPABASE_URL}/functions/v1/send-notification`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${SUPABASE_SERVICE_ROLE_KEY}`,
+          },
+          body: JSON.stringify({
+            user_id: checkin.connections.sponsee_id,
+            type: 'check_in_reminder',
+            title: 'Time for your daily check-in',
+            body: promptText,
+            data: {
+              entity_id: checkin.id,
             },
-            body: JSON.stringify({
-              user_id: checkin.connections.sponsee_id,
-              type: 'check_in_reminder',
-              title: 'Time for your daily check-in',
-              body: promptText,
-              data: {
-                entity_id: checkin.id,
-              },
-            }),
-          }
-        );
+          }),
+        });
 
         if (!notificationResponse.ok) {
           throw new Error(`Notification failed: ${await notificationResponse.text()}`);
@@ -132,7 +131,7 @@ serve(async (req) => {
           user_id: checkin.connections.sponsee_id,
           sent: true,
         };
-      })
+      }),
     );
 
     // Count successes and failures
@@ -153,13 +152,13 @@ serve(async (req) => {
         successful,
         failed,
       }),
-      { status: 200, headers: { 'Content-Type': 'application/json' } }
+      { status: 200, headers: { 'Content-Type': 'application/json' } },
     );
   } catch (error) {
     console.error('Check-in notification error:', error);
-    return new Response(
-      JSON.stringify({ error: error.message }),
-      { status: 500, headers: { 'Content-Type': 'application/json' } }
-    );
+    return new Response(JSON.stringify({ error: error.message }), {
+      status: 500,
+      headers: { 'Content-Type': 'application/json' },
+    });
   }
 });

@@ -14,7 +14,14 @@ const EXPO_ACCESS_TOKEN = Deno.env.get('EXPO_ACCESS_TOKEN'); // Optional
 
 interface NotificationRequest {
   user_id: string;
-  type: 'new_message' | 'connection_request' | 'check_in_reminder' | 'milestone_achieved' | 'step_work_comment' | 'step_work_submitted' | 'step_work_reviewed';
+  type:
+    | 'new_message'
+    | 'connection_request'
+    | 'check_in_reminder'
+    | 'milestone_achieved'
+    | 'step_work_comment'
+    | 'step_work_submitted'
+    | 'step_work_reviewed';
   title: string;
   body: string;
   data?: Record<string, string>;
@@ -39,7 +46,7 @@ interface ExpoResponse {
   }[];
 }
 
-serve(async (req) => {
+serve(async req => {
   try {
     // Parse request body
     const payload: NotificationRequest = await req.json();
@@ -56,10 +63,10 @@ serve(async (req) => {
       .single();
 
     if (userError || !user) {
-      return new Response(
-        JSON.stringify({ error: 'User not found' }),
-        { status: 404, headers: { 'Content-Type': 'application/json' } }
-      );
+      return new Response(JSON.stringify({ error: 'User not found' }), {
+        status: 404,
+        headers: { 'Content-Type': 'application/json' },
+      });
     }
 
     // Check notification preferences
@@ -69,7 +76,7 @@ serve(async (req) => {
     if (preferences[typeKey] === false) {
       return new Response(
         JSON.stringify({ message: 'Notification disabled by user preferences' }),
-        { status: 200, headers: { 'Content-Type': 'application/json' } }
+        { status: 200, headers: { 'Content-Type': 'application/json' } },
       );
     }
 
@@ -77,15 +84,15 @@ serve(async (req) => {
     const deviceTokens: string[] = user.device_tokens || [];
 
     if (deviceTokens.length === 0) {
-      return new Response(
-        JSON.stringify({ message: 'No device tokens registered' }),
-        { status: 200, headers: { 'Content-Type': 'application/json' } }
-      );
+      return new Response(JSON.stringify({ message: 'No device tokens registered' }), {
+        status: 200,
+        headers: { 'Content-Type': 'application/json' },
+      });
     }
 
     // Send notifications to all devices
     const results = await Promise.allSettled(
-      deviceTokens.map(token => sendExpoNotification(token, title, body, { ...data, type }))
+      deviceTokens.map(token => sendExpoNotification(token, title, body, { ...data, type })),
     );
 
     // Count successful sends
@@ -105,10 +112,7 @@ serve(async (req) => {
 
     if (invalidTokens.length > 0) {
       const validTokens = deviceTokens.filter(t => !invalidTokens.includes(t));
-      await supabase
-        .from('users')
-        .update({ device_tokens: validTokens })
-        .eq('id', user_id);
+      await supabase.from('users').update({ device_tokens: validTokens }).eq('id', user_id);
     }
 
     return new Response(
@@ -118,14 +122,14 @@ serve(async (req) => {
         failed: failureCount,
         invalidTokensRemoved: invalidTokens.length,
       }),
-      { status: 200, headers: { 'Content-Type': 'application/json' } }
+      { status: 200, headers: { 'Content-Type': 'application/json' } },
     );
   } catch (error) {
     console.error('Notification error:', error);
-    return new Response(
-      JSON.stringify({ error: error.message }),
-      { status: 500, headers: { 'Content-Type': 'application/json' } }
-    );
+    return new Response(JSON.stringify({ error: error.message }), {
+      status: 500,
+      headers: { 'Content-Type': 'application/json' },
+    });
   }
 });
 
@@ -136,7 +140,7 @@ async function sendExpoNotification(
   token: string,
   title: string,
   body: string,
-  data: Record<string, string>
+  data: Record<string, string>,
 ): Promise<void> {
   const message: ExpoMessage = {
     to: token,
@@ -149,7 +153,7 @@ async function sendExpoNotification(
   };
 
   const headers: Record<string, string> = {
-    'Accept': 'application/json',
+    Accept: 'application/json',
     'Accept-encoding': 'gzip, deflate',
     'Content-Type': 'application/json',
   };

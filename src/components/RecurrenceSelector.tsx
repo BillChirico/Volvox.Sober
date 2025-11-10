@@ -3,13 +3,13 @@
  * Allows selection of check-in recurrence pattern (daily, weekly, custom)
  */
 
-import React from 'react'
-import { View, Text, TouchableOpacity, StyleSheet, TextInput } from 'react-native'
+import React from 'react';
+import { View, Text, TouchableOpacity, StyleSheet, TextInput } from 'react-native';
 
 interface RecurrenceSelectorProps {
-  recurrence: 'daily' | 'weekly' | 'custom'
-  customIntervalDays?: number
-  onChange: (recurrence: 'daily' | 'weekly' | 'custom', customDays?: number) => void
+  recurrence: 'daily' | 'weekly' | 'custom';
+  customIntervalDays?: number;
+  onChange: (recurrence: 'daily' | 'weekly' | 'custom', customDays?: number) => void;
 }
 
 export const RecurrenceSelector: React.FC<RecurrenceSelectorProps> = ({
@@ -19,18 +19,18 @@ export const RecurrenceSelector: React.FC<RecurrenceSelectorProps> = ({
 }) => {
   const handleRecurrenceChange = (newRecurrence: 'daily' | 'weekly' | 'custom') => {
     if (newRecurrence === 'custom') {
-      onChange(newRecurrence, customIntervalDays)
+      onChange(newRecurrence, customIntervalDays);
     } else {
-      onChange(newRecurrence)
+      onChange(newRecurrence);
     }
-  }
+  };
 
   const handleCustomDaysChange = (text: string) => {
-    const days = parseInt(text, 10)
+    const days = parseInt(text, 10);
     if (!isNaN(days) && days > 0 && days <= 365) {
-      onChange('custom', days)
+      onChange('custom', days);
     }
-  }
+  };
 
   return (
     <View style={styles.container}>
@@ -39,19 +39,11 @@ export const RecurrenceSelector: React.FC<RecurrenceSelectorProps> = ({
       <View style={styles.optionsContainer}>
         {/* Daily Option */}
         <TouchableOpacity
-          style={[
-            styles.option,
-            recurrence === 'daily' && styles.optionSelected,
-          ]}
-          onPress={() => handleRecurrenceChange('daily')}
-        >
+          style={[styles.option, recurrence === 'daily' && styles.optionSelected]}
+          onPress={() => handleRecurrenceChange('daily')}>
           <View style={styles.optionContent}>
             <Text
-              style={[
-                styles.optionTitle,
-                recurrence === 'daily' && styles.optionTitleSelected,
-              ]}
-            >
+              style={[styles.optionTitle, recurrence === 'daily' && styles.optionTitleSelected]}>
               Daily
             </Text>
             <Text style={styles.optionDescription}>Every day</Text>
@@ -61,19 +53,11 @@ export const RecurrenceSelector: React.FC<RecurrenceSelectorProps> = ({
 
         {/* Weekly Option */}
         <TouchableOpacity
-          style={[
-            styles.option,
-            recurrence === 'weekly' && styles.optionSelected,
-          ]}
-          onPress={() => handleRecurrenceChange('weekly')}
-        >
+          style={[styles.option, recurrence === 'weekly' && styles.optionSelected]}
+          onPress={() => handleRecurrenceChange('weekly')}>
           <View style={styles.optionContent}>
             <Text
-              style={[
-                styles.optionTitle,
-                recurrence === 'weekly' && styles.optionTitleSelected,
-              ]}
-            >
+              style={[styles.optionTitle, recurrence === 'weekly' && styles.optionTitleSelected]}>
               Weekly
             </Text>
             <Text style={styles.optionDescription}>Once a week</Text>
@@ -83,19 +67,11 @@ export const RecurrenceSelector: React.FC<RecurrenceSelectorProps> = ({
 
         {/* Custom Option */}
         <TouchableOpacity
-          style={[
-            styles.option,
-            recurrence === 'custom' && styles.optionSelected,
-          ]}
-          onPress={() => handleRecurrenceChange('custom')}
-        >
+          style={[styles.option, recurrence === 'custom' && styles.optionSelected]}
+          onPress={() => handleRecurrenceChange('custom')}>
           <View style={styles.optionContent}>
             <Text
-              style={[
-                styles.optionTitle,
-                recurrence === 'custom' && styles.optionTitleSelected,
-              ]}
-            >
+              style={[styles.optionTitle, recurrence === 'custom' && styles.optionTitleSelected]}>
               Custom
             </Text>
             <Text style={styles.optionDescription}>
@@ -121,8 +97,8 @@ export const RecurrenceSelector: React.FC<RecurrenceSelectorProps> = ({
         </View>
       )}
     </View>
-  )
-}
+  );
+};
 
 // ============================================================
 // Styles
@@ -199,4 +175,4 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     color: '#000000',
   },
-})
+});

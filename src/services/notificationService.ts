@@ -52,12 +52,12 @@ class NotificationService {
 
     // Setup foreground notification handler (T135)
     this.notificationListener = Notifications.addNotificationReceivedListener(
-      this.handleForegroundNotification
+      this.handleForegroundNotification,
     );
 
     // Setup notification response handler (T137 - Deep linking)
     this.responseListener = Notifications.addNotificationResponseReceivedListener(
-      this.handleNotificationResponse
+      this.handleNotificationResponse,
     );
   }
 
@@ -121,7 +121,9 @@ class NotificationService {
    */
   private async updateToken(token: string): Promise<void> {
     try {
-      const { data: { user } } = await supabase.auth.getUser();
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
 
       if (!user) {
         console.warn('No authenticated user for token update');
@@ -141,10 +143,7 @@ class NotificationService {
       if (!existingTokens.includes(token)) {
         const updatedTokens = [...existingTokens, token];
 
-        await supabase
-          .from('users')
-          .update({ device_tokens: updatedTokens })
-          .eq('id', user.id);
+        await supabase.from('users').update({ device_tokens: updatedTokens }).eq('id', user.id);
 
         console.log('Expo push token registered:', token);
       }
@@ -157,7 +156,7 @@ class NotificationService {
    * Handle foreground notifications (T135)
    */
   private handleForegroundNotification = async (
-    notification: Notifications.Notification
+    notification: Notifications.Notification,
   ): Promise<void> => {
     console.log('Foreground notification:', notification);
 
@@ -168,9 +167,7 @@ class NotificationService {
   /**
    * Handle notification tap/open (T137 - Deep linking)
    */
-  private handleNotificationResponse = (
-    response: Notifications.NotificationResponse
-  ): void => {
+  private handleNotificationResponse = (response: Notifications.NotificationResponse): void => {
     const data = response.notification.request.content.data as NotificationData;
 
     if (!this.navigationRef || !data.type) {
@@ -191,40 +188,40 @@ class NotificationService {
     switch (data.type) {
       case 'new_message':
         if (data.connection_id) {
-          this.navigationRef.navigate('MessageThread', {
-            connectionId: data.connection_id,
+          this.navigationRef.navigate('/(tabs)/messages/[id]', {
+            id: data.connection_id,
           });
         }
         break;
 
       case 'connection_request':
-        this.navigationRef.navigate('ConnectionRequests');
+        this.navigationRef.navigate('/(tabs)/connections/pending');
         break;
 
       case 'check_in_reminder':
         if (data.entity_id) {
-          this.navigationRef.navigate('CheckInResponse', {
+          this.navigationRef.navigate('/(tabs)/check-ins/response', {
             checkinId: data.entity_id,
           });
         }
         break;
 
       case 'milestone_achieved':
-        this.navigationRef.navigate('SobrietyDashboard');
+        this.navigationRef.navigate('/(tabs)/sobriety');
         break;
 
       case 'step_work_comment':
       case 'step_work_reviewed':
         if (data.step_id) {
-          this.navigationRef.navigate('StepWork', {
-            stepId: data.step_id,
+          this.navigationRef.navigate('/(tabs)/steps/work/[id]', {
+            id: data.step_id,
           });
         }
         break;
 
       case 'step_work_submitted':
         if (data.step_id && data.entity_id) {
-          this.navigationRef.navigate('SponsorReview', {
+          this.navigationRef.navigate('/(tabs)/reviews/sponsor', {
             stepWorkId: data.entity_id,
             sponseeId: data.connection_id || '',
           });
@@ -243,7 +240,7 @@ class NotificationService {
     title: string,
     body: string,
     data: NotificationData,
-    seconds: number = 1
+    seconds: number = 1,
   ): Promise<string> {
     return await Notifications.scheduleNotificationAsync({
       content: {

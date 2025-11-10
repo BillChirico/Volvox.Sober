@@ -28,17 +28,17 @@ const CACHE_EXPIRY_MS = 24 * 60 * 60 * 1000; // 24 hours
 /**
  * Save profile data to AsyncStorage cache
  */
-export const cacheProfile = async (userId: string, profile: Omit<CachedProfile, 'cached_at'>): Promise<void> => {
+export const cacheProfile = async (
+  userId: string,
+  profile: Omit<CachedProfile, 'cached_at'>,
+): Promise<void> => {
   try {
     const cachedProfile: CachedProfile = {
       ...profile,
       cached_at: new Date().toISOString(),
     };
 
-    await AsyncStorage.setItem(
-      `${CACHE_KEY_PREFIX}${userId}`,
-      JSON.stringify(cachedProfile)
-    );
+    await AsyncStorage.setItem(`${CACHE_KEY_PREFIX}${userId}`, JSON.stringify(cachedProfile));
   } catch (error) {
     console.error('Error caching profile:', error);
   }
@@ -92,7 +92,7 @@ export const clearProfileCache = async (userId: string): Promise<void> => {
 export const clearAllProfileCaches = async (): Promise<void> => {
   try {
     const keys = await AsyncStorage.getAllKeys();
-    const profileKeys = keys.filter((key) => key.startsWith(CACHE_KEY_PREFIX));
+    const profileKeys = keys.filter(key => key.startsWith(CACHE_KEY_PREFIX));
     await AsyncStorage.multiRemove(profileKeys);
   } catch (error) {
     console.error('Error clearing all profile caches:', error);
@@ -113,7 +113,7 @@ export const isOnline = async (): Promise<boolean> => {
  */
 export const loadProfileWithOfflineSupport = async <T>(
   userId: string,
-  fetchFn: () => Promise<T>
+  fetchFn: () => Promise<T>,
 ): Promise<{ data: T | CachedProfile | null; isFromCache: boolean; isOffline: boolean }> => {
   const online = await isOnline();
 

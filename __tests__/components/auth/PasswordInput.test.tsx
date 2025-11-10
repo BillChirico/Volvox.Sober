@@ -7,13 +7,8 @@ describe('PasswordInput', () => {
   const renderComponent = (props = {}) => {
     return render(
       <PaperProvider>
-        <PasswordInput
-          label="Password"
-          value=""
-          onChangeText={jest.fn()}
-          {...props}
-        />
-      </PaperProvider>
+        <PasswordInput label="Password" value="" onChangeText={jest.fn()} {...props} />
+      </PaperProvider>,
     );
   };
 

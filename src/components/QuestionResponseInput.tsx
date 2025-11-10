@@ -3,16 +3,16 @@
  * Single question with text input for sponsee responses
  */
 
-import React from 'react'
-import { View, Text, TextInput, StyleSheet } from 'react-native'
+import React from 'react';
+import { View, Text, TextInput, StyleSheet } from 'react-native';
 
 interface QuestionResponseInputProps {
-  questionNumber: number
-  question: string
-  answer: string
-  onAnswerChange: (answer: string) => void
-  placeholder?: string
-  maxLength?: number
+  questionNumber: number;
+  question: string;
+  answer: string;
+  onAnswerChange: (answer: string) => void;
+  placeholder?: string;
+  maxLength?: number;
 }
 
 export const QuestionResponseInput: React.FC<QuestionResponseInputProps> = ({
@@ -23,8 +23,8 @@ export const QuestionResponseInput: React.FC<QuestionResponseInputProps> = ({
   placeholder = 'Type your answer...',
   maxLength = 500,
 }) => {
-  const remainingChars = maxLength - answer.length
-  const isNearLimit = remainingChars < 50
+  const remainingChars = maxLength - answer.length;
+  const isNearLimit = remainingChars < 50;
 
   return (
     <View style={styles.container}>
@@ -36,10 +36,7 @@ export const QuestionResponseInput: React.FC<QuestionResponseInputProps> = ({
       </View>
 
       <TextInput
-        style={[
-          styles.input,
-          answer.length > 0 && styles.inputFilled,
-        ]}
+        style={[styles.input, answer.length > 0 && styles.inputFilled]}
         value={answer}
         onChangeText={onAnswerChange}
         placeholder={placeholder}
@@ -55,8 +52,8 @@ export const QuestionResponseInput: React.FC<QuestionResponseInputProps> = ({
         </Text>
       </View>
     </View>
-  )
-}
+  );
+};
 
 // ============================================================
 // Styles
@@ -121,4 +118,4 @@ const styles = StyleSheet.create({
     color: '#FF9500',
     fontWeight: '500',
   },
-})
+});

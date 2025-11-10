@@ -17,11 +17,7 @@ import {
   selectIsProcessing,
   SyncOperation,
 } from '../store/syncQueueSlice';
-import {
-  useSaveStepWorkMutation,
-  useSubmitStepWorkMutation,
-  StepWorkResponse,
-} from '../services/stepsApi';
+import { StepWorkResponse } from '../services/stepsApi';
 
 const MAX_RETRY_COUNT = 3;
 const RETRY_DELAY_MS = 2000; // 2 seconds
@@ -37,7 +33,7 @@ class OfflineSync {
     await store.dispatch(loadQueue());
 
     // Subscribe to network state changes
-    this.unsubscribeNetInfo = NetInfo.addEventListener((state) => {
+    this.unsubscribeNetInfo = NetInfo.addEventListener(state => {
       const isOnline = state.isConnected && state.isInternetReachable;
       store.dispatch(setOnline(isOnline ?? false));
 
@@ -75,7 +71,7 @@ class OfflineSync {
     type: 'create' | 'update' | 'submit',
     stepId: string,
     responses: StepWorkResponse[],
-    status?: 'not_started' | 'in_progress' | 'submitted'
+    status?: 'not_started' | 'in_progress' | 'submitted',
   ) {
     store.dispatch(
       enqueueOperation({
@@ -83,7 +79,7 @@ class OfflineSync {
         stepId,
         responses,
         status,
-      })
+      }),
     );
 
     // Persist queue
@@ -136,9 +132,7 @@ class OfflineSync {
     try {
       // Check retry limit
       if (operation.retryCount >= MAX_RETRY_COUNT) {
-        console.warn(
-          `Operation ${operation.id} exceeded max retries, removing from queue`
-        );
+        console.warn(`Operation ${operation.id} exceeded max retries, removing from queue`);
         store.dispatch(dequeueOperation(operation.id));
         await store.dispatch(persistQueue());
         return;
@@ -168,7 +162,7 @@ class OfflineSync {
         updateOperationRetry({
           id: operation.id,
           error: error.message || 'Unknown error',
-        })
+        }),
       );
       await store.dispatch(persistQueue());
 
@@ -226,7 +220,7 @@ class OfflineSync {
    * Delay utility
    */
   private delay(ms: number): Promise<void> {
-    return new Promise((resolve) => setTimeout(resolve, ms));
+    return new Promise(resolve => setTimeout(resolve, ms));
   }
 
   /**

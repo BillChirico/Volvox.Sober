@@ -8,7 +8,7 @@ describe('AuthErrorMessage', () => {
     return render(
       <PaperProvider>
         <AuthErrorMessage message="" {...props} />
-      </PaperProvider>
+      </PaperProvider>,
     );
   };
 
@@ -56,7 +56,7 @@ describe('AuthErrorMessage', () => {
     rerender(
       <PaperProvider>
         <AuthErrorMessage message="Second error" />
-      </PaperProvider>
+      </PaperProvider>,
     );
 
     expect(getByText('Second error')).toBeTruthy();
@@ -133,7 +133,7 @@ describe('AuthErrorMessage', () => {
     rerender(
       <PaperProvider>
         <AuthErrorMessage message={['Error 1', 'Error 2']} />
-      </PaperProvider>
+      </PaperProvider>,
     );
 
     expect(getByText('Error 1')).toBeTruthy();

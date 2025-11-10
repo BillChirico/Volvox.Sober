@@ -18,7 +18,7 @@ export const QuestionRenderer: React.FC<QuestionRendererProps> = ({
   value,
   onChange,
 }) => {
-  const theme = useTheme();
+  const _theme = useTheme();
   const [bulletItems, setBulletItems] = useState<string[]>(() => {
     try {
       return value ? JSON.parse(value) : [];
@@ -78,11 +78,7 @@ export const QuestionRenderer: React.FC<QuestionRendererProps> = ({
             {bulletItems.map((item, index) => (
               <View key={index} style={styles.bulletItem}>
                 <Text style={styles.bulletText}>• {item}</Text>
-                <Button
-                  mode="text"
-                  onPress={() => handleRemoveBulletItem(index)}
-                  compact
-                >
+                <Button mode="text" onPress={() => handleRemoveBulletItem(index)} compact>
                   Remove
                 </Button>
               </View>
@@ -103,8 +99,7 @@ export const QuestionRenderer: React.FC<QuestionRendererProps> = ({
               mode="contained"
               onPress={handleAddBulletItem}
               disabled={!newBulletItem.trim()}
-              style={styles.addButton}
-            >
+              style={styles.addButton}>
               Add
             </Button>
           </View>
@@ -121,14 +116,13 @@ export const QuestionRenderer: React.FC<QuestionRendererProps> = ({
             Rate from 1 (lowest) to 5 (highest)
           </Text>
           <View style={styles.ratingContainer}>
-            {[1, 2, 3, 4, 5].map((rating) => (
+            {[1, 2, 3, 4, 5].map(rating => (
               <Chip
                 key={rating}
                 selected={value === rating.toString()}
                 onPress={() => handleRatingSelect(rating)}
                 style={styles.ratingChip}
-                mode={value === rating.toString() ? 'flat' : 'outlined'}
-              >
+                mode={value === rating.toString() ? 'flat' : 'outlined'}>
                 {rating}
               </Chip>
             ))}

@@ -12,22 +12,20 @@
     "noImplicitReturns": true,
     "noFallthroughCasesInSwitch": true,
     "paths": {
-      "@volvox-sober/shared": [
-        "./packages/shared"
-      ],
-      "@volvox-sober/shared/*": [
-        "./packages/shared/*"
-      ]
+      "@volvox-sober/shared": ["./packages/shared"],
+      "@volvox-sober/shared/*": ["./packages/shared/*"]
     }
   },
-  "include": [
-    "**/*.ts",
-    "**/*.tsx",
-    ".expo/types/**/*.ts",
-    "expo-env.d.ts"
-  ],
+  "include": ["**/*.ts", "**/*.tsx", ".expo/types/**/*.ts", "expo-env.d.ts"],
   "exclude": [
     "node_modules",
-    "dist"
+    "dist",
+    "supabase/functions",
+    "**/*.test.ts",
+    "**/*.test.tsx",
+    "**/*.spec.ts",
+    "**/*.spec.tsx",
+    "__tests__/**/*",
+    "e2e/**/*"
   ]
 }

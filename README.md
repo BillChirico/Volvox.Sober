@@ -24,6 +24,7 @@ Volvox.Sober is a sobriety companion app that connects individuals in recovery w
 ## Tech Stack
 
 ### Frontend
+
 - **Expo 54.x** - Universal app platform (iOS, Android, Web)
 - **Expo Router 4.x** - File-based routing (like Next.js)
 - **React Native 0.81+** - Cross-platform native framework
@@ -33,6 +34,7 @@ Volvox.Sober is a sobriety companion app that connects individuals in recovery w
 - **Yup** - Form validation
 
 ### Backend
+
 - **Supabase** - Backend-as-a-Service
 - **PostgreSQL 15+** - Database with RLS
 - **Supabase Auth** - Authentication (GoTrue)
@@ -40,6 +42,7 @@ Volvox.Sober is a sobriety companion app that connects individuals in recovery w
 - **Realtime** - WebSocket subscriptions
 
 ### Testing
+
 - **Jest** - Unit and integration tests
 - **React Native Testing Library** - Component testing
 - **Playwright** - End-to-end testing
@@ -113,11 +116,11 @@ volvox-sober/
 │   └── +not-found.tsx   # 404 page
 │
 ├── src/                 # Application source code
-│   ├── screens/         # Screen components (to be migrated to app/)
 │   ├── components/      # Reusable UI components
 │   ├── services/        # API clients, business logic
 │   ├── store/           # State management (Redux)
 │   ├── types/           # TypeScript definitions
+│   ├── hooks/           # Custom React hooks
 │   ├── theme/           # Theme and styling
 │   ├── constants/       # App constants (Colors, Layout)
 │   └── utils/           # Utility functions
@@ -131,7 +134,7 @@ volvox-sober/
 ├── packages/
 │   └── shared/          # Shared types and utilities
 ├── supabase/            # Backend (migrations, functions, seeds)
-├── kitty-specs/         # Feature specifications & planning
+├── specs/               # Feature specifications & planning
 ├── scripts/             # Build and utility scripts
 ├── docs/                # Project documentation
 └── [config files]       # App configuration (app.json, tsconfig, etc.)
@@ -140,6 +143,7 @@ volvox-sober/
 ### Platform-Specific Code
 
 Expo supports platform-specific files using extensions:
+
 - `Component.tsx` - Shared across all platforms
 - `Component.ios.tsx` - iOS-specific override
 - `Component.android.tsx` - Android-specific override
@@ -157,14 +161,36 @@ Expo supports platform-specific files using extensions:
 ## Documentation
 
 - **CLAUDE.md** - Development guidelines and coding standards
-- **kitty-specs/** - Feature specifications and implementation plans
+- **specs/** - Feature specifications and implementation plans
 - **docs/** - Additional technical documentation
 
 ## Current Status
 
-**Phase 0 - Setup & Infrastructure**
+**Phase 10 - Polish & Cross-Cutting Concerns** (Final Phase)
 
-Active development branch: `001-volvox-sober-recovery`
+### Completed Features
+
+- ✅ Authentication system (login, signup, email verification)
+- ✅ Onboarding flow (welcome, role selection, profile setup)
+- ✅ Main app screens (connections, matches, messages, sobriety tracking, profile)
+- ✅ Real-time messaging with Supabase subscriptions
+- ✅ Profile management with role switching (sponsor/sponsee)
+- ✅ Settings screens (notifications, theme, account)
+- ✅ Dark mode with Material Design 3 theming
+- ✅ Accessibility compliance (WCAG 2.1 AA)
+- ✅ Comprehensive E2E test coverage (Playwright)
+- ✅ Performance optimizations (image lazy loading, list virtualization)
+- ✅ Error handling and network indicators
+
+### Architecture
+
+- **Routing**: Expo Router 4.x (file-based routing)
+- **State Management**: Redux Toolkit + Redux Persist
+- **UI Framework**: React Native Paper (Material Design 3)
+- **Backend**: Supabase (PostgreSQL, Auth, Realtime, Edge Functions)
+- **Testing**: Jest (unit) + Playwright (E2E)
+
+**Note**: All screen components now reside in `app/` directory using Expo Router. The old `src/screens/` directory has been removed.
 
 ## Contributing
 

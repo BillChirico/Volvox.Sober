@@ -46,7 +46,7 @@ const userSlice = createSlice({
         };
       }
     },
-    clearUser: (state) => {
+    clearUser: state => {
       state.user = null;
       state.loading = false;
       state.error = null;
