@@ -11,7 +11,7 @@ import { ProfileForm } from '../../src/components/onboarding/ProfileForm';
 import { useOnboarding } from '../../src/hooks/useOnboarding';
 import { useProfile } from '../../src/hooks/useProfile';
 import { useAuth } from '../../src/hooks/useAuth';
-import { useAppTheme } from '../../src/theme/ThemeContext';
+import { useAppTheme } from '../../src/core/theme/ThemeContext';
 import type { ProfileFormData } from '../../src/types/profile';
 
 export default function SponsorProfileScreen() {

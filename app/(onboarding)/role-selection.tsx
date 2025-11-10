@@ -12,7 +12,7 @@ import { RoleSelector } from '../../src/components/onboarding/RoleSelector';
 import { useOnboarding } from '../../src/hooks/useOnboarding';
 import { useProfile } from '../../src/hooks/useProfile';
 import { useAuth } from '../../src/hooks/useAuth';
-import { useAppTheme } from '../../src/theme/ThemeContext';
+import { useAppTheme } from '../../src/core/theme/ThemeContext';
 import type { UserRole } from '../../src/types/profile';
 
 export default function RoleSelectionScreen() {

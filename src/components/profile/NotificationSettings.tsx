@@ -8,7 +8,7 @@ import React, { useState, useEffect } from 'react';
 import { View, StyleSheet, Alert } from 'react-native';
 import { Text, ActivityIndicator } from 'react-native-paper';
 import { SettingsSection, type SettingsItem } from './SettingsSection';
-import { useAppTheme } from '../../theme/ThemeContext';
+import { useAppTheme } from '../../core/theme/ThemeContext';
 import supabaseClient from '../../services/supabase';
 
 interface NotificationPreferences {

@@ -16,7 +16,7 @@ import { useMessages } from '../../src/hooks/useMessages';
 import { useAuth } from '../../src/hooks/useAuth';
 import { useAppSelector } from '../../src/hooks/useAppDispatch';
 import { selectProfile } from '../../src/store/profile/profileSelectors';
-import { useAppTheme } from '../../src/theme/ThemeContext';
+import { useAppTheme } from '../../src/core/theme/ThemeContext';
 import { useRouter } from 'expo-router';
 import type { ConversationPreview, MessageWithSender } from '../../src/types/message';
 

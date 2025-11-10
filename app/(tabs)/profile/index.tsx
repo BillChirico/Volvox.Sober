@@ -9,7 +9,7 @@ import { View, StyleSheet, ScrollView, Alert } from 'react-native';
 import { ActivityIndicator, Button, Divider, Text } from 'react-native-paper';
 import { useRouter } from 'expo-router';
 import Constants from 'expo-constants';
-import { useAppTheme } from '../../../src/theme/ThemeContext';
+import { useAppTheme } from '../../../src/core/theme/ThemeContext';
 import { useProfile } from '../../../src/hooks/useProfile';
 import { useAuth } from '../../../src/hooks/useAuth';
 import { ProfileHeader } from '../../../src/components/profile/ProfileHeader';

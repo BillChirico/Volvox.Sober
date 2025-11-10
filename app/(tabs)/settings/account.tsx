@@ -9,7 +9,7 @@ import { StyleSheet, ScrollView, Alert } from 'react-native';
 import { Text, Button, TextInput, Surface, HelperText, Divider } from 'react-native-paper';
 import { useRouter } from 'expo-router';
 import * as Yup from 'yup';
-import { useAppTheme } from '../../../src/theme/ThemeContext';
+import { useAppTheme } from '../../../src/core/theme/ThemeContext';
 import { useAuth } from '../../../src/hooks/useAuth';
 
 /**

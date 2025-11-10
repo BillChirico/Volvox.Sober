@@ -14,7 +14,7 @@ import { LoadingSpinner } from '../../src/components/common/LoadingSpinner';
 import { EmptyState } from '../../src/components/common/EmptyState';
 import { useMatches } from '../../src/hooks/useMatches';
 import { useAuth } from '../../src/hooks/useAuth';
-import { useAppTheme } from '../../src/theme/ThemeContext';
+import { useAppTheme } from '../../src/core/theme/ThemeContext';
 import type { MatchWithProfile } from '../../src/types/match';
 
 export default function MatchesScreen() {

@@ -4,7 +4,7 @@ import { PersistGate } from 'redux-persist/integration/react';
 import { PaperProvider, ActivityIndicator } from 'react-native-paper';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { View, StyleSheet } from 'react-native';
-import { ThemeProvider, useAppTheme } from '../src/theme/ThemeContext';
+import { ThemeProvider, useAppTheme } from '../src/core/theme/ThemeContext';
 import { store, persistor } from '../src/store';
 import { StatusBar } from 'expo-status-bar';
 import { ErrorBoundary } from '../src/components/common/ErrorBoundary';

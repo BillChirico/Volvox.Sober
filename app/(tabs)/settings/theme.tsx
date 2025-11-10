@@ -10,8 +10,8 @@ import {
   Icon,
   ActivityIndicator,
 } from 'react-native-paper';
-import { useAppTheme } from '../../../src/theme/ThemeContext';
-import type { ThemeMode } from '../../../src/theme';
+import { useAppTheme } from '../../../src/core/theme/ThemeContext';
+import type { ThemeMode } from '../../../src/core/theme';
 
 const ThemeSettingsScreen = () => {
   const paperTheme = useTheme();

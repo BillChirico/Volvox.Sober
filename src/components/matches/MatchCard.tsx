@@ -8,7 +8,7 @@ import React from 'react';
 import { View, StyleSheet, TouchableOpacity } from 'react-native';
 import { Card, Avatar, Text, Button, Chip } from 'react-native-paper';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { useAppTheme } from '../../theme/ThemeContext';
+import { useAppTheme } from '../../core/theme/ThemeContext';
 import { CompatibilityBadge } from './CompatibilityBadge';
 import type { MatchWithProfile } from '../../types/match';
 

@@ -16,7 +16,7 @@ import { LoadingSpinner } from '../../src/components/common/LoadingSpinner';
 import { EmptyState } from '../../src/components/common/EmptyState';
 import { useSobrietyTracking } from '../../src/hooks/useSobrietyTracking';
 import { useAuth } from '../../src/hooks/useAuth';
-import { useAppTheme } from '../../src/theme/ThemeContext';
+import { useAppTheme } from '../../src/core/theme/ThemeContext';
 import { isMilestone, getMilestoneForDays } from '../../src/utils/dateCalculations';
 import sobrietyService from '../../src/services/sobrietyService';
 import type { ReflectionFormData } from '../../src/types/sobriety';

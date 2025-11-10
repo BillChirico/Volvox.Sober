@@ -7,7 +7,7 @@
 import React from 'react';
 import { View, StyleSheet } from 'react-native';
 import { Text } from 'react-native-paper';
-import { useAppTheme } from '../../theme/ThemeContext';
+import { useAppTheme } from '../../core/theme/ThemeContext';
 
 export interface CompatibilityBadgeProps {
   /** Compatibility score (0-100) */

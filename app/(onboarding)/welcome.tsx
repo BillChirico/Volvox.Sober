@@ -10,7 +10,7 @@ import { useRouter } from 'expo-router';
 import { WelcomeCard } from '../../src/components/onboarding/WelcomeCard';
 import { useOnboarding } from '../../src/hooks/useOnboarding';
 import { useAuth } from '../../src/hooks/useAuth';
-import { useAppTheme } from '../../src/theme/ThemeContext';
+import { useAppTheme } from '../../src/core/theme/ThemeContext';
 
 export default function WelcomeScreen() {
   const { theme } = useAppTheme();

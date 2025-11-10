@@ -5,7 +5,7 @@
  */
 
 import { Stack } from 'expo-router';
-import { useAppTheme } from '../../../src/theme/ThemeContext';
+import { useAppTheme } from '../../../src/core/theme/ThemeContext';
 
 export default function SettingsLayout() {
   const { theme } = useAppTheme();

@@ -8,7 +8,7 @@ import React from 'react';
 import { View, TouchableOpacity, StyleSheet, Platform } from 'react-native';
 import { Text } from 'react-native-paper';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { useAppTheme } from '../../theme/ThemeContext';
+import { useAppTheme } from '../../core/theme/ThemeContext';
 import { useAppSelector } from '../../hooks/useAppDispatch';
 import { selectUnreadMessagesCount } from '../../store/messages/messagesSelectors';
 import { selectPendingConnectionRequestsCount } from '../../store/connections/connectionsSelectors';
