@@ -18,6 +18,10 @@ module.exports = {
   },
   collectCoverageFrom: ['src/**/*.{ts,tsx}', '!src/**/*.d.ts', '!src/**/__tests__/**'],
   moduleNameMapper: {
+    '^@/features/(.*)$': '<rootDir>/src/features/$1',
+    '^@/shared/(.*)$': '<rootDir>/src/shared/$1',
+    '^@/core/(.*)$': '<rootDir>/src/core/$1',
+    '^@/lib/(.*)$': '<rootDir>/src/lib/$1',
     '^@/(.*)$': '<rootDir>/src/$1',
   },
 };
