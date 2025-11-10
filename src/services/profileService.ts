@@ -5,6 +5,7 @@
  */
 
 import supabaseClient from './supabase';
+import sobrietyService from './sobrietyService';
 import {
   Profile,
   ProfileFormData,
@@ -116,6 +117,30 @@ class ProfileService {
       }
 
       console.log('[ProfileService] Profile created successfully:', data);
+
+      // Create sobriety record if sobriety_start_date is provided
+      if (profileData.sobriety_start_date) {
+        console.log(
+          '[ProfileService] Creating sobriety record with start date:',
+          profileData.sobriety_start_date,
+        );
+
+        const { error: sobrietyError } = await sobrietyService.createSobrietyRecord(
+          userId,
+          profileData.sobriety_start_date,
+        );
+
+        if (sobrietyError) {
+          // Log error but don't fail profile creation
+          console.error('[ProfileService] Failed to create sobriety record:', sobrietyError);
+          console.warn(
+            '[ProfileService] Profile created successfully, but sobriety record creation failed',
+          );
+        } else {
+          console.log('[ProfileService] Sobriety record created successfully');
+        }
+      }
+
       return { data, error: null };
     } catch (error) {
       console.error('[ProfileService] Caught error:', error);
