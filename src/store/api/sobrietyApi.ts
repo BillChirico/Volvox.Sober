@@ -26,10 +26,9 @@ export const sobrietyApi = createApi({
           }
 
           const { data, error } = await supabaseClient
-            .from('sobriety_stats_view')
+            .from('sobriety_records')
             .select('*')
             .eq('user_id', user.id)
-            .eq('is_active', true)
             .single();
 
           if (error) {
@@ -40,7 +39,53 @@ export const sobrietyApi = createApi({
             return { error: { status: 400, data: { message: error.message } } };
           }
 
-          return { data: data as SobrietyStats };
+          // Calculate days sober
+          const startDate = new Date(data.current_sobriety_start_date);
+          const today = new Date();
+          const diffTime = Math.abs(today.getTime() - startDate.getTime());
+          const current_streak_days = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+
+          // Calculate milestones achieved
+          const milestones_achieved: import('@volvox-sober/shared/types/src/sobriety').MilestoneType[] =
+            [];
+          if (current_streak_days >= 365) milestones_achieved.push('1_year');
+          if (current_streak_days >= 180) milestones_achieved.push('180_days');
+          if (current_streak_days >= 90) milestones_achieved.push('90_days');
+          if (current_streak_days >= 60) milestones_achieved.push('60_days');
+          if (current_streak_days >= 30) milestones_achieved.push('30_days');
+
+          // Calculate next milestone
+          let next_milestone_days = null;
+          let days_until_next_milestone = null;
+          const milestones = [30, 60, 90, 180, 365];
+          for (const milestone of milestones) {
+            if (current_streak_days < milestone) {
+              next_milestone_days = milestone;
+              days_until_next_milestone = milestone - current_streak_days;
+              break;
+            }
+          }
+
+          const stats: SobrietyStats = {
+            id: data.id,
+            user_id: data.user_id,
+            substance_type: 'General', // Legacy field, not in sobriety_records
+            start_date: data.current_sobriety_start_date,
+            current_streak_days,
+            milestones_achieved,
+            next_milestone_days,
+            days_until_next_milestone,
+            is_active: true,
+            total_relapses: Array.isArray(data.previous_sobriety_dates)
+              ? data.previous_sobriety_dates.length
+              : 0,
+            last_relapse_date:
+              Array.isArray(data.previous_sobriety_dates) && data.previous_sobriety_dates.length > 0
+                ? data.previous_sobriety_dates[data.previous_sobriety_dates.length - 1]
+                : null,
+          };
+
+          return { data: stats };
         } catch (error: any) {
           return { error: { status: 500, data: { message: error.message } } };
         }
@@ -62,10 +107,9 @@ export const sobrietyApi = createApi({
 
           // Query will be filtered by RLS to only allow connected users
           const { data, error } = await supabaseClient
-            .from('sobriety_stats_view')
+            .from('sobriety_records')
             .select('*')
             .eq('user_id', userId)
-            .eq('is_active', true)
             .single();
 
           if (error) {
@@ -75,12 +119,58 @@ export const sobrietyApi = createApi({
             return { error: { status: 400, data: { message: error.message } } };
           }
 
-          return { data: data as SobrietyStats };
+          // Calculate days sober
+          const startDate = new Date(data.current_sobriety_start_date);
+          const today = new Date();
+          const diffTime = Math.abs(today.getTime() - startDate.getTime());
+          const current_streak_days = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+
+          // Calculate milestones achieved
+          const milestones_achieved: import('@volvox-sober/shared/types/src/sobriety').MilestoneType[] =
+            [];
+          if (current_streak_days >= 365) milestones_achieved.push('1_year');
+          if (current_streak_days >= 180) milestones_achieved.push('180_days');
+          if (current_streak_days >= 90) milestones_achieved.push('90_days');
+          if (current_streak_days >= 60) milestones_achieved.push('60_days');
+          if (current_streak_days >= 30) milestones_achieved.push('30_days');
+
+          // Calculate next milestone
+          let next_milestone_days = null;
+          let days_until_next_milestone = null;
+          const milestones = [30, 60, 90, 180, 365];
+          for (const milestone of milestones) {
+            if (current_streak_days < milestone) {
+              next_milestone_days = milestone;
+              days_until_next_milestone = milestone - current_streak_days;
+              break;
+            }
+          }
+
+          const stats: SobrietyStats = {
+            id: data.id,
+            user_id: data.user_id,
+            substance_type: 'General', // Legacy field, not in sobriety_records
+            start_date: data.current_sobriety_start_date,
+            current_streak_days,
+            milestones_achieved,
+            next_milestone_days,
+            days_until_next_milestone,
+            is_active: true,
+            total_relapses: Array.isArray(data.previous_sobriety_dates)
+              ? data.previous_sobriety_dates.length
+              : 0,
+            last_relapse_date:
+              Array.isArray(data.previous_sobriety_dates) && data.previous_sobriety_dates.length > 0
+                ? data.previous_sobriety_dates[data.previous_sobriety_dates.length - 1]
+                : null,
+          };
+
+          return { data: stats };
         } catch (error: any) {
           return { error: { status: 500, data: { message: error.message } } };
         }
       },
-      providesTags: (result, error, userId) => [{ type: 'SobrietyStats', id: userId }],
+      providesTags: (_result, _error, userId) => [{ type: 'SobrietyStats', id: userId }],
     }),
 
     // Set/update sobriety date (T092)
@@ -95,22 +185,27 @@ export const sobrietyApi = createApi({
             return { error: { status: 401, data: { message: 'Not authenticated' } } };
           }
 
-          // Check if user already has an active sobriety date
+          // Check if user already has a sobriety record
           const { data: existing } = await supabaseClient
-            .from('sobriety_dates')
-            .select('id')
+            .from('sobriety_records')
+            .select('id, current_sobriety_start_date, previous_sobriety_dates')
             .eq('user_id', user.id)
-            .eq('is_active', true)
             .single();
 
           let result;
           if (existing) {
-            // Update existing
+            // Update existing record
+            // Add current start date to history if it's different
+            const previousDates = existing.previous_sobriety_dates || [];
+            if (existing.current_sobriety_start_date !== start_date) {
+              previousDates.push(existing.current_sobriety_start_date);
+            }
+
             const { data, error } = await supabaseClient
-              .from('sobriety_dates')
+              .from('sobriety_records')
               .update({
-                substance_type,
-                start_date,
+                current_sobriety_start_date: start_date,
+                previous_sobriety_dates: previousDates,
                 updated_at: new Date().toISOString(),
               })
               .eq('id', existing.id)
@@ -120,15 +215,23 @@ export const sobrietyApi = createApi({
             if (error) {
               return { error: { status: 400, data: { message: error.message } } };
             }
-            result = data;
+            result = {
+              id: data.id,
+              user_id: data.user_id,
+              substance_type,
+              start_date: data.current_sobriety_start_date,
+              is_active: true,
+            };
           } else {
-            // Insert new
+            // Insert new record
             const { data, error } = await supabaseClient
-              .from('sobriety_dates')
+              .from('sobriety_records')
               .insert({
                 user_id: user.id,
-                substance_type,
-                start_date,
+                current_sobriety_start_date: start_date,
+                previous_sobriety_dates: [],
+                milestones: [],
+                reflections: [],
               })
               .select()
               .single();
@@ -136,7 +239,13 @@ export const sobrietyApi = createApi({
             if (error) {
               return { error: { status: 400, data: { message: error.message } } };
             }
-            result = data;
+            result = {
+              id: data.id,
+              user_id: data.user_id,
+              substance_type,
+              start_date: data.current_sobriety_start_date,
+              is_active: true,
+            };
           }
 
           return { data: result as SobrietyDate };
@@ -246,7 +355,7 @@ export const sobrietyApi = createApi({
           return { error: { status: 500, data: { message: error.message } } };
         }
       },
-      providesTags: (result, error, sobrietyDateId) => [{ type: 'Relapses', id: sobrietyDateId }],
+      providesTags: (_result, _error, sobrietyDateId) => [{ type: 'Relapses', id: sobrietyDateId }],
     }),
   }),
 });
