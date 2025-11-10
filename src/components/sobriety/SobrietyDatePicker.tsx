@@ -50,20 +50,20 @@ export function SobrietyDatePicker({
         return;
       }
 
-      // Validation passed - apply the date immediately
+      // Validation passed - update selected date
       setError(null);
       setSelectedDate(date);
-
-      // On native picker confirm, immediately apply and close
-      if (event.type === 'set') {
-        onConfirm(date);
-        // Defer dismiss to next frame to allow onConfirm to complete
-        // This prevents modal conflicts with alerts/dialogs from onConfirm
-        requestAnimationFrame(() => {
-          onDismiss();
-        });
-      }
     }
+  };
+
+  const handleConfirm = (): void => {
+    // Confirm the selected date
+    onConfirm(selectedDate);
+    // Defer dismiss to next frame to allow onConfirm to complete
+    // This prevents modal conflicts with alerts/dialogs from onConfirm
+    requestAnimationFrame(() => {
+      onDismiss();
+    });
   };
 
   const maxDate = new Date(); // Today
@@ -127,6 +127,15 @@ export function SobrietyDatePicker({
         <View style={styles.actions}>
           <Button mode="text" onPress={onDismiss} style={styles.button}>
             Cancel
+          </Button>
+          <Button
+            mode="contained"
+            onPress={handleConfirm}
+            style={styles.button}
+            disabled={!!error}
+            accessibilityLabel="Confirm selected date"
+            accessibilityHint="Applies the selected sobriety start date">
+            OK
           </Button>
         </View>
       </Modal>

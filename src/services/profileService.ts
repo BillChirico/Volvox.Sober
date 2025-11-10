@@ -119,6 +119,7 @@ class ProfileService {
       console.log('[ProfileService] Profile created successfully:', data);
 
       // Create sobriety record if sobriety_start_date is provided
+      // REQUIRED: sobriety_start_date is mandatory for all roles, so fail if record creation fails
       if (profileData.sobriety_start_date) {
         console.log(
           '[ProfileService] Creating sobriety record with start date:',
@@ -131,14 +132,14 @@ class ProfileService {
         );
 
         if (sobrietyError) {
-          // Log error but don't fail profile creation
           console.error('[ProfileService] Failed to create sobriety record:', sobrietyError);
-          console.warn(
-            '[ProfileService] Profile created successfully, but sobriety record creation failed',
+          // CRITICAL: Since sobriety_start_date is required, fail profile creation if sobriety record fails
+          throw new Error(
+            `Failed to create sobriety record: ${sobrietyError.message}. Profile creation aborted.`,
           );
-        } else {
-          console.log('[ProfileService] Sobriety record created successfully');
         }
+
+        console.log('[ProfileService] Sobriety record created successfully');
       }
 
       return { data, error: null };

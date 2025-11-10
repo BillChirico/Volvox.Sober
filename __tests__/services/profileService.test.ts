@@ -119,7 +119,7 @@ describe('ProfileService', () => {
       expect(sobrietyService.createSobrietyRecord).toHaveBeenCalledTimes(1);
     });
 
-    it('should create profile successfully even if sobriety record creation fails', async () => {
+    it('should fail profile creation when sobriety record creation fails (sobriety date is required)', async () => {
       const profileData: ProfileFormData = {
         name: 'Jane Doe',
         bio: 'Test bio',
@@ -177,17 +177,20 @@ describe('ProfileService', () => {
       });
 
       // Mock sobriety record creation failure
+      const sobrietyError = new Error('Failed to create sobriety record');
       (sobrietyService.createSobrietyRecord as jest.Mock).mockResolvedValue({
         data: null,
-        error: new Error('Failed to create sobriety record'),
+        error: sobrietyError,
       });
 
       // Execute
       const result = await profileService.createProfile(mockUserId, profileData);
 
-      // Verify profile creation succeeded despite sobriety record failure
-      expect(result.data).toEqual(mockProfile);
-      expect(result.error).toBeNull();
+      // Verify profile creation FAILED when sobriety record failed
+      // (because sobriety_start_date is required for all roles)
+      expect(result.data).toBeNull();
+      expect(result.error).not.toBeNull();
+      expect(result.error?.message).toContain('sobriety record');
 
       // Verify sobriety record creation was attempted
       expect(sobrietyService.createSobrietyRecord).toHaveBeenCalledWith(
