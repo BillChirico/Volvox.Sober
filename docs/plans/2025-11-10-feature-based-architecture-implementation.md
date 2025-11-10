@@ -15,6 +15,7 @@
 ### Task 1: Create Directory Structure
 
 **Files:**
+
 - Create: `src/features/` (empty directory)
 - Create: `src/shared/` (empty directory)
 - Create: `src/core/` (empty directory)
@@ -55,6 +56,7 @@ git commit -m "chore: create feature-based directory structure"
 ### Task 2: Configure TypeScript Path Aliases
 
 **Files:**
+
 - Modify: `tsconfig.json` (add paths configuration)
 
 **Step 1: Update tsconfig.json with path aliases**
@@ -94,6 +96,7 @@ git commit -m "chore: add TypeScript path aliases for new structure"
 ### Task 3: Update Jest Configuration
 
 **Files:**
+
 - Modify: `jest.config.js` (add moduleNameMapper for new paths)
 
 **Step 1: Add path mappings to Jest config**
@@ -133,6 +136,7 @@ git commit -m "chore: add Jest module mappings for new structure"
 ### Task 4: Move Core Theme
 
 **Files:**
+
 - Move: `src/theme/` → `src/core/theme/`
 - Modify: All imports of `@/theme` → `@/core/theme`
 
@@ -177,6 +181,7 @@ git commit -m "refactor(core): move theme to core/theme"
 ### Task 5: Move Core Constants to Config
 
 **Files:**
+
 - Move: `src/constants/` → `src/core/config/`
 - Modify: All imports of `@/constants` → `@/core/config`
 
@@ -221,6 +226,7 @@ git commit -m "refactor(core): move constants to core/config"
 ### Task 6: Create Supabase Library Wrapper
 
 **Files:**
+
 - Create: `src/lib/supabase/client.ts`
 - Create: `src/lib/supabase/auth.ts`
 - Create: `src/lib/supabase/index.ts`
@@ -229,12 +235,15 @@ git commit -m "refactor(core): move constants to core/config"
 **Step 1: Create client wrapper**
 
 Create `src/lib/supabase/client.ts`:
+
 ```typescript
 import { createClient } from '@supabase/supabase-js';
 import Constants from 'expo-constants';
 
-const supabaseUrl = Constants.expoConfig?.extra?.supabaseUrl || process.env.EXPO_PUBLIC_SUPABASE_URL || '';
-const supabaseAnonKey = Constants.expoConfig?.extra?.supabaseAnonKey || process.env.EXPO_PUBLIC_SUPABASE_ANON_KEY || '';
+const supabaseUrl =
+  Constants.expoConfig?.extra?.supabaseUrl || process.env.EXPO_PUBLIC_SUPABASE_URL || '';
+const supabaseAnonKey =
+  Constants.expoConfig?.extra?.supabaseAnonKey || process.env.EXPO_PUBLIC_SUPABASE_ANON_KEY || '';
 
 export const supabase = createClient(supabaseUrl, supabaseAnonKey, {
   auth: {
@@ -248,6 +257,7 @@ export const supabase = createClient(supabaseUrl, supabaseAnonKey, {
 **Step 2: Create auth helpers**
 
 Create `src/lib/supabase/auth.ts`:
+
 ```typescript
 import { supabase } from './client';
 
@@ -267,6 +277,7 @@ export async function getSession() {
 **Step 3: Create barrel export**
 
 Create `src/lib/supabase/index.ts`:
+
 ```typescript
 export { supabase } from './client';
 export * from './auth';
@@ -275,6 +286,7 @@ export * from './auth';
 **Step 4: Update service to use wrapper**
 
 Modify `src/services/supabase.ts`:
+
 ```typescript
 export { supabase } from '@/lib/supabase';
 ```
@@ -300,6 +312,7 @@ git commit -m "feat(lib): create Supabase library wrapper"
 ### Task 7: Move Shared Utils
 
 **Files:**
+
 - Move: `src/utils/` → `src/shared/utils/`
 - Modify: All imports of `@/utils` → `@/shared/utils`
 
@@ -344,6 +357,7 @@ git commit -m "refactor(shared): move utils to shared/utils"
 ### Task 8: Move Shared Types
 
 **Files:**
+
 - Move: `src/types/` → Split between `src/shared/types/` and prepare for feature-specific
 - Create: `src/shared/types/index.ts` (common types)
 
@@ -358,6 +372,7 @@ cp src/types/navigation.ts src/shared/types/
 **Step 2: Create shared types index**
 
 Create `src/shared/types/index.ts`:
+
 ```typescript
 export * from './database.types';
 export * from './navigation';
@@ -392,6 +407,7 @@ git commit -m "refactor(shared): create shared types structure"
 ### Task 9: Create Messages Feature Structure
 
 **Files:**
+
 - Create: `src/features/messages/components/`
 - Create: `src/features/messages/hooks/`
 - Create: `src/features/messages/services/`
@@ -427,6 +443,7 @@ git commit -m "feat(messages): create feature structure"
 ### Task 10: Move Messages Components
 
 **Files:**
+
 - Move: `src/components/messages/MessageBubble.tsx` → `src/features/messages/components/`
 - Move: `src/components/messages/MessageInput.tsx` → `src/features/messages/components/`
 - Move: `src/components/messages/MessageThread.tsx` → `src/features/messages/components/`
@@ -445,6 +462,7 @@ mv src/components/MessageInput.tsx src/features/messages/components/ 2>/dev/null
 **Step 2: Create component index**
 
 Create `src/features/messages/components/index.ts`:
+
 ```typescript
 export { MessageBubble } from './MessageBubble';
 export { MessageInput } from './MessageInput';
@@ -487,6 +505,7 @@ git commit -m "refactor(messages): move components to feature"
 ### Task 11: Move Messages Hooks
 
 **Files:**
+
 - Move: `src/hooks/useMessages.ts` → `src/features/messages/hooks/`
 
 **Step 1: Move hook file**
@@ -498,6 +517,7 @@ mv src/hooks/useMessages.ts src/features/messages/hooks/
 **Step 2: Create hooks index**
 
 Create `src/features/messages/hooks/index.ts`:
+
 ```typescript
 export { useMessages } from './useMessages';
 ```
@@ -528,6 +548,7 @@ git commit -m "refactor(messages): move hooks to feature"
 ### Task 12: Move Messages Services
 
 **Files:**
+
 - Move: `src/services/messageService.ts` → `src/features/messages/services/`
 - Move: `src/services/messageServiceV2.ts` → `src/features/messages/services/`
 - Move: `src/services/messagesApi.ts` → `src/features/messages/services/`
@@ -545,6 +566,7 @@ mv src/services/offlineMessageQueue.ts src/features/messages/services/
 **Step 2: Create services index**
 
 Create `src/features/messages/services/index.ts`:
+
 ```typescript
 export * from './messageService';
 export * from './messageServiceV2';
@@ -581,6 +603,7 @@ git commit -m "refactor(messages): move services to feature"
 ### Task 13: Move Messages Store
 
 **Files:**
+
 - Move: `src/store/messages/` → `src/features/messages/store/`
 
 **Step 1: Move store directory**
@@ -599,6 +622,7 @@ find src app -type f \( -name "*.ts" -o -name "*.tsx" \) -exec sed -i '' "s|from
 **Step 3: Update root reducer**
 
 Modify `src/core/store/rootReducer.ts`:
+
 ```typescript
 import { messagesReducer } from '@/features/messages/store';
 // ... keep existing imports
@@ -624,6 +648,7 @@ git commit -m "refactor(messages): move store to feature"
 ### Task 14: Move Messages Types
 
 **Files:**
+
 - Move: `src/types/message.ts` → `src/features/messages/types/`
 
 **Step 1: Move types file**
@@ -635,6 +660,7 @@ mv src/types/message.ts src/features/messages/types/
 **Step 2: Create types index**
 
 Create `src/features/messages/types/index.ts`:
+
 ```typescript
 export * from './message';
 ```
@@ -665,6 +691,7 @@ git commit -m "refactor(messages): move types to feature"
 ### Task 15: Create Messages Screens
 
 **Files:**
+
 - Create: `src/features/messages/screens/MessagesScreen.tsx`
 - Create: `src/features/messages/screens/MessageDetailScreen.tsx`
 - Create: `src/features/messages/screens/index.ts`
@@ -672,6 +699,7 @@ git commit -m "refactor(messages): move types to feature"
 **Step 1: Extract MessagesScreen from app**
 
 Create `src/features/messages/screens/MessagesScreen.tsx` by extracting logic from `app/(tabs)/messages.tsx`:
+
 ```typescript
 import React from 'react';
 import { View, FlatList, StyleSheet } from 'react-native';
@@ -703,6 +731,7 @@ const styles = StyleSheet.create({
 **Step 2: Extract MessageDetailScreen**
 
 Create `src/features/messages/screens/MessageDetailScreen.tsx` by extracting logic from `app/(tabs)/messages/[id].tsx`:
+
 ```typescript
 import React from 'react';
 import { View, StyleSheet } from 'react-native';
@@ -735,6 +764,7 @@ const styles = StyleSheet.create({
 **Step 3: Create screens index**
 
 Create `src/features/messages/screens/index.ts`:
+
 ```typescript
 export { MessagesScreen } from './MessagesScreen';
 export { MessageDetailScreen } from './MessageDetailScreen';
@@ -760,11 +790,13 @@ git commit -m "feat(messages): create screen components"
 ### Task 16: Create Messages Public API
 
 **Files:**
+
 - Create: `src/features/messages/index.ts` (public API)
 
 **Step 1: Create public API**
 
 Update `src/features/messages/index.ts`:
+
 ```typescript
 // Public API for messages feature
 export { MessagesScreen, MessageDetailScreen } from './screens';
@@ -792,6 +824,7 @@ git commit -m "feat(messages): create public API"
 ### Task 17-24: Repeat for Remaining Features
 
 **NOTE:** Repeat Tasks 9-16 pattern for each remaining feature:
+
 - Task 17-18: Auth feature (components, hooks, services, store, types, screens)
 - Task 19-20: Connections feature
 - Task 21-22: Matches feature
@@ -801,6 +834,7 @@ git commit -m "feat(messages): create public API"
 - Task 29-30: Check-ins feature
 
 Each feature follows the same pattern:
+
 1. Create structure
 2. Move components (with tests)
 3. Move hooks
@@ -817,12 +851,14 @@ Each feature follows the same pattern:
 ### Task 31: Convert Messages Screens to Thin Wrappers
 
 **Files:**
+
 - Modify: `app/(tabs)/messages.tsx`
 - Modify: `app/(tabs)/messages/[id].tsx`
 
 **Step 1: Update messages index screen**
 
 Replace `app/(tabs)/messages.tsx`:
+
 ```typescript
 import { MessagesScreen } from '@/features/messages';
 
@@ -832,6 +868,7 @@ export default MessagesScreen;
 **Step 2: Update message detail screen**
 
 Replace `app/(tabs)/messages/[id].tsx`:
+
 ```typescript
 import { MessageDetailScreen } from '@/features/messages';
 
@@ -868,6 +905,7 @@ git commit -m "refactor(app): convert messages screens to thin wrappers"
 ### Task 32-38: Convert Remaining Screen Wrappers
 
 **NOTE:** Repeat Task 31 pattern for:
+
 - Task 32: Connections screens
 - Task 33: Matches screen
 - Task 34: Profile screens
@@ -883,6 +921,7 @@ git commit -m "refactor(app): convert messages screens to thin wrappers"
 ### Task 39: Move E2E Tests
 
 **Files:**
+
 - Move: All `__tests__/*.spec.ts` → `__tests__/e2e/`
 
 **Step 1: Move E2E tests**
@@ -894,6 +933,7 @@ mv __tests__/*.spec.ts __tests__/e2e/
 **Step 2: Update Playwright config**
 
 Modify `playwright.config.ts` (if it references old paths):
+
 ```typescript
 testDir: './__tests__/e2e',
 ```
@@ -918,6 +958,7 @@ git commit -m "test: move E2E tests to centralized location"
 ### Task 40: Create Test Helpers
 
 **Files:**
+
 - Create: `__tests__/helpers/login.ts`
 - Create: `__tests__/helpers/navigation.ts`
 - Create: `__tests__/helpers/index.ts`
@@ -925,6 +966,7 @@ git commit -m "test: move E2E tests to centralized location"
 **Step 1: Extract login helper**
 
 Create `__tests__/helpers/login.ts`:
+
 ```typescript
 import { Page } from '@playwright/test';
 
@@ -940,6 +982,7 @@ export async function login(page: Page, email = 'test@example.com', password = '
 **Step 2: Create navigation helper**
 
 Create `__tests__/helpers/navigation.ts`:
+
 ```typescript
 import { Page } from '@playwright/test';
 
@@ -952,6 +995,7 @@ export async function navigateToTab(page: Page, tab: string) {
 **Step 3: Create helpers index**
 
 Create `__tests__/helpers/index.ts`:
+
 ```typescript
 export * from './login';
 export * from './navigation';
@@ -960,6 +1004,7 @@ export * from './navigation';
 **Step 4: Update E2E tests to use helpers**
 
 Update imports in E2E tests:
+
 ```typescript
 import { login, navigateToTab } from '../helpers';
 ```
@@ -984,6 +1029,7 @@ git commit -m "test: create centralized test helpers"
 ### Task 41: Delete Old Directories
 
 **Files:**
+
 - Delete: `src/components/auth/`
 - Delete: `src/components/messages/`
 - Delete: `src/components/connections/`
@@ -1045,6 +1091,7 @@ git commit -m "chore: remove old directory structure"
 ### Task 42: Update CLAUDE.md Documentation
 
 **Files:**
+
 - Modify: `CLAUDE.md` (update Project Structure section)
 
 **Step 1: Update project structure section**
@@ -1067,6 +1114,7 @@ git commit -m "docs: update CLAUDE.md with new project structure"
 ### Task 43: Update README.md
 
 **Files:**
+
 - Modify: `README.md` (update structure documentation if present)
 
 **Step 1: Update any structure references in README**
@@ -1087,6 +1135,7 @@ git commit -m "docs: update README with new project structure"
 ### Task 44: Run All Quality Checks
 
 **Files:**
+
 - None (verification only)
 
 **Step 1: Run TypeScript check**
@@ -1128,6 +1177,7 @@ pnpm web
 ```
 
 Test each major flow:
+
 - Auth: Login/Signup
 - Onboarding: Role selection, profile setup
 - Messages: View conversations, send message
@@ -1141,11 +1191,13 @@ Expected: All flows work correctly
 ### Task 45: Create Completion Summary
 
 **Files:**
+
 - Create: `docs/migration-summary.md`
 
 **Step 1: Create migration summary**
 
 Document:
+
 - Total files moved: X
 - New directory structure established
 - All tests passing (baseline maintained)

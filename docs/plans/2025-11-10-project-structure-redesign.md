@@ -22,6 +22,7 @@ This document describes the migration from a layer-based architecture to a featu
 **Chosen**: Feature-based architecture with clear separation between features, shared code, core infrastructure, and external integrations.
 
 **Rationale**:
+
 - Features in this app (auth, messages, connections, sobriety) are well-defined domains
 - Co-location reduces cognitive load and improves navigation
 - Scales better than layer-based as project grows
@@ -32,6 +33,7 @@ This document describes the migration from a layer-based architecture to a featu
 **Chosen**: Expo Router screens in `app/` are minimal wrappers that import screen components from feature modules.
 
 **Rationale**:
+
 - Maximizes feature portability and reusability
 - Clear separation between routing and business logic
 - Features can be tested independently of routing
@@ -42,6 +44,7 @@ This document describes the migration from a layer-based architecture to a featu
 **Chosen**: Unit tests co-located with source files, integration/E2E tests centralized in `__tests__/`.
 
 **Rationale**:
+
 - Co-located unit tests are easier to maintain
 - Integration tests often span multiple features
 - E2E tests test complete flows, not individual features
@@ -52,6 +55,7 @@ This document describes the migration from a layer-based architecture to a featu
 **Chosen**: Separate layers for shared components (`shared/`), core infrastructure (`core/`), and external integrations (`lib/`).
 
 **Rationale**:
+
 - Clear boundaries for different types of shared code
 - Prevents "shared" from becoming a catch-all
 - Makes dependencies explicit
@@ -62,6 +66,7 @@ This document describes the migration from a layer-based architecture to a featu
 **Chosen**: Complete restructuring in a single migration effort.
 
 **Rationale**:
+
 - Avoids long period of mixed structure
 - Easier to review as a complete change
 - Project is in active development phase (Phase 10)
@@ -170,6 +175,7 @@ src/features/messages/
 ```
 
 **Key patterns:**
+
 - Co-located unit tests (`.test.tsx` files next to source)
 - Barrel exports via `index.ts` control what's exposed
 - `screens/` folder contains full screen components
@@ -304,18 +310,21 @@ __tests__/helpers/          # Test utilities
 #### Test Type Definitions
 
 **Unit Tests** (co-located `.test.tsx`):
+
 - Test single component/function in isolation
 - Fast, run on every save
 - Mock all dependencies
 - Example: Button renders correctly, hook returns expected value
 
 **Integration Tests** (`__tests__/integration/`):
+
 - Test multiple units working together
 - Test Redux + Services + Components interaction
 - Mock only external services (Supabase)
 - Example: Sending a message updates store and UI
 
 **E2E Tests** (`__tests__/e2e/*.spec.ts`):
+
 - Test complete user flows in browser
 - Playwright with real interactions
 - No mocks (use test Supabase instance)
@@ -326,6 +335,7 @@ __tests__/helpers/          # Test utilities
 ### Phase 1: Preparation (Low Risk)
 
 **Tasks:**
+
 1. Create new directory structure (empty folders)
 2. Set up path aliases in `tsconfig.json`:
    ```json
@@ -350,6 +360,7 @@ __tests__/helpers/          # Test utilities
 ### Phase 2: Move Shared Code (Foundation)
 
 **Tasks:**
+
 1. Move `src/theme/` → `src/core/theme/`
 2. Move `src/constants/` → `src/core/config/`
 3. Move `src/types/` → Split between `src/shared/types/` and feature-specific
@@ -386,6 +397,7 @@ __tests__/helpers/          # Test utilities
 9. Update imports
 
 **Example for messages feature:**
+
 ```typescript
 // src/features/messages/index.ts
 export { MessagesScreen, MessageDetailScreen } from './screens';
@@ -398,6 +410,7 @@ export type { Message, Conversation } from './types';
 ### Phase 4: Update App Router Screens (Final Integration)
 
 **Tasks:**
+
 1. Convert all `app/` screens to thin wrappers
 2. Import screen components from features:
    ```typescript
@@ -414,6 +427,7 @@ export type { Message, Conversation } from './types';
 ### Phase 5: Move Tests & Cleanup
 
 **Tasks:**
+
 1. Move E2E tests to `__tests__/e2e/`
 2. Move integration tests to `__tests__/integration/`
 3. Move test fixtures to `__tests__/fixtures/`
@@ -494,24 +508,28 @@ All must pass before merging migration:
 ## Benefits
 
 ### Developer Experience
+
 - **Find related code faster** - Everything for a feature in one place
 - **Easier onboarding** - Clear feature boundaries
 - **Better IDE navigation** - Shorter file paths
 - **Reduced cognitive load** - Feature scope is clear
 
 ### Maintainability
+
 - **Isolated features** - Develop and test features independently
 - **Clear ownership** - Easy to identify feature owners
 - **Easier refactoring** - Changes contained to feature
 - **Better code reuse** - Explicit shared/ vs feature/
 
 ### Scalability
+
 - **Add new features easily** - Follow established pattern
 - **Extract features to packages** - Clear boundaries enable extraction
 - **Clear pattern** - All future development follows same structure
 - **Reduced merge conflicts** - Features are isolated
 
 ### Testing
+
 - **Easy to find tests** - Co-located with source
 - **Clear test types** - Unit/Integration/E2E distinction
 - **Test mirrors code** - Same organization pattern
@@ -519,14 +537,14 @@ All must pass before merging migration:
 
 ## Risks & Mitigations
 
-| Risk | Impact | Likelihood | Mitigation |
-|------|--------|------------|------------|
-| **Import path breakage** | High | Medium | Automated search/replace, TypeScript catches errors, thorough testing |
-| **Merge conflicts** | Medium | Low | Work in dedicated branch, communicate freeze period |
-| **Tests fail after move** | Medium | Medium | Move tests with code, run suite after each feature |
-| **Bundle size increase** | Low | Low | Verify bundle size, optimize barrel exports |
-| **Team confusion** | Medium | Low | Clear documentation, provide examples, gradual onboarding |
-| **Incomplete migration** | High | Low | Use detailed checklist, verify old directories deleted |
+| Risk                      | Impact | Likelihood | Mitigation                                                            |
+| ------------------------- | ------ | ---------- | --------------------------------------------------------------------- |
+| **Import path breakage**  | High   | Medium     | Automated search/replace, TypeScript catches errors, thorough testing |
+| **Merge conflicts**       | Medium | Low        | Work in dedicated branch, communicate freeze period                   |
+| **Tests fail after move** | Medium | Medium     | Move tests with code, run suite after each feature                    |
+| **Bundle size increase**  | Low    | Low        | Verify bundle size, optimize barrel exports                           |
+| **Team confusion**        | Medium | Low        | Clear documentation, provide examples, gradual onboarding             |
+| **Incomplete migration**  | High   | Low        | Use detailed checklist, verify old directories deleted                |
 
 ## Success Criteria
 
@@ -556,12 +574,14 @@ Migration is successful when:
 ## Post-Migration
 
 ### Maintenance
+
 - Update CLAUDE.md with new structure patterns
 - Add examples of creating new features
 - Document barrel export patterns
 - Create feature template for new features
 
 ### Future Enhancements
+
 - Consider extracting features to workspace packages
 - Implement feature flags per feature
 - Add feature-level documentation
