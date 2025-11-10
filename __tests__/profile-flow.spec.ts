@@ -288,7 +288,9 @@ test.describe('Profile Management Flow', () => {
     await expect(page.locator('[data-testid="profile-bio"]')).toContainText(uniqueBio);
 
     // Logout
-    await page.click('[data-testid="profile-menu"]');
+    // Scroll to bottom to ensure logout button is visible
+    await page.evaluate(() => window.scrollTo(0, document.body.scrollHeight));
+
     await page.click('[data-testid="logout-button"]');
     await page.waitForURL(/.*\/login/);
 

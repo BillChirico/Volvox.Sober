@@ -91,7 +91,17 @@ export const ProfileForm: React.FC<ProfileFormProps> = ({
   const handleSubmit = () => {
     if (!isFormValid()) return;
 
-    onSubmit(formData as ProfileFormData);
+    // Trim text fields before submission
+    const trimmedData: ProfileFormData = {
+      ...formData,
+      name: formData.name?.trim() || '',
+      bio: formData.bio?.trim() || undefined,
+      city: formData.city?.trim() || undefined,
+      state: formData.state?.trim() || undefined,
+      country: formData.country?.trim() || 'United States',
+    } as ProfileFormData;
+
+    onSubmit(trimmedData);
   };
 
   const isFormValid = (): boolean => {
@@ -99,13 +109,9 @@ export const ProfileForm: React.FC<ProfileFormProps> = ({
       formData.name &&
       formData.recovery_program &&
       formData.availability &&
-      formData.availability.length > 0
+      formData.availability.length > 0 &&
+      formData.sobriety_start_date
     );
-
-    // For sponsees, sobriety_start_date is required
-    if (role === 'sponsee') {
-      return hasRequiredFields && !!formData.sobriety_start_date;
-    }
 
     return hasRequiredFields;
   };
@@ -187,27 +193,23 @@ export const ProfileForm: React.FC<ProfileFormProps> = ({
       </View>
       {errors.recovery_program && <HelperText type="error">{errors.recovery_program}</HelperText>}
 
-      {/* Sobriety Start Date - Optional for sponsors, encouraged for sponsees */}
-      {(role === 'sponsee' || role === 'both') && (
-        <>
-          <Text variant="labelLarge" style={[styles.dateLabel, { color: theme.colors.onSurface }]}>
-            {role === 'sponsee' ? 'Sobriety Start Date *' : 'Sobriety Start Date (Optional)'}
-          </Text>
-          <Button
-            mode="outlined"
-            onPress={() => setShowDatePicker(true)}
-            disabled={isSubmitting}
-            style={[styles.dateButton, errors.sobriety_start_date && styles.dateButtonError]}
-            contentStyle={styles.dateButtonContent}
-            icon="calendar"
-            accessibilityLabel="Select your sobriety start date"
-            accessibilityHint="Opens a date picker calendar">
-            {formatDateForDisplay(formData.sobriety_start_date || '')}
-          </Button>
-          {errors.sobriety_start_date && (
-            <HelperText type="error">{errors.sobriety_start_date}</HelperText>
-          )}
-        </>
+      {/* Sobriety Start Date - Required for all roles */}
+      <Text variant="labelLarge" style={[styles.dateLabel, { color: theme.colors.onSurface }]}>
+        Sobriety Start Date *
+      </Text>
+      <Button
+        mode="outlined"
+        onPress={() => setShowDatePicker(true)}
+        disabled={isSubmitting}
+        style={[styles.dateButton, errors.sobriety_start_date && styles.dateButtonError]}
+        contentStyle={styles.dateButtonContent}
+        icon="calendar"
+        accessibilityLabel="Select your sobriety start date"
+        accessibilityHint="Opens a date picker calendar">
+        {formatDateForDisplay(formData.sobriety_start_date || '')}
+      </Button>
+      {errors.sobriety_start_date && (
+        <HelperText type="error">{errors.sobriety_start_date}</HelperText>
       )}
 
       {/* Location - Optional */}
