@@ -66,56 +66,6 @@ const PasswordInput = forwardRef<RNTextInput, PasswordInputProps>(
     const [isPasswordVisible, setIsPasswordVisible] = useState(false);
     const theme = useTheme();
 
-<<<<<<< Updated upstream
-  const togglePasswordVisibility = () => {
-    setIsPasswordVisible(prev => !prev);
-  };
-
-  const iconName = isPasswordVisible ? 'eye-off' : 'eye';
-  const toggleAccessibilityLabel = isPasswordVisible ? 'Hide password' : 'Show password';
-  const toggleAccessibilityHint = isPasswordVisible
-    ? 'Double tap to hide your password'
-    : 'Double tap to show your password';
-
-  return (
-    <View style={[styles.container, style]}>
-      <TextInput
-        testID={testID}
-        label={label}
-        value={value}
-        onChangeText={onChangeText}
-        onBlur={onBlur}
-        secureTextEntry={!isPasswordVisible}
-        error={error}
-        disabled={disabled}
-        placeholder={placeholder}
-        mode="outlined"
-        accessibilityLabel={accessibilityLabel || label}
-        accessibilityHint={accessibilityHint}
-        editable={!disabled}
-        right={
-          <TextInput.Icon
-            icon={iconName}
-            onPress={togglePasswordVisibility}
-            disabled={disabled}
-            forceTextInputFocus={false}
-            testID="password-toggle-button"
-            accessibilityLabel={toggleAccessibilityLabel}
-            accessibilityHint={toggleAccessibilityHint}
-            accessibilityRole="button"
-          />
-        }
-        style={[styles.input, { backgroundColor: theme.colors.surface }]}
-      />
-      {helperText && (
-        <HelperText type={error ? 'error' : 'info'} visible={!!helperText}>
-          {helperText}
-        </HelperText>
-      )}
-    </View>
-  );
-};
-=======
     const togglePasswordVisibility = () => {
       setIsPasswordVisible(prev => !prev);
     };
@@ -170,7 +120,6 @@ const PasswordInput = forwardRef<RNTextInput, PasswordInputProps>(
 );
 
 PasswordInput.displayName = 'PasswordInput';
->>>>>>> Stashed changes
 
 const styles = StyleSheet.create({
   container: {
