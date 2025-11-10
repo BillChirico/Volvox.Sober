@@ -1,5 +1,5 @@
-import React, { useState, useEffect, useCallback } from 'react';
-import { View, StyleSheet } from 'react-native';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
+import { View, StyleSheet, TextInput as RNTextInput } from 'react-native';
 import { TextInput, Button, Text, useTheme } from 'react-native-paper';
 import { useFocusEffect } from '@react-navigation/native';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
@@ -45,6 +45,9 @@ const LoginForm: React.FC<LoginFormProps> = ({ onSuccess, onForgotPassword }) =>
   const [showResendVerification, setShowResendVerification] = useState(false);
   const [resendLoading, setResendLoading] = useState(false);
   const [resendMessage, setResendMessage] = useState('');
+
+  // Ref for password input to enable focus on Enter
+  const passwordInputRef = useRef<RNTextInput>(null);
 
   // Clear Redux error when component unmounts
   useEffect(() => {
@@ -207,6 +210,8 @@ const LoginForm: React.FC<LoginFormProps> = ({ onSuccess, onForgotPassword }) =>
         value={email}
         onChangeText={setEmail}
         onBlur={() => validateForm()}
+        onSubmitEditing={() => passwordInputRef.current?.focus()}
+        returnKeyType="next"
         keyboardType="email-address"
         autoCapitalize="none"
         autoComplete="email"
@@ -231,10 +236,13 @@ const LoginForm: React.FC<LoginFormProps> = ({ onSuccess, onForgotPassword }) =>
 
       {/* Password Input */}
       <PasswordInput
+        ref={passwordInputRef}
         label="Password"
         value={password}
         onChangeText={setPassword}
         onBlur={() => validateForm()}
+        onSubmitEditing={handleSubmit}
+        returnKeyType="done"
         error={!!validationErrors.password}
         disabled={loading}
         style={styles.input}
