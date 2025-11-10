@@ -8,7 +8,7 @@ import React, { useState } from 'react';
 import { View, StyleSheet, ScrollView } from 'react-native';
 import { Chip, Menu, Button } from 'react-native-paper';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { useAppTheme } from '../../theme/ThemeContext';
+import { useAppTheme } from '../../core/theme/ThemeContext';
 import { RECOVERY_PROGRAMS } from '../../constants/RecoveryPrograms';
 import { AVAILABILITY_OPTIONS } from '../../constants/Availability';
 

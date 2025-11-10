@@ -18,7 +18,7 @@ import {
 } from 'react-native-paper';
 import { ProfilePhotoUpload } from '../ProfilePhotoUpload';
 import { ConnectionStatus } from './ConnectionStatus';
-import { useAppTheme } from '../../theme/ThemeContext';
+import { useAppTheme } from '../../core/theme/ThemeContext';
 import type { ConnectionWithUsers } from '../../types/connection';
 import { formatDistance } from 'date-fns';
 

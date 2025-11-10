@@ -15,7 +15,7 @@ import { LoadingSpinner } from '../../src/components/common/LoadingSpinner';
 import { EmptyState } from '../../src/components/common/EmptyState';
 import { useConnections } from '../../src/hooks/useConnections';
 import { useAuth } from '../../src/hooks/useAuth';
-import { useAppTheme } from '../../src/theme/ThemeContext';
+import { useAppTheme } from '../../src/core/theme/ThemeContext';
 import { useRouter } from 'expo-router';
 import connectionService from '../../src/services/connectionService';
 import type { ConnectionWithUsers, ConnectionRequest } from '../../src/types/connection';

@@ -17,7 +17,7 @@ import {
 } from 'react-native-paper';
 import { useRouter } from 'expo-router';
 import * as Yup from 'yup';
-import { useAppTheme } from '../../../src/theme/ThemeContext';
+import { useAppTheme } from '../../../src/core/theme/ThemeContext';
 import { useProfile } from '../../../src/hooks/useProfile';
 import { useAuth } from '../../../src/hooks/useAuth';
 import type { UserRole } from '../../../src/types/profile';

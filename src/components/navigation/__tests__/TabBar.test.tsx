@@ -7,7 +7,7 @@ import React from 'react';
 import { render, fireEvent } from '@testing-library/react-native';
 import { Provider } from 'react-redux';
 import { PaperProvider } from 'react-native-paper';
-import { ThemeProvider } from '../../../theme/ThemeContext';
+import { ThemeProvider } from '../../../core/theme/ThemeContext';
 import { TabBar } from '../TabBar';
 import { configureStore } from '@reduxjs/toolkit';
 import messagesReducer from '../../../store/messages/messagesSlice';

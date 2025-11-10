@@ -48,6 +48,19 @@ Volvox.Sober is a sobriety companion app that connects individuals in recovery w
 - **Playwright** - End-to-end testing
 - **80%+ coverage target** - Business logic
 
+## 🚀 New Developer? Start Here!
+
+**👉 [Complete Developer Onboarding Guide](docs/DEVELOPER_GUIDE.md)**
+
+Our comprehensive developer guide includes:
+
+- ⏱️ **30-minute setup** with step-by-step instructions
+- 🏗️ **Architecture overview** and codebase walkthrough
+- 🔄 **TDD workflow** (RED-GREEN-REFACTOR)
+- 📋 **Common tasks** and how-tos
+- 🐛 **Troubleshooting guide** with quick fixes
+- 🎯 **Quick reference** for daily commands
+
 ## Getting Started
 
 ### Prerequisites
@@ -59,7 +72,7 @@ Volvox.Sober is a sobriety companion app that connects individuals in recovery w
 - Android: Android Studio + SDK 33+
 - Web: Modern browser (Chrome, Firefox, Safari, Edge)
 
-### Installation
+### Quick Install
 
 ```bash
 # Clone the repository
@@ -73,6 +86,8 @@ pnpm install
 cp .env.example .env
 # Edit .env with your Supabase credentials
 ```
+
+**For detailed setup instructions with success criteria, see the [Developer Guide](docs/DEVELOPER_GUIDE.md#11-prerequisites--system-requirements).**
 
 ### Development
 
@@ -160,7 +175,8 @@ Expo supports platform-specific files using extensions:
 
 ## Documentation
 
-- **CLAUDE.md** - Development guidelines and coding standards
+- **📚 [Developer Guide](docs/DEVELOPER_GUIDE.md)** - **START HERE!** Complete onboarding guide for new developers
+- **CLAUDE.md** - Development guidelines and coding standards for AI assistants
 - **specs/** - Feature specifications and implementation plans
 - **docs/** - Additional technical documentation
 

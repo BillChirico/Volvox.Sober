@@ -8,7 +8,7 @@ import React from 'react';
 import { StyleSheet } from 'react-native';
 import { Chip } from 'react-native-paper';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { useAppTheme } from '../../theme/ThemeContext';
+import { useAppTheme } from '../../core/theme/ThemeContext';
 import type { ConnectionStatus as Status } from '../../types/connection';
 
 export interface ConnectionStatusProps {

@@ -7,7 +7,7 @@
 import React, { useState } from 'react';
 import { View, StyleSheet, ScrollView, Platform } from 'react-native';
 import { Text, TextInput, Button, Chip, HelperText } from 'react-native-paper';
-import { useAppTheme } from '../../theme/ThemeContext';
+import { useAppTheme } from '../../core/theme/ThemeContext';
 import { RECOVERY_PROGRAMS } from '../../constants/RecoveryPrograms';
 import { AVAILABILITY_OPTIONS } from '../../constants/Availability';
 import { SobrietyDatePicker } from '../sobriety/SobrietyDatePicker';

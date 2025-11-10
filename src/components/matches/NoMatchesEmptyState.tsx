@@ -8,7 +8,7 @@ import React from 'react';
 import { View, StyleSheet } from 'react-native';
 import { Text, Card, Button, Divider } from 'react-native-paper';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { useAppTheme } from '../../theme/ThemeContext';
+import { useAppTheme } from '../../core/theme/ThemeContext';
 
 export interface NoMatchesEmptyStateProps {
   /** Callback when improve profile button is pressed */

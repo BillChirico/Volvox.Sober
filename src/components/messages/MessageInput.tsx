@@ -7,7 +7,7 @@
 import React, { useState } from 'react';
 import { View, StyleSheet, KeyboardAvoidingView, Platform } from 'react-native';
 import { TextInput, IconButton, Text, HelperText } from 'react-native-paper';
-import { useAppTheme } from '../../theme/ThemeContext';
+import { useAppTheme } from '../../core/theme/ThemeContext';
 import { MESSAGE_CONSTRAINTS } from '../../types/message';
 
 export interface MessageInputProps {

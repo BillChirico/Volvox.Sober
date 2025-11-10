@@ -8,7 +8,7 @@ import React from 'react';
 import { View, StyleSheet } from 'react-native';
 import { Card, Text, Avatar, Button } from 'react-native-paper';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { useAppTheme } from '../../theme/ThemeContext';
+import { useAppTheme } from '../../core/theme/ThemeContext';
 import type { ConnectionWithUsers } from '../../types/connection';
 
 export interface RequestCardProps {

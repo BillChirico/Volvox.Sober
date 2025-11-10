@@ -8,7 +8,7 @@ import React from 'react';
 import { View, StyleSheet, ScrollView } from 'react-native';
 import { Modal, Portal, Text, Button, Chip, IconButton, Divider, Avatar } from 'react-native-paper';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { useAppTheme } from '../../theme/ThemeContext';
+import { useAppTheme } from '../../core/theme/ThemeContext';
 import { CompatibilityBadge } from './CompatibilityBadge';
 import type { MatchWithProfile } from '../../types/match';
 

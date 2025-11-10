@@ -1,6 +1,6 @@
 import { Tabs } from 'expo-router';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { useAppTheme } from '../../src/theme/ThemeContext';
+import { useAppTheme } from '../../src/core/theme/ThemeContext';
 import { Platform } from 'react-native';
 import { TabBar } from '../../src/components/navigation/TabBar';
 

@@ -17,7 +17,7 @@ import {
   Surface,
   RadioButton,
 } from 'react-native-paper';
-import { useAppTheme } from '../../theme/ThemeContext';
+import { useAppTheme } from '../../core/theme/ThemeContext';
 
 interface EndConnectionModalProps {
   visible: boolean;

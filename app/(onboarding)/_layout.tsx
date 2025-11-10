@@ -1,6 +1,6 @@
 import { Stack, useRouter } from 'expo-router';
 import { useEffect } from 'react';
-import { useAppTheme } from '../../src/theme/ThemeContext';
+import { useAppTheme } from '../../src/core/theme/ThemeContext';
 import { useAppSelector } from '../../src/store/hooks';
 import { selectOnboardingCompleted } from '../../src/store/onboarding/onboardingSelectors';
 
