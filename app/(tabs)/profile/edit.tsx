@@ -435,7 +435,9 @@ export default function EditProfileScreen() {
         visible={showDatePicker}
         onDismiss={() => setShowDatePicker(false)}
         onConfirm={handleDateConfirm}
-        initialDate={formData.sobriety_start_date ? new Date(formData.sobriety_start_date) : undefined}
+        initialDate={
+          formData.sobriety_start_date ? new Date(formData.sobriety_start_date) : undefined
+        }
       />
     </ScrollView>
   );

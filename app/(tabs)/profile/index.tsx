@@ -13,7 +13,10 @@ import { useAppTheme } from '../../../src/theme/ThemeContext';
 import { useProfile } from '../../../src/hooks/useProfile';
 import { useAuth } from '../../../src/hooks/useAuth';
 import { ProfileHeader } from '../../../src/components/profile/ProfileHeader';
-import { SettingsSection, type SettingsItem } from '../../../src/components/profile/SettingsSection';
+import {
+  SettingsSection,
+  type SettingsItem,
+} from '../../../src/components/profile/SettingsSection';
 
 export default function ProfileScreen() {
   const { theme } = useAppTheme();

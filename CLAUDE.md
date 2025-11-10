@@ -289,165 +289,177 @@ Task Type → MCP Server (USE THESE):
 ### Core MCPs for This Project
 
 #### 1. **Supabase MCP** (`mcp__supabase__*`)
+
 **Use for**: Database migrations, schema changes, Auth configuration, Edge Functions, RLS policies
 
 ```typescript
 // Database operations
-mcp__supabase__apply_migration      // Create/apply migrations
-mcp__supabase__execute_sql          // Run SQL queries
-mcp__supabase__list_tables          // View schema
-mcp__supabase__get_logs             // Check service logs
+mcp__supabase__apply_migration; // Create/apply migrations
+mcp__supabase__execute_sql; // Run SQL queries
+mcp__supabase__list_tables; // View schema
+mcp__supabase__get_logs; // Check service logs
 
 // Edge Functions
-mcp__supabase__deploy_edge_function // Deploy functions
-mcp__supabase__list_edge_functions  // View deployed functions
+mcp__supabase__deploy_edge_function; // Deploy functions
+mcp__supabase__list_edge_functions; // View deployed functions
 
 // Development branches
-mcp__supabase__create_branch        // Create dev branch
-mcp__supabase__merge_branch         // Merge to production
+mcp__supabase__create_branch; // Create dev branch
+mcp__supabase__merge_branch; // Merge to production
 ```
 
 **Triggers**: `migration`, `database`, `schema`, `supabase auth`, `edge function`, `RLS`, `postgres`, `query`
 
 #### 2. **Serena MCP** (`mcp__serena__*`)
+
 **Use for**: Symbol operations, code navigation, project memory, refactoring
 
 ```typescript
 // Symbol operations
-mcp__serena__find_symbol               // Find symbols in codebase
-mcp__serena__find_referencing_symbols  // Find all usages
-mcp__serena__rename_symbol             // Rename across files
-mcp__serena__get_symbols_overview      // File symbol overview
+mcp__serena__find_symbol; // Find symbols in codebase
+mcp__serena__find_referencing_symbols; // Find all usages
+mcp__serena__rename_symbol; // Rename across files
+mcp__serena__get_symbols_overview; // File symbol overview
 
 // Code editing
-mcp__serena__replace_symbol_body       // Replace function/class body
-mcp__serena__insert_after_symbol       // Add code after symbol
-mcp__serena__insert_before_symbol      // Add code before symbol
+mcp__serena__replace_symbol_body; // Replace function/class body
+mcp__serena__insert_after_symbol; // Add code after symbol
+mcp__serena__insert_before_symbol; // Add code before symbol
 
 // Project memory
-mcp__serena__write_memory              // Store project knowledge
-mcp__serena__read_memory               // Retrieve knowledge
-mcp__serena__list_memories             // View all memories
+mcp__serena__write_memory; // Store project knowledge
+mcp__serena__read_memory; // Retrieve knowledge
+mcp__serena__list_memories; // View all memories
 
 // Code search
-mcp__serena__search_for_pattern        // Regex search in code
+mcp__serena__search_for_pattern; // Regex search in code
 ```
 
 **Triggers**: `rename`, `find references`, `symbol`, `refactor`, `project memory`, `architecture`
 
 #### 3. **Sequential Thinking MCP** (`mcp__sequential-thinking__*`)
+
 **Use for**: Complex reasoning, architectural analysis, root cause investigation
 
 ```typescript
-mcp__sequential-thinking__sequentialthinking({
-  thought: "Current analysis step",
-  thoughtNumber: 1,
-  totalThoughts: 5,
-  nextThoughtNeeded: true
-})
+mcp__sequential -
+  thinking__sequentialthinking({
+    thought: 'Current analysis step',
+    thoughtNumber: 1,
+    totalThoughts: 5,
+    nextThoughtNeeded: true,
+  });
 ```
 
 **Triggers**: `--think`, `--think-hard`, `--ultrathink`, complex debugging, architecture decisions, multi-component analysis
 
 **Complexity levels**:
+
 - `--think`: 3-5 interconnected components (~4K tokens)
 - `--think-hard`: Architectural analysis (~10K tokens)
 - `--ultrathink`: Critical system redesign (~32K tokens)
 
 #### 4. **Memory Keeper MCP** (`mcp__memory-keeper__*`)
+
 **Use for**: Session management, context persistence, checkpoints
 
 ```typescript
 // Session management
-mcp__memory-keeper__context_session_start    // Start new session
-mcp__memory-keeper__context_session_list     // List sessions
-mcp__memory-keeper__context_save             // Save context item
-mcp__memory-keeper__context_get              // Retrieve context
+mcp__memory - keeper__context_session_start; // Start new session
+mcp__memory - keeper__context_session_list; // List sessions
+mcp__memory - keeper__context_save; // Save context item
+mcp__memory - keeper__context_get; // Retrieve context
 
 // Checkpoints
-mcp__memory-keeper__context_checkpoint       // Create checkpoint
-mcp__memory-keeper__context_restore_checkpoint // Restore state
+mcp__memory - keeper__context_checkpoint; // Create checkpoint
+mcp__memory - keeper__context_restore_checkpoint; // Restore state
 
 // Search and analysis
-mcp__memory-keeper__context_search           // Search context
-mcp__memory-keeper__context_timeline         // View activity timeline
+mcp__memory - keeper__context_search; // Search context
+mcp__memory - keeper__context_timeline; // View activity timeline
 ```
 
 **Triggers**: Session persistence, context management, checkpoints, cross-session learning
 
 #### 5. **GitHub MCP** (`mcp__github__*`)
+
 **Use for**: Repository operations, PRs, issues, branches
 
 ```typescript
 // Repository operations
-mcp__github__create_branch           // Create feature branch
-mcp__github__create_or_update_file   // Update files
-mcp__github__push_files              // Batch file updates
+mcp__github__create_branch; // Create feature branch
+mcp__github__create_or_update_file; // Update files
+mcp__github__push_files; // Batch file updates
 
 // Pull requests
-mcp__github__create_pull_request     // Create PR
-mcp__github__update_pull_request     // Update existing PR
-mcp__github__merge_pull_request      // Merge PR
+mcp__github__create_pull_request; // Create PR
+mcp__github__update_pull_request; // Update existing PR
+mcp__github__merge_pull_request; // Merge PR
 
 // Issues
-mcp__github__issue_read              // Read issue details
-mcp__github__issue_write             // Create/update issue
-mcp__github__add_issue_comment       // Comment on issue
+mcp__github__issue_read; // Read issue details
+mcp__github__issue_write; // Create/update issue
+mcp__github__add_issue_comment; // Comment on issue
 ```
 
 **Triggers**: GitHub operations, PRs, issues, branches, commits
 
 #### 6. **Tavily MCP** (`mcp__tavily__*`)
+
 **Use for**: Web research, documentation search, current information
 
 ```typescript
-mcp__tavily__search        // General web search
-mcp__tavily__extract       // Extract content from URLs
-mcp__tavily__crawl         // Deep website crawling
-mcp__tavily__map           // Map website structure
+mcp__tavily__search; // General web search
+mcp__tavily__extract; // Extract content from URLs
+mcp__tavily__crawl; // Deep website crawling
+mcp__tavily__map; // Map website structure
 ```
 
 **Triggers**: `search`, `research`, `latest`, `current`, `best practices`, `breaking changes`
 
 #### 7. **Shadcn MCP** (`mcp__shadcn__*`)
+
 **Use for**: UI component registry, shadcn/ui components
 
 ```typescript
-mcp__shadcn__search_items_in_registries  // Search components
-mcp__shadcn__view_items_in_registries    // View component details
-mcp__shadcn__get_add_command_for_items   // Get install command
+mcp__shadcn__search_items_in_registries; // Search components
+mcp__shadcn__view_items_in_registries; // View component details
+mcp__shadcn__get_add_command_for_items; // Get install command
 ```
 
 **Triggers**: UI components, shadcn, component registry
 
 #### 8. **IDE MCP** (`mcp__ide__*`)
+
 **Use for**: VS Code integration, diagnostics, code execution
 
 ```typescript
-mcp__ide__getDiagnostics   // Get TypeScript/ESLint errors
-mcp__ide__executeCode      // Run code in Jupyter kernel
+mcp__ide__getDiagnostics; // Get TypeScript/ESLint errors
+mcp__ide__executeCode; // Run code in Jupyter kernel
 ```
 
 **Triggers**: Diagnostics, type errors, lint errors, code execution
 
 #### 9. **Morphllm MCP** (`mcp__morphllm__*`)
+
 **Use for**: Fast code edits, pattern-based transformations
 
 ```typescript
-mcp__morphllm__edit_file   // Fast pattern-based edits
+mcp__morphllm__edit_file; // Fast pattern-based edits
 ```
 
 **Triggers**: Bulk edits, pattern transformations, style enforcement
 
 #### 10. **Fetch MCP** (`mcp__fetch__*`)
+
 **Use for**: Enhanced web fetching with image support
 
 ```typescript
 mcp__fetch__imageFetch({
-  url: "https://example.com",
+  url: 'https://example.com',
   images: true,
-  text: { maxLength: 20000 }
-})
+  text: { maxLength: 20000 },
+});
 ```
 
 **Triggers**: Web fetching, image extraction, screenshot capture
@@ -476,6 +488,7 @@ Common workflows combining MCPs:
 ### MCP Selection Rules
 
 **ALWAYS use MCP when**:
+
 - ✅ Operating on Supabase (database, auth, functions)
 - ✅ Symbol operations (rename, find references)
 - ✅ Complex analysis (3+ components)
@@ -485,6 +498,7 @@ Common workflows combining MCPs:
 - ✅ Bulk code transformations (3+ files)
 
 **NEVER use native tools when MCP exists**:
+
 - ❌ Don't use Grep when Serena can find symbols
 - ❌ Don't use multiple Edits when Morphllm can batch
 - ❌ Don't use manual SQL when Supabase MCP exists
@@ -494,11 +508,13 @@ Common workflows combining MCPs:
 ### Enforcement
 
 **Violation = Immediate Stop**:
+
 1. Stop current operation
 2. Acknowledge oversight
 3. Restart with correct MCP
 
 **Examples of violations**:
+
 ```
 ❌ "Find all uses of useAuth" → Using Grep instead of Serena
 ❌ "Create database migration" → Using manual SQL instead of Supabase MCP
