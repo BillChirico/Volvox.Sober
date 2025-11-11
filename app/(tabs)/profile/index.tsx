@@ -10,7 +10,7 @@ import { ActivityIndicator, Button, Divider, Text } from 'react-native-paper';
 import { useRouter } from 'expo-router';
 import Constants from 'expo-constants';
 import { useAppTheme } from '../../../src/theme/ThemeContext';
-import { useProfile } from '../../../src/hooks/useProfile';
+import { useProfile } from '@/features/profile';
 import { useAuth } from '@/features/auth';
 import { ProfileHeader } from '@/features/profile';
 import {

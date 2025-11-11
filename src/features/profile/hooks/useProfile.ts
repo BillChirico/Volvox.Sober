@@ -5,14 +5,14 @@
  */
 
 import { useCallback } from 'react';
-import { useAppDispatch, useAppSelector } from './useAppDispatch';
+import { useAppDispatch, useAppSelector } from '../../../hooks/useAppDispatch';
 import {
   fetchProfile,
   createProfile,
   updateProfile,
   deleteProfile,
   updateProfilePhoto,
-} from '../store/profile/profileThunks';
+} from '../../../store/profile/profileThunks';
 import {
   selectProfile,
   selectProfileLoading,
@@ -30,9 +30,9 @@ import {
   selectDisplayName,
   selectIsProfileOperationInProgress,
   selectProfileSummary,
-} from '../store/profile/profileSelectors';
-import { clearError } from '../store/profile/profileSlice';
-import type { ProfileFormData } from '../types';
+} from '../../../store/profile/profileSelectors';
+import { clearError } from '../../../store/profile/profileSlice';
+import type { ProfileFormData } from '../../../types';
 
 /**
  * Hook for managing user profile

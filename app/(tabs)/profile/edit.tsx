@@ -10,7 +10,7 @@ import { Text, TextInput, Button, Surface, HelperText, Chip } from 'react-native
 import { useRouter } from 'expo-router';
 import * as Yup from 'yup';
 import { useAppTheme } from '../../../src/theme/ThemeContext';
-import { useProfile } from '../../../src/hooks/useProfile';
+import { useProfile } from '@/features/profile';
 import { useAuth } from '@/features/auth';
 import ProfilePhotoUpload from '../../../src/components/ProfilePhotoUpload';
 import { SobrietyDatePicker } from '../../../src/components/sobriety/SobrietyDatePicker';
