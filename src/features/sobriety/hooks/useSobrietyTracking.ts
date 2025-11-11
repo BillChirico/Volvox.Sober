@@ -5,7 +5,7 @@
  */
 
 import { useCallback } from 'react';
-import { useAppDispatch, useAppSelector } from './useAppDispatch';
+import { useAppDispatch, useAppSelector } from '../../../hooks/useAppDispatch';
 import {
   fetchSobrietyRecord,
   createSobrietyRecord,
@@ -13,7 +13,7 @@ import {
   recordRelapse,
   refreshDaysSober,
   checkNewMilestones,
-} from '../store/sobriety/sobrietyThunks';
+} from '../../../store/sobriety/sobrietyThunks';
 import {
   selectSobrietyRecord,
   selectMilestones,
@@ -29,9 +29,9 @@ import {
   selectRecentMilestoneAchievement,
   selectIsOnLongestStreak,
   selectIsSobrietyOperationInProgress,
-} from '../store/sobriety/sobrietySelectors';
-import { clearError } from '../store/sobriety/sobrietySlice';
-import type { SobrietyRecordFormData } from '../types';
+} from '../../../store/sobriety/sobrietySelectors';
+import { clearError } from '../../../store/sobriety/sobrietySlice';
+import type { SobrietyRecordFormData } from '../../../types';
 
 /**
  * Hook for managing sobriety tracking
