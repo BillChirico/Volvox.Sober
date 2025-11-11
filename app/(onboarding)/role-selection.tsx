@@ -13,7 +13,7 @@ import { useOnboarding } from '@/features/onboarding';
 import { useProfile } from '@/features/profile';
 import { useAuth } from '@/features/auth';
 import { useAppTheme } from '../../src/theme/ThemeContext';
-import type { UserRole } from '../../src/types/profile';
+import type { UserRole } from '@/features/profile';
 
 export default function RoleSelectionScreen() {
   const { theme } = useAppTheme();

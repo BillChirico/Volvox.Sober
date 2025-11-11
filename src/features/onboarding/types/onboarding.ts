@@ -4,7 +4,7 @@
  */
 
 import { Tables } from '../../../types/database.types';
-import { UserRole, ProfileFormData } from '../../../types/profile';
+import { UserRole, ProfileFormData } from '../../profile/types/profile';
 
 // ============================================================
 // Base Onboarding Types

@@ -12,7 +12,7 @@ import { useOnboarding } from '@/features/onboarding';
 import { useProfile } from '@/features/profile';
 import { useAuth } from '@/features/auth';
 import { useAppTheme } from '../../src/theme/ThemeContext';
-import type { ProfileFormData } from '../../src/types/profile';
+import type { ProfileFormData } from '@/features/profile';
 
 export default function SponseeProfileScreen() {
   const { theme } = useAppTheme();

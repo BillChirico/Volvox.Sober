@@ -5,7 +5,7 @@
  */
 
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { Profile, ProfileState } from '../../../types';
+import { Profile, ProfileState } from '../types';
 
 const initialState: ProfileState = {
   profile: null,

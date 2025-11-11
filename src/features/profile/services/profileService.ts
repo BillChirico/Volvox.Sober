@@ -13,7 +13,7 @@ import {
   MatchingPreferences,
   TablesInsert,
   TablesUpdate,
-} from '../../../types';
+} from '../types';
 
 class ProfileService {
   /**

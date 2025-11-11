@@ -9,7 +9,7 @@ import { View, StyleSheet, TouchableOpacity } from 'react-native';
 import { Text, Card, RadioButton } from 'react-native-paper';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useAppTheme } from '../../../theme/ThemeContext';
-import type { UserRole } from '../../../types/profile';
+import type { UserRole } from '../../profile/types/profile';
 
 export interface RoleSelectorProps {
   /** Currently selected role */

@@ -7,7 +7,7 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import profileService from '../services/profileService';
 import { setProfile, setLoading, setSaving, setError, clearError } from './profileSlice';
-import type { ProfileFormData } from '../../../types';
+import type { ProfileFormData } from '../types';
 
 /**
  * Fetch user profile by ID

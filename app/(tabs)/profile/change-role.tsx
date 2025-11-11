@@ -20,7 +20,7 @@ import * as Yup from 'yup';
 import { useAppTheme } from '../../../src/theme/ThemeContext';
 import { useProfile } from '@/features/profile';
 import { useAuth } from '@/features/auth';
-import type { UserRole } from '../../../src/types/profile';
+import type { UserRole } from '@/features/profile';
 
 // Validation schema for role-specific fields
 const roleChangeSchema = Yup.object().shape({

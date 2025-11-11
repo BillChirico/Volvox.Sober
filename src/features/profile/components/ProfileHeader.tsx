@@ -8,7 +8,7 @@ import React from 'react';
 import { View, StyleSheet } from 'react-native';
 import { Avatar, Text, Chip, ProgressBar } from 'react-native-paper';
 import { useAppTheme } from '../../../theme/ThemeContext';
-import type { Profile } from '../../../types/profile';
+import type { Profile } from '../types/profile';
 
 interface ProfileHeaderProps {
   profile: Profile;

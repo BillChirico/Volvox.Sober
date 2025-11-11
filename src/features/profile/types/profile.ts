@@ -3,7 +3,7 @@
  * Feature: 002-app-screens
  */
 
-import { Tables } from './database.types';
+import { Tables } from '../../../types/database.types';
 
 // ============================================================
 // Base Profile Types

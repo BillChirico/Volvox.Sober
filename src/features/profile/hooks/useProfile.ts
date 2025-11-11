@@ -32,7 +32,7 @@ import {
   selectProfileSummary,
 } from '../store/profileSelectors';
 import { clearError } from '../store/profileSlice';
-import type { ProfileFormData } from '../../../types';
+import type { ProfileFormData } from '../types';
 
 /**
  * Hook for managing user profile
