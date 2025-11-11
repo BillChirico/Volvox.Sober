@@ -177,4 +177,8 @@ export const onAuthStateChange = (callback: (event: string, session: Session | n
   return supabaseClient.auth.onAuthStateChange(callback);
 };
 
+// Named exports for compatibility with various import patterns
+export { supabaseClient };
+export const supabase = supabaseClient; // Alias for backward compatibility
+
 export default supabaseClient;

@@ -4,7 +4,7 @@
 
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { RootState } from './store';
+import { RootState } from './index';
 import { StepWorkResponse } from '../services/stepsApi';
 
 const SYNC_QUEUE_KEY = 'syncQueue';

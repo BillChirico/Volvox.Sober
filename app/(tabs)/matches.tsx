@@ -66,7 +66,7 @@ export default function MatchesScreen() {
   }, []);
 
   // Filter matches based on selected filters
-  const filteredMatches = suggestedMatches.filter(match => {
+  const filteredMatches = suggestedMatches.filter((match: MatchWithProfile) => {
     const { candidate } = match;
 
     // Filter by recovery program
@@ -79,7 +79,7 @@ export default function MatchesScreen() {
 
     // Filter by availability
     if (filters.availability.length > 0) {
-      const hasMatchingAvailability = candidate.availability?.some(avail =>
+      const hasMatchingAvailability = candidate.availability?.some((avail: string) =>
         filters.availability.includes(avail),
       );
       if (!hasMatchingAvailability) {

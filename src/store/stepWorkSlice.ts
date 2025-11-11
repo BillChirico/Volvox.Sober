@@ -3,7 +3,7 @@
  */
 
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { RootState } from './store';
+import { RootState } from './index';
 
 export type StepStatus = 'not_started' | 'in_progress' | 'submitted' | 'reviewed';
 

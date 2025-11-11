@@ -26,7 +26,7 @@ import { subscribeToConversation } from '../../../src/services/realtimeService';
 import type { RealtimeSubscription } from '../../../src/services/realtimeService';
 import { MessageBubble, MessageInput } from '@/features/messages';
 import { ConnectionStatusIndicator } from '../../../src/components/ConnectionStatusIndicator';
-import type { Message } from '../../../src/types';
+import type { MessageWithSender } from '@/features/messages';
 
 const MESSAGES_PER_PAGE = 50;
 
@@ -75,7 +75,7 @@ export const ConversationScreen: React.FC = () => {
   const styles = createStyles(theme);
   const params = useLocalSearchParams<{ id: string }>();
   const connectionId = params.id || '';
-  const [messages, setMessages] = useState<Message[]>([]);
+  const [messages, setMessages] = useState<MessageWithSender[]>([]);
   const [loading, setLoading] = useState(true);
   const [loadingMore, setLoadingMore] = useState(false);
   const [hasMore, setHasMore] = useState(false);
@@ -115,7 +115,8 @@ export const ConversationScreen: React.FC = () => {
       const result = await getMessages(connectionId, MESSAGES_PER_PAGE, 0);
 
       // Reverse messages so newest are at bottom
-      setMessages(result.data.reverse());
+      // Cast to MessageWithSender since query includes sender data
+      setMessages((result.data as MessageWithSender[]).reverse());
       setHasMore(result.hasMore);
       pageRef.current = 1;
 
@@ -150,9 +151,8 @@ export const ConversationScreen: React.FC = () => {
             if (!mounted) return; // Ignore callbacks if unmounted
 
             // New message received - add to bottom of list
-            const newMessage: Message = {
-              ...messageRow,
-            };
+            // Cast to MessageWithSender since subscription includes sender data
+            const newMessage = messageRow as MessageWithSender;
             setMessages(prev => [...prev, newMessage]);
 
             // Auto-scroll to bottom when new message arrives
@@ -216,7 +216,8 @@ export const ConversationScreen: React.FC = () => {
       const result = await getMessages(connectionId, MESSAGES_PER_PAGE, offset);
 
       // Prepend older messages (they're already reversed from API)
-      setMessages(prev => [...result.data.reverse(), ...prev]);
+      // Cast to MessageWithSender since query includes sender data
+      setMessages(prev => [...(result.data as MessageWithSender[]).reverse(), ...prev]);
       setHasMore(result.hasMore);
       pageRef.current += 1;
     } catch (err) {
@@ -237,7 +238,8 @@ export const ConversationScreen: React.FC = () => {
         const newMessage = await sendMessage(connectionId, partnerUserId, text);
 
         // Optimistic update - add message to list
-        setMessages(prev => [...prev, newMessage]);
+        // Cast to MessageWithSender since sendMessage returns full message data
+        setMessages(prev => [...prev, newMessage as MessageWithSender]);
 
         // Scroll to bottom
         setTimeout(() => {
@@ -253,8 +255,8 @@ export const ConversationScreen: React.FC = () => {
 
   // Render a single message
   const renderMessage = useCallback(
-    ({ item }: { item: Message }) => (
-      <MessageBubble message={item} isCurrentUser={item.sender_id === currentUserId} />
+    ({ item }: { item: MessageWithSender }) => (
+      <MessageBubble message={item} currentUserId={currentUserId || ''} />
     ),
     [currentUserId],
   );

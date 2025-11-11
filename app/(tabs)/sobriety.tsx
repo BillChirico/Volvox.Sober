@@ -18,7 +18,7 @@ import { useSobrietyTracking } from '@/features/sobriety';
 import { useAuth } from '@/features/auth';
 import { useAppTheme } from '../../src/theme/ThemeContext';
 import { isMilestone, getMilestoneForDays } from '../../src/utils/dateCalculations';
-import sobrietyService from '@/features/sobriety';
+import { sobrietyService } from '@/features/sobriety';
 import type { ReflectionFormData } from '@/features/sobriety';
 
 export default function SobrietyScreen() {
