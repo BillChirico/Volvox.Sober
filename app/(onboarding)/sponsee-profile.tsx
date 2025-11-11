@@ -7,7 +7,7 @@
 import React from 'react';
 import { View, StyleSheet, Alert } from 'react-native';
 import { useRouter } from 'expo-router';
-import { ProfileForm } from '../../src/components/onboarding/ProfileForm';
+import { ProfileForm } from '@/features/onboarding';
 import { useOnboarding } from '../../src/hooks/useOnboarding';
 import { useProfile } from '../../src/hooks/useProfile';
 import { useAuth } from '@/features/auth';

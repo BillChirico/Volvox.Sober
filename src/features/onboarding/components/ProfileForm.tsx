@@ -7,11 +7,11 @@
 import React, { useState } from 'react';
 import { View, StyleSheet, ScrollView, Platform } from 'react-native';
 import { Text, TextInput, Button, Chip, HelperText } from 'react-native-paper';
-import { useAppTheme } from '../../theme/ThemeContext';
-import { RECOVERY_PROGRAMS } from '../../constants/RecoveryPrograms';
-import { AVAILABILITY_OPTIONS } from '../../constants/Availability';
-import { SobrietyDatePicker } from '../sobriety/SobrietyDatePicker';
-import type { ProfileFormData, UserRole, AvailabilityOption } from '../../types/profile';
+import { useAppTheme } from '../../../theme/ThemeContext';
+import { RECOVERY_PROGRAMS } from '../../../constants/RecoveryPrograms';
+import { AVAILABILITY_OPTIONS } from '../../../constants/Availability';
+import { SobrietyDatePicker } from '../../../components/sobriety/SobrietyDatePicker';
+import type { ProfileFormData, UserRole, AvailabilityOption } from '../../../types/profile';
 
 export interface ProfileFormProps {
   /** User's selected role */

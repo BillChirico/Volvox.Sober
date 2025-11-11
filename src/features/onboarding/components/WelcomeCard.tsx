@@ -8,7 +8,7 @@ import React from 'react';
 import { View, StyleSheet } from 'react-native';
 import { Text, Card, Button } from 'react-native-paper';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { useAppTheme } from '../../theme/ThemeContext';
+import { useAppTheme } from '../../../theme/ThemeContext';
 
 export interface WelcomeCardProps {
   /** Callback when user is ready to continue */

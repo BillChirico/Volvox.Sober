@@ -8,7 +8,7 @@ import React, { useState } from 'react';
 import { View, StyleSheet } from 'react-native';
 import { Button } from 'react-native-paper';
 import { useRouter } from 'expo-router';
-import { RoleSelector } from '../../src/components/onboarding/RoleSelector';
+import { RoleSelector } from '@/features/onboarding';
 import { useOnboarding } from '../../src/hooks/useOnboarding';
 import { useProfile } from '../../src/hooks/useProfile';
 import { useAuth } from '@/features/auth';
