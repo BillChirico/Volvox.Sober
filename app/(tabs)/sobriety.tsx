@@ -7,11 +7,11 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import { View, StyleSheet, ScrollView, RefreshControl, Alert } from 'react-native';
 import { FAB } from 'react-native-paper';
-import { DaysCounter } from '../../src/components/sobriety/DaysCounter';
-import { MilestoneCard } from '../../src/components/sobriety/MilestoneCard';
-import { ReflectionInput } from '../../src/components/sobriety/ReflectionInput';
-import { Timeline } from '../../src/components/sobriety/Timeline';
-import { SobrietyDatePicker } from '../../src/components/sobriety/SobrietyDatePicker';
+import { DaysCounter } from '@/features/sobriety';
+import { MilestoneCard } from '@/features/sobriety';
+import { ReflectionInput } from '@/features/sobriety';
+import { Timeline } from '@/features/sobriety';
+import { SobrietyDatePicker } from '@/features/sobriety';
 import { LoadingSpinner } from '../../src/components/common/LoadingSpinner';
 import { EmptyState } from '../../src/components/common/EmptyState';
 import { useSobrietyTracking } from '../../src/hooks/useSobrietyTracking';

@@ -8,8 +8,8 @@ import React from 'react';
 import { View, StyleSheet, FlatList } from 'react-native';
 import { Text, Card } from 'react-native-paper';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { useAppTheme } from '../../theme/ThemeContext';
-import type { SobrietyReflection } from '../../types/sobriety';
+import { useAppTheme } from '../../../theme/ThemeContext';
+import type { SobrietyReflection } from '../../../types/sobriety';
 
 export interface TimelineProps {
   /** List of reflections to display */

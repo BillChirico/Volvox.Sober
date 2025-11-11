@@ -8,8 +8,8 @@ import React, { useState } from 'react';
 import { View, StyleSheet } from 'react-native';
 import { Text, TextInput, Button, Card, HelperText } from 'react-native-paper';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { useAppTheme } from '../../theme/ThemeContext';
-import type { ReflectionFormData } from '../../types/sobriety';
+import { useAppTheme } from '../../../theme/ThemeContext';
+import type { ReflectionFormData } from '../../../types/sobriety';
 
 export interface ReflectionInputProps {
   /** Callback when reflection is submitted */

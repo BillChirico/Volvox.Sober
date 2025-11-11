@@ -13,7 +13,7 @@ import { useAppTheme } from '../../../src/theme/ThemeContext';
 import { useProfile } from '@/features/profile';
 import { useAuth } from '@/features/auth';
 import ProfilePhotoUpload from '../../../src/components/ProfilePhotoUpload';
-import { SobrietyDatePicker } from '../../../src/components/sobriety/SobrietyDatePicker';
+import { SobrietyDatePicker } from '@/features/sobriety';
 import { RECOVERY_PROGRAMS } from '../../../src/constants/RecoveryPrograms';
 import { AVAILABILITY_OPTIONS } from '../../../src/constants/Availability';
 
