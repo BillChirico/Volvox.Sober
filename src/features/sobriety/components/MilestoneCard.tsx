@@ -9,7 +9,7 @@ import { View, StyleSheet } from 'react-native';
 import { Text, Card, ProgressBar } from 'react-native-paper';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useAppTheme } from '../../../theme/ThemeContext';
-import type { MilestoneStatus, MilestoneDay } from '../../../types/sobriety';
+import type { MilestoneStatus, MilestoneDay } from '../types';
 
 export interface MilestoneCardProps {
   /** Milestone status information */

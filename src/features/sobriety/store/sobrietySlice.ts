@@ -5,7 +5,7 @@
  */
 
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { SobrietyRecordWithCalculations, SobrietyState, MilestoneStatus } from '../../types';
+import { SobrietyRecordWithCalculations, SobrietyState, MilestoneStatus } from '../../../types';
 
 const initialState: SobrietyState = {
   record: null,

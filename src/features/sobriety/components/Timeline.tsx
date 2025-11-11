@@ -9,7 +9,7 @@ import { View, StyleSheet, FlatList } from 'react-native';
 import { Text, Card } from 'react-native-paper';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useAppTheme } from '../../../theme/ThemeContext';
-import type { SobrietyReflection } from '../../../types/sobriety';
+import type { SobrietyReflection } from '../types';
 
 export interface TimelineProps {
   /** List of reflections to display */

@@ -5,8 +5,8 @@
  */
 
 import { createSelector } from '@reduxjs/toolkit';
-import type { RootState } from '../index';
-import type { MilestoneStatus } from '../../types';
+import type { RootState } from '../../../store';
+import type { MilestoneStatus } from '../../../types';
 
 /**
  * Base selector for sobriety state

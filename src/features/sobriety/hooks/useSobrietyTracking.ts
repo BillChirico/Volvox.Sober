@@ -13,8 +13,6 @@ import {
   recordRelapse,
   refreshDaysSober,
   checkNewMilestones,
-} from '../../../store/sobriety/sobrietyThunks';
-import {
   selectSobrietyRecord,
   selectMilestones,
   selectSobrietyLoading,
@@ -29,8 +27,8 @@ import {
   selectRecentMilestoneAchievement,
   selectIsOnLongestStreak,
   selectIsSobrietyOperationInProgress,
-} from '../../../store/sobriety/sobrietySelectors';
-import { clearError } from '../../../store/sobriety/sobrietySlice';
+  clearError,
+} from '../store';
 import type { SobrietyRecordFormData } from '../../../types';
 
 /**

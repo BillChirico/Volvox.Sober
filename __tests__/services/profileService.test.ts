@@ -5,7 +5,7 @@
  */
 
 import profileService from '../../src/features/profile/services/profileService';
-import sobrietyService from '../../src/services/sobrietyService';
+import sobrietyService from '../../src/features/sobriety/services/sobrietyService';
 import supabaseClient from '../../src/services/supabase';
 import { ProfileFormData } from '../../src/types';
 
@@ -21,7 +21,7 @@ jest.mock('../../src/services/supabase', () => ({
 }));
 
 // Mock sobrietyService
-jest.mock('../../src/services/sobrietyService', () => ({
+jest.mock('../../src/features/sobriety/services/sobrietyService', () => ({
   __esModule: true,
   default: {
     createSobrietyRecord: jest.fn(),

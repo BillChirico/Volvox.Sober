@@ -3,7 +3,7 @@
  * Feature: 002-app-screens
  */
 
-import { Tables, SobrietyMilestone, SobrietyReflection } from './database.types';
+import { Tables, SobrietyMilestone, SobrietyReflection } from '../../../types/database.types';
 
 // ============================================================
 // Base Sobriety Types

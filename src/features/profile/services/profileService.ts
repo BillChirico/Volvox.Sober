@@ -5,7 +5,7 @@
  */
 
 import supabaseClient from '../../../services/supabase';
-import sobrietyService from '../../../services/sobrietyService';
+import sobrietyService from '../../sobriety/services/sobrietyService';
 import {
   Profile,
   ProfileFormData,
