@@ -1,6 +1,6 @@
 import { AuthError, Session, User, SupabaseClient } from '@supabase/supabase-js';
 import Constants from 'expo-constants';
-import supabaseClient from './supabase';
+import supabaseClient from '../../../services/supabase';
 
 // Use the shared Supabase client instance from ./supabase
 // This ensures auth session is shared across all services

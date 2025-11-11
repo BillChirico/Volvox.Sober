@@ -24,7 +24,7 @@ import {
   selectIsEmailVerified,
 } from '../../../store/auth/authSelectors';
 import { clearError } from '../../../store/auth/authSlice';
-import authService from '../../../services/authService';
+import authService from '../services/authService';
 
 /**
  * Hook for managing authentication

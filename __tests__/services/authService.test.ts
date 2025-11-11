@@ -28,7 +28,15 @@ jest.mock('@supabase/supabase-js', () => ({
   })),
 }));
 
-import { authService, __setSupabaseInstance } from '../../src/services/authService';
+// Mock the supabase service module
+jest.mock('../../src/services/supabase', () => ({
+  __esModule: true,
+  default: {
+    auth: mockSupabaseAuth,
+  },
+}));
+
+import { authService, __setSupabaseInstance } from '../../src/features/auth/services/authService';
 
 describe('AuthService', () => {
   beforeEach(() => {

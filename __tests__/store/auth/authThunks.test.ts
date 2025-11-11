@@ -7,10 +7,10 @@ import {
   resetPasswordRequestThunk,
   updatePasswordThunk,
 } from '../../../src/store/auth/authThunks';
-import { authService } from '../../../src/services/authService';
+import { authService } from '../../../src/features/auth/services/authService';
 
 // Mock authService methods
-jest.mock('../../../src/services/authService', () => ({
+jest.mock('../../../src/features/auth/services/authService', () => ({
   authService: {
     signUp: jest.fn(),
     signIn: jest.fn(),

@@ -1,10 +1,10 @@
 import React from 'react';
 import { render, fireEvent, waitFor } from '@testing-library/react-native';
 import ForgotPasswordForm from '../../../src/features/auth/components/ForgotPasswordForm';
-import authService from '../../../src/services/authService';
+import authService from '../../../src/features/auth/services/authService';
 
 // Mock authService
-jest.mock('../../../src/services/authService', () => ({
+jest.mock('../../../src/features/auth/services/authService', () => ({
   __esModule: true,
   default: {
     resetPasswordRequest: jest.fn(),

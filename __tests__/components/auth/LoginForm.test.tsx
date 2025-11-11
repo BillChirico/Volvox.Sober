@@ -7,7 +7,7 @@ import authReducer, { setError, clearError } from '../../../src/store/auth/authS
 import { loginThunk } from '../../../src/store/auth/authThunks';
 
 // Mock authService
-jest.mock('../../../src/services/authService', () => ({
+jest.mock('../../../src/features/auth/services/authService', () => ({
   __esModule: true,
   default: {
     login: jest.fn(),

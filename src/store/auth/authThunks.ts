@@ -1,5 +1,5 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import { authService } from '../../services/authService';
+import { authService } from '../../features/auth/services/authService';
 import { setSession, setUser, setLoading, setError, clearAuth } from './authSlice';
 
 interface SignupPayload {
