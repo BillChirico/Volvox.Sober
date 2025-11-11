@@ -4,7 +4,7 @@
  * Feature: 002-app-screens
  */
 
-import profileService from '../../src/services/profileService';
+import profileService from '../../src/features/profile/services/profileService';
 import sobrietyService from '../../src/services/sobrietyService';
 import supabaseClient from '../../src/services/supabase';
 import { ProfileFormData } from '../../src/types';

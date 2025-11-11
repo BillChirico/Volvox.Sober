@@ -4,8 +4,8 @@
  * Feature: 002-app-screens
  */
 
-import supabaseClient from './supabase';
-import sobrietyService from './sobrietyService';
+import supabaseClient from '../../../services/supabase';
+import sobrietyService from '../../../services/sobrietyService';
 import {
   Profile,
   ProfileFormData,
@@ -13,7 +13,7 @@ import {
   MatchingPreferences,
   TablesInsert,
   TablesUpdate,
-} from '../types';
+} from '../../../types';
 
 class ProfileService {
   /**

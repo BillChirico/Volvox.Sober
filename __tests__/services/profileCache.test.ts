@@ -4,7 +4,7 @@ import {
   loadCachedProfile,
   clearProfileCache,
   CachedProfile,
-} from '../../src/services/profileCache';
+} from '../../src/features/profile/services/profileCache';
 
 // Mock AsyncStorage
 jest.mock('@react-native-async-storage/async-storage', () => ({
