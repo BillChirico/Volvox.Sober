@@ -5,15 +5,13 @@
  */
 
 import { useCallback } from 'react';
-import { useAppDispatch, useAppSelector } from './useAppDispatch';
+import { useAppDispatch, useAppSelector } from '../../../hooks/useAppDispatch';
 import {
   fetchSuggestedMatches,
   fetchAllMatches,
   refreshSuggestedMatches,
   sendConnectionRequest,
   declineMatch,
-} from '../store/matches/matchesThunks';
-import {
   selectSuggestedMatches,
   selectRequestedMatches,
   selectDeclinedMatches,
@@ -26,8 +24,8 @@ import {
   selectMatchById,
   selectMatchStatistics,
   selectIsMatchesOperationInProgress,
-} from '../store/matches/matchesSelectors';
-import { clearError } from '../store/matches/matchesSlice';
+  clearError,
+} from '../store';
 
 /**
  * Hook for managing matches

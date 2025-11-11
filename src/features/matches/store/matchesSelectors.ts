@@ -5,8 +5,8 @@
  */
 
 import { createSelector } from '@reduxjs/toolkit';
-import type { RootState } from '../index';
-import type { MatchWithScore } from '../../types';
+import type { RootState } from '../../../store';
+import type { MatchWithScore } from '../../../types';
 
 /**
  * Base selector for matches state

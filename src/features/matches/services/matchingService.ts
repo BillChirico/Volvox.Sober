@@ -4,7 +4,7 @@
  * Feature: 002-app-screens
  */
 
-import supabaseClient from './supabase';
+import supabaseClient from '../../../services/supabase';
 import {
   Match,
   MatchWithProfile,
@@ -14,7 +14,7 @@ import {
   Profile,
   TablesInsert,
   TablesUpdate,
-} from '../types';
+} from '../../../types';
 
 class MatchingService {
   /**

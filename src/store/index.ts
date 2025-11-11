@@ -15,7 +15,7 @@ import authReducer from '../features/auth/store';
 import profileReducer from '../features/profile/store';
 import onboardingReducer from '../features/onboarding/store';
 import sobrietyReducer from '../features/sobriety/store';
-import matchesReducer from './matches/matchesSlice';
+import matchesReducer from '../features/matches/store';
 import connectionsReducer from './connections/connectionsSlice';
 import messagesReducer from './messages/messagesSlice';
 

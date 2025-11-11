@@ -5,7 +5,7 @@
  */
 
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { MatchesState, MatchWithProfile } from '../../types';
+import { MatchesState, MatchWithProfile } from '../../../types';
 
 const initialState: MatchesState = {
   suggestedMatches: [],

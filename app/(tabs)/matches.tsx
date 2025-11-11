@@ -6,16 +6,12 @@
 
 import React, { useEffect, useState, useCallback } from 'react';
 import { View, StyleSheet, FlatList, RefreshControl, Alert } from 'react-native';
-import { MatchCard } from '../../src/components/matches/MatchCard';
-import { MatchDetailModal } from '../../src/components/matches/MatchDetailModal';
-import { NoMatchesEmptyState } from '../../src/components/matches/NoMatchesEmptyState';
-import { FilterBar, type FilterOptions } from '../../src/components/matches/FilterBar';
+import { MatchCard, MatchDetailModal, NoMatchesEmptyState, FilterBar, type FilterOptions, type MatchWithProfile } from '@/features/matches';
 import { LoadingSpinner } from '../../src/components/common/LoadingSpinner';
 import { EmptyState } from '../../src/components/common/EmptyState';
-import { useMatches } from '../../src/hooks/useMatches';
+import { useMatches } from '@/features/matches';
 import { useAuth } from '@/features/auth';
 import { useAppTheme } from '../../src/theme/ThemeContext';
-import type { MatchWithProfile } from '../../src/types/match';
 
 export default function MatchesScreen() {
   const { theme } = useAppTheme();

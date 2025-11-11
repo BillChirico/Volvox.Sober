@@ -5,7 +5,7 @@
  */
 
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import { matchingService } from '../../services/matchingService';
+import { matchingService } from '../services/matchingService';
 import {
   setSuggestedMatches,
   setRequestedMatches,
