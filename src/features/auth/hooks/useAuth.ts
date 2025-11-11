@@ -14,7 +14,7 @@ import {
   updatePasswordThunk,
   updateEmailThunk,
   deleteAccountThunk,
-} from '../../../store/auth/authThunks';
+} from '../store/authThunks';
 import {
   selectSession,
   selectUser,
@@ -22,8 +22,8 @@ import {
   selectAuthError,
   selectIsAuthenticated,
   selectIsEmailVerified,
-} from '../../../store/auth/authSelectors';
-import { clearError } from '../../../store/auth/authSlice';
+} from '../store/authSelectors';
+import { clearError } from '../store/authSlice';
 import authService from '../services/authService';
 
 /**

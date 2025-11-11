@@ -7,7 +7,7 @@
 import { useEffect, useCallback } from 'react';
 import { Redirect } from 'expo-router';
 import { useAppSelector, useAppDispatch } from '../src/store/hooks';
-import { selectIsAuthenticated, selectUser } from '../src/store/auth/authSelectors';
+import { selectIsAuthenticated, selectUser } from '@/features/auth';
 import { selectOnboardingProgress } from '../src/store/onboarding/onboardingSelectors';
 import { fetchOnboardingProgress } from '../src/store/onboarding/onboardingThunks';
 

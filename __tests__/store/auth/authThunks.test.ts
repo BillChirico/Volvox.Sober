@@ -1,12 +1,12 @@
 import { configureStore } from '@reduxjs/toolkit';
-import authReducer from '../../../src/store/auth/authSlice';
+import authReducer from '../../../src/features/auth/store/authSlice';
 import {
   signupThunk,
   loginThunk,
   logoutThunk,
   resetPasswordRequestThunk,
   updatePasswordThunk,
-} from '../../../src/store/auth/authThunks';
+} from '../../../src/features/auth/store/authThunks';
 import { authService } from '../../../src/features/auth/services/authService';
 
 // Mock authService methods

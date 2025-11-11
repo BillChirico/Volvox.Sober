@@ -3,8 +3,8 @@ import { render, fireEvent, waitFor, act } from '@testing-library/react-native';
 import { Provider } from 'react-redux';
 import { configureStore } from '@reduxjs/toolkit';
 import LoginForm from '../../../src/features/auth/components/LoginForm';
-import authReducer, { setError, clearError } from '../../../src/store/auth/authSlice';
-import { loginThunk } from '../../../src/store/auth/authThunks';
+import authReducer, { setError, clearError } from '../../../src/features/auth/store/authSlice';
+import { loginThunk } from '../../../src/features/auth/store/authThunks';
 
 // Mock authService
 jest.mock('../../../src/features/auth/services/authService', () => ({

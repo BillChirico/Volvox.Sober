@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { useRouter, useSegments } from 'expo-router';
 import { useAppSelector } from '../../../store/hooks';
-import { selectIsAuthenticated, selectUser } from '../../../store/auth/authSelectors';
+import { selectIsAuthenticated, selectUser } from '../store/authSelectors';
 
 /**
  * useAuthRedirect Hook

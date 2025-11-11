@@ -1,4 +1,4 @@
-import type { RootState } from '../index';
+import type { RootState } from '../../../store/index';
 
 export const selectSession = (state: RootState) => state.auth?.session ?? null;
 

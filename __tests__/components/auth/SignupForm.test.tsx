@@ -4,11 +4,11 @@ import { Provider as PaperProvider } from 'react-native-paper';
 import { Provider as ReduxProvider } from 'react-redux';
 import { configureStore } from '@reduxjs/toolkit';
 import SignupForm from '../../../src/features/auth/components/SignupForm';
-import authReducer, { setError } from '../../../src/store/auth/authSlice';
+import authReducer, { setError } from '../../../src/features/auth/store/authSlice';
 
 // Mock the signupThunk
 const mockSignupThunk = jest.fn();
-jest.mock('../../../src/store/auth/authThunks', () => ({
+jest.mock('../../../src/features/auth/store/authThunks', () => ({
   signupThunk: (payload: any) => mockSignupThunk(payload),
 }));
 

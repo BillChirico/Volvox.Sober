@@ -22,7 +22,7 @@ import { useDisconnectMutation } from '../../../src/store/api/connectionsApi';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../src/store';
 import { selectConnectionById } from '../../../src/store/connections/connectionsSelectors';
-import { selectUser } from '../../../src/store/auth/authSelectors';
+import { selectUser } from '@/features/auth';
 import { formatDistanceToNow, format } from 'date-fns';
 
 const ConnectionDetailScreen: React.FC = () => {
