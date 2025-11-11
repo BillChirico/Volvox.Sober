@@ -9,7 +9,7 @@ import { View, StyleSheet } from 'react-native';
 import { useRouter } from 'expo-router';
 import { WelcomeCard } from '../../src/components/onboarding/WelcomeCard';
 import { useOnboarding } from '../../src/hooks/useOnboarding';
-import { useAuth } from '../../src/hooks/useAuth';
+import { useAuth } from '@/features/auth';
 import { useAppTheme } from '../../src/theme/ThemeContext';
 
 export default function WelcomeScreen() {

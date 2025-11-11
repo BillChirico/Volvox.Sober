@@ -15,7 +15,7 @@ import { SobrietyDatePicker } from '../../src/components/sobriety/SobrietyDatePi
 import { LoadingSpinner } from '../../src/components/common/LoadingSpinner';
 import { EmptyState } from '../../src/components/common/EmptyState';
 import { useSobrietyTracking } from '../../src/hooks/useSobrietyTracking';
-import { useAuth } from '../../src/hooks/useAuth';
+import { useAuth } from '@/features/auth';
 import { useAppTheme } from '../../src/theme/ThemeContext';
 import { isMilestone, getMilestoneForDays } from '../../src/utils/dateCalculations';
 import sobrietyService from '../../src/services/sobrietyService';

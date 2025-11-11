@@ -5,7 +5,7 @@
  */
 
 import { useCallback } from 'react';
-import { useAppDispatch, useAppSelector } from './useAppDispatch';
+import { useAppDispatch, useAppSelector } from '../../../hooks/useAppDispatch';
 import {
   signupThunk,
   loginThunk,
@@ -14,7 +14,7 @@ import {
   updatePasswordThunk,
   updateEmailThunk,
   deleteAccountThunk,
-} from '../store/auth/authThunks';
+} from '../../../store/auth/authThunks';
 import {
   selectSession,
   selectUser,
@@ -22,9 +22,9 @@ import {
   selectAuthError,
   selectIsAuthenticated,
   selectIsEmailVerified,
-} from '../store/auth/authSelectors';
-import { clearError } from '../store/auth/authSlice';
-import authService from '../services/authService';
+} from '../../../store/auth/authSelectors';
+import { clearError } from '../../../store/auth/authSlice';
+import authService from '../../../services/authService';
 
 /**
  * Hook for managing authentication

@@ -13,7 +13,7 @@ import { FilterBar, type FilterOptions } from '../../src/components/matches/Filt
 import { LoadingSpinner } from '../../src/components/common/LoadingSpinner';
 import { EmptyState } from '../../src/components/common/EmptyState';
 import { useMatches } from '../../src/hooks/useMatches';
-import { useAuth } from '../../src/hooks/useAuth';
+import { useAuth } from '@/features/auth';
 import { useAppTheme } from '../../src/theme/ThemeContext';
 import type { MatchWithProfile } from '../../src/types/match';
 

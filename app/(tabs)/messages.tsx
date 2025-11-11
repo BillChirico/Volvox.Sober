@@ -13,7 +13,7 @@ import { MessageInput } from '../../src/components/messages/MessageInput';
 import { LoadingSpinner } from '../../src/components/common/LoadingSpinner';
 import { EmptyState } from '../../src/components/common/EmptyState';
 import { useMessages } from '../../src/hooks/useMessages';
-import { useAuth } from '../../src/hooks/useAuth';
+import { useAuth } from '@/features/auth';
 import { useAppSelector } from '../../src/hooks/useAppDispatch';
 import { selectProfile } from '../../src/store/profile/profileSelectors';
 import { useAppTheme } from '../../src/theme/ThemeContext';

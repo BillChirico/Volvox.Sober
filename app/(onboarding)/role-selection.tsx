@@ -11,7 +11,7 @@ import { useRouter } from 'expo-router';
 import { RoleSelector } from '../../src/components/onboarding/RoleSelector';
 import { useOnboarding } from '../../src/hooks/useOnboarding';
 import { useProfile } from '../../src/hooks/useProfile';
-import { useAuth } from '../../src/hooks/useAuth';
+import { useAuth } from '@/features/auth';
 import { useAppTheme } from '../../src/theme/ThemeContext';
 import type { UserRole } from '../../src/types/profile';
 

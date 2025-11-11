@@ -11,7 +11,7 @@ import { useRouter } from 'expo-router';
 import Constants from 'expo-constants';
 import { useAppTheme } from '../../../src/theme/ThemeContext';
 import { useProfile } from '../../../src/hooks/useProfile';
-import { useAuth } from '../../../src/hooks/useAuth';
+import { useAuth } from '@/features/auth';
 import { ProfileHeader } from '../../../src/components/profile/ProfileHeader';
 import {
   SettingsSection,

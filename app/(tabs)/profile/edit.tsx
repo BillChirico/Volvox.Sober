@@ -11,7 +11,7 @@ import { useRouter } from 'expo-router';
 import * as Yup from 'yup';
 import { useAppTheme } from '../../../src/theme/ThemeContext';
 import { useProfile } from '../../../src/hooks/useProfile';
-import { useAuth } from '../../../src/hooks/useAuth';
+import { useAuth } from '@/features/auth';
 import ProfilePhotoUpload from '../../../src/components/ProfilePhotoUpload';
 import { SobrietyDatePicker } from '../../../src/components/sobriety/SobrietyDatePicker';
 import { RECOVERY_PROGRAMS } from '../../../src/constants/RecoveryPrograms';

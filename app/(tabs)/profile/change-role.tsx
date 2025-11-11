@@ -19,7 +19,7 @@ import { useRouter } from 'expo-router';
 import * as Yup from 'yup';
 import { useAppTheme } from '../../../src/theme/ThemeContext';
 import { useProfile } from '../../../src/hooks/useProfile';
-import { useAuth } from '../../../src/hooks/useAuth';
+import { useAuth } from '@/features/auth';
 import type { UserRole } from '../../../src/types/profile';
 
 // Validation schema for role-specific fields

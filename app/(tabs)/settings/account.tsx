@@ -10,7 +10,7 @@ import { Text, Button, TextInput, Surface, HelperText, Divider } from 'react-nat
 import { useRouter } from 'expo-router';
 import * as Yup from 'yup';
 import { useAppTheme } from '../../../src/theme/ThemeContext';
-import { useAuth } from '../../../src/hooks/useAuth';
+import { useAuth } from '@/features/auth';
 
 /**
  * Account settings screen for managing email, password, and account

@@ -14,7 +14,7 @@ import { EndConnectionModal } from '../../src/components/connections/EndConnecti
 import { LoadingSpinner } from '../../src/components/common/LoadingSpinner';
 import { EmptyState } from '../../src/components/common/EmptyState';
 import { useConnections } from '../../src/hooks/useConnections';
-import { useAuth } from '../../src/hooks/useAuth';
+import { useAuth } from '@/features/auth';
 import { useAppTheme } from '../../src/theme/ThemeContext';
 import { useRouter } from 'expo-router';
 import connectionService from '../../src/services/connectionService';
