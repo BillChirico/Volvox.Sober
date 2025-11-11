@@ -8,8 +8,8 @@ import React from 'react';
 import { View, StyleSheet } from 'react-native';
 import { Card, Text, Avatar, Button } from 'react-native-paper';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { useAppTheme } from '../../theme/ThemeContext';
-import type { ConnectionWithUsers } from '../../types/connection';
+import { useAppTheme } from '../../../theme/ThemeContext';
+import type { ConnectionWithUsers } from '../types';
 
 export interface RequestCardProps {
   /** Connection request data */

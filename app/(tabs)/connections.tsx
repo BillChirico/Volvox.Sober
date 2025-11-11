@@ -7,18 +7,12 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import { View, StyleSheet, SectionList, RefreshControl, Alert } from 'react-native';
 import { Text, Divider, FAB } from 'react-native-paper';
-import { ConnectionCard } from '../../src/components/connections/ConnectionCard';
-import { RequestCard } from '../../src/components/connections/RequestCard';
-import { ConnectionProfileModal } from '../../src/components/connections/ConnectionProfileModal';
-import { EndConnectionModal } from '../../src/components/connections/EndConnectionModal';
+import { ConnectionCard, RequestCard, ConnectionProfileModal, EndConnectionModal, useConnections, connectionService, type ConnectionWithUsers, type ConnectionRequest } from '@/features/connections';
 import { LoadingSpinner } from '../../src/components/common/LoadingSpinner';
 import { EmptyState } from '../../src/components/common/EmptyState';
-import { useConnections } from '../../src/hooks/useConnections';
 import { useAuth } from '@/features/auth';
 import { useAppTheme } from '../../src/theme/ThemeContext';
 import { useRouter } from 'expo-router';
-import connectionService from '../../src/services/connectionService';
-import type { ConnectionWithUsers, ConnectionRequest } from '../../src/types/connection';
 
 interface Section {
   title: string;

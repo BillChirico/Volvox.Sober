@@ -5,7 +5,7 @@
  */
 
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { ConnectionsState, ConnectionDetails, ConnectionRequest } from '../../types';
+import { ConnectionsState, ConnectionDetails, ConnectionRequest } from '../../../types';
 
 const initialState: ConnectionsState = {
   activeConnections: [],

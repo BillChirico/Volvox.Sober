@@ -5,7 +5,7 @@
  */
 
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import { connectionService } from '../../services/connectionService';
+import { connectionService } from '../services/connectionService';
 import {
   setActiveConnections,
   setPendingRequests,
@@ -23,7 +23,7 @@ import {
   setError,
   clearError,
 } from './connectionsSlice';
-import type { CreateConnectionData } from '../../types';
+import type { CreateConnectionData } from '../../../types';
 
 /**
  * Fetch all active connections

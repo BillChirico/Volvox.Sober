@@ -16,7 +16,7 @@ import profileReducer from '../features/profile/store';
 import onboardingReducer from '../features/onboarding/store';
 import sobrietyReducer from '../features/sobriety/store';
 import matchesReducer from '../features/matches/store';
-import connectionsReducer from './connections/connectionsSlice';
+import connectionsReducer from '../features/connections/store';
 import messagesReducer from './messages/messagesSlice';
 
 const rootReducer = combineReducers({

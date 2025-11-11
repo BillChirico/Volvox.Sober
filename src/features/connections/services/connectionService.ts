@@ -4,7 +4,7 @@
  * Feature: 002-app-screens
  */
 
-import supabaseClient from './supabase';
+import supabaseClient from '../../../services/supabase';
 import {
   Connection,
   ConnectionWithUsers,
@@ -13,10 +13,8 @@ import {
   AcceptConnectionData,
   DeclineConnectionData,
   EndConnectionData,
-  Profile,
-  TablesInsert,
-  TablesUpdate,
 } from '../types';
+import { Profile, TablesInsert, TablesUpdate } from '../../../types';
 
 class ConnectionService {
   /**

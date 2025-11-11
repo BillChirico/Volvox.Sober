@@ -5,7 +5,7 @@
  */
 
 import { createSelector } from '@reduxjs/toolkit';
-import type { RootState } from '../index';
+import type { RootState } from '../../../store';
 
 /**
  * Base selector for connections state

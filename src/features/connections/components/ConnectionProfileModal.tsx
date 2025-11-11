@@ -16,10 +16,10 @@ import {
   IconButton,
   Surface,
 } from 'react-native-paper';
-import { ProfilePhotoUpload } from '../ProfilePhotoUpload';
+import { ProfilePhotoUpload } from '../../../components/profile/ProfilePhotoUpload';
 import { ConnectionStatus } from './ConnectionStatus';
-import { useAppTheme } from '../../theme/ThemeContext';
-import type { ConnectionWithUsers } from '../../types/connection';
+import { useAppTheme } from '../../../theme/ThemeContext';
+import type { ConnectionWithUsers } from '../types';
 import { formatDistance } from 'date-fns';
 
 interface ConnectionProfileModalProps {

@@ -3,8 +3,8 @@
  * Feature: 002-app-screens
  */
 
-import { Tables } from './database.types';
-import { Profile } from './profile';
+import { Tables } from '../../../types/database.types';
+import { Profile } from '../../profile/types/profile';
 
 // ============================================================
 // Base Connection Types

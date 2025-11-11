@@ -5,7 +5,7 @@
  */
 
 import { useCallback } from 'react';
-import { useAppDispatch, useAppSelector } from './useAppDispatch';
+import { useAppDispatch, useAppSelector } from '../../../hooks/useAppDispatch';
 import {
   fetchActiveConnections,
   fetchPendingRequests,
@@ -17,8 +17,6 @@ import {
   declineConnectionRequest,
   cancelConnectionRequest,
   endActiveConnection,
-} from '../store/connections/connectionsThunks';
-import {
   selectActiveConnections,
   selectPendingRequests,
   selectSentRequests,
@@ -35,8 +33,8 @@ import {
   selectConnectionsStatistics,
   selectIsConnectionsOperationInProgress,
   selectActiveConnectionsSortedByActivity,
-} from '../store/connections/connectionsSelectors';
-import { clearError } from '../store/connections/connectionsSlice';
+  clearError,
+} from '../store';
 import type { CreateConnectionData } from '../types';
 
 /**
