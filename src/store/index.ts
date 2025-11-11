@@ -18,6 +18,8 @@ import { sobrietyReducer } from '../features/sobriety/store';
 import { matchesReducer } from '../features/matches/store';
 import { connectionsReducer } from '../features/connections/store';
 import { messagesReducer } from '../features/messages/store';
+import stepWorkReducer from './stepWorkSlice';
+import syncQueueReducer from './syncQueueSlice';
 
 const rootReducer = combineReducers({
   auth: authReducer,
@@ -27,13 +29,15 @@ const rootReducer = combineReducers({
   matches: matchesReducer,
   connections: connectionsReducer,
   messages: messagesReducer,
+  stepWork: stepWorkReducer,
+  syncQueue: syncQueueReducer,
 });
 
 const persistConfig = {
   key: 'root',
   version: 1,
   storage: AsyncStorage,
-  whitelist: ['auth', 'profile', 'onboarding', 'sobriety', 'matches', 'connections', 'messages'],
+  whitelist: ['auth', 'profile', 'onboarding', 'sobriety', 'matches', 'connections', 'messages', 'stepWork', 'syncQueue'],
   // Blacklist sensitive data or temporary state
   blacklist: [],
   // Timeout for rehydration (10 seconds)

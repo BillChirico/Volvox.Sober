@@ -5,7 +5,7 @@
  */
 
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import { sobrietyService } from '../services/sobrietyService';
+import sobrietyService from '../services/sobrietyService';
 import {
   setRecord,
   setMilestones,

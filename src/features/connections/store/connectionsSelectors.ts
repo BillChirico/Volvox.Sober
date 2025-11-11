@@ -6,6 +6,7 @@
 
 import { createSelector } from '@reduxjs/toolkit';
 import type { RootState } from '../../../store';
+import type { ConnectionWithUsers, ConnectionRequest } from '../types/connection';
 
 /**
  * Base selector for connections state
@@ -147,7 +148,9 @@ export const selectRequestById = createSelector(
 export const selectConnectionsWithUnreadMessages = createSelector(
   [selectActiveConnections],
   connections => {
-    return connections.filter(c => c.unreadMessageCount > 0);
+    return connections.filter(
+      (c: ConnectionWithUsers) => (c as any).unreadMessageCount > 0 || c.unread_message_count > 0,
+    );
   },
 );
 
@@ -157,7 +160,11 @@ export const selectConnectionsWithUnreadMessages = createSelector(
 export const selectTotalUnreadMessageCount = createSelector(
   [selectActiveConnections],
   connections => {
-    return connections.reduce((total, c) => total + c.unreadMessageCount, 0);
+    return connections.reduce(
+      (total: number, c: ConnectionWithUsers) =>
+        total + ((c as any).unreadMessageCount || c.unread_message_count || 0),
+      0,
+    );
   },
 );
 
@@ -250,8 +257,8 @@ export const selectUserRoleInConnection = createSelector(
 export const selectConnectionsByRole = createSelector(
   [selectActiveConnections, (_state: RootState, userId: string) => userId],
   (connections, userId) => {
-    const asSponsor = connections.filter(c => c.sponsor_id === userId);
-    const asSponsee = connections.filter(c => c.sponsee_id === userId);
+    const asSponsor = connections.filter((c: ConnectionWithUsers) => c.sponsor_id === userId);
+    const asSponsee = connections.filter((c: ConnectionWithUsers) => c.sponsee_id === userId);
 
     return { asSponsor, asSponsee };
   },
@@ -266,14 +273,15 @@ export const selectRecentConnectionActivity = createSelector(
     const sevenDaysAgo = new Date();
     sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
 
-    const recentConnections = activeConnections.filter(c => {
-      const interactionTime = c.lastInteractionAt
-        ? new Date(c.lastInteractionAt)
-        : new Date(c.created_at);
+    const recentConnections = activeConnections.filter((c: ConnectionWithUsers) => {
+      const interactionTime =
+        c.last_interaction_at || (c as any).lastInteractionAt
+          ? new Date(c.last_interaction_at || (c as any).lastInteractionAt)
+          : new Date(c.created_at);
       return interactionTime >= sevenDaysAgo;
     });
 
-    const recentRequests = pendingRequests.filter(r => {
+    const recentRequests = pendingRequests.filter((r: ConnectionRequest) => {
       const createdTime = new Date(r.created_at);
       return createdTime >= sevenDaysAgo;
     });

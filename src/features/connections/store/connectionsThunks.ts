@@ -5,7 +5,7 @@
  */
 
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import { connectionService } from '../services/connectionService';
+import connectionService from '../services/connectionService';
 import {
   setActiveConnections,
   setPendingRequests,

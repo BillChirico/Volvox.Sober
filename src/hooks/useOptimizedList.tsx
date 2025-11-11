@@ -153,9 +153,14 @@ export const useOptimizedList = <T extends { id: string | number }>(
 
       // Layout
       getItemLayout: getItemHeight
-        ? (data, index) => ({
-            length: getItemHeight(data[index], index),
-            offset: data.slice(0, index).reduce((sum, item, i) => sum + getItemHeight(item, i), 0),
+        ? (data: ArrayLike<T> | null | undefined, index: number) => ({
+            length: data && data[index] ? getItemHeight(data[index], index) : 0,
+            offset:
+              data && 'slice' in data
+                ? (data as T[])
+                    .slice(0, index)
+                    .reduce((sum: number, item: T, i: number) => sum + getItemHeight(item, i), 0)
+                : 0,
             index,
           })
         : undefined,

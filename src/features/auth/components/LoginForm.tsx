@@ -137,7 +137,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ onSuccess, onForgotPassword }) =>
     setResendMessage('');
 
     try {
-      const authService = (await import('../../services/authService')).default;
+      const authService = (await import('../services/authService')).default;
       const { error } = await authService.resendVerification(email);
 
       if (error) {
