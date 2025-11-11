@@ -11,7 +11,7 @@ import {
   OnboardingStepInfo,
   TablesInsert,
   TablesUpdate,
-} from '../../../types';
+} from '../types';
 
 class OnboardingService {
   /**

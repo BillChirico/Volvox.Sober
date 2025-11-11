@@ -25,7 +25,7 @@ import {
   selectOnboardingProgressSummary,
 } from '../store/onboardingSelectors';
 import { clearError } from '../store/onboardingSlice';
-import type { OnboardingStep } from '../../../types';
+import type { OnboardingStep } from '../types';
 
 /**
  * Hook for managing onboarding flow

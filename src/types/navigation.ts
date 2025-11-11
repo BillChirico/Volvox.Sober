@@ -3,7 +3,7 @@
  * Feature: 002-app-screens
  */
 
-import { OnboardingStep } from './onboarding';
+import { OnboardingStep } from '../features/onboarding/types/onboarding';
 
 // ============================================================
 // Route Definitions

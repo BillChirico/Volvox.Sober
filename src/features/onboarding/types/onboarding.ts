@@ -3,8 +3,8 @@
  * Feature: 002-app-screens
  */
 
-import { Tables } from './database.types';
-import { UserRole, ProfileFormData } from './profile';
+import { Tables } from '../../../types/database.types';
+import { UserRole, ProfileFormData } from '../../../types/profile';
 
 // ============================================================
 // Base Onboarding Types

@@ -16,7 +16,7 @@ import {
   completeStep,
   markOnboardingComplete,
 } from './onboardingSlice';
-import type { OnboardingStep } from '../../../types';
+import type { OnboardingStep } from '../types';
 
 /**
  * Fetch onboarding progress for user

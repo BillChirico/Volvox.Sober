@@ -5,7 +5,7 @@
  */
 
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { OnboardingState, OnboardingProgress, OnboardingStep } from '../../../types';
+import { OnboardingState, OnboardingProgress, OnboardingStep } from '../types';
 
 const initialState: OnboardingState = {
   progress: null,
