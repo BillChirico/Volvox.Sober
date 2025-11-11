@@ -8,7 +8,7 @@ import { useCallback, useEffect } from 'react';
 import { useRouter, usePathname } from 'expo-router';
 import { useAppSelector } from './useAppDispatch';
 import { selectUser, selectIsAuthenticated } from '@/features/auth';
-import { selectOnboardingCompleted } from '../store/onboarding/onboardingSelectors';
+import { selectOnboardingCompleted } from '../../features/onboarding/store/onboardingSelectors';
 import { selectHasProfile } from '../store/profile/profileSelectors';
 import type { TabName } from '../types';
 

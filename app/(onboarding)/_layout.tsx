@@ -2,7 +2,7 @@ import { Stack, useRouter } from 'expo-router';
 import { useEffect } from 'react';
 import { useAppTheme } from '../../src/theme/ThemeContext';
 import { useAppSelector } from '../../src/store/hooks';
-import { selectOnboardingCompleted } from '../../src/store/onboarding/onboardingSelectors';
+import { selectOnboardingCompleted } from '@/features/onboarding';
 
 export default function OnboardingLayout() {
   const { theme } = useAppTheme();

@@ -5,7 +5,7 @@
  */
 
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import onboardingService from '../../features/onboarding/services/onboardingService';
+import onboardingService from '../services/onboardingService';
 import {
   setProgress,
   setCurrentStep,
@@ -16,7 +16,7 @@ import {
   completeStep,
   markOnboardingComplete,
 } from './onboardingSlice';
-import type { OnboardingStep } from '../../types';
+import type { OnboardingStep } from '../../../types';
 
 /**
  * Fetch onboarding progress for user

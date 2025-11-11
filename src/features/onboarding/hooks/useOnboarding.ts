@@ -12,7 +12,7 @@ import {
   completeOnboardingStep,
   completeOnboarding,
   navigateToStep,
-} from '../../../store/onboarding/onboardingThunks';
+} from '../store/onboardingThunks';
 import {
   selectOnboardingProgress,
   selectCurrentStep,
@@ -23,8 +23,8 @@ import {
   selectCanProceedToNext,
   selectIsOnboardingOperationInProgress,
   selectOnboardingProgressSummary,
-} from '../../../store/onboarding/onboardingSelectors';
-import { clearError } from '../../../store/onboarding/onboardingSlice';
+} from '../store/onboardingSelectors';
+import { clearError } from '../store/onboardingSlice';
 import type { OnboardingStep } from '../../../types';
 
 /**

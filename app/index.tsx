@@ -8,8 +8,8 @@ import { useEffect, useCallback } from 'react';
 import { Redirect } from 'expo-router';
 import { useAppSelector, useAppDispatch } from '../src/store/hooks';
 import { selectIsAuthenticated, selectUser } from '@/features/auth';
-import { selectOnboardingProgress } from '../src/store/onboarding/onboardingSelectors';
-import { fetchOnboardingProgress } from '../src/store/onboarding/onboardingThunks';
+import { selectOnboardingProgress } from '@/features/onboarding';
+import { fetchOnboardingProgress } from '@/features/onboarding';
 
 export default function Index() {
   const dispatch = useAppDispatch();

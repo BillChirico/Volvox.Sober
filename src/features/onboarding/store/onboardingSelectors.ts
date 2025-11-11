@@ -5,8 +5,8 @@
  */
 
 import { createSelector } from '@reduxjs/toolkit';
-import type { RootState } from '../index';
-import type { OnboardingStep } from '../../types';
+import type { RootState } from '../../../store/index';
+import type { OnboardingStep } from '../../../types';
 
 /**
  * Base selector for onboarding state
