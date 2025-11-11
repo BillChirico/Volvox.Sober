@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, fireEvent, waitFor } from '@testing-library/react-native';
-import ForgotPasswordForm from '../../../src/components/auth/ForgotPasswordForm';
+import ForgotPasswordForm from '../../../src/features/auth/components/ForgotPasswordForm';
 import authService from '../../../src/services/authService';
 
 // Mock authService

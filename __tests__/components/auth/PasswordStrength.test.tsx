@@ -1,7 +1,7 @@
 import React from 'react';
 import { render } from '@testing-library/react-native';
 import { Provider as PaperProvider } from 'react-native-paper';
-import PasswordStrength from '../../../src/components/auth/PasswordStrength';
+import PasswordStrength from '../../../src/features/auth/components/PasswordStrength';
 
 describe('PasswordStrength', () => {
   const renderComponent = (props = {}) => {

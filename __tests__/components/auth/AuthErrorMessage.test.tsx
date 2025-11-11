@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, fireEvent } from '@testing-library/react-native';
 import { Provider as PaperProvider } from 'react-native-paper';
-import AuthErrorMessage from '../../../src/components/auth/AuthErrorMessage';
+import AuthErrorMessage from '../../../src/features/auth/components/AuthErrorMessage';
 
 describe('AuthErrorMessage', () => {
   const renderComponent = (props = {}) => {

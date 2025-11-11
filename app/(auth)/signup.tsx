@@ -1,7 +1,7 @@
 import { View, StyleSheet } from 'react-native';
 import { Button } from 'react-native-paper';
 import { useRouter, Link } from 'expo-router';
-import SignupForm from '../../src/components/auth/SignupForm';
+import SignupForm from '@/features/auth';
 
 /**
  * Signup Screen

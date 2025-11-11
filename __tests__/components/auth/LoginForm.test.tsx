@@ -2,7 +2,7 @@ import React from 'react';
 import { render, fireEvent, waitFor, act } from '@testing-library/react-native';
 import { Provider } from 'react-redux';
 import { configureStore } from '@reduxjs/toolkit';
-import LoginForm from '../../../src/components/auth/LoginForm';
+import LoginForm from '../../../src/features/auth/components/LoginForm';
 import authReducer, { setError, clearError } from '../../../src/store/auth/authSlice';
 import { loginThunk } from '../../../src/store/auth/authThunks';
 

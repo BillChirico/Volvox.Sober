@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, fireEvent } from '@testing-library/react-native';
 import { Provider as PaperProvider } from 'react-native-paper';
-import PasswordInput from '../../../src/components/auth/PasswordInput';
+import PasswordInput from '../../../src/features/auth/components/PasswordInput';
 
 describe('PasswordInput', () => {
   const renderComponent = (props = {}) => {

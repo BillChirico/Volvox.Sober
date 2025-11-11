@@ -3,7 +3,7 @@ import { render, fireEvent, waitFor, act } from '@testing-library/react-native';
 import { Provider as PaperProvider } from 'react-native-paper';
 import { Provider as ReduxProvider } from 'react-redux';
 import { configureStore } from '@reduxjs/toolkit';
-import SignupForm from '../../../src/components/auth/SignupForm';
+import SignupForm from '../../../src/features/auth/components/SignupForm';
 import authReducer, { setError } from '../../../src/store/auth/authSlice';
 
 // Mock the signupThunk

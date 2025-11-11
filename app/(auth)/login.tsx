@@ -1,7 +1,7 @@
 import { View, StyleSheet } from 'react-native';
 import { Button } from 'react-native-paper';
 import { useRouter, Link } from 'expo-router';
-import LoginForm from '../../src/components/auth/LoginForm';
+import LoginForm from '@/features/auth';
 
 /**
  * Login Screen

@@ -1,7 +1,7 @@
 import { View, StyleSheet } from 'react-native';
 import { Button } from 'react-native-paper';
 import { useRouter, useLocalSearchParams, Link } from 'expo-router';
-import ForgotPasswordForm from '../../src/components/auth/ForgotPasswordForm';
+import ForgotPasswordForm from '@/features/auth';
 
 /**
  * Forgot Password Screen
