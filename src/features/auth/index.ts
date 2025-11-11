@@ -26,7 +26,9 @@ export * from './services';
 // Store
 export * from './store';
 
-// Types will be exported here after migration
-// export * from './types';
+// Types: Co-located with their usage (components, services, store)
+// - Component types: AuthErrorMessageProps, PasswordStrengthProps (exported via ./components)
+// - Service types: SignUpParams, SignInParams, AuthResponse (exported via ./services)
+// - Store types: AuthState (exported via ./store)
 
 // Screens: N/A - use app/(auth)/ per Expo Router architecture
