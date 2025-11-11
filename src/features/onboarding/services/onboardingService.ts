@@ -4,14 +4,14 @@
  * Feature: 002-app-screens
  */
 
-import supabaseClient from './supabase';
+import supabaseClient from '../../../services/supabase';
 import {
   OnboardingProgress,
   OnboardingStep,
   OnboardingStepInfo,
   TablesInsert,
   TablesUpdate,
-} from '../types';
+} from '../../../types';
 
 class OnboardingService {
   /**
