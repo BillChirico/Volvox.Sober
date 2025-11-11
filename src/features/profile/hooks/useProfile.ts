@@ -12,7 +12,7 @@ import {
   updateProfile,
   deleteProfile,
   updateProfilePhoto,
-} from '../../../store/profile/profileThunks';
+} from '../store/profileThunks';
 import {
   selectProfile,
   selectProfileLoading,
@@ -30,8 +30,8 @@ import {
   selectDisplayName,
   selectIsProfileOperationInProgress,
   selectProfileSummary,
-} from '../../../store/profile/profileSelectors';
-import { clearError } from '../../../store/profile/profileSlice';
+} from '../store/profileSelectors';
+import { clearError } from '../store/profileSlice';
 import type { ProfileFormData } from '../../../types';
 
 /**

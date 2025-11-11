@@ -15,7 +15,7 @@ import { EmptyState } from '../../src/components/common/EmptyState';
 import { useMessages } from '../../src/hooks/useMessages';
 import { useAuth } from '@/features/auth';
 import { useAppSelector } from '../../src/hooks/useAppDispatch';
-import { selectProfile } from '../../src/store/profile/profileSelectors';
+import { selectProfile } from '@/features/profile';
 import { useAppTheme } from '../../src/theme/ThemeContext';
 import { useRouter } from 'expo-router';
 import type { ConversationPreview, MessageWithSender } from '../../src/types/message';
