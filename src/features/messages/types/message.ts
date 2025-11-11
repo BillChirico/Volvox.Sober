@@ -3,9 +3,9 @@
  * Feature: 002-app-screens
  */
 
-import { Tables } from './database.types';
-import { ConnectionWithUsers } from './connection';
-import { Profile } from './profile';
+import { Tables } from '../../../types/database.types';
+import { ConnectionWithUsers } from '../../connections/types/connection';
+import { Profile } from '../../profile/types/profile';
 
 // ============================================================
 // Base Message Types

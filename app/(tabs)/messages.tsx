@@ -7,18 +7,15 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import { View, StyleSheet, FlatList, RefreshControl, Alert, Modal } from 'react-native';
 import { FAB, Divider, Appbar } from 'react-native-paper';
-import { MessageThread } from '../../src/components/messages/MessageThread';
-import { MessageBubble } from '../../src/components/messages/MessageBubble';
-import { MessageInput } from '../../src/components/messages/MessageInput';
+import { MessageThread, MessageBubble, MessageInput, useMessages } from '@/features/messages';
 import { LoadingSpinner } from '../../src/components/common/LoadingSpinner';
 import { EmptyState } from '../../src/components/common/EmptyState';
-import { useMessages } from '../../src/hooks/useMessages';
 import { useAuth } from '@/features/auth';
 import { useAppSelector } from '../../src/hooks/useAppDispatch';
 import { selectProfile } from '@/features/profile';
 import { useAppTheme } from '../../src/theme/ThemeContext';
 import { useRouter } from 'expo-router';
-import type { ConversationPreview, MessageWithSender } from '../../src/types/message';
+import type { ConversationPreview, MessageWithSender } from '@/features/messages';
 
 export default function MessagesScreen() {
   const { theme } = useAppTheme();

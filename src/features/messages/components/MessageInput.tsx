@@ -7,8 +7,8 @@
 import React, { useState } from 'react';
 import { View, StyleSheet, KeyboardAvoidingView, Platform } from 'react-native';
 import { TextInput, IconButton, Text, HelperText } from 'react-native-paper';
-import { useAppTheme } from '../../theme/ThemeContext';
-import { MESSAGE_CONSTRAINTS } from '../../types/message';
+import { useAppTheme } from '../../../theme/ThemeContext';
+import { MESSAGE_CONSTRAINTS } from '../types';
 
 export interface MessageInputProps {
   /** Callback when send button is pressed */

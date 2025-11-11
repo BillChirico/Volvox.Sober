@@ -8,8 +8,8 @@ import React from 'react';
 import { View, StyleSheet } from 'react-native';
 import { Card, Text, Avatar, Badge } from 'react-native-paper';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { useAppTheme } from '../../theme/ThemeContext';
-import type { ConversationPreview } from '../../types/message';
+import { useAppTheme } from '../../../theme/ThemeContext';
+import type { ConversationPreview } from '../types';
 
 export interface MessageThreadProps {
   /** Conversation preview data */

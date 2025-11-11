@@ -3,8 +3,9 @@
  * Handles all message-related operations with Supabase
  */
 
-import { supabase, getCurrentUserId } from './supabase';
-import type { Message, ConversationPreview, PaginatedResult, TablesInsert } from '../types';
+import { supabase, getCurrentUserId } from '../../../services/supabase';
+import type { Message, ConversationPreview, PaginatedResult } from '../types';
+import type { TablesInsert } from '../../../types';
 
 // ============================================================
 // Message Queries

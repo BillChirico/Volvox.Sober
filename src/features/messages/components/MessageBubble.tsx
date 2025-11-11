@@ -8,8 +8,8 @@ import React from 'react';
 import { View, StyleSheet } from 'react-native';
 import { Text, Surface } from 'react-native-paper';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { useAppTheme } from '../../theme/ThemeContext';
-import type { MessageWithSender } from '../../types/message';
+import { useAppTheme } from '../../../theme/ThemeContext';
+import type { MessageWithSender } from '../types';
 
 export interface MessageBubbleProps {
   /** Message data with sender information */

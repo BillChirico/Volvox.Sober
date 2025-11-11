@@ -5,13 +5,13 @@
  */
 
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import {
-  MessagesState,
+import type {
   ConversationPreview,
   Conversation,
   MessageWithSender,
   QueuedMessage,
-} from '../../types';
+} from '../types';
+import type { MessagesState } from '../../../types';
 
 const initialState: MessagesState = {
   conversations: [],

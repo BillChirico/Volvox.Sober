@@ -6,7 +6,7 @@
 
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import NetInfo from '@react-native-community/netinfo';
-import messageServiceV2 from '../../services/messageServiceV2';
+import messageServiceV2 from '../services/messageServiceV2';
 import {
   setConversations,
   setCurrentConversation,
@@ -25,8 +25,8 @@ import {
   incrementRetryCount,
   setSyncing,
 } from './messagesSlice';
-import type { MessageWithSender, QueuedMessage } from '../../types';
-import type { RootState } from '../index';
+import type { MessageWithSender, QueuedMessage } from '../types';
+import type { RootState } from '../../../store';
 
 // Maximum retry attempts for queued messages
 const MAX_RETRY_COUNT = 3;

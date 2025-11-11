@@ -4,7 +4,7 @@
  * Updated for new message schema without recipient_id
  */
 
-import supabaseClient from './supabase';
+import supabaseClient from '../../../services/supabase';
 import {
   Message,
   MessageWithSender,
@@ -13,13 +13,15 @@ import {
   SendMessageData,
   MarkMessageReadData,
   MarkMessagesDeliveredData,
+  NewMessageEvent,
+  MessageStatusUpdateEvent,
+} from '../types';
+import {
   Profile,
   ConnectionWithUsers,
   TablesInsert,
   TablesUpdate,
-  NewMessageEvent,
-  MessageStatusUpdateEvent,
-} from '../types';
+} from '../../../types';
 import { RealtimeChannel } from '@supabase/supabase-js';
 
 class MessageServiceV2 {

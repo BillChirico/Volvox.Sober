@@ -20,12 +20,11 @@ import {
   sendMessage,
   markAllMessagesAsRead,
   getPartnerUserId,
-} from '../../../src/services/messageService';
+} from '@/features/messages';
 import { getCurrentUserId } from '../../../src/services/supabase';
 import { subscribeToConversation } from '../../../src/services/realtimeService';
 import type { RealtimeSubscription } from '../../../src/services/realtimeService';
-import { MessageBubble } from '../../../src/components/MessageBubble';
-import { MessageInput } from '../../../src/components/MessageInput';
+import { MessageBubble, MessageInput } from '@/features/messages';
 import { ConnectionStatusIndicator } from '../../../src/components/ConnectionStatusIndicator';
 import type { Message } from '../../../src/types';
 

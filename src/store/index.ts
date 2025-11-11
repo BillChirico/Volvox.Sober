@@ -17,7 +17,7 @@ import onboardingReducer from '../features/onboarding/store';
 import sobrietyReducer from '../features/sobriety/store';
 import matchesReducer from '../features/matches/store';
 import connectionsReducer from '../features/connections/store';
-import messagesReducer from './messages/messagesSlice';
+import messagesReducer from '../features/messages/store';
 
 const rootReducer = combineReducers({
   auth: authReducer,

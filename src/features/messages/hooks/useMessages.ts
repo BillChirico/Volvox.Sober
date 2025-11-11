@@ -6,7 +6,7 @@
 
 import { useCallback, useEffect, useRef } from 'react';
 import NetInfo from '@react-native-community/netinfo';
-import { useAppDispatch, useAppSelector } from './useAppDispatch';
+import { useAppDispatch, useAppSelector } from '../../../hooks/useAppDispatch';
 import {
   fetchConversations,
   fetchConversation,
@@ -16,8 +16,6 @@ import {
   subscribeToConversation,
   unsubscribeFromConversation,
   syncOfflineQueue,
-} from '../store/messages/messagesThunks';
-import {
   selectConversations,
   selectCurrentConversation,
   selectMessagesLoading,
@@ -35,8 +33,9 @@ import {
   selectIsSyncing,
   selectQueuedMessagesCount,
   selectHasQueuedMessages,
-} from '../store/messages/messagesSelectors';
-import { clearError, clearCurrentConversation } from '../store/messages/messagesSlice';
+  clearError,
+  clearCurrentConversation,
+} from '../store';
 import type { MessageWithSender } from '../types';
 
 /**
