@@ -8,7 +8,7 @@ import React, { useEffect, useState } from 'react';
 import { View, StyleSheet, ScrollView } from 'react-native';
 import { Text, ActivityIndicator } from 'react-native-paper';
 import { useAppTheme } from '../../../src/theme/ThemeContext';
-import { NotificationSettings } from '../../../src/components/profile/NotificationSettings';
+import { NotificationSettings } from '@/features/profile';
 import { useAuth } from '@/features/auth';
 
 export default function NotificationSettingsScreen() {

@@ -12,11 +12,11 @@ import Constants from 'expo-constants';
 import { useAppTheme } from '../../../src/theme/ThemeContext';
 import { useProfile } from '../../../src/hooks/useProfile';
 import { useAuth } from '@/features/auth';
-import { ProfileHeader } from '../../../src/components/profile/ProfileHeader';
+import { ProfileHeader } from '@/features/profile';
 import {
   SettingsSection,
   type SettingsItem,
-} from '../../../src/components/profile/SettingsSection';
+} from '@/features/profile';
 
 export default function ProfileScreen() {
   const { theme } = useAppTheme();

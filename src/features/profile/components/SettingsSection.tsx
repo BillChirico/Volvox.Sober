@@ -7,7 +7,7 @@
 import React from 'react';
 import { View, StyleSheet, TouchableOpacity } from 'react-native';
 import { Text, Divider, Switch, Icon } from 'react-native-paper';
-import { useAppTheme } from '../../theme/ThemeContext';
+import { useAppTheme } from '../../../theme/ThemeContext';
 
 interface SettingsItemBase {
   key: string;
