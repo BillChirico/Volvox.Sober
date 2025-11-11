@@ -8,7 +8,7 @@ import React from 'react';
 import { View, StyleSheet, Alert } from 'react-native';
 import { useRouter } from 'expo-router';
 import { ProfileForm } from '@/features/onboarding';
-import { useOnboarding } from '../../src/hooks/useOnboarding';
+import { useOnboarding } from '@/features/onboarding';
 import { useProfile } from '../../src/hooks/useProfile';
 import { useAuth } from '@/features/auth';
 import { useAppTheme } from '../../src/theme/ThemeContext';

@@ -5,14 +5,14 @@
  */
 
 import { useCallback } from 'react';
-import { useAppDispatch, useAppSelector } from './useAppDispatch';
+import { useAppDispatch, useAppSelector } from '../../../hooks/useAppDispatch';
 import {
   fetchOnboardingProgress,
   initializeOnboarding,
   completeOnboardingStep,
   completeOnboarding,
   navigateToStep,
-} from '../store/onboarding/onboardingThunks';
+} from '../../../store/onboarding/onboardingThunks';
 import {
   selectOnboardingProgress,
   selectCurrentStep,
@@ -23,9 +23,9 @@ import {
   selectCanProceedToNext,
   selectIsOnboardingOperationInProgress,
   selectOnboardingProgressSummary,
-} from '../store/onboarding/onboardingSelectors';
-import { clearError } from '../store/onboarding/onboardingSlice';
-import type { OnboardingStep } from '../types';
+} from '../../../store/onboarding/onboardingSelectors';
+import { clearError } from '../../../store/onboarding/onboardingSlice';
+import type { OnboardingStep } from '../../../types';
 
 /**
  * Hook for managing onboarding flow

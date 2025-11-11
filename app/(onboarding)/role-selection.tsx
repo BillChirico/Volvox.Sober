@@ -9,7 +9,7 @@ import { View, StyleSheet } from 'react-native';
 import { Button } from 'react-native-paper';
 import { useRouter } from 'expo-router';
 import { RoleSelector } from '@/features/onboarding';
-import { useOnboarding } from '../../src/hooks/useOnboarding';
+import { useOnboarding } from '@/features/onboarding';
 import { useProfile } from '../../src/hooks/useProfile';
 import { useAuth } from '@/features/auth';
 import { useAppTheme } from '../../src/theme/ThemeContext';

@@ -8,7 +8,7 @@ import React, { useState } from 'react';
 import { View, StyleSheet } from 'react-native';
 import { useRouter } from 'expo-router';
 import { WelcomeCard } from '@/features/onboarding';
-import { useOnboarding } from '../../src/hooks/useOnboarding';
+import { useOnboarding } from '@/features/onboarding';
 import { useAuth } from '@/features/auth';
 import { useAppTheme } from '../../src/theme/ThemeContext';
 
