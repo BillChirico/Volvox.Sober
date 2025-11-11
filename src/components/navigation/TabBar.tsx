@@ -10,8 +10,8 @@ import { Text } from 'react-native-paper';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useAppTheme } from '../../theme/ThemeContext';
 import { useAppSelector } from '../../hooks/useAppDispatch';
-import { selectUnreadMessagesCount } from '../../store/messages/messagesSelectors';
-import { selectPendingConnectionRequestsCount } from '../../store/connections/connectionsSelectors';
+import { selectUnreadMessagesCount } from '@/features/messages';
+import { selectPendingConnectionRequestsCount } from '@/features/connections';
 import { NotificationBadge } from './NotificationBadge';
 import type { BottomTabBarProps } from '@react-navigation/bottom-tabs';
 

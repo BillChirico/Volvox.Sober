@@ -21,7 +21,7 @@ import { useRouter, useLocalSearchParams } from 'expo-router';
 import { useDisconnectMutation } from '../../../src/store/api/connectionsApi';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../src/store';
-import { selectConnectionById } from '../../../src/store/connections/connectionsSelectors';
+import { selectConnectionById } from '@/features/connections';
 import { selectUser } from '@/features/auth';
 import { formatDistanceToNow, format } from 'date-fns';
 

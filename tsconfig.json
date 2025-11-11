@@ -12,6 +12,7 @@
     "noImplicitReturns": true,
     "noFallthroughCasesInSwitch": true,
     "paths": {
+      "@/*": ["./src/*"],
       "@volvox-sober/shared": ["./packages/shared"],
       "@volvox-sober/shared/*": ["./packages/shared/*"]
     }

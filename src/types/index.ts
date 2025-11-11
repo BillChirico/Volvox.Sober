@@ -12,13 +12,15 @@ export * from './database.types';
 // ============================================================
 // Domain Types (Feature 002-app-screens)
 // ============================================================
+// NOTE: Feature-specific types have been moved to their respective feature directories:
+// - Profile types: src/features/profile/types/
+// - Onboarding types: src/features/onboarding/types/
+// - Sobriety types: src/features/sobriety/types/
+// - Match types: src/features/matches/types/
+// - Connection types: src/features/connections/types/
+// - Message types: src/features/messages/types/
+// Import from @/features/{feature} instead of this barrel export.
 
-export * from './profile';
-export * from './onboarding';
-export * from './sobriety';
-export * from './match';
-export * from './connection';
-export * from './message';
 export * from './navigation';
 
 // ============================================================
@@ -37,8 +39,10 @@ export interface CheckIn extends Tables<'check_ins'> {}
 
 export interface CheckInResponse extends Tables<'check_in_responses'> {}
 
+// CheckInWithConnection requires ConnectionWithUsers from connections feature
+// Import it when needed from @/features/connections
 export interface CheckInWithConnection extends CheckIn {
-  connection: ConnectionWithUsers;
+  connection: any; // Use ConnectionWithUsers from @/features/connections when importing
 }
 
 export interface CheckInResponseWithCheckIn extends CheckInResponse {
@@ -89,7 +93,3 @@ export interface LoadingState {
 export interface AsyncOperationState extends LoadingState {
   isSuccess: boolean;
 }
-
-// Re-import connection types for legacy compatibility
-import { Connection, ConnectionWithUsers } from './connection';
-export type { Connection, ConnectionWithUsers };

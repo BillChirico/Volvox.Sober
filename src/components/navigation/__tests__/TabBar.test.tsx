@@ -10,8 +10,8 @@ import { PaperProvider } from 'react-native-paper';
 import { ThemeProvider } from '../../../theme/ThemeContext';
 import { TabBar } from '../TabBar';
 import { configureStore } from '@reduxjs/toolkit';
-import messagesReducer from '../../../store/messages/messagesSlice';
-import connectionsReducer from '../../../store/connections/connectionsSlice';
+import { messagesReducer } from '@/features/messages';
+import { connectionsReducer } from '@/features/connections';
 import type { BottomTabBarProps } from '@react-navigation/bottom-tabs';
 
 // Mock store with initial state
